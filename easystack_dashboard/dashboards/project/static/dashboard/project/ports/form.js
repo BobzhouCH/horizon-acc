@@ -106,46 +106,6 @@
           dropdown.subnets = response.items;
         });
 
-        var PFVFNumConfigured = null;
-        var PFVFNumUsed = null;
-        // Subnet change
-        scope.changeSubnetValue = function () {
-          scope.PFVFNumConfigured = null;
-          scope.PFVFNumUsed = null;
-          novaAPI.getPFVFNumConfigured('physnet2')
-            .success(function (res) {
-              PFVFNumConfigured = res;
-              scope.PFVFNumConfigured = res;
-            })
-          neutronAPI.getPFVFNumUsed('physnet2')
-            .success(function (res) {
-              PFVFNumUsed = res;
-              scope.PFVFNumUsed = res;
-            })
-        }
-
-        scope.canCreate = false;
-        scope.selectSubnet = false;
-        // vNIC change
-        scope.changevNICValue = function () {
-          if (!PFVFNumConfigured || !PFVFNumUsed) {
-            scope.selectSubnet = true;
-            port.binding_vnic_type = 'normal';
-            return;
-          }
-          scope.selectSubnet = false;
-          scope.canCreate = false;
-          if (port.binding_vnic_type == 'direct') {
-            if ((PFVFNumUsed.VFNumUsed > PFVFNumConfigured.VFNumConfigured) || (PFVFNumUsed.VFNumUsed == PFVFNumConfigured.VFNumConfigured)) {
-              scope.canCreate = true;
-            }
-          }else if (port.binding_vnic_type == 'direct-physical') {
-            if ((PFVFNumUsed.PFNumUsed > PFVFNumConfigured.PFNumConfigured) || (PFVFNumUsed.PFNumUsed == PFVFNumConfigured.PFNumConfigured)) {
-              scope.canCreate = true;
-            }
-          }
-        }
-
         // get security groups for selection
         scope.canSelectSecurityGroups = [];
         securityGroupAPI
@@ -252,7 +212,8 @@
             'normal',
             'direct',
             'direct-physical',
-            'macvtap'
+            'macvtap',
+            'virtio-acc'
         ];
 
         if (context.mode === 'create') {
