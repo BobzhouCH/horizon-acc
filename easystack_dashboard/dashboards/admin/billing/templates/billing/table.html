@@ -1,0 +1,512 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Billing Manage" %}{% endblock %}
+
+{% block page_header %}
+{% include "easystack_dashboard/common/_es_page_header.html" with title=_("Billing Manage") %}
+{% endblock page_header %}
+
+{% block content_main %}"contentMain tab-main"{% endblock %}
+
+{% block main %}
+<tabset id="billing-tab" justified="true" class="def-tabs">
+
+<!--fixing price tab-->
+  <tab id="tab-billing-price_fixing" heading="{% trans 'Price Fixing' %}">
+
+  <div class="js-billing-content">
+    <div class="js-billing-content-items tab-pane-content">
+      <hz-magic-search-context filter-facets="priceFilterFacets" ng-controller="filterFacetsCtrl">
+      <table id="billing-list" hz-table ng-cloak hopes-table-drag
+        ng-controller="billingCtrlFix"
+        st-table="ifixPrices"
+        st-safe-src="fixPrices"
+        default-sort="create_at"
+        default-sort-reverse="true"
+        st-magic-search
+        class="table table-bordered table-hover">
+
+        <thead>
+
+          <tr>
+            <th colspan="100" class="bare">
+              <div class="table_actions clearfix">
+                <action-list class="btn-addon">
+                  <action action-classes="'btn btn-default btn-action'"
+                          callback="actions.refresh">
+                    <i class="icon icon-refresh"></i>
+                    <span id="internal-group-refresh"></span>
+                  </action>
+                </action-list>
+                <action-list>
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    disabled="disableFix"
+                    callback="actions.createFix.open">
+                    <i class="icon icon-add"></i>
+                    <span id="create-price-fixing">{% trans 'Create Price Fixing' %}</span>
+                  </action>
+                </action-list>
+                <!--action-list>
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    disabled="numSelected == 0 || actions.deleteFix.deletenums(selectedData.aData) == 0 || selectedData.aData[0].state == 'EXPIRED'"
+                    callback="actions.start"
+                    item="selectedData.aData[0]">
+                    <i class="icon icon-play"></i>
+                    <span id="use-price-fixing">{% trans 'Use Price Fixing Immediately' %}</span>
+                  </action>
+                </action-list-->
+                <action-list>
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    disabled="numSelected !== 1 || actions.deleteFix.deletenums(selectedData.aData) == 0 || selectedData.aData[0].state == 'EXPIRED'"
+                    callback="actions.start"
+                    item="selectedData.aData[0]">
+                    <i class="icon icon-play"></i>
+                    <span id="use-price-fixing">{% trans 'Use Price Fixing Immediately' %}</span>
+                  </action>
+                </action-list>
+                <action-list>
+                  <action
+                    action-classes="'btn btn-action btn-danger'"
+                    disabled="numSelected !== 1 || actions.deleteFix.deletenums(selectedData.aData) == 0 || selectedData.aData[0].id === 1"
+                    callback="actions.deleteFix.batchDelete"
+                    item="selectedData.aData">
+                    <i class="icon icon-delete"></i>
+                    <span id="delete-price-fixing">{% trans 'Delete Price Fixing' %}</span>
+                  </action>
+                </action-list>
+                <div class="fr search-bar">
+                  <hz-magic-search-bar id="billing-search"></hz-magic-search-bar>
+                </div>
+              </div>
+            </th>
+          </tr>
+
+          <!--fixing price header-->
+          <tr>
+            <th eagle-eye="select_col" class="select-col">
+               <input type="checkbox" hz-select-page="fixPrices"/>
+            </th>
+            <th width="15%"><span st-sort="id">{$ ::context.header.fixId $}</span></th>
+            <th><span st-sort="description">{$ ::context.header.description $}</span></th>
+            <th width="22%"><span st-sort="create_at">{$ ::context.header.createTime $}</span></th>
+            <th width="22%"><span st-sort="start_at" st-sort-default="start_at">{$ ::context.header.applyTime $}</span></th>
+            <th width="180"><span st-sort="state">{$ ::context.header.state $}</span></th>
+
+
+            <!--<th st-sort="is_applied">{$ ::context.header.enabled $}</th>
+            <th width="200" class="action-col">{$ ::context.header.actions $}</th>-->
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr ng-if="!ifixPricesState">
+            <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+          </tr>
+          <tr ng-if="!ifixPrices.length && ifixPricesState">
+            <td colspan="100">{% trans "No Data" %}</td>
+          </tr>
+          <!--fixing price data-->
+          <tr ng-repeat="fixPrice in ifixPrices" ng-class="{'st-selected': checked[fixPrice.id]}">
+            <td eagle-eye="select_col" class="select-col">
+              <input type="checkbox"
+                     hz-select="fixPrice"
+                     ng-model="selected[fixPrice.id].checked"
+                     hz-checkbox-group="fixPrices"/>
+              <!--input ng-if="fixPrice.is_applied || fixPrice.id === 1"
+                type="checkbox"
+                ng-disabled="fixPrice.is_applied"/-->
+              <!--input ng-if="!fixPrice.is_applied && fixPrice.id !== 1"
+                type="checkbox"
+                hz-select="fixPrice"
+                ng-model="selected[fixPrice.id].checked"
+                ng-disabled = "!(!fixPrice.is_applied && fixPrice.id !== 1)"
+                hz-checkbox-group="fixPrices"/-->
+            </td>
+            <td eagle-eye="data_col"><a ng-click="actions.fixPriceDetail.open(fixPrice)" href="javascript:;">{$ fixPrice.id $}</a></td>
+            <td eagle-eye="data_col">
+              <input id='fixPriceDescription'
+                ng-if="!fixPrice.is_applied"
+                edit-price-fix-user="fixPrice"
+                class="input-tran blue billing-write-description"
+                description-require="description"
+                type="text"
+                value="{$ fixPrice.description $}"
+                ng-model="fixPrice.description"/>
+              <span ng-if="fixPrice.is_applied">
+                {$ fixPrice.description $}
+              </span>
+            </td>
+            <td eagle-eye="data_col">{$ fixPrice.create_at $}</td>
+            <td eagle-eye="data_col">
+              <input id='fixPriceStartAt'
+                ng-if="!fixPrice.is_applied"
+                type="text"
+                readonly="true"
+                value="{$ fixPrice.start_at $}"
+                ng-model="fixPrice.start_at"
+                class="input-tran datepicker-time form_datetime blue"
+                price-fix="ifixPrices"
+                edit-price-fix-user="fixPrice"
+                description-require="start_at"
+                placeholder="{% trans "Select" %}{% trans "Time to Apply" %}"/>
+              <span ng-if="fixPrice.is_applied">
+                {$ fixPrice.start_at $}
+              </span>
+            </td>
+            <td eagle-eye="data_col">
+              {$ fixPrice.state | decode:fixPriceStates $}
+              <div edit-price-fix-user="fixPrice" style ="display:inline-block;"
+                class="clearfix ml10 {$ fixPrice.is_applied ? 'switch-color-yes':'switch-color-no' $}"
+                switch-module>
+                <span ng-if="fixPrice.state == 'PLAN'">
+                  <span class="yes">
+                    <!--<span class="btn btn-confirm {$ fixPrice.is_applied ? 'disabled':'' $}">
+                      <i class="btn-icon btn-icon-confirm"></i>
+                      {% trans "ENABLE" %}
+                    </span>-->
+                    <span ng-if="!fixPrice.is_applied" class="btn btn-confirm" title="{$:: context.tooltip.enable $}">
+                      <i class="btn-icon btn-icon-confirm"></i>
+                      {% trans "ENABLE" %}
+                    </span>
+                  </span>
+                  <!--<em>|</em>-->
+                  <span class="no">
+                    <!--<span class="btn btn-cancel {$ fixPrice.is_applied ? '':'disabled' $}">
+                      <i class="btn-icon btn-icon-cancel"></i>
+                      {% trans "DISABLE" %}
+                    </span>-->
+                    <span ng-if="fixPrice.is_applied" class="btn btn-cancel">
+                      <i class="btn-icon btn-icon-cancel"></i>
+                      {% trans "DISABLE" %}
+                    </span>
+                  </span>
+                </span>
+                <span ng-if="fixPrice.state == 'TOUSE'">
+                  <span class="yes">
+                    <!--<span class="btn btn-confirm {$ fixPrice.is_applied ? 'disabled':'' $}">
+                      <i class="btn-icon btn-icon-confirm"></i>
+                      {% trans "ENABLE" %}
+                    </span>-->
+                    <span ng-if="!fixPrice.is_applied" class="btn btn-confirm">
+                      <i class="btn-icon btn-icon-confirm"></i>
+                      {% trans "ENABLE" %}
+                    </span>
+                  </span>
+                  <!--<em>|</em>-->
+                  <span class="no">
+                    <!--<span class="btn btn-cancel {$ fixPrice.is_applied ? '':'disabled' $}">
+                      <i class="btn-icon btn-icon-cancel"></i>
+                      {% trans "DISABLE" %}
+                    </span>-->
+                    <span ng-if="fixPrice.is_applied" class="btn btn-cancel">
+                      <i class="btn-icon btn-icon-cancel"></i>
+                      {% trans "DISABLE" %}
+                    </span>
+                  </span>
+                </span>
+              </div>
+            </td>
+
+
+<!--            <td eagle-eye="data_col">
+              <div edit-price-fix-user="fixPrice"
+                class="clearfix {$ fixPrice.is_applied ? 'switch-color-yes':'switch-color-no' $}"
+                switch-module>
+                <span ng-if="fixPrice.state == 'PLAN'">
+                  <span class="yes">
+                    <span class="btn btn-confirm {$ fixPrice.is_applied ? 'disabled':'' $}">
+                      <i class="btn-icon btn-icon-confirm"></i>
+                      {% trans "YES" %}
+                    </span>
+                  </span>
+                  <em>|</em>
+                  <span class="no">
+                    <span class="btn btn-cancel {$ fixPrice.is_applied ? '':'disabled' $}">
+                      <i class="btn-icon btn-icon-cancel"></i>
+                      {% trans "NO" %}
+                    </span>
+                  </span>
+                </span>
+                <span ng-if="fixPrice.state == 'TOUSE'">
+                  <span class="yes">
+                    <span class="btn btn-confirm {$ fixPrice.is_applied ? 'disabled':'' $}">
+                      <i class="btn-icon btn-icon-confirm"></i>
+                      {% trans "YES" %}
+                    </span>
+                  </span>
+                  <em>|</em>
+                  <span class="no">
+                    <span class="btn btn-cancel {$ fixPrice.is_applied ? '':'disabled' $}">
+                      <i class="btn-icon btn-icon-cancel"></i>
+                      {% trans "NO" %}
+                    </span>
+                  </span>
+                </span>
+                <span ng-if="fixPrice.state == 'EXPIRED' && !fixPrice.is_applied">
+                  <span class="yes">{% trans "YES" %}</span>
+                  <em>|</em>
+                  <span class="no">{% trans "NO" %}</span>
+                </span>
+
+                <span ng-if="fixPrice.state == 'EXPIRED' && !fixPrice.is_applied">
+                  <span class="yes">
+                    <span class="btn btn-confirm" ng-class="{disabled:fixPrice.is_applied || fixPrice.state == 'EXPIRED'}">
+                      <i class="btn-icon btn-icon-confirm"></i>
+                      {% trans "YES" %}
+                    </span>
+                  </span>
+                  <em>|</em>
+                  <span class="no">
+                    <span class="btn btn-cancel" ng-class="{disabled:!fixPrice.is_applied}">
+                      <i class="btn-icon btn-icon-cancel"></i>
+                      {% trans "NO" %}
+                    </span>
+                  </span>
+                </span>
+
+                &lt;!&ndash; <span ng-if="fixPrice.state == 'EXPIRED' && fixPrice.is_applied" class="blue"> {$ fixPrice.is_applied ? '{% trans "YES" %}':'{% trans "NO" %}' $} </span>
+                <span ng-if="fixPrice.state == 'USING'" class="blue"> {$ fixPrice.is_applied ? '{% trans "YES" %}':'{% trans "NO" %}' $} </span>
+                <span ng-if="fixPrice.state == 'NO_START_TIME'" class="blue"> {$ fixPrice.is_applied ? '{% trans "YES" %}':'{% trans "NO" %}' $} </span> &ndash;&gt;
+
+                <span ng-if="fixPrice.state == 'EXPIRED' && fixPrice.is_applied">
+                  <i ng-if="fixPrice.is_applied" class="state-icon icon-true"></i>
+                  <i ng-if="!fixPrice.is_applied" class="state-icon icon-false"></i>
+                </span>
+                <span ng-if="fixPrice.state == 'USING'">
+                  <i ng-if="fixPrice.is_applied" class="state-icon icon-true"></i>
+                  <i ng-if="!fixPrice.is_applied" class="state-icon icon-false"></i>
+                </span>
+                <span ng-if="fixPrice.state == 'NO_START_TIME'">
+                  <i ng-if="fixPrice.is_applied" class="state-icon icon-true"></i>
+                  <i ng-if="!fixPrice.is_applied" class="state-icon icon-false"></i>
+                </span>
+              </div>
+            </td>-->
+
+ <!--           <td eagle-eye="data_col" class="action-lattice">
+              <action-list ng-if="fixPrice.state == 'PLAN'">
+                <action
+                  action-classes="'btn btn-primary btn-width-sm'"
+                  callback="actions.detail.detailResult" item="fixPrice.id"
+                  disabled="fixPrice.is_applied">
+                  {% trans 'Details' %}
+                </action>
+                <button class="btn btn-primary btn-width-sm"
+                  type="button"
+                  ng-click="start(fixPrice)"
+                  ng-disabled="fixPrice.is_applied">
+                {% trans 'Start to Use' %}
+                </button>
+              </action-list>
+            </td>-->
+
+          </tr>
+        </tbody>
+        <tfoot ng-if="fixPrices.length > 10">
+          <tr>
+            <td colspan="100">
+              <table-footer></table-footer>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+      </hz-magic-search-context>
+
+    </div>
+
+  <!--fixing price detail table-->
+  <div class="js-billing-content-items table-box-hover" record-data style="display: none; position: relative;">
+    <p class="billingArrow js-billingArrow" fix-taggle="js-billing-content-items" disable-item-down></p>
+    <form novalidate name="form" ng-submit="submit(form.$valid)">
+      <hz-magic-search-context filter-facets="fixPricesFilterFacets" ng-controller="filterFacetsCtrl">
+      <table id="fix-prices-detail" hz-table ng-cloak hopes-table-drag
+        st-table="ifixPricesDetail"
+        st-safe-src="fixPricesDetail"
+        default-sort="name"
+        default-sort-reverse="false"
+        st-magic-search
+        class="table table-bordered table-hover">
+
+        <thead>
+
+          <tr>
+            <th colspan="100" class="bare">
+              <div class="table_actions clearfix">
+                <ul class="fl" es-tab callback="filterProduct">
+                  <li id="all" class="btn btn-primary mr5 active" val="all">{% trans 'All' %}</li>
+                  <li id="instance" class="btn btn-primary mr5" val="instance">{% trans 'Instance' %}</li>
+                  <li id="others" class="btn btn-primary" val="!instance">{% trans 'Others' %}</li>
+                </ul>
+                <div class="fr search-bar">
+                  <hz-magic-search-bar  id="fix-prices-search"></hz-magic-search-bar>
+                </div>
+              </div>
+            </th>
+          </tr>
+
+          <!--fixing price detail header-->
+          <tr>
+            <th>
+              <span eagle-eye="data_col"st-sort="id">{$ ::context.headerDetail.itemId $}</span>
+            </th>
+            <th>
+              <span eagle-eye="data_col" st-sort="rule_dscription" st-sort-default="rule_dscription">{$ ::context.headerDetail.rules $}</span>
+            </th>
+            <th><span eagle-eye="data_col" st-sort="fee">{$ ::context.headerDetail.price $} / {% trans 'Yuan' %}</span></th>
+            <th><span eagle-eye="data_col" st-sort="unit">{$ ::context.headerDetail.unit $}</span></th>
+            <th><span eagle-eye="data_col" st-sort="type">{$ ::context.headerDetail.type $}</span></th>
+            <th><span eagle-eye="data_col" st-sort="ptype">{$ ::context.headerDetail.ptype $}</span></th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <!--fixing price detail data-->
+          <tr ng-class="{'st-selected': checked[fixPrice.id]}"
+            ng-repeat="fixPrice in ifixPricesDetail">
+
+            <td eagle-eye="data_col">{$ fixPrice.id $}</td>
+            <td eagle-eye="data_col"><span title="{$ fixPrice.rule_dscription $}">{$ fixPrice.rule_dscription $}</span></td>
+            <td eagle-eye="data_col" class="js-getbackground">
+              <div class="clearfix"
+                digital-list="fixPrice"
+                watch-price>
+                <input required
+                  name="fee"
+                  class="fee input-tran input-width fl"
+                  type="text"
+                  title="{$ fixPrice.fee $}"
+                  value="{$ fixPrice.fee | price $}"/>
+                <i class="price-icon fl"></i>
+                <p class="price-insert fl">
+                  <span class="btn btn-confirm storage">
+                    <i class="btn-icon btn-icon-confirm"></i>
+                    {% trans 'Update' %}
+                  </span>
+                  <em>|</em>
+                  <span class="btn btn-cancel cancel">
+                    <i class="btn-icon btn-icon-cancel"></i>
+                    {% trans 'Cancel' %}
+                  </span>
+                </p>
+              </div>
+            </td>
+            <td eagle-eye="data_col">{$ fixPrice.unit | decode:billingUnits $}</td>
+            <td eagle-eye="data_col">{$ fixPrice.type | decode:priceTypes $}</td>
+            <td eagle-eye="data_col">{$ fixPrice.ptype | decode:productTypes $}</td>
+
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="100">
+              <table-footer></table-footer>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+       </hz-magic-search-context>
+    </form>
+  </div>
+  </div>
+  </tab>
+
+<!--current price tab-->
+<tab id="tab-billing-current_price" heading="{% trans 'Current Price' %}">
+<div class="js-billing-content tab-pane-content">
+
+<hz-magic-search-context filter-facets="fixPricesFilterFacets" ng-controller="filterFacetsCtrl">
+<table ng-cloak hopes-table-drag
+  st-table="icurrentPrices"
+  st-safe-src="currentPrices"
+  default-sort="rule"
+  default-sort-reverse="false"
+  ng-controller="billingCtrl"
+  st-magic-search
+  class="table table-bordered table-hover">
+
+  <thead>
+    <tr>
+      <th colspan="100" class="bare">
+        <div class="table_actions clearfix">
+
+          <ul class="fl horizontal-button-group" es-tab callback="filterProduct">
+            <li class="btn active" val="all">{% trans 'All' %}</li>
+            <li class="btn" val="instance">{% trans 'Instance' %}</li>
+            <li class="btn" val="!instance"></i>{% trans 'Others' %}</li>
+          </ul>
+
+          <div class="fr search-bar">
+            <hz-magic-search-bar id="current-price-search"></hz-magic-search-bar>
+          </div>
+        </div>
+      </th>
+    </tr>
+
+    <!--current price header-->
+    <tr>
+      <th class="rsp-p1" st-sort="id">{$ ::context.header.itemId $}</th>
+      <th style="padding-left:10px;">
+        <span st-sort="rule_dscription" st-sort-default="rule_dscription" eagle-eye="data_col">{$ ::context.header.rules $}</span>
+      </th>
+      <th><span eagle-eye="data_col" st-sort="fee">{$ ::context.header.price $}</span></th>
+      <th ng-if="preBilling"><span eagle-eye="data_col" st-sort="unit">{$ ::context.header.priceMonth $}</span></th>
+      <th ng-if="preBilling"><span eagle-eye="data_col" st-sort="unit">{$ ::context.header.priceYear $}</span></th>
+      <!--<th eagle-eye="data_col" st-sort="unit">{$ ::context.header.unit $}</th>-->
+      <th><span eagle-eye="data_col" st-sort="type">{$ ::context.header.type $}</span></th>
+      <th><span eagle-eye="data_col" st-sort="ptype">{$ ::context.header.ptype $}</span></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr ng-if="!icurrentPricesState">
+      <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif" alt="" /></td>
+    </tr>
+    <tr ng-if="!icurrentPrices.length && icurrentPricesState">
+      <td colspan="100">{% trans "No Data" %}</td>
+    </tr>
+
+    <!--current price data-->
+    <tr ng-repeat="currentPrice in icurrentPrices">
+      <td class="rsp-p1">{$ currentPrice.id $}</td>
+      <td eagle-eye="data_col" width="35%"><span title="{$ currentPrice.rule_dscription $}">{$ currentPrice.rule_dscription $}</span></td>
+      <td eagle-eye="data_col">
+        {% trans '￥' %}
+        {$ currentPrice.fee_hour | price $}
+        {% trans 'Yuan' %}
+      </td>
+      <td eagle-eye="data_col" ng-if="preBilling">
+        {% trans '￥' %}
+        {$ currentPrice.fee_month | price $}
+        {% trans 'Yuan' %}
+      </td>
+      <td eagle-eye="data_col" ng-if="preBilling">
+        {% trans '￥' %}
+        {$ currentPrice.fee_year | price $}
+        {% trans 'Yuan' %}
+      </td>
+      <!--<td eagle-eye="data_col">{$ currentPrice.unit | decode:billingUnits $}</td>-->
+      <td eagle-eye="data_col">{$ currentPrice.type | decode:priceTypes $}</td>
+      <td eagle-eye="data_col">{$ currentPrice.ptype | decode:productTypes $}</td>
+    </tr>
+
+  </tbody>
+  <tfoot ng-if="currentPrices.length > 10">
+    <tr>
+      <td colspan="100">
+        <table-footer></table-footer>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+</hz-magic-search-context>
+
+</div>
+</tab>
+</tabset>
+{% endblock %}
+
+

@@ -1,0 +1,53 @@
+{% load branding i18n %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='IE=edge' http-equiv='X-UA-Compatible' />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type' />
+    {% include "easystack_dashboard/_es_custom_meta.html" %}
+    <title>{% site_branding %}</title>
+    {% comment %} Load CSS sheets before Javascript  {% endcomment %}
+    {% block css %}
+      {% include "_es_stylesheets.html" %}
+      {% load compress %}
+      <link href='{{ STATIC_URL }}dashboard/css/bootstrap-datetimepicker.min.css' type='text/css' rel='stylesheet' />
+      <link href='{{ STATIC_URL }}dashboard/css/isteven-multi-select.css' type='text/css' rel='stylesheet' />
+    {% endblock %}
+    {% include "easystack_dashboard/_es_conf.html" %}
+    {% include "easystack_dashboard/client_side/_es_script_loader.html" %}
+    {% include "easystack_dashboard/_es_custom_head_js.html" %}
+
+  </head>
+
+  <body id="{% block body_id %}{% endblock %}" ng-app='horizon.app' ng-controller="billing-enable" ng-cloak>
+    {% block content %}
+    <div class="main">
+      <div class='topbar jsTopPane'>
+        {% include "es_header.html" %}
+      </div>
+
+        <div>
+            {#          {% block page_header %}{% endblock %}#}
+            {% block sidebar %}
+                {% include 'easystack_dashboard/common/_es_sidebar.html' %}
+            {% endblock %}
+
+            <div class="rightPane rightpaneWrap">
+                {% include "easystack_dashboard/_es_messages.html" %}
+                <div class={% block content_main %}"contentMain"{% endblock %}>{% block main %}{% endblock %}</div>
+            </div>
+        </div>
+
+    </div>
+    {% endblock %}
+    <div id="footer">
+      {% block footer %}{% endblock %}
+    </div>
+    {% block js %}
+      {% include "easystack_dashboard/_es_scripts.html" %}
+    {% endblock %}
+    <div id="modal_wrapper"></div>
+    {% include "easystack_dashboard/common/_modal_selector.html" %}
+  </body>
+</html>
+

@@ -1,0 +1,223 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+      <div class="modal-description"
+        ng-if="context.mode === 'create' || context.mode === 'edit'">
+          <p>
+            {% trans "Listener successfully created need associated resource pool will work properly, and you need to check load balancer firewall rules." %}
+          </p>
+      </div>
+      <fieldset>
+        <!--
+          listener name input (required):
+          Create-mode: create
+                       edit
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' ||
+                 context.mode === 'edit'"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="name">
+            *{% trans "Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              type="text"
+              ng-model="listener.listener.name"
+              ng-maxlength="255"
+              placeholder="{% trans 'enter a listener name' %}"/>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "A listener name is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength && form.name.$dirty">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+          Description input (optional):
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' ||
+                 context.mode === 'edit'">
+          <label for="description">
+            {% trans "Description" %}
+          </label>
+          <div class="form-group-right"
+               ng-class="{'has-error':form.description.$invalid && form.description.$dirty}">
+            <textarea
+              id="description"
+              name="description"
+              class="form-control"
+              rows="4"
+              ng-maxlength="255"
+              type="description"
+              ng-model="listener.listener.description"
+              placeholder="{% trans 'enter description of the listener.' %}">
+            </textarea>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.description.$error.maxlength">
+              {% trans "Description length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+
+        <!--
+            protocol Selectiong (required):
+            Create-mode: create
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create'|| context.mode === 'edit'">
+          <label for="protocol">
+            *{% trans "Protocol" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="protocol"
+              name="protocol"
+              class="form-control"
+              ng-disabled="context.mode === 'edit'"
+              ng-model="listener.listener.protocol">
+              <option value="" disabled>
+                {% trans 'select protocol' %}
+              </option>
+              <option
+                ng-repeat="s in dropdown.protocols"
+                ng-selected="s.value === listener.listener.protocol"
+                value="{$ s.value $}">
+                {$ s.key $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+     <!--
+            port Selection (option):
+            Create-mode: create; edit
+          -->
+          <div class="form-group clearfix"
+            ng-if="context.mode === 'create' || context.mode === 'edit'"
+            ng-class="{'has-error':form.type.$invalid && form.type.$dirty}">
+            <label for="protocol_port">
+              *{% trans "Protocol Port" %}
+            </label>
+            <div class="form-group-right">
+              <input required
+                id="protocol_port"
+                name="protocol_port"
+                class="form-control verify-input"
+                ng-disabled="context.mode === 'edit'"
+                type="number"
+                min="1"
+                max="65535"
+                ng-model="listener.listener.protocol_port"
+                ng-maxlength="255"
+                style="width: 60%"
+                placeholder="{% trans 'enter a protocol port' %}"/>
+                <span>{% trans 'Port range : 1-65535' %}</span>
+            </div>
+          </div>
+
+
+        <!--
+            connection limit (required):
+            Create-mode: disassociateFloatingIp
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' ||
+                 context.mode === 'edit'">
+          <label for="connection_limit">
+            *{% trans "Connection Limit" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="connection_limit"
+              name="connection_limit"
+              class="form-control"
+              ng-model="listener.listener.connection_limit">
+              <option value="" disabled>
+                {% trans 'select connection limit' %}
+              </option>
+              <option
+                ng-repeat="s in dropdown.connection_limit"
+                ng-selected="s.value === listener.listener.connection_limit"
+                value="{$ s.value $}">
+                {$ s.key $}
+              </option>
+            </select>
+          </div>
+        </div>
+      <div ng-show="showBilling && !noFixing" ng-if="preBilling && context.mode === 'create'" class="form-group clearfix">
+          <label for="btype" style="width:110px">
+            {% trans "Billing Type" %}
+          </label>
+          <div class="form-group-right" style="width: 40%;">
+            <select required
+              id="unit"
+              name="unit"
+              class="form-control"
+              style="width: 80%;"
+              ng-change="changePayment(unitSelect)"
+              ng-model="unitSelect"
+              ng-options="payment as payment.unitLabel for payment in payment_type">
+            </select>
+          </div>
+          <div ng-if="unitSelect.unit=='H'" style="padding-top:10px;">
+            <span class="orange">{$ price | price $}{% trans 'Yuan' %}</span>/{% trans 'Hour' %}
+          </div>
+          <div ng-if="unitSelect.unit=='M'" style="padding-top:10px;">
+            <span class="orange">{$ price | price $}{% trans 'Yuan' %}</span>/{% trans 'Month' %}
+          </div>
+          <div ng-if="unitSelect.unit=='Y'" style="padding-top:10px;">
+            <span class="orange">{$ price | price $}{% trans 'Yuan' %}</span>/{% trans 'Year' %}
+          </div>
+        </div>
+        <div ng-if="!preBilling">
+          <p class="billing-info text-right" ng-if="context.mode === 'create' " ng-show="showBilling && !noFixing">
+            <span class="orange">{$ price | price $}{% trans 'Yuan' %}</span>/{% trans 'Hour' %}
+            <span class="gray_3">({$ price * 24 * 30 | price $}{% trans 'Yuan' %}/{% trans 'Month' %})</span>
+          </p>
+        </div>
+
+        <p class="billing-info-tips text-right" ng-if="context.mode === 'create'" ng-show="noFixing">
+          <span class="gray_3">{% trans 'No Active Fixing' %}</span>
+        </p>
+        <p class="billing-info-tips text-right" ng-if="context.mode === 'create'" ng-show="showBalance">
+          <span class="red">{% trans 'No Enough Balance' %}</span>
+        </p>
+      </fieldset>
+
+    <!-- Modal-form-right: The description text. -->
+
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button-create" class="btn btn-primary" type="button"
+    ng-if="context.mode == 'create' || context.mode == 'edit'"
+    ng-disabled="form.$invalid || quota_exceeded || showBalance"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+
+</div>
+

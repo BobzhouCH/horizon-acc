@@ -1,0 +1,29 @@
+{%load i18n%}
+<script type="text/ng-template"  id="createSnapshot.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="close()">&times;</button>
+        <h4>{% trans "Add New Snapshot" %}</h4>
+    </div>
+    <div class="modal-body">
+        <form role="form" name="myForm" class="form-horizontal" novalidate="">
+            <div class="list-group">
+                <div class="form-group has-feedback">
+                    <label for="name">{% trans "SnapName" %}</label>
+                    <input type="text" class="form-control" id="name" name="snapName" ng-model="addSnap.name" placeholder="snapName"  required="" />
+                    <span class="glyphicon glyphicon-ok form-control-feedback" ng-show="myForm.name.$dirty && myForm.name.$valid"></span>
+                </div>
+            </div>
+            <div class="list-group">
+                <div class="form-group has-feedback">
+                    <label for="time">{% trans "SnapTime" %}</label>
+                    <input type="text" class="form-control" id="time" name="snapTime" ng-model="addSnap.time" placeholder="snapTime"  required="" />
+                    <span class="glyphicon glyphicon-ok form-control-feedback" ng-show="myForm.name.$dirty && myForm.name.$valid"></span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="cancel" ng-click="cancel()">{% trans "Cancel" %}</button>
+        <button class="btn-ok" ng-click="creatSnapshotOk($event)">{% trans "Ok" %}</button>
+    </div>
+</script>

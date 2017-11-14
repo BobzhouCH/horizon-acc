@@ -1,0 +1,69 @@
+{% load i18n %}
+<table ng-if="detailData" id="extra-specs-list" class="table table-bordered table-hover" hz-table ng-cloak hopes-table-drag st-table="idetailData" st-safe-src="detailData"
+ default-sort="key" default-sort-reverse="false">
+                    <thead>
+                      <tr>
+                        <th colspan="100">
+                          <div class="table_actions clearfix">
+                            <action-list class="btn-addon">
+                              <action
+                                action-classes="'btn btn-default btn-sm'"
+                                callback="actions.addExtraSpecs.open" item="actionitem">
+                                <i class="icon icon-add"></i>
+                                <span id="create-extra-spec-in-volumetype">{% trans 'Add Extra Specs' %}</span>
+                              </action>
+                            </action-list>
+                            <action-list>
+                              <action
+                                action-classes="'btn btn-action btn-primary'"
+                                disabled="numSelected !== 1"
+                                callback="actions.editExtraSpecs.open" item="selectedData.aData">
+                                <i class="icon icon-edit"></i>
+                                <span id="edit-extra-spec-in-volumetype">{% trans 'Edit' %}</span>
+                              </action>
+                            </action-list>
+                            <action-list>
+                                <action
+                                  action-classes="'btn btn-action btn-danger'"
+                                  disabled="numSelected === 0"
+                                  callback="actions.deleteExtraSpecs.batchDelete"
+                                  item="selectedData.aData">
+                                  <i class="icon icon-delete"></i>
+                                  <span id="delete-extra-spec-in-volumetype">{% trans 'Delete Extra Specs' %}</span>
+                                </action>
+                            </action-list>
+                          </div>
+                        </th>
+                      </tr>
+                      <tr>
+                        <th  class="select-col" eagle-eye="select_col">
+                            <input type="checkbox" hz-select-page="detailData" hz-select-broadcast-name ='{$ actionitem.id $}'/>
+                        </th>
+                        <th st-sort="key">{$ ::context.extraSpecsHeader.name $}</th>
+                        <th st-sort="value">{$ ::context.extraSpecsHeader.value $}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-if="!idetailData.length">
+                        <td colspan="100">{% trans "No Data" %}</td>
+                      </tr>
+                      <tr ng-repeat="extraspec in idetailData">
+                        <td  class="select-col" eagle-eye="select_col">
+                            <input type="checkbox"
+                            hz-select="extraspec"
+                            ng-model="selected[extraspec.key].checked"
+                            hz-checkbox-group="detailData"
+                            hz-select-broadcast-name='{$ actionitem.id $}'/>
+                        </td>
+                        <td>{$ extraspec.key $}</td>
+                        <td>{$ extraspec.value $}</td>
+                      </tr>
+                    </tbody>
+                    <tfoot ng-if="detailData.length > 5">
+                      <tr>
+                        <td colspan="100" eagle-eye="data_page">
+                          <div st-pagination="" st-items-by-page="5" st-displayed-pages="5"></div>
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>

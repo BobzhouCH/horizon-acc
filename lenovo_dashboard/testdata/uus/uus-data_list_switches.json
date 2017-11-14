@@ -1,0 +1,29 @@
+{
+  "return_data": [
+    {
+      "uuid":"20202020202020202020202020202020",
+      "hostname": "01-GN8042",
+      "ip": "10.240.195.04",
+      "mac": "FD:EA:9F:83:00",
+      "serialNum": "my21300291",
+      "osVer": "8.1.0.41",
+      "cpu": "28.77%",
+      "memory": "3.5/4.0",
+      "status": "Successful",
+      "hw_type": "GN804"
+    },
+    {
+      "uuid":"20202020202020202020202020111110",
+      "hostname": "02-GN8042",
+      "ip": "10.240.185.24",
+      "mac": "FD:EA:9F:83:00",
+      "serialNum": "my21300292",
+      "osVer": "8.1.0.41",
+      "cpu": "28.77%",
+      "memory": "3.5/4.0",
+      "status": "Successful",
+      "hw_type": "GN804"
+    }
+  ],
+  "return_code": 0
+}

@@ -1,0 +1,61 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<form class="ml10 mr10" novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+      <div class="modal-description">
+          <p>
+            {$ description $}
+          </p>
+      </div>
+      <div class="left form-wrap">
+          <fieldset>
+             <div class="form-group clearfix" ng-class="{'has-error':(form.disk.$invalid && form.disk.$dirty)|| inputError}">
+              <label style="width:45%" for="disk">
+                {$ context.header.extend$}
+              </label>
+              <div class="form-group-right" style="margin-left:10%">
+                <input required style="float:left; width:70%"
+                  id="disk"
+                  name="disk"
+                  ng-class="{'form-control verify-input':true,'ng-invalid': inputError}"
+                  ng-model="instance.hotExtendDisk"
+                  ng-maxlength="255"
+                  ng-keyup="inputCheck()"
+                  ng-blur="inputCheck()"
+                  type=number
+                  placeholder="{% trans 'enter a disk size' %}"/>
+                  <label style="width:10%">GB</label>
+                <p style="margin-top:40px" class="help-block alert-fixed alert-danger"
+                  ng-show="form.disk.$invalid && form.disk.$dirty">
+                  {% trans "A disk size is required." %}
+                </p>
+                <p style="margin-top:40px" class="help-block alert-fixed alert-danger"
+                   ng-show="!form.disk.$invalid && inputError && form.disk.$dirty">
+                    {% trans "Input disk size should be bigger than " %}{$ device.root_gb $}GB
+                </p>
+              </div>
+            </div>
+          </fieldset>
+      </div>
+  </div>
+</form>
+
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid || inputError"
+    ng-click="action.submit()">
+    {% trans "OK" %}
+  </button>
+  <button id="cancel-button" class="btn btn-primary" type="button"
+    ng-click="action.cancel()">
+    {% trans "Cancel"  %}
+  </button>
+</div>

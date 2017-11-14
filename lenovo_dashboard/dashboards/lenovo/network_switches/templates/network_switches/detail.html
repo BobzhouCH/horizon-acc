@@ -1,0 +1,188 @@
+{% load i18n %}
+<style>
+    .networkSwitchesDetailSpecialStyle > * {
+        margin-top: 10px;
+    }
+</style>
+<div class="detail-page">
+    <div class="fl detail-left-icon" ng-click="action.cancel()"></div>
+    <div class="detail-page-con">
+        <tabset justified="true" class="def-tabs">
+            <tab id="switch_deail" heading='{% trans "Detail" %}'>
+                <div class="tab-pane-content">
+                    <table class="table table-bordered table-hover table-unique">
+                        <thead>
+                            <tr>
+                                <th colspan="100">
+                                    <span class="detail-title">{$ ::context.header.title $}</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{$ ::context.header.hostname $}</td>
+                                <td>{$ switchHostname $}</td>
+                            </tr>
+                            <tr>
+                                <td>{$ ::context.header.switchIp $}</td>
+                                <td>{$ switchData.ip $}</td>
+                            </tr>
+                            <tr>
+                                <td>{$ ::context.header.username $}</td>
+                                <td>{$ switchData.username $}</td>
+                            </tr>
+                            <tr>
+                                <td>{$ ::context.header.protocol $}</td>
+                                <td>{$ switchData.protocol $}</td>
+                            </tr>
+                            <tr>
+                                <td>{$ ::context.header.macAddress $}</td>
+                                <td>{$ switchData.mac $}</td>
+                            </tr>
+                            <tr>
+                                <td>{$ ::context.header.serial $}</td>
+                                <td>{$ switchData.serialNum $}</td>
+                            </tr>
+                            <tr>
+                                <td>{$ ::context.header.cpu $}</td>
+                                <td>{$ switchData.cpu $}</td>
+                            </tr>
+                            <tr>
+                                <td>{$ ::context.header.memory $}</td>
+                                <td>{$ switchData.memory $}</td>
+                            </tr>
+                            <tr>
+                                <td>{$ ::context.header.osType $}</td>
+                                <td>{$ switchData.os_type| uppercase $}</td>
+                            </tr>
+                            <tr>
+                                <td>{$ ::context.header.osVersion $}</td>
+                                <td>{$ switchData.osVer $}</td>
+                            </tr>
+                            <tr>
+                                <td>{$ ::context.header.sshPort $}</td>
+                                <td>{$ switchData.ssh_port $}</td>
+                            </tr>
+                            <tr>
+                                <td>{$ ::context.header.restPort $}</td>
+                                <td>{$ switchData.rest_tcp_port $}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </tab>
+            <tab id="node_list" heading='{% trans "Port Mapping" %}'>
+                <div class="tab-content" style="border:0;">
+                    <div class="tab-pane-content">
+                        <hz-magic-search-context id="givemefive" filter-facets="filterFacets">
+                            <table id="nodelist" hz-table ng-cloak hopes-table-drag
+                                   st-table="inodes"
+                                   st-safe-src="nodes"
+                                   disabled="disabled"
+                                   st-magic-search
+                                   class="table table-bordered table-hover">
+                                <thead>
+                                    <tr id="givemefive2">
+                                        <th colspan="100" class="bare">
+                                            <div class="table_actions clearfix">
+                                                <action-list class="btn-addon">
+                                                    <action action-classes="'btn btn-default btn-sm'"
+                                                            callback="actions.refresh"
+                                                            disabled="isAdding || isEditting || isDeleting">
+                                                        <i class="icon icon-refresh"></i>
+                                                        <span id="refresh"></span>
+                                                    </action>
+                                                </action-list>
+                                                <action-list>
+                                                    <action action-classes="'btn btn-primary btn-action'"
+                                                            callback="actions.modal.createDetailSwitch" item="switchData"
+                                                            disabled="isAdding || isEditting || isDeleting">
+                                                        <i class="icon icon-add"></i>
+                                                        <span id="create-node">{$ ::context.action.create $}</span>
+                                                    </action>
+                                                </action-list>
+                                                <action-list>
+                                                    <action action-classes="'btn btn-action btn-primary'"
+                                                            disabled="numSelected !== 1 || isAdding || isEditting || isDeleting"
+                                                            callback="actions.modal.editDetailSwitch" item="[switchData, selectedData.aData]">
+                                                        <i class="icon icon-edit"></i>
+                                                        <span id="edit-node">{$ ::context.action.edit $}</span>
+                                                    </action>
+                                                </action-list>
+                                                <action-list>
+                                                    <action action-classes="'btn btn-action btn-danger'"
+                                                            disabled="numSelected === 0 || isAdding || isEditting || isDeleting"
+                                                            callback="actions.modal.deleteDetailSwitch" item="[switchData, selectedData.aData]">
+                                                        <i class="icon icon-delete"></i>
+                                                        <span id="delete-node">{$ ::context.action.delete $}</span>
+                                                    </action>
+                                                </action-list>
+                                                <div class="fr search-bar">
+                                                    <hz-magic-search-bar id="search"></hz-magic-search-bar>
+                                                </div>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    <tr eagle-eye="table_heads">
+                                        <th class="select-col" eagle-eye="select_col">
+                                            <input id="nodes_all_checkbox" type="checkbox" hz-select-page="nodes" ng-disabled="isAdding || isEditting || isDeleting" />
+                                        </th>
+                                        <th><span st-sort="node" eagle-eye="data_col">{$ ::context.header.nodeName $}</span></th>
+                                        <th><span st-sort="port" eagle-eye="data_col">{$ ::context.header.port $}</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="node in inodes" ng-class="{'st-selected': checked[node.id]}">
+                                        <td class="select-col" eagle-eye="select_col">
+                                            <input type="checkbox"
+                                                   hz-select="node"
+                                                   ng-model="selected[node.id].checked"
+                                                   hz-checkbox-group="nodes"
+                                                   ng-disabled="isAdding || isEditting || isDeleting" />
+                                        </td>
+                                        <td eagle-eye="data_col">{$ node.nodename $}</td>
+                                        <td eagle-eye="data_col">{$ node.port $}</td>
+                                    </tr>
+                                    <tr ng-if="isAdding">
+                                        <td colspan="100" class="Loading-bar">
+                                            {$ ::context.header.adding $}<img class="load-detail" src="/static/bootstrap/img/loading.gif" alt="" />
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="isEditting">
+                                        <td colspan="100" class="Loading-bar">
+                                            {$ ::context.header.editting $}<img class="load-detail" src="/static/bootstrap/img/loading.gif" alt="" />
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="isDeleting">
+                                        <td colspan="100" class="Loading-bar">
+                                            {$ ::context.header.deleting $}<img class="load-detail" src="/static/bootstrap/img/loading.gif" alt="" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot ng-if="nodes.length > 10">
+                                    <tr>
+                                        <td colspan="100" eagle-eye="data_page">
+                                            <table-footer></table-footer>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                                <!--<tfoot id="nodes_pagination" ng-show="showPagination()">
+                                    <tr>
+                                        <td colspan="100" class="text-center">
+                                            <style>
+                                                .pagination {
+                                                    display: inline-block;
+                                                }
+                                            </style>
+                                            <div st-pagination="" st-items-by-page="10" st-displayed-pages="20" ></div>
+                                        </td>
+                                    </tr>
+                                </tfoot>-->
+                            </table>
+                        </hz-magic-search-context>
+                    </div>
+                </div>
+            </tab>
+        </tabset>
+    </div>
+</div>

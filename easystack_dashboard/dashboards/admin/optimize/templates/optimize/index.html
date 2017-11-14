@@ -1,0 +1,25 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% load url from future %}
+{% block title %}{% trans "Optimization" %}{% endblock %}
+
+{% block main %}
+<tabset id="optimize-tabset" justified="true" class="def-tabs">
+  <tab id="topology-tab" heading="{% trans 'Workload Topology' %}">
+    <div class="tab-pane-content">
+    {% include "admin/optimize/optimize.html" %}
+    </div>
+  </tab>
+  <tab id="log-tab" heading="{% trans 'Log Info' %}">
+    <div class="tab-pane-content">
+    {% include "admin/optimize/_tab_log.html" %}
+    </div>
+  </tab>
+  <tab id="manage-tab" heading="{% trans 'Optimization Management' %}">
+    <div class="tab-pane-content">
+    {% include "admin/optimize/_tab_manage.html" %}
+    </div>
+  </tab>
+</tabset>
+
+{% endblock %}

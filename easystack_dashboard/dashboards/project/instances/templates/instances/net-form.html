@@ -1,0 +1,118 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+    <div class="left form-wrap">
+      <fieldset>
+        <!--
+            Associate-mode: show,disabled
+            Disassociate-mode: show,disabled
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label class="control-label fl required" for="name">
+            {% trans "Instance Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              type="text"
+              ng-model="instance.name"
+              ng-maxlength="255"
+              ng-disabled="context.mode === 'associateNet' || context.mode === 'disassociateNet'">
+          </div>
+        </div>
+        <!--
+          Associate network input (required):
+            Associate-mode: show
+            Disassociate-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'associateNet'"
+          ng-class="{'has-error':form.instance.$invalid && form.instance.$dirty}">
+          <label class="control-label fl required" for="network">
+            {% trans "Network" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="subnet"
+              name="subnet"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.subnets}"
+              ng-model="instance.subnet_id"
+              ng-change="instance.subnet_name = dropdown.subnetsMap[instance.subnet_id].name;
+                         instance.network_id = dropdown.subnetsMap[instance.subnet_id].network_id;
+                         instance.subnet_id = dropdown.subnetsMap[instance.subnet_id].id">
+              <option value="" disabled>
+                {$ (dropdown.subnets && dropdown.subnets.length) ? "{% trans 'Select a Network' %}"
+                   : "{% trans 'No Network to select' %}" $}
+              </option>
+              <option
+                ng-repeat="subnet in dropdown.subnets"
+                ng-selected="subnet.id === instance.subnet_id"
+                ng-disabled="subnet.id === 0"
+                value="{$ subnet.id $}">
+                {$ subnet.name $} ({$ subnet.cidr $})
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!--
+          Disassociate network input (required):
+            Disassociate-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'disassociateNet'"
+          ng-class="{'has-error':form.instance.$invalid && form.instance.$dirty}">
+          <label class="control-label fl required" for="nic">
+            {% trans "Instance Nic" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="nic"
+              name="nic"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.nics}"
+              ng-model="instance.nic"
+              ng-init="instance.nic = dropdown.nics[0].id"
+              ng-change="instance.port_id = dropdown.nicsMap[instance.nic].id;
+                         instance.fixed_ip = dropdown.nicsMap[instance.nic].fixed_ip">
+              <option value="" disabled>
+                {% trans 'Select a Nic' %}
+              </option>
+              <option
+                ng-repeat="nic in dropdown.nics"
+                ng-selected="nic.id === instance.nic"
+                ng-disabled="nic.id === 0"
+                value="{$ nic.id $}">
+                [{$ nic.state $}] {$ nic.fixed_ip $} - {$ nic.network_name $}
+              </option>
+            </select>
+          </div>
+        </div>
+      <fieldset>
+    </div>
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

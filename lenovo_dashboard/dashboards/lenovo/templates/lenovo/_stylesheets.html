@@ -1,0 +1,7 @@
+{% load compress %}
+
+{% include "_es_stylesheets.html" %}
+
+{% compress css %}
+    <link href='{{ STATIC_URL }}lenovo/css/lenovo-common.css' type='text/css' media='screen' rel='stylesheet'/>
+{% endcompress %}

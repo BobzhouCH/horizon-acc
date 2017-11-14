@@ -1,0 +1,234 @@
+{% load i18n %}
+
+<div class="detail-page">
+  <div class="detail-left-icon" ng-click="action.cancel()"></div>
+  <div class="detail-page-con">
+
+    <tabset id="pool-tab" justified="true" class="def-tabs">
+
+        <tab id="tab-pool-detail" heading="{$ ::title.Detail $}">
+          <div class="tab-pane-content">
+            <table id="pool-detail-table" class="table table-bordered table-hover table-unique">
+              <thead>
+                <tr>
+                  <th colspan="2" class="table-th-unline"><span class="detail-title">{$ ::title.Info $}</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td eagle-eye="data_col">{$ ::label.Name $}</td>
+                  <td id="pool-name" class="color3399cc" eagle-eye="data_col" title="{$ pool.name $}">{$ pool.name $}</td>
+                </tr>
+                <tr>
+                  <td eagle-eye="data_col">{$ ::label.ID $}</td>
+                  <td id="pool-id" class="color449ed2" eagle-eye="data_col">{$ pool.id $}</td>
+                </tr>
+                <tr>
+                  <td eagle-eye="data_col">{$ ::label.Subnet $}</td>
+                  <td id="pool-subnet" class="color449ed2" eagle-eye="data_col">{$ pool.subnet_cidr $}</td>
+                </tr>
+                <tr>
+                  <td eagle-eye="data_col">{$ ::label.Protocol $}</td>
+                  <td id="pool-protocol" class="color449ed2" eagle-eye="data_col">{$ pool.protocol $}</td>
+                </tr>
+                <tr>
+                  <td eagle-eye="data_col">{$ ::label.Method $}</td>
+                  <td id="pool-method" class="color449ed2" eagle-eye="data_col">{$ pool.lb_algorithm | decode:loadbalancerMethod $}</td>
+                </tr>
+
+                <!--Use Status-->
+                <tr>
+                  <td eagle-eye="data_col">{$ ::label.Status $}</td>
+                  <td id="pool-status" class="color66cc66" eagle-eye="data_col">{$ pool.admin_state_up | decode:enableStatus $}</td>
+                </tr>
+
+                <!--session-->
+                <tr>
+                  <td eagle-eye="data_col">{$ ::label.Session $}</td>
+                  <td id="session-persistence" class="color66cc66" eagle-eye="data_col">
+                    {$ ::label.Session_Type $}: {$ pool.session_persistence.type | decode:sessionPersistence $}&nbsp;&nbsp;&nbsp;
+                    <span ng-show="pool.session_persistence.cookie_name">
+                      {$ ::label.Cookie_Name $}: {$ pool.session_persistence.cookie_name $}
+                    </span>
+                  </td>
+                </tr>
+
+                <!--Loadbalancer Name-->
+                <tr>
+                  <td eagle-eye="data_col">{$ ::label.Loadbalancer_Name $}</td>
+                  <td id="loadbalancer-name" class="color66cc66" eagle-eye="data_col">{$ pool.loadbalancer_name $}</td>
+                </tr>
+
+                <!--Listener Name-->
+                <tr>
+                  <td eagle-eye="data_col">{$ ::label.Listener_Name $}</td>
+                  <td id="listener-name" class="color66cc66" eagle-eye="data_col">{$ pool.listener_name $}</td>
+                </tr>
+
+                <!--Health Monitor-->
+                <tr>
+                  <td eagle-eye="data_col">{$ ::label.Health_Monitor $}</td>
+                  <td id="healthmonitor" eagle-eye="data_col">
+                    {$ ::label.HM_Type $}: {$ pool.hm_type $}&nbsp;&nbsp;&nbsp;
+                    {$ ::label.HM_Max_Retries $}: {$ pool.hm_max_retries $}&nbsp;&nbsp;&nbsp;
+                    {$ ::label.HM_Timeout $}: {$ pool.hm_timeout $}&nbsp;&nbsp;&nbsp;
+                    {$ ::label.HM_Delay $}: {$ pool.hm_delay $}
+                  </td>
+                </tr>
+
+                <!--Create Time-->
+                <tr>
+                  <td eagle-eye="data_col">{$ ::label.created_at $}</td>
+                  <td id="pool-created_at" eagle-eye="data_col">{$ pool.create_time | date:'short' $}</td>
+                </tr>
+                <!--<tr>-->
+                  <!--<td eagle-eye="data_col">{$ ::label.attached_to $}</td>-->
+                  <!--<td eagle-eye="data_col" class="rsp-p1" ng-if="volume.attachments.length !== 0"><span id="attachment-{$ $index $}" ng-repeat="attachment in volume.attachments">{$ attachment.instance_name $} : {$ attachment.device $} </span></td>-->
+                  <!--<td eagle-eye="data_col" id="no-attached" class="rsp-p1" ng-if="volume.attachments.length === 0"> {$ ::context.error.noAttached $}</td>-->
+                <!--</tr>-->
+
+              </tbody>
+            </table>
+          </div>
+        </tab>
+
+        <tab id="tab-pool-resource" heading="{$ ::title.Resource $}">
+          <div class="tab-pane-content">
+            <table id="poolresource" hz-table ng-cloak hopes-table-drag
+                st-table="imembers"
+                st-safe-src="members"
+                default-sort="name"
+                default-sort-reverse="true"
+                disabled="disabled"
+                class="table table-bordered table-hover">
+              <thead ng-init="tab2=$table">
+              <tr>
+                <th colspan="100" class="bare table-th-unline">
+                  <div class="table_actions clearfix">
+                    <action-list>
+                      <action
+                          action-classes="'btn btn-primary btn-action'"
+                          callback="actions.refresh" item="$table">
+                        <i class="icon icon-refresh"></i>
+                        <span id="pool-resource-refresh"></span>
+                      </action>
+                    </action-list>
+                    <action-list>
+                      <action
+                        action-classes="'btn btn-primary btn-action'"
+                        callback="actions.addResources.open" item="members"
+                        disabled= "imembers.length >= quota">
+                        <i class="icon icon-add"></i>
+                        <span id="add-resource">{% trans 'Add Resource' %}
+                        <i ng-show= "imembers.length >= quota">{% trans '(quota exceeded)' %}</i>
+                        </span>
+                      </action>
+                    </action-list>
+                    <action-list>
+                      <action
+                        action-classes="'btn btn-primary btn-action'"
+                        callback="actions.batchAddResources.open" item="members"
+                        disabled= "imembers.length -1 >= quota">
+                        <i class="icon icon-add"></i>
+                        <span id="batchAdd-resource">{% trans 'Batch Add Resource' %}
+                        <i ng-show= "imembers.length-1 >= quota">{% trans '(quota exceeded)' %}</i>
+                        </span>
+                      </action>
+                    </action-list>
+                    <action-list dropdown>
+                      <button id="more" type="button" class="btn btn-primary btn-action" dropdown-toggle>
+                        <i class="icon icon-more"></i>
+                        <span>{% trans 'More' %}</span>
+                      </button>
+                      <menu>
+                        <action button-type="menu-item"
+                            disabled="disabled"
+                            callback="actions.modifyWeight.open"
+                            item="$table">
+                          <span id="edit">{% trans 'Modify Weight' %}</span>
+                        </action>
+                        <action button-type="menu-item"
+                            disabled="checkEnableBtn($table)"
+                            callback="actions.enableMember.batchEnable"
+                            item="$table">
+                          <span id="enable">{% trans 'Enable' %}</span>
+                        </action>
+                        <action button-type="menu-item"
+                            disabled="checkDisableBtn($table)"
+                            callback="actions.disalbeMember.batchDisable"
+                            item="$table">
+                          <span id="disable">{% trans 'Disable' %}</span>
+                        </action>
+                        <action button-type="menu-item"
+                            disabled="numSelected ===0"
+                            callback="actions.deleteMember.batchDelete"
+                          item="$table">
+                          <span id="delete">{% trans 'Delete' %}</span>
+                        </action>
+                      </menu>
+                    </action-list>
+                    <div class="fr search-bar">
+                      <search-bar id="resource-search" group-classes="" icon-classes="fa-search" placeholder={% trans "Filter" %}> </search-bar>
+                   </div>
+                  </div>
+                </th>
+              </tr>
+              <tr eagle-eye="table_heads">
+                <th class="select-col" eagle-eye="select_col">
+                  <input type="checkbox"
+                    hz-select-page="members"/>
+                </th>
+                <th class="rsp-p1" st-sort="instance_name" eagle-eye="data_col">{$ ::label.instance_name $}</th>
+                <th class="rsp-p2" st-sort="address" eagle-eye="data_col">{$ ::label.ip_address $}</th>
+                <th class="rsp-p2" st-sort="protocol_port" eagle-eye="data_col">{$ ::label.port $}</th>
+                <th class="rsp-p2" st-sort="weight" eagle-eye="data_col">{$ ::label.weight $}</th>
+                <th class="rsp-p2" st-sort="instance_status" eagle-eye="data_col">{$ ::label.status $}</th>
+                <th class="rsp-p2" st-sort="admin_state_up" eagle-eye="data_col">{$ ::label.admin_status $}</th>
+             </tr>
+            </thead>
+
+            <tbody>
+              <tr ng-if="!imembersState">
+                <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+              </tr>
+              <tr ng-if="!imembers.length && imembersState">
+                <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+              </tr>
+              <tr ng-repeat="member in imembers"  ng-class="{'st-selected': checked[member.id]}">
+
+                <!--
+                  Table-row-checkbox:
+                  User can select and unselect this row by clicking on this checkbox.
+                  Batch actions can then be perform on selected rows.
+                -->
+                <td class="select-col" eagle-eye="select_col">
+                  <input type="checkbox"
+                    hz-select="member"
+                    ng-model="selected[member.id].checked"
+                    hz-checkbox-group="members"/>
+                </td>
+
+                 <!-- Table-row-info-column -->
+                <td class="rsp-p1" eagle-eye="data_col" title="{$ member.instance_name $}">{$ member.instance_name $}</td>
+                <td class="rsp-p2" eagle-eye="data_col" title="{$ member.address $}">{$ member.address $}</td>
+                <td class="rsp-p2" eagle-eye="data_col">{$ member.protocol_port $}</td>
+                <td class="rsp-p2" eagle-eye="data_col">{$ member.weight $}</td>
+                <td class="rsp-p2" eagle-eye="data_col">{$ member.instance_status | decode:provisioningStatus$}</td>
+                <td class="rsp-p2" eagle-eye="data_col">{$ member.admin_state_up | decode:enableStatus $}</td>
+              </tr>
+            </tbody>
+
+            <tfoot>
+               <tr>
+                 <td colspan="100" eagle-eye="data_page">
+                   <table-footer></table-footer>
+                 </td>
+               </tr>
+            </tfoot>
+          </table>
+         </div>
+        </tab>
+
+    </tabset>
+    </div>
+</div>

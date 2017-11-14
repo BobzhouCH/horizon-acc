@@ -1,0 +1,95 @@
+{% extends 'lenovo/base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Upgrade" %}{% endblock %}
+
+{% block page_header %}
+    {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Upgrade") %}
+{% endblock page_header %}
+
+{% block content_main %}"contentMain tab-main"{% endblock %}
+
+{% block main %}
+
+<hz-magic-search-context filter-facets="filterFacets">
+    <table id="upgrades_list" hz-table ng-cloak hopes-table-drag
+           st-table="iupgrades"
+           st-safe-src="upgrades"
+           ng-controller="lenovoUpgradesCtrl"
+           ng-init="userID = '{{ request.user.id }}'"
+           disabled="disabled"
+           default-sort="id"
+           default-sort-reverse="true"
+           st-magic-search
+           class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th colspan="100" class="bare">
+                    <div class="table_actions clearfix">
+                        <action-list class="btn-addon">
+                            <action action-classes="'btn btn-default btn-sm'"
+                                    callback="actions.refresh">
+                                <i class="icon icon-refresh"></i>
+                                <span id="refresh"></span>
+                            </action>
+                        </action-list>
+                        <action-list>
+                            <action action-classes="'btn btn-action btn-primary'"
+                                    disabled=""
+                                    callback="start_up" item="selectedData.aData">
+                                <i class="icon icon-add"></i>
+                                <span id="click_update">{$ ::context.action.upgrade $}</span>
+                            </action>
+                        </action-list>
+                        <div class="fr search-bar">
+                            <hz-magic-search-bar id="search"></hz-magic-search-bar>
+                        </div>
+                    </div>
+                </th>
+            </tr>
+            <tr eagle-eye="table_heads">
+                <th class="select-col" eagle-eye="select_col" hidden>
+                    <input id="upgrades_all_checkbox" type="checkbox" hz-select-page="upgrades"/>
+                </th>
+                <th style="width: 20%;"><span st-sort="id" eagle-eye="data_col">{% trans 'Patch ID' %}</span></th>
+                <th style="width: 15%;"><span st-sort="upgradeVersion" eagle-eye="data_col">{% trans 'Upgrade Version' %}</span></th>
+                <th style="width: 15%;"><span st-sort="previousVersion" eagle-eye="data_col">{% trans 'Previous Version' %}</span></th>
+                <th style="width: 10%;"><span st-sort="status" eagle-eye="data_col">{% trans 'Status' %}</span></th>
+                <th style="width: 10%;"><span st-sort="result" eagle-eye="data_col">{% trans 'Result' %}</span></th>
+                <th><span st-sort="timestamp" eagle-eye="data_col">{% trans 'Timestamp' %}</span></th>
+                <th><span eagle-eye="data_col">{% trans 'Description' %}</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-if="!upgradeState">
+                <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif" alt="" /></td>
+            </tr>
+            <tr ng-if="!iupgrades.length && upgradeState">
+                <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+            </tr>
+            <tr ng-repeat="upgrade in iupgrades" ng-class="{'st-selected': checked[upgrade.id]}">
+                <td class="select-col" eagle-eye="select_col" hidden>
+                    <input type="checkbox"
+                           hz-select="upgrade"
+                           ng-model="selected[upgrade.id].checked"
+                           hz-checkbox-group="upgrades"/>
+                </td>
+                <td eagle-eye="data_col">{$ upgrade.id $}</td>
+                <td eagle-eye="data_col">{$ upgrade.upgradeVersion $}</td>
+                <td eagle-eye="data_col">{$ upgrade.previousVersion $}</td>
+                <td eagle-eye="data_col">{$ upgrade.status | decode: statusDecode$}</td>
+                <td eagle-eye="data_col">{$ upgrade.result | decode: resultDecode$}</td>
+                <td eagle-eye="data_col">{$ upgrade.timestamp $}</td>
+                <td eagle-eye="data_col" title="{$ upgrade.description $}">{$ upgrade.description $}</td>
+            </tr>
+        </tbody>
+        <tfoot ng-if="upgrades.length > 10">
+            <tr>
+                <td colspan="100" eagle-eye="data_page">
+                    <table-footer></table-footer>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</hz-magic-search-context>
+
+{% endblock %}

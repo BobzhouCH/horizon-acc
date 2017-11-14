@@ -1,0 +1,105 @@
+<div ng-controller="LaunchInstanceServerGroupsCtrl as ctrl">
+
+  <div class="content">
+
+      <transfer-table tr-model="ctrl.tableData"
+                      help-text="ctrl.tableHelp"
+                      limits="ctrl.tableLimits">
+
+        <!-- Server Groups Allocated -->
+        <allocated ng-model="ctrl.tableData.allocated.length">
+          <table id="selected-server-groups" st-table="ctrl.tableData.displayedAllocated"
+                 st-safe-src="ctrl.tableData.allocated" hz-table
+                 class="table table-bordered table-hover table-th">
+            <thead>
+            <tr>
+              <th eagle-eye="data_col" st-sort="name" st-sort-default>{$ ::ctrl.label.name $}</th>
+              <th eagle-eye="data_col" st-sort="policies">{$ ::ctrl.label.policies $}</th>
+              <th eagle-eye="data_col" st-sort="members">{$ ::ctrl.label.members $}</th>
+              <th eagle-eye="data_col" st-sort="metadata">{$ ::ctrl.label.metadata $}</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-if="ctrl.tableData.allocated.length === 0">
+              <td colspan="8">
+                <div class="no-rows-help">
+                  {$ ::trCtrl.helpText.noneAllocText $}
+                </div>
+              </td>
+            </tr>
+            <tr ng-repeat="row in ctrl.tableData.displayedAllocated track by row.id">
+              <td eagle-eye="data_col" class="expander" width="22%">
+              	<span class="row-name"> {$ row.name $} </span>
+              </td>
+              <td eagle-eye="data_col">{$ row.policies $}</td>
+              <td eagle-eye="data_col">{$ row.members $}</td>
+              <td eagle-eye="data_col">{$ row.metadata $}</td>
+              <td eagle-eye="data_col" class="action-col">
+                <action-list class="instance-btn">
+                  <action callback="trCtrl.deallocate" item="row">
+                    <span class="icon remove_to"></span>
+                  </action>
+                </action-list>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </allocated>
+
+        <available>
+          <hz-magic-search-context filter-facets="ctrl.filterFacets">
+          <hz-magic-search-bar id="search"></hz-magic-search-bar>
+          <table id="server-groups-list" st-table="ctrl.tableData.displayedAvailable"
+                 st-magic-search
+                 st-safe-src="ctrl.tableData.available"
+                 hz-table class="table table-bordered table-hover table-th">
+            <thead>
+            <tr>
+              <th st-sort="name" st-sort-default class="rsp-p1">{$ ::ctrl.label.name $}</th>
+              <th st-sort="policies" class="rsp-p1">{$ ::ctrl.label.policies $}</th>
+              <th st-sort="members" class="rsp-p1">{$ ::ctrl.label.members $}</th>
+              <th st-sort="metadata" class="rsp-p1">{$ ::ctrl.label.metadata $}</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-if="trCtrl.numDisplayedAvailable() === 0">
+              <td colspan="8">
+                <div class="no-rows-help">
+                  {$ ::trCtrl.helpText.noneAvailText $}
+                </div>
+              </td>
+            </tr>
+            <tr ng-repeat="row in ctrl.tableData.displayedAvailable track by row.id"
+                ng-if="!trCtrl.allocatedIds[row.id]">
+              <td eagle-eye="data_col" class="expander" width="22%">
+              	<span class="row-name"> {$ row.name $} </span>
+              </td>
+              <td>{$ row.policies $}</td>
+              <td>{$ row.members $}</td>
+              <td>{$ row.metadata $}</td>
+              <td eagle-eye="data_col" class="action-col">
+                <action-list class="instance-btn">
+                  <action callback="trCtrl.allocate" item="row">
+                    <span class="icon add_to"></span>
+                  </action>
+                </action-list>
+              </td>
+            </tr>
+            </tbody>
+            <tfoot>
+		    <tr>
+		      <td eagle-eye="data_page" colspan="100">
+		        <div st-pagination="" st-items-by-page="5" st-displayed-pages="100"></div>
+		      </td>
+		    </tr>
+		  </tfoot>
+          </table>
+          </hz-magic-search-context>
+        </available>
+
+      </transfer-table>
+
+  </div> 
+</div> 

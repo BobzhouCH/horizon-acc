@@ -1,0 +1,19 @@
+{
+  "return_data": [
+    {
+      "uuid":"20202020202020202020202020202021",
+      "hostname": "01-GN8052",
+      "account_verified": "True",  
+      "ip": "10.240.195.10",
+      "mac": "FD:EA:9F:83:11",
+      "serialNum": "my21300292",
+      "osVer": "8.1.0.41",
+      "cpu": "28.77%",
+      "memory": "3.5/4.0",
+      "status": "Successful",
+      "account_verified": true,
+      "last_visit": "2015-11-12 02:03:05.897"      
+    }
+  ],
+  "return_code": 0
+}

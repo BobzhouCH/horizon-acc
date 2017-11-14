@@ -1,0 +1,369 @@
+{% load i18n %}
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit()">
+  <div class="modal-body clearfix">
+
+  <!-- Modal-form-left: Contains the form controls -->
+    <div>
+      <fieldset>
+
+        <div ng-controller="monitorListController"
+          monitor-wrap
+          monitor-data="monitors"
+          imonitor-data="imonitors"
+          add-data="addmonitors"
+          s-name="attrname">
+
+          <div class="alarm-step clearfix js-tab">
+            <ul>
+              <li class="fl mr10 step-active"><span class="step-circle"><span>1</span><i></i></span><div class="step-title">{%trans "Choose Resource"%}</div><div class="step-line"></div> </li>
+              <li class="fl mr10"><span class="step-circle"><span>2</span><i></i></span><div class="step-title">{%trans "Set Alarm Metric"%}</div><div class="step-line"></div> </li>
+              <li class="fl mr10"><span class="step-circle"><span>3</span><i></i></span><div class="step-title">{%trans "Set Notification"%}</div></li>
+            </ul>
+          </div>
+          <div class="alarm-content">
+            <div class="alarm-list clearfix js-wrap">
+              <div class="alarm-list-main pt20 js-module">
+                <div class="title-wrap ml20">
+                    <span>{%trans "Choosen Resource"%}</span>
+                    <!--<span class="question-circle"></span>-->
+                </div>
+                <div class="alarm-select-content">
+                    <table id="selected-alarm" class="table table-bordered table-hover selected-data-table">
+                        <thead>
+                            <tr class="sr-only">
+                              <th colspan="30"></th>
+                            </tr>
+                            <tr eagle-eye="table_heads">
+                                <th style="width:260px" eagle-eye="data_col">{%trans "Name"%}</th>
+                                <th style="width:165px" eagle-eye="data_col">{%trans "Description"%}</th>
+                                <th style="width:150px" eagle-eye="data_col">{%trans "Alarm Metric"%}</th>
+                                <th style="width:94px" eagle-eye="data_col">{%trans "Action"%}</th>
+                            </tr>
+                        </thead>
+                        <tbody
+                            remove-resources  add-data="addmonitors" s-name="attrname"
+                            monitor-data="monitors" imonitor-data="imonitors">
+
+                            <tr ng-repeat="addmonitor in addmonitors track by $index" resource-id="{$ addmonitor.resource_id $}">
+                                <td eagle-eye="data_col" height="40"><span class="cut monitor-name">{$ addmonitor.displayname $}</span></td>
+                                <td eagle-eye="data_col"><span class="cut monitor-desc">{$ addmonitor.description $}</span></td>
+                                <td eagle-eye="action_metric">{$ addmonitor.selectListName | util $}</td>
+                                <td eagle-eye="button_action"><span class="js-remove"><i class="icon remove_to"></i></span></td>
+                            </tr>
+                            <tr ng-if="!addmonitors.length" >
+                                <td class="gray_2 txt-c" colspan="20" height="48" eagle-eye="empty_table">{%trans "Please Choose Resource"%}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="alarm-select-wrap">
+                  <div class="title-wrap ml20">
+                    <span>{%trans "Available Resources"%}</span>
+                    <!--<span class="question-circle"></span>-->
+                  </div>
+
+                  <div class="alarm-tab clearfix">
+                    <div class="fl" switch-directive monitor-data="monitors" imonitor-data="imonitors" s-name="attrname" search-Text="search.text">
+
+                    </div>
+                    <div class="fr">
+                      <div class="search-bar has-feedback">
+                        <input id="resources-search" class="form-control" type="text" ng-model="search.text" placeholder={% trans "Filter" %} value="" name="instances__filter__q">
+                        <span class="fa fa-search search-icon form-control-feedback"></span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="alarm-select-content">
+                    <table id="resource-list" class="table table-bordered table-hover alarm-table" add-resources add-data="addmonitors" imonitor-data="imonitors" monitor-data="monitors" s-name="attrname">
+                      <thead class="table-thead">
+                        <tr class="sr-only">
+                          <th colspan="30"></th>
+                        </tr>
+                        <tr eagle-eye="table_heads">
+                          <th style="width: 260px;" eagle-eye="data_col">{%trans "Name"%}</th>
+                          <th style="width: 170px;" eagle-eye="data_col">{%trans "Description"%}</th>
+                          <th style="width: 160px;" eagle-eye="data_col">{%trans "Alarm Metric"%}</th>
+                          <th style="width: 84px;" eagle-eye="data_col">{%trans "Action"%}</th>
+                        </tr>
+                      </thead>
+                        <tbody class="table-tbody">
+                          <tr ng-repeat="imonitor in imonitors | searchresource: search.text" resource-id="{$ imonitor.resource_id $}">
+                            <td style="width: 260px;" eagle-eye="data_col"><span class="cut monitor-name">{$ imonitor.displayname $}</span></td>
+                            <td style="width: 140px;" eagle-eye="data_col"><span class="cut monitor-desc">{$ imonitor.description || '-' $}</span></td>
+                            <td style="width: 160px;" eagle-eye="action_metric">
+                              <select class="form-control">
+                                <option value="{$ data.name $},{$ data.resource_id $},{$ data.monitor_name $},{$ data.unit $},{$ data.selectListName $}"
+                                   ng-repeat="data in imonitor.meterVal">
+                                       {$ data.selectListName | util $}
+                                </option>
+                              </select>
+                            </td>
+                            <td style="width: 84px;" eagle-eye="button_action"><span class="js-add"><i class="icon add_to"></i></span></td>
+                          </tr>
+                          <tr ng-if="!monitorState"><td colspan="20" width="688">{%trans "Please wait..."%}</td></tr>
+                          <tr ng-if="!imonitors.length && monitorState" eagle-eye="empty_table"><td colspan="20" width="688">{% trans "No data" %}</td></tr>
+                        </tbody>
+                    </table>
+                  </div>
+                    <span ng-show="!addmonitors.length" class="btn btn-primary disabled fr mr20 mt15">{% trans "Next" %}</span>
+                    <span id="resource-next" ng-show="addmonitors.length" class="btn btn-primary fr mr20 mt15 js-next" type="button">{% trans "Next" %}</span>
+                </div>
+              </div>
+
+              <div class="alarm-list-main pt30">
+                <div class="title-wrap ml20">
+                  <span>{%trans "Choosen Resource"%}</span>
+                  <!--<span class="question-circle"></span>-->
+                </div>
+                <div class="alarm-select-content">
+                  <table id="alarm-selected-content" class="table table-bordered table-hover">
+                    <thead>
+                      <tr eagle-eye="table_heads">
+                        <th width="270" eagle-eye="data_col">{%trans "Name"%}</th>
+                        <th width="170" eagle-eye="data_col">{%trans "Description"%}</th>
+                        <th width="248" eagle-eye="data_col">{%trans "Alarm Metric"%}</th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      remove-resources  add-data="addmonitors" s-name="attrname"
+                      monitor-data="monitors" imonitor-data="imonitors">
+
+                      <tr ng-repeat="addmonitor in addmonitors track by $index" resource-id="{$ addmonitor.resource_id $}">
+                        <td height="45" eagle-eye="data_col"><span class="cut monitor-name">{$ addmonitor.displayname $}</span></td>
+                        <td eagle-eye="data_col"><span class="cut monitor-desc">{$ addmonitor.description $}</span></td>
+                        <td eagle-eye="data_col">{$ addmonitor.selectListName | util $}</td>
+                      </tr>
+                      <tr ng-if="!addmonitors.length">
+                        <td class="gray_2" colspan="20" height="48" eagle-eye="empty_table">{%trans "Please Choose Resource"%}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="clearfix alarm-select-wrap">
+                  <div class="clearfix alarm-select-list">
+                    <div class="fl resource-left">
+                      <div class="title-wrap">
+                        <i></i>
+                        <span>{%trans "Set Resources"%}</span>
+                        <!--<span class="question-circle"></span>-->
+                      </div>
+                      <table class="mt20" width="100%">
+                        <tbody>
+                          <tr>
+                            <td>*{%trans "Name"%}</td>
+                            <td ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+                              <input id="alarm-name"
+                                     class="form-control ml10"
+                                     name="name"
+                                     ng-model="alarmResource.name"
+                                     ng-maxlength="255"
+                                     type="text"
+                                     required
+                                     placeholder="{%  trans "Please input a name" %}"/>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                              <div class="ml10 red" ng-show="form.name.$dirty">
+                                <p ng-show="form.name.$error.required">{%trans "Name can not be empty."%}</p>
+                                <p ng-show="form.name.$error.maxlength">{%trans "Name length should be less than 255 chars."%}</p>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>{%trans "Description"%}</td>
+                            <td><textarea id="alarm-description" class="form-control ml10" name="description" ng-model="alarmResource.description" rows="3" ></textarea></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div class="fr resource-right">
+                      <div class="title-wrap">
+                        <i></i>
+                        <span>{%trans "Set Alarm Metric"%}</span>
+                        <!--<span class="question-circle"></span>-->
+                      </div>
+                      <table class="mt20" width="100%">
+                        <tbody>
+                          <tr>
+                            <td>{%trans "Alarm Periodic"%}</td>
+                            <td>
+                              <select id="select-periodic" class="form-control ml10" name="period" ng-init="alarmResource.period='300'" ng-model="alarmResource.period">
+                                <option value="" disabled>
+                                  {% trans 'Select a periodic' %}
+                                </option>
+                                <option ng-selected="alarmResource.period=='300'" value="300">5{%trans "Minutes"%}</option>
+                                <option value="900">15{%trans "Minutes"%}</option>
+                              </select>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                          </tr>
+                          <tr>
+                            <td>{%trans "Continue"%}</td>
+                            <td>
+                              <input id="periodics" class="ml10 verify-input" type="number" min="1" name="evaluation_periods" ng-init="alarmResource.evaluation_periods=1" required ng-model="alarmResource.evaluation_periods" />
+                              <span>{%trans "periodics"%}</span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                <!--<div class="ml10 red" ng-show="form.evaluation_periods.$dirty">
+                                    <p ng-show="form.evaluation_periods.$error.required">不能为空</p>
+                                </div>-->
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>{$ addmonitors[0].monitor_name $}</td>
+                            <td>
+                              <select id="statistic" class="form-control ml10 fl w100" name="statistic" ng-init="alarmResource.statistic='avg'" ng-model="alarmResource.statistic">
+                                <option value="" disabled>
+                                  {% trans 'Select a value' %}
+                                </option>
+                                <option ng-selected="alarmResource.statistic=='avg'" value="avg">{% trans 'Avg' %}</option>
+                                <option value="max">{% trans 'Max' %}</option>
+                                <option value="min">{% trans 'Min' %}</option>
+                                <option value="sum">{% trans 'Sum' %}</option>
+                              </select>
+                              <select id="comparison-operator" class="form-control ml5 fl" name="comparison_operator" ng-init="alarmResource.comparison_operator='gt'" style="width:70px;" ng-model="alarmResource.comparison_operator">
+                                <option value="" disabled>
+                                  {% trans 'Select a value' %}
+                                </option>
+                                <option ng-selected="alarmResource.comparison_operator=='gt'" value="gt">{% trans 'gt' %}</option>
+                                <option value="lt">{% trans 'lt' %}</option>
+                              </select>
+                              <input id="threshold" class="fl ml5 verify-input" type="number" min="1" max="10240" name="threshold" required ng-model="alarmResource.threshold" ng-init="alarmResource.threshold=5" style="width:50px;" />
+                              <span class="unit-s">
+                                {$ addmonitors[0].unit $}
+                                <!--<span class="red unit-s-tips" ng-show="form.threshold.$dirty">
+                                    <span ng-show="form.threshold.$error.required">不能为空</span>
+                                </span>-->
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>&nbsp;</td>
+                            <td class="pt5">
+                              <p><span class="ml10">{% trans 'will triger alarm' %}</span></p>
+                              <p id="automatically-fill" class="ml10" ng-click="addDescription()"><a href="javascript:;">{% trans "Automatically fill in the description" %}</a></p>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div class="clearfix mt10">
+                    <span id="metric-back" class="btn btn-primary disabled fr mr20" ng-show="form.$invalid">{% trans 'Next' %}</span>
+                    <span id="metric-next" class="btn btn-primary fr mr20 js-next" ng-show="!form.$invalid" type="button">{% trans 'Next' %}</span>
+                    <span class="btn btn-primary mr20 fr js-up">{% trans 'Prev' %}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="alarm-list-main pt30"
+                notice-resource
+                notice-alarm-states	="alarmStates"
+                notice-contacts		="contacts"
+                notice-add			="addNotices">
+
+                <div class="alarm-contacts">
+                  <div class="ml20">
+                    <span>{% trans 'If Notify User' %}</span>
+                    <span>
+                      <input id="selected-yes" type="radio" class="regular-radio"
+                        ng-checked = "notice_checked"
+                        ng-click="noticeChecked(1)"/>
+                      <label for="radio-1-1">{% trans 'Yes' %}</label>
+                    </span>
+                    <span>
+                      <input id="selected-no" type="radio" class="regular-radio" ng-checked = "!notice_checked" ng-click="noticeChecked(0)"/>
+                      <label for="radio-1-1">{% trans 'No' %}</label>
+                    </span>
+                  </div>
+                  <div class="alarm-contacts-table" ng-show="notice_checked">
+                    <table id="selected-notify" class="table-rsp">
+                      <tbody>
+                        <tr ng-repeat="addNotice in addNotices">
+                          <td>{% trans 'When resource state is' %}</td>
+                          <td>
+                             <p class="alarm-contacts-s1 cut">{$ addNotice.state | decode:alarmstatei18n $}</p>
+                          </td>
+                          <td>{% trans 'notify' %}</td>
+                          <td>
+                             <p class="alarm-contacts-s2 cut" ng-click="actions.createNoticeList.open(addNotice,'edit')"><a class="a_link">{$ addNotice.data.name $}</a></p>
+                          </td>
+                          <td>
+                             <!--<span style="padding-left:50px;" class="js-noticeMove" data-states="{$ addNotice.state $}">-</span>-->
+                             <span class="js-noticeMove" data-states="{$ addNotice.state $}"><i class="icon remove_to"></i></span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table id="notify-list" class="table-rsp">
+                      <tbody>
+                        <tr>
+                          <td>{% trans 'When resource state is' %}</td>
+                          <td>
+                            <select id="alarm-state" name="" class="form-control alarm-resources-state js-alarmState" ng-class="{strikeLoading: !alarmStates}">
+                              <option value="" disabled>
+                                {% trans 'Select a state' %}
+                              </option>
+                              <option ng-selected="$first" value="{$ alarmState $}" ng-repeat="alarmState in alarmStates track by $index">
+                                {$ alarmState | decode:alarmstatei18n $}
+                              </option>
+                            </select>
+                          </td>
+                          <td>{% trans 'notify' %}</td>
+                          <td>
+                            <select id="select-contact-name" name="" class="form-control alarm-resources-state js-contact" ng-class="{strikeLoading: !contacts}">
+                              <option value="" disabled>
+                                {% trans 'Select a contact' %}
+                              </option>
+                              <option ng-selected="$first" value="{$ contact.name $}" ng-repeat="contact in contacts track by $index">
+                                {$ contact.name $}
+                              </option>
+                            </select>
+                          </td>
+                          <td ng-show="ldap_editable"><a id="create-contact-info" class="a_link" ng-click="actions.createNoticeList.open()"> {% trans 'Create contact info' %}</a></td>
+                          <td>
+                            <!--<span class="js-noticeAdd" style="padding-left:50px;" ng-hide="!alarmStates.length">+</span>-->
+                            <span id="add-contact-info-btn" class="js-noticeAdd" ng-hide="!alarmStates.length"><i class="icon add_to"></i></span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="clearfix mt10">
+                  <button id="submit-button" class="btn btn-primary fr mr20" type="button"
+                    ng-disabled="!addNotices.length && notice_checked"
+                    ng-click="action.submit()">{% trans 'Create' %}</button>
+                  <span id="notification-back" class="btn btn-primary mr20 fr js-up">{% trans 'Prev' %}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+
+  </div>
+</form>

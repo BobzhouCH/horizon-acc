@@ -1,0 +1,97 @@
+{% load i18n %}
+
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+      <fieldset>
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.title.$invalid && form.title.$dirty}">
+          <label for="title">
+            *{% trans "Title" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="title"
+              name="title"
+              class="form-control verify-input"
+              type="text"
+              ng-model="ticket.title"
+              ng-maxlength="255"
+              placeholder="{% trans 'Enter a ticket title' %}"/>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.title.$error.required && form.title.$dirty">
+              {% trans "A ticket title is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.title.$error.maxlength && form.title.$dirty">
+              {% trans "Title length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.description.$invalid && form.description.$dirty}">
+          <label for="description">
+            *{% trans "Description" %}
+          </label>
+          <div class="form-group-right">
+            <textarea required
+              id="description"
+              name="description"
+              class="form-control verify-input"
+              rows="6"
+              ng-model="ticket.description"
+              placeholder="{% trans 'Enter a ticket description' %}">
+            </textarea>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.description.$error.required && form.description.$dirty">
+              {% trans "A ticket description is required." %}
+            </p>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.type_id.$invalid && form.type_id.$dirty}">
+          <label for="type_id">
+            *{% trans "Ticket Type" %}
+          </label>
+          <div class="form-group-right policie-wrap">
+            <select
+              required
+              id="type_id"
+              name="type_id"
+              class="form-control"
+              ng-model="ticket.type_id">
+              <option value="" disabled>
+                {% trans 'Select a ticket type' %}
+              </option>
+              <option
+                ng-repeat="type in types"
+                value="{$ type.id $}">
+                {$ type.name | transTicketType $}
+              </option>
+            </select>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>
+

@@ -1,0 +1,182 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Routers" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Routers") %}
+{% endblock page_header %}
+
+{% block main %}
+
+<hz-magic-search-context filter-facets="filterFacets">
+<table id="routers-list" hz-table ng-cloak hopes-table-drag
+  st-table="irouters"
+  st-safe-src="routers"
+  default-sort="name"
+  default-sort-reverse="false"
+  st-magic-search
+  ng-controller="projectRoutersCtrl"
+  ng-init="userID = '{{ request.user.id }}'"
+  class="table table-bordered table-hover">
+
+
+  <!--
+    Table-head:
+    This is where we add things like filtering and batch actions.
+    This is where we add column headers.
+  -->
+  <thead>
+    <!--
+      Table-batch-actions:
+      This is where batch actions like searching, creating, and deleting.
+    -->
+    <tr>
+      <th colspan="100" class="bare">
+        <div class="table_actions clearfix">
+            <action-list>
+            <action
+              action-classes="'btn btn-primary btn-action'"
+              callback="actions.refresh">
+              <i class="icon icon-refresh"></i>
+              <span id="refresh"></span>
+            </action>
+          </action-list>
+          <action-list>
+            <action
+              action-classes="'btn btn-primary btn-action'"
+              disabled="(!rootblock.active_fixing && rootblock.billing_need) || routers.length >= quota"
+              callback="actions.create.open">
+              <i class="icon icon-add"></i>
+              <span id="create-router">{% trans 'Create Router' %}
+                <i ng-show= "routers.length >= quota">{% trans '(quota exceeded)' %}</i>
+                <i ng-show= "(!rootblock.active_fixing && rootblock.billing_need)">{% trans '(no effective price)' %}</i>
+              </span>
+            </action>
+          </action-list>
+          <action-list>
+            <action
+              action-classes="'btn btn-primary btn-action'"
+              disabled="numSelected != 1 || associateTag"
+              callback="actions.associate.open" item="selectedData.aData">
+              <i class="icon icon-add"></i>
+              <span id="associate_firewall">{% trans 'Associate Firewall' %}</span>
+            </action>
+          </action-list>
+          <action-list>
+            <action
+              action-classes="'btn btn-primary btn-action'"
+              disabled="numSelected != 1 || disassociateTag"
+              callback="actions.disassociate.open" item="selectedData.aData">
+              <i class="icon icon-delete"></i>
+              <span id="disassociate-router">{% trans 'Disassociate Firewall' %}</span>
+            </action>
+          </action-list>
+          <action-list>
+            <action
+              action-classes="'btn btn-action btn-danger'"
+              disabled="numSelected === 0 || deleteRouterTag"
+              callback="actions.deleted.batchDelete">
+              <i class="icon icon-delete"></i>
+              <span id="delete-router">{% trans 'Delete Router' %}</span>
+            </action>
+          </action-list>
+          <action-list dropdown>
+              <button id="more" type="button" class="btn btn-primary btn-action" dropdown-toggle>
+                <i class="icon icon-more"></i>
+                <span>{% trans 'More' %}</span>
+              </button>
+            <menu>
+              <action
+                button-type="menu-item"
+                disabled="disabled"
+                callback="actions.edit.open" item="selectedData.aData">
+                <span id="edit">{% trans 'Edit' %}</span>
+              </action>
+              <action
+                  button-type="menu-item"
+                  disabled="disabled || selectedData.aData[0].external_gateway_info"
+                  callback="actions.setGateway.open" item="selectedData.aData" >
+                  <span id="set-gateway">{% trans 'Set Gateway' %}</span>
+                </action>
+                <action
+                  button-type="menu-item"
+                  disabled="disabled || !selectedData.aData[0].external_gateway_info"
+                  callback="actions.clearGateway.batchUnset" item="selectedData.aData">
+                    <span id="clear-gateway">{% trans "Clear Gateway" %}</span>
+                </action>
+            </menu>
+          </action-list>
+          <div class="fr search-bar">
+            <hz-magic-search-bar id="search"></hz-magic-search-bar>
+          </div>
+
+        </div>
+      </th>
+    </tr>
+
+
+    <!--
+      Table-column-headers:
+      This is where we declaratively define the table column headers.
+      Include the select all checkbox if you want to enable select all
+      for performing batch actions.
+    -->
+    <tr eagle-eye="table_heads">
+      <th class="select-col" eagle-eye="select_col">
+        <input type="checkbox"
+          hz-select-page="routers"/>
+      </th>
+      <th st-sort-default="name" eagle-eye="data_col">
+        <span st-sort="name">{$ ::context.header.name $}</span>
+      </th>
+      <th eagle-eye="data_col"><span>{$ ::context.header.firewall $}</span></th>
+      <th eagle-eye="data_col"><span>{$ ::context.header.ext_network $}</span></th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+  <tr ng-if="!iroutersState">
+    <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+  </tr>
+
+  <tr ng-if="!irouters.length && iroutersState">
+    <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+  </tr>
+
+
+  <tr ng-repeat="router in irouters" ng-class="{'st-selected': checked[router.id]}">
+      <!--
+        Table-row-checkbox:
+        Router can select and unselect this row by clicking on this checkbox.
+        Batch actions can then be perform on selected rows.
+      -->
+      <td class="select-col" eagle-eye="select_col">
+        <input type="checkbox"
+          hz-select="router"
+          ng-model="selected[router.id].checked"
+          hz-checkbox-group="routers"/>
+      </td>
+      <!-- Table-row-info-column -->
+      <td eagle-eye="data_col"><a href="javascript:;" ng-click="actions.routerDetail.open(router)">{$ router.name $}</a></td>
+      <td eagle-eye="data_col">{$ router.firewall_name $}</td>
+      <td eagle-eye="data_col">{$ router.external_gateway $}</td>
+    </tr>
+  </tbody>
+
+  <!--
+    Table-footer:
+    This is where we display number of items and pagination controls.
+    Ensure colspan is greater or equal to number of column-headers.
+  -->
+  <tfoot ng-if="routers.length > 10">
+    <tr>
+      <td colspan="100" eagle-eye="data_page">
+        <table-footer></table-footer>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+</hz-magic-search-context>
+
+{% endblock %}

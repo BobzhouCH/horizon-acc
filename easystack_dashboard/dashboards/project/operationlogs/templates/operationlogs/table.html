@@ -1,0 +1,135 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Activity" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Activity") %}
+{% endblock page_header %}
+
+{% block main %}
+    <hz-magic-search-context filter-facets="filterFacets">
+    <table id="operationlogs-list" hz-table ng-cloak hopes-table-drag
+      st-table="iactivities"
+      st-safe-src="activities"
+      default-sort="timestamp"
+      default-sort-reverse="true"
+      ng-controller="projectActivityCtrl"
+      st-magic-search
+      class="table table-bordered table-hover">
+
+      <thead>
+        <tr>
+          <th colspan="100" class="query-border" >
+          <div class=".container-fluid query-block">
+              <div class="form-group col-md-2 query query-padding">
+                <label for="time-range" class="query-label">{% trans 'Time Perid' %}</label>
+                <select
+                   id="time-range"
+                   name="timeRange"
+                   class="form-control"
+                   type="checkbox"
+                   ng-model="query.timeRange"
+                   ng-init="day">
+                    <option value="" disabled ng-selected="true">{% trans "Select a time range" %}</option>
+                    <option value="hour">1 {% trans 'Hour' %}</option>
+                    <option value="day">1 {% trans 'Day' %}</option>
+                    <option value="month">1 {% trans 'Month' %}</option>
+                    <option value="other">{% trans 'Exact Time' %}</option>
+                    <option value="all">{% trans 'All' %}</option>
+                </select>
+              </div>
+              <div class="row col-md-5 query query-area" ng-show="query.timeRange=='other'" >
+                <div class="form-group col-md-6 mt0 query-padding">
+                  <label for="start" class="query-label">{% trans 'Start Time' %}<span class="">&nbsp;*</span></label>
+                  <input
+                     type="text"
+                     id='start'
+                     name='start'
+                     ng-required="query.timeRange=='other'"
+                     ng-maxlength="19"
+                     readonly="true"
+                     class="form-control datepicker-time form_datetime"
+                     ng-model="query.start"
+                     placeholder={% trans "Please select the start time" %}>
+                </div>
+                <div class="form-group col-md-6 mt0 query-padding">
+                  <label for="end" class="query-label">{% trans 'End Time' %}<span class="">&nbsp;*</span></label>
+                  <input
+                    type="text"
+                    id='end'
+                    name= 'end'
+                    ng-required="query.timeRange=='other'"
+                    ng-maxlength="19"
+                    readonly="true"
+                    class="form-control datepicker-time form_datetime"
+                    ng-model="query.end"
+                    placeholder={% trans "Please select the end time" %}>
+                </div>
+              </div>
+              <div class="form-group col-md-3 query-line query-padding" >
+                <div class="item-wrapper">
+                  <button  type="button"
+                           ng-click="searchLog()"
+                           ng-disabled="!(query.timeRange!='other'||(query.timeRange=='other' && query.start && query.end)) || !query.timeRange "
+                           id="submit-button"
+                           class="btn btn-primary query-btn">
+                    {% trans 'Query' %}
+                  </button>
+                </div>
+              </div>
+            </div>
+          <!--</th>
+          <th colspan="100" class="bare query-border">-->
+            <div class="table_actions clearfix query-line">
+             <div class="fr search-bar">
+               <hz-magic-search-bar id="search"></hz-magic-search-bar>
+             </div>
+            </div>
+          </th>
+        </tr>
+
+        <tr eagle-eye="table_heads">
+          <th class="query-left"><span st-sort="action" eagle-eye="data_col">{$ ::context.header.action $}</span></th>
+          <th><span st-sort="type" eagle-eye="data_col">{$ ::context.header.type $}</span></th>
+          <th><span st-sort="resource" eagle-eye="data_col">{$ ::context.header.resource $}</span></th>
+          {% if request.user.is_superuser %}
+            <th><span st-sort="operatorname" eagle-eye="data_col">{$ ::context.header.operatorname $}</span></th>
+          {% endif %}
+          <th><span st-sort="operation_time" eagle-eye="data_col">{$ ::context.header.operation_time $}</span></th>
+          <th>
+            <span st-sort="timestamp" st-sort-default="timestamp" eagle-eye="data_col">{$ ::context.header.timestamp $}</span>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr ng-if="!iactivitiesState">
+          <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+        </tr>
+
+        <tr ng-if="!iactivities.length && iactivitiesState">
+          <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+        </tr>
+
+        <tr ng-repeat="activity in iactivities" ng-class="{'st-selected': checked[activity.id]}">
+          <td eagle-eye="data_col" class="query-left">{$ activity.action | decode:operationlogActioni18n $}</td>
+          <td eagle-eye="data_col">{$ activity.type | decode:operationlogTypei18n $}</td>
+          <td eagle-eye="data_col" title="{$ activity.resource $}">{$ activity.resource $}</td>
+          {% if request.user.is_superuser %}
+            <td eagle-eye="data_col">{$ activity.operatorname $}</td>
+          {% endif %}
+          <td eagle-eye="data_col">{$ activity.operation_time $}</td>
+          <td eagle-eye="data_col">{$ activity.timestamp $}</td>
+        </tr>
+      </tbody>
+
+      <tfoot ng-if="activities.length > 10">
+        <tr>
+          <td colspan="100" eagle-eye="data_page" class="query-left">
+            <table-footer></table-footer>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+    </hz-magic-search-context>
+{% endblock %}

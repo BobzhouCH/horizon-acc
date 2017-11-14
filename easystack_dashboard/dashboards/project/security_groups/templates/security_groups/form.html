@@ -1,0 +1,73 @@
+{% load i18n %}
+
+<div class="modal-header clearfix">
+<h3 class="modal-title">{$ ::context.title $}</h3>
+<p class="modal-colsed" ng-click="action.cancel()">
+<i class="modal-colsed-icon"></i>
+</p>
+</div>
+
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <div class="form-wrap">
+      <fieldset>
+
+        <div class="form-group clearfix">
+          <label class="control-label fl required" for="name">
+            *{% trans "Name" %}
+          </label>
+          <div class="form-group-right" ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+              <input required
+                id="name"
+                name="name"
+                class="form-control"
+                type="text"
+                ng-model="security.name"
+                ng-maxlength="255"
+                placeholder="{% trans 'Enter a Security Group name' %}">
+              <p class="help-block alert alert-danger"
+                ng-show="form.name.$error.required && form.name.$dirty">
+                {% trans "A Security Group name is required." %}
+              </p>
+              <p class="help-block alert alert-danger"
+                ng-show="form.name.$error.maxlength && form.name.$dirty">
+                {% trans "Name length should be less than 255 chars." %}
+              </p>
+          </div>
+        </div>
+
+      <div class="form-group clearfix">
+          <label class="control-label fl required" for="desc">
+              {% trans "Description" %}
+          </label>
+          <div class="form-group-right" ng-class="{'has-error':form.desc.$invalid && form.desc.$dirty}">
+              <textarea
+                     id="desc"
+                     name="desc"
+                     rows="4"
+                     class="form-control"
+                     type="text"
+                     ng-model="security.desc"
+                     ng-maxlength="255"
+                     placeholder="{% trans 'Enter a description' %}">
+              </textarea>
+              <p class="help-block alert alert-danger"
+                 ng-show="form.desc.$invalid && form.desc.$dirty">
+                  {% trans "Description length should be less than 255 chars." %}
+              </p>
+          </div>
+      </div>
+
+      </fieldset>
+    </div>
+
+  </div>
+</form>
+
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

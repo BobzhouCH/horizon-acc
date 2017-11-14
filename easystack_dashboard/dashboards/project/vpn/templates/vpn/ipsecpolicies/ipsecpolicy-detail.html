@@ -1,0 +1,48 @@
+{% load context_selection %}
+
+<div class="detail-page">
+<div class="fl detail-left-icon" ng-click="action.cancel()"></div>
+<div class="detail-page-con">
+
+  <tabset id="images-tab" justified="true" class="def-tabs">
+    <tab id="tab-images-detail" heading="{$ ::label.detail_overview $}">
+      <div class="tab-pane-content">
+
+      <table id="ipsecpolicy-list" class="table table-bordered table-hover table-unique">
+        <thead>
+          <tr>
+            <th colspan="100"><span class="detail-title">{$ ::label.properties $}</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.id $}</td>
+            <td id="ipsecpolicy-id" class="color449ed2" eagle-eye="data_col">{$ ipsecpolicy.id $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.description $}</td>
+            <td id="ipsecpolicy-description" class="color3399cc" eagle-eye="data_col">{$ ipsecpolicy.description $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.encapsulation_mode $}</td>
+            <td id="ipsecpolicy-ike_version" class="color66cc66" eagle-eye="data_col">{$ ipsecpolicy.encapsulation_mode $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.lifetime_units $}</td>
+            <td id="ipsecpolicy-lifetime_units" eagle-eye="data_col">{$ ipsecpolicy.lifetime.units $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.lifetime_value $}</td>
+            <td id="ipsecpolicy-lifetime_value" eagle-eye="data_col">{$ ipsecpolicy.lifetime.value $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.transform_protocol $}</td>
+            <td id="ipsecpolicy-phase1_negotiation_mode" eagle-eye="data_col">{$ ipsecpolicy.transform_protocol $}</td>
+          </tr>
+        </tbody>
+      </table>
+     </div>
+    </tab>
+  </tabset>
+</div>
+</div>

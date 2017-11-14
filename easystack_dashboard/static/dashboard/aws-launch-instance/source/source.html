@@ -1,0 +1,236 @@
+<div ng-controller="AwsLaunchInstanceSourceController as ctrl">
+  <!--content-->
+  <div class="content instance-content">
+    <!--selected-source form-->
+    <div class="selected-source clearfix mt10">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8">
+          <div class="row instance-wrap">
+            <div class="col-sm-12 col-md-4">
+              <div class="form-field fl"
+                ng-class="{ 'has-warning': launchInstanceSourceForm['instance-count'].$invalid }">
+                <label class="on-top">{$ ::ctrl.label.instance_count $}</label>
+                <span class="fa fa-exclamation-triangle invalid"
+                    ng-show="launchInstanceSourceForm['instance-count'].$invalid"
+                    popover="{$ launchInstanceSourceForm['instance-count'].$error.validateNumberMax ? ctrl.instanceCountMaxError : ctrl.instanceCountError $}"
+                    popover-placement="top" popover-append-to-body="true"
+                    popover-trigger="hover"></span>
+
+                <input id="instance-count" name="instance-count" type="number" class="form-control no-input-number"
+                       ng-model="model.newInstanceSpec.instance_count"
+                       ng-required="true" ng-pattern="/^[0-9]+$/"
+                       validate-number-min="1"
+                       validate-number-max="{$ ctrl.maxInstanceCount $}">
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!--end selected-source form-->
+
+    <!--instance-source form-->
+    <div class="instance-source clearfix">
+      <div class="form-horizontal">
+        <div class="row">
+          <div class="col-xs-12 col-sm-3">
+            <div class="form-field image"
+              ng-class="{ 'has-warning': launchInstanceSourceForm['boot-source-type'].$invalid }">
+              <span class="fa fa-exclamation-triangle invalid"
+                    ng-show="launchInstanceSourceForm['boot-source-type'].$invalid"
+                    popover="{$ ctrl.bootSourceTypeError $}"
+                    popover-placement="top" popover-append-to-body="true"
+                    popover-trigger="hover"></span>
+              <select id="boot-source-type" name="boot-source-type" class="form-control"
+                      ng-options="src.label for src in ctrl.bootSourcesOptions track by src.type"
+                      ng-change="ctrl.updateBootSourceSelection(model.newInstanceSpec.source_type.type)"
+                      ng-model="model.newInstanceSpec.source_type">
+              </select>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!--end instance-source form-->
+
+    <transfer-table help-text="ctrl.helpText" tr-model="ctrl.tableData">
+      <allocated validate-number-min="1" ng-model="ctrl.tableData.allocated.length">
+        <table id="selected-images" class="table table-bordered table-hover"
+               hz-table
+               st-safe-src="ctrl.tableData.allocated"
+               st-table="ctrl.tableData.displayAllocated">
+
+          <!-- transfer table, allocated table head -->
+          <thead>
+            <tr>
+              <!--th class="expander"></th-->
+              <th eagle-eye="data_col" ng-class="ctrl.tableHeadCells[0].classList"
+                  ng-style="ctrl.tableHeadCells[0].style">
+                {$ ctrl.tableHeadCells[0].text $}
+              </th>
+
+              <th eagle-eye="data_col" ng-class="ctrl.tableHeadCells[2].classList"
+                  ng-style="ctrl.tableHeadCells[2].style">
+                {$ ctrl.tableHeadCells[2].text $}
+              </th>
+
+              <th eagle-eye="data_col" ng-class="ctrl.tableHeadCells[4].classList"
+                  ng-style="ctrl.tableHeadCells[4].style">
+                {$ ctrl.tableHeadCells[4].text $}
+              </th>
+              <th class="action"></th>
+            </tr>
+          </thead><!-- /transfer table, allocated table head -->
+
+          <!-- transfer table, allocated table body -->
+          <tbody>
+
+            <tr ng-if="ctrl.tableData.allocated.length === 0">
+              <td colspan="{$ ctrl.tableHeadCells.length + 2 $}">
+                <div class="no-rows-help">
+                  {$ ::trCtrl.helpText.noneAllocText $}
+                </div>
+              </td>
+            </tr>
+
+            <tr ng-repeat="row in ctrl.selection">
+
+              <td eagle-eye="data_col" ng-class="ctrl.tableBodyCells[0].classList"
+                  ng-style="ctrl.tableBodyCells[0].style">
+                  <img class="image-icon" ng-src="/static/dashboard/img/img-icon/default.png" ng-if="!row.properties.image_os">
+                  <img class="image-icon" ng-src="/static/dashboard/img/img-icon/{$ row.properties.image_os $}.png" ng-if="row.properties.image_os">
+                  <span class="image-name">
+                  {$ ctrl.tableBodyCells[0].filter ? ctrl.tableBodyCells[0].filter(row[ctrl.tableBodyCells[0].key], ctrl.tableBodyCells[0].filterArg) : row[ctrl.tableBodyCells[0].key] $}
+                  </span>
+              </td>
+
+              <td eagle-eye="data_col" ng-class="ctrl.tableBodyCells[2].classList"
+                  ng-style="ctrl.tableBodyCells[2].style">
+                {$ ctrl.tableBodyCells[2].filter ? ctrl.tableBodyCells[2].filter(row[ctrl.tableBodyCells[2].key], ctrl.tableBodyCells[2].filterArg) : row[ctrl.tableBodyCells[2].key] $}
+              </td>
+
+              <td eagle-eye="data_col" ng-class="ctrl.tableBodyCells[4].classList"
+                  ng-style="ctrl.tableBodyCells[4].style">
+                <span ng-if="model.newInstanceSpec.source_type.type === 'volume' && row.availability_zone !== model.newInstanceSpec.availability_zone"
+                      class="invalid fa fa-exclamation-triangle"
+                      popover="{$ ::trCtrl.helpText.volumeAZHelpText $}"
+                      popover-trigger="mouseenter mouseleave"
+                      popover-append-to-body="true"
+                      popover-placement="top"></span>
+                {$ ctrl.tableBodyCells[4].filter ? ctrl.tableBodyCells[4].filter(row[ctrl.tableBodyCells[4].key], ctrl.tableBodyCells[4].filterArg) : row[ctrl.tableBodyCells[4].key] $}
+              </td>
+              <td eagle-eye="button_action" class="action-col">
+                <action-list class="instance-btn">
+                  <action callback="trCtrl.deallocate" item="row">
+                    <span class="icon remove_to"></span>
+                  </action>
+                </action-list>
+              </td>
+            </tr>
+
+          </tbody><!-- /transfer table, allocated table body -->
+        </table>
+      </allocated>
+
+      <available>
+        <table id="images-list" st-table="ctrl.tableData.displayedAvailable"
+               st-safe-src="ctrl.tableData.available"
+               hz-table
+               class="table table-bordered table-hover">
+
+          <!-- transfer table, available table head -->
+          <thead>
+            <tr>
+              <th class="search-header" colspan="{$ ctrl.tableHeadCells.length + 2 $}">
+                <div class="fr search-bar">
+                  <search-bar id="images-search" group-classes="" icon-classes="fa-search">
+                  </search-bar>
+                </div>
+              </th>
+            </tr>
+            <tr>
+              <!--th class="expander"></th-->
+              <th eagle-eye="data_col" ng-attr-st-sort-default="{$ ctrl.tableHeadCells[0].sortDefault $}"
+                  ng-class="ctrl.tableHeadCells[0].classList"
+                  ng-style="ctrl.tableHeadCells[0].style"
+                  st-sort="{$ ctrl.tableHeadCells[0].sortable && ctrl.tableBodyCells[0].key $}">
+                {$ ctrl.tableHeadCells[0].text $}
+              </th>
+
+              <th eagle-eye="data_col" ng-attr-st-sort-default="{$ ctrl.tableHeadCells[2].sortDefault $}"
+                  ng-class="ctrl.tableHeadCells[2].classList"
+                  ng-style="ctrl.tableHeadCells[2].style"
+                  st-sort="{$ ctrl.tableHeadCells[2].sortable && ctrl.tableBodyCells[2].key $}">
+                {$ ctrl.tableHeadCells[2].text $}
+              </th>
+
+              <th eagle-eye="data_col" ng-attr-st-sort-default="{$ ctrl.tableHeadCells[4].sortDefault $}"
+                  ng-class="ctrl.tableHeadCells[4].classList"
+                  ng-style="ctrl.tableHeadCells[4].style"
+                  st-sort="{$ ctrl.tableHeadCells[4].sortable && ctrl.tableBodyCells[4].key $}">
+                {$ ctrl.tableHeadCells[4].text $}
+              </th>
+              <th class="action" eagle-eye="button_action"></th>
+            </tr>
+          </thead><!-- /transfer table, available table head -->
+
+          <tbody>
+
+            <tr ng-if="trCtrl.numDisplayedAvailable() === 0 && model.initialized">
+              <td colspan="{$ ctrl.tableHeadCells.length + 2 $}">
+                <div class="no-rows-help">
+                  {$ ::trCtrl.helpText.noneAvailText $}
+                </div>
+              </td>
+            </tr>
+
+            <tr ng-if="!model.initialized && trCtrl.numDisplayedAvailable() === 0">
+                <td colspan="{$ ctrl.tableHeadCells.length + 2 $}" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif" alt="" /></td>
+            </tr>
+
+            <tr ng-repeat="row in ctrl.tableData.displayedAvailable track by row.id"
+                ng-if="!trCtrl.allocatedIds[row.id]">
+
+              <td eagle-eye="data_col" ng-class="ctrl.tableBodyCells[0].classList"
+                  ng-style="ctrl.tableBodyCells[0].style">
+                <img class="image-icon" ng-src="/static/dashboard/img/img-icon/default.png" ng-if="!row.properties.image_os">
+                <img class="image-icon" ng-src="/static/dashboard/img/img-icon/{$ row.properties.image_os $}.png" ng-if="row.properties.image_os">
+                <span class="image-name" title="{$ ctrl.tableBodyCells[0].filter ? ctrl.tableBodyCells[0].filter(row[ctrl.tableBodyCells[0].key], ctrl.tableBodyCells[0].filterArg) : row[ctrl.tableBodyCells[0].key] $}">
+                    {$ ctrl.tableBodyCells[0].filter ? ctrl.tableBodyCells[0].filter(row[ctrl.tableBodyCells[0].key], ctrl.tableBodyCells[0].filterArg) : row[ctrl.tableBodyCells[0].key] $}</span>
+              </td>
+
+              <td eagle-eye="data_col" ng-class="ctrl.tableBodyCells[2].classList"
+                  ng-style="ctrl.tableBodyCells[2].style">
+                {$ ctrl.tableBodyCells[2].filter ? ctrl.tableBodyCells[2].filter(row[ctrl.tableBodyCells[2].key], ctrl.tableBodyCells[2].filterArg) : row[ctrl.tableBodyCells[2].key] $}
+              </td>
+
+              <td eagle-eye="data_col" ng-class="ctrl.tableBodyCells[4].classList"
+                  ng-style="ctrl.tableBodyCells[4].style">
+                {$ ctrl.tableBodyCells[4].filter ? ctrl.tableBodyCells[4].filter(row[ctrl.tableBodyCells[4].key], ctrl.tableBodyCells[4].filterArg) : row[ctrl.tableBodyCells[4].key] $}
+              </td>
+              <td class="action-col" eagle-eye="button_action">
+                <action-list class="instance-btn">
+                  <action callback="trCtrl.allocate" item="row">
+                    <span class="icon add_to"></span>
+                  </action>
+                </action-list>
+              </td>
+            </tr>
+
+          </tbody>
+          <tfoot ng-if="ctrl.tableData.allocated.length > 5">
+            <tr>
+              <td colspan="100">
+                <div st-pagination="" st-items-by-page="5" st-displayed-pages="5"></div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </available>
+    </transfer-table>
+
+  </div>
+  <!-- end content -->
+</div>

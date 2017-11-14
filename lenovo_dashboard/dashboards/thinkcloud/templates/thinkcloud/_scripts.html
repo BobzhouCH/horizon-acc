@@ -1,0 +1,9 @@
+{% extends 'easystack_dashboard/_es_scripts.html' %}
+
+{% block custom_js_files %}
+    <script src='{{ STATIC_URL }}thinkcloud/js/extpack.js' type='text/javascript' charset='utf-8'></script>
+    <script src='{{ STATIC_URL }}thinkcloud/js/horizon.d3gauge.js' type='text/javascript' charset='utf-8'></script>
+    <script src='{{ STATIC_URL }}thinkcloud/js/horizon.d3progress.js' type='text/javascript' charset='utf-8'></script>
+    <script src='{{ STATIC_URL }}thinkcloud/js/horizon.d3circlechart.js' type='text/javascript' charset='utf-8'></script>
+    <script src='{{ STATIC_URL }}thinkcloud/js/horizon.d3doughnut.js' type='text/javascript' charset='utf-8'></script>
+{% endblock %}

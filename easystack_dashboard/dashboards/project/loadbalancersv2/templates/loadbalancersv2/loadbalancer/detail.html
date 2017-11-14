@@ -1,0 +1,187 @@
+{% load i18n %}
+
+<div class="detail-page">
+  <div class="detail-left-icon" ng-click="action.cancel()"></div>
+  <div class="detail-page-con">
+
+    <tabset id="loadbalancer-tab" justified="true" class="def-tabs">
+
+        <tab id="tab-loadbalancer-detail" heading="{$ ::title.Overview $}">
+          <div class="tab-pane-content">
+            <table id="loadbalancer-detail-table" class="table table-bordered table-hover table-unique">
+              <thead>
+                <tr>
+                  <th colspan="2" class="table-th-unline"><span class="detail-title">{$ ::title.Info $}</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td eagle-eye="data_col">{$ ::label.name $}</td>
+                  <td id="loadbalancer-name" class="color3399cc" eagle-eye="data_col" title="{$ loadbalancer.name $}">{$ loadbalancer.name $}</td>
+                </tr>
+                <tr>
+                  <td eagle-eye="data_col">{$ ::label.subnet $}</td>
+                  <td id="loadbalancer-subnet" class="color66cc66" eagle-eye="data_col">{$ loadbalancer.subnet $}</td>
+                </tr>
+                <tr>
+                  <td eagle-eye="data_col">{$ ::label.vip_address $}</td>
+                  <td id="loadbalancer-vip_address" eagle-eye="data_col">{$ loadbalancer.vip_address $}</td>
+                </tr>
+                <tr>
+                  <td eagle-eye="data_col">{$ ::label.floating_ip $}</td>
+                  <td id="loadbalancer-floating_ip" eagle-eye="data_col">{$ loadbalancer.floating_ip.ip $}</td>
+                </tr>
+                 <tr>
+                  <td eagle-eye="data_col">{$ ::label.security_group $}</td>
+                  <td id="loadbalancer-security_group" eagle-eye="data_col">{$ loadbalancer.security_groups_name $}</td>
+                </tr>
+                <tr>
+                  <td eagle-eye="data_col">{$ ::label.status $}</td>
+                  <td id="loadbalancer-status" eagle-eye="data_col">{$ loadbalancer.provisioning_status | decode: provisioningStatus $}</td>
+                </tr>
+              <tr>
+                  <td eagle-eye="data_col">{$ ::label.created_at $}</td>
+                  <td id="loadbalancer-created_at" eagle-eye="data_col">{$ loadbalancer.create_time | date:'short' $}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </tab>
+
+
+          <tab id="listener-table" heading="{% trans 'Listener' %}">
+          <div class="tab-pane-content">
+            <table id="listener-detail-list" hz-table ng-cloak
+                   st-table="ilisteners"
+                   st-safe-src="listeners"
+                   default-sort="name"
+                   default-sort-reverse="true"
+                   disabled="disabled"
+                   class="table table-bordered table-hover">
+                <thead ng-init="tab2=$table">
+                <tr>
+                    <th colspan="100" class="bare table-th-unline">
+                        <div class="table_actions clearfix">
+                           <action-list>
+                             <action
+                               action-classes="'btn btn-primary btn-action'"
+                               callback="actions.refresh" item ="$table">
+                             <i class="icon icon-refresh"></i>
+                             <span id="refresh"></span>
+                             </action>
+                           </action-list>
+                           <action-list>
+                             <action
+                                action-classes="'btn btn-primary btn-action'"
+                                callback="actions.create.open" disabled= "ilisteners.length >= quota">
+                             <i class="icon icon-add"></i>
+                             <span id="create-listener">{% trans 'Create Listener' %}
+                             <i ng-show="listeners.length >= quota">{% trans '(quota exceeded)' %}</i>
+                             </span>
+                             </action>
+                            </action-list>
+                            <action-list dropdown>
+                              <button id="more" type="button" class="btn btn-primary btn-action" dropdown-toggle>
+                                <i class="icon icon-more"></i>
+                                <span>{% trans 'More' %}</span>
+                              </button>
+                              <menu>
+                              <action
+                                button-type="menu-item"
+                                disabled="disabled"
+                                callback="actions.edit.open"
+                                item="$table">
+                                <span id="editListeners">{% trans 'Edit Listener' %}</span>
+                              </action>
+                              <action
+                                button-type="menu-item"
+                                disabled="numSelected === 0 || ilistenersState"
+                                callback="actions.deleted.batchDelete" item="$table">
+                              <span id="delete_listener">{% trans 'Delete' %}</span>
+                              </action>
+                              <action
+                                button-type="menu-item"
+                                disabled="checkEnableBtn($table)"
+                                callback="actions.enableListener.batchEnable"
+                                item="$table">
+                                <span id="enableListener">{% trans 'Enable' %}</span>
+                              </action>
+                              <action
+                                button-type="menu-item"
+                                disabled="checkDisableBtn($table)"
+                                callback="actions.diableListener.batchDisable"
+                                item="$table">
+                                <span id="delete">{% trans 'Disable' %}</span>
+                              </action>
+                              </menu>
+                            </action-list>
+                            <div class="fr search-bar">
+                               <search-bar id="resource-search" group-classes="" icon-classes="fa-search" placeholder={% trans "Filter" %}> </search-bar>
+                            </div>
+                         </div>
+                    </th>
+                </tr>
+                <tr eagle-eye="table_heads">
+                    <th class="select-col" eagle-eye="select_col">
+                        <input type="checkbox"
+                           hz-select-page="listeners"/>
+                    </th>
+                    <th st-sort="name" st-sort-default="name" eagle-eye="data_col">
+                        {$ ::context.header.name $}
+                    </th>
+                    <th st-sort="protocol" eagle-eye="data_col">
+                        {$ ::context.header.protocol $}
+                    </th>
+                    <th st-sort="protocol_port" eagle-eye="data_col">
+                        {$ ::context.header.port_number $}
+                    </th>
+                    <th st-sort="connection_limit" eagle-eye="data_col">
+                        {$ ::context.header.max_connection $}
+                    </th>
+                    <th st-sort="pool.name" eagle-eye="data_col">
+                        {$ ::context.header.default_pool $}
+                    </th>
+                    <th st-sort="admin_state_up" eagle-eye="data_col">
+                        {$ ::context.header.enable $}
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody>
+                  <tr ng-if="!ilistenersState">
+                      <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+                  </tr>
+                  <tr ng-if="!ilisteners.length && ilistenersState">
+                    <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+                  </tr>
+                  <tr ng-repeat="listener in ilisteners" ng-class="{'st-selected': checked[listener.id]}">
+                      <td eagle-eye="select_col" class="select-col">
+                          <input type="checkbox"
+                              hz-select="listener"
+                              ng-model="selected[listener.id].checked"
+                              hz-checkbox-group="listeners"/>
+                      </td>
+
+                      <td eagle-eye="data_col">{$ listener.name $}</td>
+                      <td eagle-eye="data_col">{$ listener.protocol $}</td>
+                      <td eagle-eye="data_col">{$ listener.protocol_port $}</td>
+                      <td eagle-eye="data_col">{$ listener.connection_limit $}</td>
+                      <td eagle-eye="data_col">{$ listener.pool.name $}</td>
+                      <td eagle-eye="data_col">{$ listener.admin_state_up | decode:enableStatus $}</td>
+                  </tr>
+                </tbody>
+
+                <tfoot ng-if="listeners.length > 10">
+                <tr>
+                    <td colspan="100" eagle-eye="data_page">
+                        <table-footer></table-footer>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+          </div>
+        </tab>
+
+    </tabset>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+{% extends "easystack_dashboard/client_side/es_template.html" %}
+{% load i18n %}
+{% load horizon %}
+
+{% block id %}balloon_port{% endblock %}
+
+{% block template %}
+{% jstemplate %}
+<!--<table class="detaiInfoTable">
+  <caption>{%trans "Connection"%}</caption>
+  <tbody>
+    [[#port]]
+    <tr>
+      <th>
+        <span title="[[id]]">
+          <a href="[[url]]">[[id]]</a>
+        </span>
+      </th>
+      <td>[[ip_address]]</td>
+      <td>[[device_owner]]</td>
+      <td>
+        <span class="[[port_status_class]]">[[port_status]]</span>
+      </td>
+      <td class="delete">
+        [[#is_interface]]
+        <button class="delete-port btn btn-danger btn-mini" data-router-id="[[router_id]]"  data-port-id="[[id]]">{% trans "Interface"%}</button>
+        [[/is_interface]]
+      </td>
+    </tr>
+    [[/port]]
+  </tbody>
+</table>-->
+{% endjstemplate %}
+{% endblock %}

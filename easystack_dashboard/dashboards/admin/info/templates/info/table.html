@@ -1,0 +1,275 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "System Services" %}{% endblock %}
+
+{% block page_header %}
+{% include "easystack_dashboard/common/_es_page_header.html" with title=_("System Services") %}
+{% endblock page_header %}
+
+{% block content_main %}"contentMain tab-main"{% endblock %}
+
+{% block main %}
+
+<div ng-controller="systemServicesTableController">
+<tabset id="system-tab" justified="true" class="def-tabs">
+
+<!-- services -->
+<tab id="services-tab" heading="{% trans 'Services' %}">
+  <div class="tab-pane-content">
+    <hz-magic-search-context filter-facets="servicesFilterFacets" >
+    <table ng-cloak hopes-table-drag
+      st-table="iservices"
+      st-safe-src="services"
+      default-sort="name"
+      default-sort-reverse="false"
+      st-magic-search
+      class="table table-bordered table-hover">
+
+      <thead>
+        <!-- search filter -->
+        <tr>
+          <th colspan="100" class="bare">
+              <div class="table_actions clearfix">
+                <div class="fr search-bar">
+                  <hz-magic-search-bar  id="services-search"></hz-magic-search-bar>
+                </div>
+              </div>
+          </th>
+        </tr>
+
+        <!-- services headers -->
+        <tr>
+          <!-- <th class="rsp-p1" st-sort="id">{$ ::context.header.itemId $}</th> -->
+          <th style="padding-left:10px;">
+            <span st-sort="name" st-sort-default="name" eagle-eye="data_col">{$ ::context.header.name $}
+          </th>
+          <th><span eagle-eye="data_col" st-sort="type">{$ ::context.header.type $}</span></th>
+          <th><span eagle-eye="data_col" st-sort="host">{$ ::context.header.host $}</span></th>
+          <th><span eagle-eye="data_col" st-sort="url">{$ ::context.header.url $}</span></th>
+          <th eagle-eye="data_col" st-sort="status"><span>{$ ::context.header.status $}</span></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <!-- services data -->
+        <tr ng-repeat="service in iservices">
+          <td eagle-eye="data_col">{$ service.name $}</td>
+          <td eagle-eye="data_col">{$ service.type $}</td>
+          <td eagle-eye="data_col">{$ service.host $}</td>
+          <td eagle-eye="data_col">{$ service.url $}</td>
+          <td eagle-eye="data_col">
+            <i ng-if="service.status" class="state-icon icon-true"></i>
+            <i ng-if="!service.status" class="state-icon icon-false"></i>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot ng-if="services.length > 10">
+        <tr>
+          <td colspan="100">
+            <table-footer></table-footer>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+    </hz-magic-search-context>
+  </div>
+</tab>
+
+<!-- compute services -->
+<tab id="compute-tab" heading="{% trans 'Compute Services' %}">
+  <div class="tab-pane-content">
+    <hz-magic-search-context filter-facets="computeFilterFacets" >
+    <table ng-cloak hopes-table-drag
+      st-table="inovaservices"
+      st-safe-src="novaservices"
+      default-sort="binary"
+      default-sort-reverse="false"
+      st-magic-search
+      class="table table-bordered table-hover">
+
+      <thead>
+
+        <!-- search filter -->
+        <tr>
+          <th colspan="100" class="bare">
+              <div class="table_actions clearfix">
+                <div class="fr search-bar">
+                  <hz-magic-search-bar id="compute-search"></hz-magic-search-bar>
+                </div>
+              </div>
+          </th>
+        </tr>
+
+        <!-- services headers -->
+        <tr>
+          <!-- <th class="rsp-p1" st-sort="id">{$ ::context.header.itemId $}</th> -->
+          <th style="padding-left:10px;">
+            <span st-sort="binary" st-sort-default="binary" eagle-eye="data_col">{$ ::context.header.name $}</span>
+          </th>
+          <th><span eagle-eye="data_col" st-sort="host">{$ ::context.header.host $}</span></th>
+          <th><span eagle-eye="data_col" st-sort="zone">{$ ::context.header.zone $}</span></th>
+          <th><span eagle-eye="data_col" st-sort="status">{$ ::context.header.enabled $}</span></th>
+          <th><span eagle-eye="data_col" st-sort="state">{$ ::context.header.state $}</span></th>
+          <th><span eagle-eye="data_col" st-sort="updated_at">{$ ::context.header.update $}</span></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <!-- services data -->
+        <tr ng-repeat="service in inovaservices">
+          <td eagle-eye="data_col">{$ service.binary $}</td>
+          <td eagle-eye="data_col">{$ service.host $}</td>
+          <td eagle-eye="data_col">{$ service.zone $}</td>
+          <td eagle-eye="data_col">
+            <i ng-if="service.status" class="state-icon icon-true"></i>
+            <i ng-if="!service.status" class="state-icon icon-false"></i>
+          </td>
+          <td eagle-eye="data_col">{$ service.state $}</td>
+          <td eagle-eye="data_col">{$ service.updated_at $}</td>
+        </tr>
+
+      </tbody>
+      <tfoot ng-if="novaservices.length > 10">
+        <tr>
+          <td colspan="100">
+            <table-footer></table-footer>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+    </hz-magic-search-context>
+  </div>
+</tab>
+
+<!-- cinder services -->
+<tab id="storage-tab" heading="{% trans 'Storage Services' %}">
+  <div class="tab-pane-content">
+    <hz-magic-search-context filter-facets="storageFilterFacets" >
+    <table ng-cloak hopes-table-drag
+      st-table="icinderservices"
+      st-safe-src="cinderservices"
+      default-sort="binary"
+      default-sort-reverse="false"
+      st-magic-search
+      class="table table-bordered table-hover">
+
+      <thead>
+
+        <!-- search filter -->
+        <tr>
+          <th colspan="100" class="bare">
+              <div class="table_actions clearfix">
+                <div class="fr search-bar">
+                  <hz-magic-search-bar id="storage-search"></hz-magic-search-bar>
+                </div>
+              </div>
+          </th>
+        </tr>
+
+        <!-- services headers -->
+        <tr>
+          <!-- <th class="rsp-p1" st-sort="id">{$ ::context.header.itemId $}</th> -->
+          <th style="padding-left:10px;">
+            <span st-sort="binary" st-sort-default="binary" eagle-eye="data_col">{$ ::context.header.name $}</span>
+          </th>
+          <th><span eagle-eye="data_col" st-sort="host">{$ ::context.header.host $}</span></th>
+          <th><span eagle-eye="data_col" st-sort="zone">{$ ::context.header.zone $}</span></th>
+          <th><span eagle-eye="data_col" st-sort="status">{$ ::context.header.enabled $}</span></th>
+          <th><span eagle-eye="data_col" st-sort="state">{$ ::context.header.state $}</span></th>
+          <th><span eagle-eye="data_col" st-sort="updated_at">{$ ::context.header.update $}</span></th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <!-- services data -->
+        <tr ng-repeat="service in icinderservices">
+          <td eagle-eye="data_col">{$ service.binary $}</td>
+          <td eagle-eye="data_col">{$ service.host $}</td>
+          <td eagle-eye="data_col">{$ service.zone $}</td>
+          <td eagle-eye="data_col">
+            <i ng-if="service.status" class="state-icon icon-true"></i>
+            <i ng-if="!service.status" class="state-icon icon-false"></i>
+          </td>
+          <td eagle-eye="data_col">{$ service.state $}</td>
+          <td eagle-eye="data_col">{$ service.updated_at $}</td>
+        </tr>
+
+      </tbody>
+      <tfoot ng-if="cinderservices.length > 10">
+        <tr>
+          <td colspan="100">
+            <table-footer></table-footer>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+    </hz-magic-search-context>
+  </div>
+</tab>
+
+<!-- neutron services -->
+<tab id="network-tab" heading="{% trans 'Network Services' %}">
+  <div class="tab-pane-content">
+    <hz-magic-search-context filter-facets="networkFilterFacets" >
+    <table ng-cloak hopes-table-drag
+      st-table="ineutronagents"
+      st-safe-src="neutronagents"
+      default-sort="agent_type"
+      default-sort-reverse="false"
+      st-magic-search
+      class="table table-bordered table-hover">
+
+      <thead>
+
+        <!-- search filter -->
+        <tr>
+          <th colspan="100" class="bare">
+              <div class="table_actions clearfix">
+                <div class="fr search-bar">
+                  <hz-magic-search-bar id="network-search"></hz-magic-search-bar>
+                </div>
+              </div>
+          </th>
+        </tr>
+
+        <!-- services headers -->
+        <tr>
+          <!-- <th class="rsp-p1" st-sort="id">{$ ::context.header.itemId $}</th> -->
+          <th style="padding-left:10px;">
+            <span st-sort="agent_type" st-sort-default="agent_type" eagle-eye="data_col">{$ ::context.header.type $}</span>
+          </th>
+          <th><span eagle-eye="data_col" st-sort="binary">{$ ::context.header.name $}</span></th>
+          <th><span eagle-eye="data_col" st-sort="host">{$ ::context.header.host $}</span></th>
+          <th><span eagle-eye="data_col" st-sort="alive">{$ ::context.header.alive $}</span></th>
+          <th><span eagle-eye="data_col" st-sort="heartbeat_timestamp">{$ ::context.header.update $}</span></th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <!-- services data -->
+        <tr ng-repeat="agent in ineutronagents">
+          <td eagle-eye="data_col">{$ agent.agent_type $}</td>
+          <td eagle-eye="data_col">{$ agent.binary $}</td>
+          <td eagle-eye="data_col">{$ agent.host $}</td>
+          <td eagle-eye="data_col">{$ agent.alive $}</td>
+          <td eagle-eye="data_col">{$ agent.heartbeat_timestamp $}</td>
+        </tr>
+
+      </tbody>
+      <tfoot ng-if="neutronagents.length > 10">
+        <tr>
+          <td colspan="100">
+            <table-footer></table-footer>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+    </hz-magic-search-context>
+  </div>
+</tab>
+
+</tabset>
+</div>
+{% endblock %}

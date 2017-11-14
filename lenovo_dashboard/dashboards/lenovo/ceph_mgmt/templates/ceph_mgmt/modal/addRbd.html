@@ -1,0 +1,97 @@
+{%load i18n%}
+<script type="text/ng-template" id="addRbd.html">
+    <div class="public-content">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="close()">&times;</button>
+            <h4>{% trans "NEW RBD" %}</h4>
+        </div>
+        <div class="modal-body public-body">
+            <div class="body-left">
+                <ul class="body-left-nav">
+                    <li class="li-click">
+                        <span class="li-click li-circle"></span>{% trans "General" %}
+                        <p class="li-inline"></p>
+                    </li>
+                    <li>
+                        <span class="li-circle"></span>{% trans "Qos" %}
+                        <p class="li-inline"></p>
+                    </li>
+                    <li><span class="li-circle"></span>{% trans "Advanced" %}</li>
+                </ul>
+            </div>
+            <div class="body-right">
+                <div class="body-content">
+                    <div class="content-box" style="display: block">
+                        <div class="list-group">
+                            <label>{% trans "RBD Name" %}</label>
+                            <input type="text" ng-model="addNewRbd.name" value="new rbd" />
+                        </div>
+                        <div class="list-group capacity">
+                            <label>Capacity</label>
+                            <span>
+                                <input type="text" ng-model="addNewRbd.capacity" oninput="if(value.length>0) value=value.slice(0,3)" />
+                                <select  ng-model="selected.Size" value="selected.id" ng-options="x for (x,y) in selectObj" ></select>
+                            </span>
+                        </div>
+                        <div class="list-group">
+                            <label>Pool</label>
+                            <input type="text" class="disabled btn" value="{$ poolNames || poolList[0].name $}" />
+                        </div>
+                    </div>
+                    <div class="content-box">
+                        <div class="list-group">
+                            <div class="QoS-show-notes">
+                                <label for="QoS-show-notes">{% trans "QoS Limitation" %}</label>
+                                <div class="slidebox">
+                                    <input id="QoS-show-notes" type="checkbox" name="QoS-show-notes" checked="checked">
+                                    <label for="QoS-show-notes"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group read-box">
+                            <span>{% trans "Read" %}</span>
+                            <p>
+                                <input type="text" value="6500" >
+                                <select class="read-select">
+                                    <option value="Mbps">Mbps</option>
+                                    <option value="Gbps">Gbps</option>
+                                    <option>Kbps</option>
+                                </select>
+                                <input type="text" value="2500" >IOPS
+                            </p>
+                            <p>
+                                <input type="text" value="6500" >
+                                <select class="read-select">
+                                    <option value="Mbps">Mbps</option>
+                                    <option value="Gbps">Gbps</option>
+                                    <option>Kbps</option>
+                                </select>
+                                <input type="text" value="2500" >IOPS
+                            </p>
+                        </div>
+                    </div>
+                    <div class="content-box">
+                        <div class="list-group">
+                            <label>{% trans "Object Size" %}</label>
+                            <input type="text" ng-model="addNewRbd.name" value="new rbd" />
+                        </div>
+                        <div class="list-group">
+                            <label>{% trans "CRUSH Rules" %}</label>
+                            <select class="public-current-select">
+                                <option value="Rule #1">{% trans "Rule" %} #1</option>
+                                <option value="Rule #1">{% trans "Rule" %} #2</option>
+                                <option value="Rule #1">{% trans "Rule" %} #3</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-list">
+                    <button class="prev" ng-show="!is_show" ng-click="prev()">{% trans "Prev" %}</button>
+                    <button class="next" ng-show="is_show" ng-click="next()">{% trans "Next" %}</button>
+                    <button class="cancel" ng-click="cancel()">{% trans "Cancel" %}</button>
+                    <button class="btn-ok" ng-show="!is_show" ng-click="AddRbdAction()">{% trans "OK" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

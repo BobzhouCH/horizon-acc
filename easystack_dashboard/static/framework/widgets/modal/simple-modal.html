@@ -1,0 +1,21 @@
+<div class="modal-header clearfix">
+  <h3 class="modal-title"><span ng-bind="::modalCtrl.context.title"></span></h3>
+  <p class="modal-colsed" ng-click="modalCtrl.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<div class="modal-body delete-body">
+  <p id="tips-text" class="txt-c" ng-bind="::modalCtrl.context.body"></p>
+  <p class="txt-c" ng-bind="::modalCtrl.context.tips"></p>
+</div>
+<div class="modal-footer modal-footer-wrap">
+  <button id="cancel-button" class="btn btn-primary"
+    type="button" ng-click="modalCtrl.cancel()">
+    <span ng-bind="::modalCtrl.context.cancel"></span>
+  </button>
+  <button id="submit-button" class="btn btn-action btn-danger"
+    type="button" ng-click="modalCtrl.submit()" ng-disabled="modalCtrl.context.disable">
+    <span ng-bind="::modalCtrl.context.submit"></span>
+  </button>
+</div>

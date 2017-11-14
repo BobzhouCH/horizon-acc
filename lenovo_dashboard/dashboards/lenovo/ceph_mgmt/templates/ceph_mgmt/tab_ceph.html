@@ -1,0 +1,165 @@
+{% load branding i18n %}
+{% load url from future %}
+{% load context_selection %}
+
+<div class="tab_ceph">
+    <div class="ceph-top">
+        <div class="ceph-top-bar">
+            <div class="pull-left">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation">
+                        <a href="#folder1" role="tab" data-toggle="tab">{% trans "Folder1" %}</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#folder2" role="tab" data-toggle="tab" class="active">{% trans "Folder2" %}</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="pull-right">
+                <button type="button" class="usrManagement" ng-click="usrManagement()">
+                    {% trans "usrManagement" %}
+                </button>
+                <button class="addNewFolder" ng-click="addNewFolder()">
+                    {% trans "Add New Folder" %}
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane" id="folder1">
+            <div class="ceph-body">
+                <div class="col-md-1 ceph-body-left">
+                    {% trans "Folder1" %}
+                </div>
+                <div class="col-md-11">
+                    <div class="folderList">
+                        <div class="folderList-box">
+                            <div class="folderList-top">
+                                <div class="pull-left">
+                                    <h5>{% trans "Folder1-1" %}</h5>
+                                    <p>
+                                        <span>
+                                         <b class="glyphicon glyphicon-user"></b> {% trans "Admin" %}
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="pull-right">
+                                    <button class="glyphicon glyphicon-chevron-right"></button>
+                                </div>
+                            </div>
+                            <div class="folderList-bottom">
+                                <button class="glyphicon glyphicon-cog"></button>
+                                <button class="glyphicon glyphicon-trash"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane active" id="folder2">
+            <div class="ceph-body">
+                <div class="col-md-1 ceph-body-left">
+                    {% trans "Folder2" %}
+                </div>
+                <div class="col-md-11 ceph-body-right">
+                    <div class="folderList">
+                        <div class="folderList-box">
+                            <div class="folderList-top">
+                                <div class="pull-left">
+                                    <h5>{% trans "Folder21" %}</h5>
+                                    <p>
+                                         <span>
+                                         <b class="glyphicon glyphicon-user"></b> {% trans "Admin" %}
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="pull-right">
+                                    <button class="glyphicon glyphicon-chevron-right"></button>
+                                </div>
+                            </div>
+                            <div class="folderList-bottom">
+                                <button class="glyphicon glyphicon-cog"></button>
+                                <button class="glyphicon glyphicon-trash"></button>
+                            </div>
+                        </div>
+                        <div class="share-with">
+                            <div class="share-with-list">
+                                <div class="share-with-list-box">
+                                    <div class="pull-left share-with-title">
+                                        <h5>{% trans "Share With" %}</h5>
+                                    </div>
+                                    <div class="pull-right dropdown">
+                                        <button class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span>{% trans "Add Usr" %}</span>   <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu addUsrList">
+                                            <li>{% trans "admin1" %}</li>
+                                            <li>{% trans "admin2" %}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="share-with-list-box">
+                                    <div class="pull-left share-with-title">
+                                        <span><b class="glyphicon glyphicon-user"></b> {% trans "Admin" %}</span>
+                                    </div>
+                                    <div class="pull-right">
+                                        <span class="share-with-status">W</span>
+                                        <span class="share-with-status">R</span>
+                                    </div>
+                                </div>
+                                <div class="share-with-list-box">
+                                    <div class="pull-left share-with-title">
+                                        <span><b class="glyphicon glyphicon-user"></b> {% trans "Admin" %}</span>
+                                    </div>
+                                    <div class="pull-right">
+                                        <span class="share-with-status" style="background: #0096ff; color: #fff">W</span>
+                                        <span class="share-with-status">R</span>
+                                    </div>
+                                </div>
+                                <div class="share-with-list-box">
+                                    <div class="pull-left share-with-title">
+                                        <h5>{% trans "Pool" %}</h5>
+                                    </div>
+                                    <div class="pull-right dropdown">
+                                        <button class="btn dropdown-toggle" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false">
+                                            <span>{% trans "Admini" %}</span>   <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu addUsrList">
+                                            <li>{% trans "admin1" %}</li>
+                                            <li>{% trans "admin2" %}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="share-with-list-box">
+                                    <button class="btn btn-block btn-lg">{% trans "OK" %}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="folderList-box">
+                            <div class="folderList-top">
+                                <div class="pull-left">
+                                    <h5>{% trans "Folder21" %}</h5>
+                                    <p>
+                                        <span>
+                                         <b class="glyphicon glyphicon-user"></b> {% trans "Admin" %}
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="pull-right">
+                                    <button class="glyphicon glyphicon-chevron-right"></button>
+                                </div>
+                            </div>
+                            <div class="folderList-bottom">
+                                <button class="glyphicon glyphicon-cog"></button>
+                                <button class="glyphicon glyphicon-trash"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include "lenovo/ceph_mgmt/modal/usrManagement.html" %}
+{% include "lenovo/ceph_mgmt/modal/addNewFolder.html" %}

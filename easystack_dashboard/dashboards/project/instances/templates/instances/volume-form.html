@@ -1,0 +1,155 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+    <div class="left form-wrap">
+      <fieldset>
+        <!--
+          Volume name input (required):
+            Attach-mode: show,disabled
+            Detach-mode: show,disabled
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label class="control-label fl required" for="name">
+            {% trans "Instance Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              type="text"
+              ng-model="instance.name"
+              ng-maxlength="255"
+              ng-disabled="context.mode === 'attach' || context.mode === 'detach'"
+              placeholder="{% trans 'enter a instance name' %}"/>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$invalid && form.name.$dirty">
+              {% trans "A instance name is required." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+          Attach volume input (required):
+            Attach-mode: show
+        -->
+        <div class="form-group clearfix "
+          ng-if="context.mode === 'attach'"
+          ng-class="{'has-error':form.volumeAttach.$invalid && form.volumeAttach.$dirty}">
+          <label class="control-label fl required" for="volumeAttach">
+            {% trans "Volume" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="volumeAttach"
+              name="volumeAttach"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.volumes}"
+              ng-model="instance.volume"
+              ng-change="selectVolume(instance.volume)">
+              <option value="" disabled>
+                {% trans 'Select a Volume' %}
+              </option>
+              <option
+                ng-repeat="volume in dropdown.volumes"
+                ng-selected="volume.id === instance.volume"
+                ng-disabled="volume.id === 0"
+                value="{$ volume.id $}">
+                {$ volume.name $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!--
+          Attached Mode input (required):
+            Attach-mode: show
+            attach mode don't need to display
+        -->
+        <!--
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'attach'"
+          ng-class="{'has-error':form.attached_mode.$invalid && form.attached_mode.$dirty}">
+          <label for="attached_mode">
+            <p>{% trans "Attached Mode" %}</p>
+          </label>
+          <div class="form-group-right">
+            <select
+              id="attached_mode"
+              name="attached_mode"
+              class="form-control"
+              >
+              <option value="" disabled>
+                {$ "{% trans 'Select Attached Mode' %}"$}
+              </option>
+              <option  ng-selected=true ng-if="instance.volume_attached_mode === 'ro'" >
+                {$ "{% trans 'ro' %}"$}
+              </option>
+              <option ng-selected=true ng-if="instance.volume_attached_mode === 'rw'" >
+                {$ "{% trans 'rw' %}"$}
+              </option>
+            </select>
+          </div>
+        </div>
+        -->
+        <!--
+          Detach volume input (required):
+            Detach-mode: show,disabled
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'detach'"
+          ng-class="{'has-error':form.Detach.$invalid && form.Detach.$dirty}">
+          <label for="volumeDetach">
+            {% trans "Volume" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="volumeDetach"
+              name="volumeDetach"
+              class="form-control verify-input"
+              ng-class="{strikeLoading: !dropdown.volumes}"
+              ng-init="instance.volume = dropdown.volumes[0]"
+              ng-model="instance.volume"
+              ng-change="instance.device = dropdown.volumesMap[instance.volume].device;
+                         instance.volumeName = dropdown.volumesMap[instance.volume].name">
+              <option value="" disabled>
+                {$ (dropdown.volumes && dropdown.volumes.length) ? "{% trans 'Select a Volume' %}"
+                   : "{% trans 'No Volume to select' %}" $}
+              </option>
+              <option
+                ng-repeat="volume in dropdown.volumes"
+                ng-selected="volume.id === instance.volume"
+                value="{$ volume.id $}">
+                {$ volume.name $}
+              </option>
+            </select>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+
+    <!-- Modal-form-right: The description text. -->
+
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

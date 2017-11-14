@@ -1,0 +1,196 @@
+{% load i18n %}
+{% load context_selection %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+        <!-- Modal-form-left: Contains the form controls -->
+        <div class="modal-description mt10" >
+          <p>
+            <div>{$ mdescription $}</div>
+            <div>{$ mdescription1 $}</div>
+            <div>{$ mdescription2 $}</div>
+            <div>{$ mdescription3 $}</div>
+          </p>
+        </div>
+    <!-- Modal-form-left: Contains the form controls -->
+      <fieldset>
+        <!--
+          Volume name input (required):
+            Create-mode: show
+            Edit-mode: show
+            Extend-mode: show,disabled
+            Attach-mode: show,disabled
+            Detach-mode: show,disabled
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="name">
+            *{% trans "Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              type="text"
+              ng-model="vpnservice.name"
+              ng-maxlength="255"
+              placeholder="{% trans 'enter an VPN Service name' %}"/>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "An VPN Service name is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength && form.name.$dirty">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+          Description input (optional):
+            Create-mode: show
+            Edit-mode: show
+        -->
+        <div class="form-group clearfix">
+          <label for="description">
+            {% trans "Description" %}
+          </label>
+          <div class="form-group-right"
+               ng-class="{'has-error':form.description.$invalid && form.description.$dirty}">
+            <textarea
+              id="description"
+              name="description"
+              class="form-control"
+              rows="4"
+              ng-maxlength="255"
+              type="description"
+              ng-model="vpnservice.description"
+              placeholder="{% trans 'enter description of the VPN Service' %}">
+            </textarea>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.description.$error.maxlength">
+              {% trans "Description length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create'"
+          ng-class="{'has-error':form.router_id.$invalid && form.router_id.$dirty}">
+          <label class="control-label fl required" for="router_id">
+            *{% trans "Router" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="router_id"
+              name="router_id"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.routers}"
+              ng-init="vpnservice.router_id = dropdown.routers[0].id"
+              ng-change = "getDevicePort(vpnservice.router_id)"
+              ng-model="vpnservice.router_id">
+              <option value="" disabled>
+              {$ (dropdown.routers && dropdown.routers.length)?
+              "{% trans 'Select Router' %}": "{% trans 'No Router Available' %}" $}
+              </option>
+              <option
+                ng-repeat="router in dropdown.routers"
+                ng-selected="vpnservice.router_id === router.id"
+                value="{$ router.id $}">
+                {$ router.name $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create'"
+          ng-class="{'has-error':form.subnet_id.$invalid && form.subnet_id.$dirty}">
+          <label class="control-label fl required" for="subnet_id">
+            *{% trans "Subnet" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="subnet_id"
+              name="subnet_id"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.sub_networks}"
+              ng-init="vpnservice.subnet_id = dropdown.sub_networks[0].subnet_id"
+              ng-model="vpnservice.subnet_id">
+              <option value="" disabled>
+              {$ (dropdown.sub_networks && dropdown.sub_networks.length >0)?
+              "{% trans 'Select Network' %}": "{% trans 'No Network Available' %}" $}
+              </option>
+              <option
+                ng-repeat="sub_network in dropdown.sub_networks"
+                ng-selected="vpnservice.subnet_id === sub_network.subnet_id"
+                value="{$ sub_network.subnet_id $}">
+                {$ sub_network.subnet $}({$ sub_network.cidr $})
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group clearfix">
+          <label for="admin_state_up">
+            {% trans "Admin State" %}
+          </label>
+          <div class="form-group-right">
+            <select
+              id="admin_state_up"
+              name="admin_state_up"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.admin_states}"
+              ng-init="vpnservice.admin_state_up=(vpnservice.admin_state_up !=udefined? vpnservice.admin_state_up:dropdown.admin_states[0].key)"
+              ng-model="vpnservice.admin_state_up">
+              <option
+                ng-repeat="s in dropdown.admin_states"
+                ng-selected="s.key==vpnservice.admin_state_up"
+                value="{$ s.key $}">
+                {$ s.value $}
+              </option>
+            </select>
+            <span class="glyphicon glyphicon-question-sign help-fixed"
+                  popover="{$ helpInfo $}"
+                  popover-placement="right"
+                  popover-append-to-body="true"
+                  popover-trigger="hover"></span>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.admin_state_up.value.$error.required && form.admin_state_up.$dirty">
+              {% trans "{$ helpInfo $}" %}
+            </p>
+          </div>
+        </div>
+
+    <!-- Modal-form-right: The description text. -->
+    </fieldset>
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-if="context.mode == 'create'"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-if="context.mode == 'edit'"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

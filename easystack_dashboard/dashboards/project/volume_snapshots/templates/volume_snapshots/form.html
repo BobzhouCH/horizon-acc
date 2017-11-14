@@ -1,0 +1,186 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+    <div class="left form-wrap">
+      <fieldset>
+        <!--
+          Volume name input (required):
+            Create-mode: show
+            Extend-mode: show,disabled
+        -->
+        <div class="form-group clearfix">
+          <label class="control-label fl required" for="name">
+            *{% trans "Volume Name" %}
+          </label>
+          <div class="form-group-right"
+               ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              type="text"
+              ng-model="volume.name"
+              ng-maxlength="255"
+              placeholder="{% trans 'enter a volume name' %}"/>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "A volume name is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength && form.name.$dirty">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+        <!--
+          Description input (optional):
+            Create-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create'">
+          <label class="control-label fl" for="description">
+            {% trans "Description" %}
+          </label>
+          <div class="form-group-right" ng-class="{'has-error':form.description.$invalid && form.description.$dirty}">
+            <textarea
+              id="description"
+              name="description"
+              rows="4"
+              class="form-control"
+              type="description"
+              ng-maxlength="255"
+              ng-model="volume.description"
+              placeholder="{% trans 'enter description of the volume' %}">
+            </textarea>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.description.$error.maxlength">
+              {% trans "Description length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+        <!--
+          Type selection (option):
+            Create-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create'"
+          ng-class="{'has-error':form.type.$invalid && form.type.$dirty}">
+          <label class="control-label fl required" for="type">
+            {% trans "Type" %}
+          </label>
+          <div class="form-group-right">
+            <select disabled
+              id="type"
+              name="type"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.types}"
+              ng-model="volume.volume_type">
+              <option value="" disabled>
+                {$ "{% trans 'volume type will be default' %}" $}
+              </option>
+              <option
+                ng-repeat="type in dropdown.types"
+                ng-selected="type.name===volume.volume_type"
+                value="{$ type.name $}">
+                {$ type.name $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!--
+          Size input (required):
+            Create-mode: show
+        -->
+        <div class="form-group clearfix"
+             ng-if="context.mode == 'create'">
+          <label class="control-label fl" for="size">
+            {% trans "Size" %}
+          </label>
+          <div class="form-group-right no-input-number"
+               ng-class="{'has-error':form.size.$invalid && form.size.$dirty}">
+
+            <dragbar id="size"
+              name="size"
+              max="1000"
+              min="volume.min"
+              pattern="[0-9]+"
+              unit="GB"
+              ng-model="volume.size">
+            </dragbar>
+            <p class="help-block alert-fixed alert-danger"
+               ng-show="quota_exceeded && !(form.size.$invalid && form.size.$dirty)">
+            {% trans "Your volume gigabytes quota exceeded." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="(form.size.$error.max || form.size.$error.min) && form.size.$dirty">
+              {% trans "Volume size must be in" %} {$ volume.min $} - 1000GB
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+               ng-show="!(form.size.$error.max || form.size.$error.min) && form.size.$error.pattern && form.size.$dirty">
+              {% trans "Volume size must be integer" %}
+            </p>
+          </div>
+        </div>
+        <div ng-show="showBilling && !noFixing" ng-if="preBilling" class="form-group clearfix">
+          <label for="btype">
+            {% trans "Billing Type" %}
+          </label>
+          <div class="form-group-right" style="width: 40%;">
+            <select required
+              id="unit"
+              name="unit"
+              class="form-control"
+              style="width: 80%;"
+              ng-change="changePayment(unitSelect)"
+              ng-model="unitSelect"
+              ng-options="payment as payment.unitLabel for payment in payment_type">
+            </select>
+          </div>
+          <div ng-if="unitSelect.unit=='H'" style="padding-top:10px;">
+            <span class="orange">{$ price  * volume.size| price $}{% trans 'Yuan' %}</span>/{% trans 'Hour' %}
+          </div>
+          <div ng-if="unitSelect.unit=='M'" style="padding-top:10px;">
+            <span class="orange">{$ price  * volume.size| price $}{% trans 'Yuan' %}</span>/{% trans 'Month' %}
+          </div>
+          <div ng-if="unitSelect.unit=='Y'" style="padding-top:10px;">
+            <span class="orange">{$ price  * volume.size| price $}{% trans 'Yuan' %}</span>/{% trans 'Year' %}
+          </div>
+        </div>
+        <div ng-if="!preBilling && !noFixing">
+        <p class="billing-info fr ng-if="context.mode  === 'create' || context.mode === 'extend'" ng-show="showBilling">
+          <span class="orange">{$ price * volume.size | price $}{% trans 'Yuan' %}</span>/{% trans 'Hour' %}
+          <span class="gray_3">({$ price * volume.size * 24 * 30 | price $}{% trans 'Yuan' %}/{% trans 'Month' %})</span>
+        </p>
+        </div>
+        <p class="billing-info-tips fr" ng-if="context.mode === 'create'" ng-show="noFixing">
+          <span class="gray_3">{% trans 'No Active Fixing' %}</span>
+          </p>
+          <p class="billing-info-tips fr" ng-if="context.mode === 'create'" ng-show="showBalance">
+          <span class="red">{% trans 'No Enough Balance' %}</span>
+          </p>
+      </fieldset>
+    </div>
+
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid || volumeSizeChange || volume.size < volumeDef.defVal || quota_exceeded"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

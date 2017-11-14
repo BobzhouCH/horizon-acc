@@ -1,0 +1,189 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% load context_selection %}
+{% block title %}{% trans "Images" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Images") %}
+{% endblock page_header %}
+
+{% block main %}
+
+<hz-magic-search-context filter-facets="filterFacets">
+  <table id="images-list" hz-table ng-cloak hopes-table-drag
+    st-table="iimages"
+    st-safe-src="images"
+    default-sort="name"
+    default-sort-reverse="false"
+    ng-controller="projectImagesCtrl"
+    ng-init="userID = '{{ request.user.id }}'"
+    disabled="disabled"
+    st-magic-search
+    class="table table-bordered table-hover">
+
+    <!--
+      Table-head:
+      This is where we add things like filtering and batch actions.
+      This is where we add column headers.
+    -->
+    <thead>
+
+      <!--
+        Table-batch-actions:
+        This is where batch actions like searching, creating, and deleting.
+      -->
+     <tr>
+        <th colspan="100" class="bare">
+          <div class="table_actions clearfix">
+            <action-list class="btn-addon">
+                <action
+                  action-classes="'btn btn-default btn-sm'"
+                  callback="actions.refresh">
+                  <i class="icon icon-refresh"></i>
+                  <span id="refresh"></span>
+                </action>
+            </action-list>
+
+            {% inRegionShowNode 'project-volumes-more' %}
+            <action-list class="btn-addon">
+              <action action-classes="'btn btn-default btn-sm'"
+                      callback="actions.imageCreateVolumeAction.open"
+                      item="selectedData.aData"
+                      disabled="(!rootblock.active_fixing && rootblock.billing_need) || selectedData.aData.length !== 1">
+                <i class="icon icon-add"></i>
+                <span id="create-volume">{% trans 'Create Volume' %}</span>
+              </action>
+            </action-list>
+            {%  endinRegionShowNode %}
+
+            <div class="fr search-bar">
+              <hz-magic-search-bar id="search"></hz-magic-search-bar>
+            </div>
+          </div>
+        </th>
+      </tr>
+
+      <!--
+        Table-column-headers:
+        This is where we declaratively define the table column headers.
+        Include the select all checkbox if you want to enable select all
+        for performing batch actions.
+      -->
+      <tr eagle-eye="table_heads">
+        <th class="select-col" eagle-eye="select_col">
+          <input type="checkbox"
+            hz-select-page="images"/>
+        </th>
+        <th>
+          <span st-sort="name" st-sort-default="name" eagle-eye="data_col">{$ ::context.header.name $}</span>
+        </th>
+        <th><span eagle-eye="data_col">{$ ::context.header.image_type $}</span></th>
+        <th><span eagle-eye="data_col">{$ ::context.header.status $}</span></th>
+        <th><span eagle-eye="data_col">{$ ::context.header.is_public $}</span></th>
+        <th><span eagle-eye="data_col">{$ ::context.header.disk_format $}</span></th>
+        <th><span eagle-eye="data_col">{$ ::context.header.size $}</span></th>
+
+      </tr>
+    </thead>
+
+    <tbody>
+
+      <tr ng-if="!imageState">
+        <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+      </tr>
+
+      <tr ng-if="!iimages.length && imageState">
+        <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+      </tr>
+
+      <tr ng-repeat="image in iimages" ng-class="{'st-selected': checked[image.id]}">
+
+        <!--
+          Table-row-checkbox:
+          User can select and unselect this row by clicking on this checkbox.
+          Batch actions can then be perform on selected rows.
+        -->
+        <td class="select-col" eagle-eye="select_col">
+          <input type="checkbox"
+            hz-select="image"
+            ng-model="selected[image.id].checked"
+            hz-checkbox-group="images"/>
+        </td>
+
+        <!-- Table-row-info-column -->
+        <td eagle-eye="data_col">
+            <a ng-click="actions.createDetail.open(image.id)" href="javascript:;" data-url="/project/images/detail/{$ image.id $}">
+                <img class="image-icon" ng-src="/static/dashboard/img/img-icon/default.png" ng-if="!image.properties.image_os" width="22" height="22">
+                <img class="image-icon" ng-src="/static/dashboard/img/img-icon/{$ image.properties.image_os $}.png" ng-if="image.properties.image_os" width="22" height="22">
+                {$ image.name $}
+            </a>
+        </td>
+        <td eagle-eye="data_col">{$ image.image_type $}</td>
+        <td eagle-eye="data_col">{$ image.status|decode:imageStatus $}</td>
+        <td eagle-eye="data_col">
+          <i ng-show="image.is_public" class="state-icon icon-true"></i>
+          <i ng-hide="image.is_public" class="state-icon icon-false"></i>
+        </td>
+        <td eagle-eye="data_col">{$ image.disk_format $}</td>
+        <td eagle-eye="data_col">{$ image.display_size $}</td>
+
+        <!--
+          Table-row-action-column:
+          Actions taken here applies to a single item/row.
+          Refer to action-list directive for more examples of usage.
+          btn-default
+        -->
+        <!--<td class="action-col">
+          <action-list dropdown>
+            <action
+              button-type="split-button"
+              action-classes="'btn btn-sm'"
+              callback="actions.edit.open" item="user">
+                {% trans 'Edit' %}
+            </action>
+            <menu>
+              <action
+                button-type="menu-item"
+                callback="actions.password.open" item="user">
+                  {% trans 'Change Password' %}
+              </action>
+              <action
+                ng-if="user.id !== userID"
+                button-type="menu-item"
+                callback="actions.enable.toggle" item="user">
+                  {$ user.enabled?
+                    '{% trans "Disable" %}':
+                    '{% trans "Enable" %}'
+                $}
+              </action>
+              <action
+                ng-if="user.id !== userID"
+                button-type="menu-item"
+                action-classes="'text-danger'"
+                callback="actions.deleted.singleDelete" item="user">
+                  {% trans 'Delete' %}
+              </action>
+            </menu>
+          </action-list>
+        </td>-->
+
+      </tr>
+
+    </tbody>
+
+    <!--
+      Table-footer:
+      This is where we display number of items and pagination controls.
+      Ensure colspan is greater or equal to number of column-headers.
+    -->
+    <tfoot ng-if="images.length > 10">
+      <tr>
+        <td colspan="100" eagle-eye="data_page">
+          <table-footer></table-footer>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</hz-magic-search-context>
+
+{% endblock %}

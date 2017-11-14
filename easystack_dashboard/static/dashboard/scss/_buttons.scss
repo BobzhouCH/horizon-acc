@@ -1,0 +1,265 @@
+.btn {
+  line-height: 32px;
+  font-size: ceil(($font-size-base * 1.16));
+  border: none;
+  border-radius: 2px;
+  padding-top: 0;
+  padding-bottom: 0;
+  span,i{
+    vertical-align: middle;
+  }
+}
+
+.btn-primary {
+  border: none;
+  padding: 0 24px;
+  &:hover{ background-color: $btn-primary-hover-bg; border: none; }
+  &:focus,
+  &.focus{
+     background-color: $btn-primary-bg;
+     border: none; 
+  }
+  &:active,
+  &.active {
+    outline: 0;
+    border: none;
+    background-image: none;
+    background: $btn-primary-active-bg;
+    @include box-shadow(inset 0 0 0 rgba(0,0,0,0));
+    &:focus,
+    &.focus {
+      outline: none;
+      border: none;
+    }
+  }
+  &.btn-width-sm { padding: 0 10px; }
+}
+
+// Danger and error appear as red
+.btn-danger {
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    &,
+    &:hover,
+    &:focus,
+    &.focus,
+    &:active,
+    &.active { background-color: $btn-link-disabled-color; opacity: 1; border-color: none; }
+  }
+}
+
+.btn-group {
+  margin-right: 6px;
+  .btn:first-child:not(:last-child):not(.dropdown-toggle){
+    border-radius: 2px;
+  }
+}
+
+.btn-action {
+  padding:0 10px;
+}
+
+// Table confirm and cancel button
+.btn-confirm,.btn-cancel {
+  // height: 18px;
+  line-height: 18px;
+  color: #fff;
+  font-size: 10px;
+  padding: 0 10px;
+  &.disabled {
+    background: #999;
+  }
+}
+.btn-confirm {
+  background: #66cc66;
+  &:hover {
+    background: #52b552
+  }
+  &:focus {
+    background: #388738;
+  }
+}
+.btn-cancel {
+  background: #fc0606;
+  &:hover {
+    background: #db0a0a
+  }
+  &:focus {
+    background: #aa1111;
+  }
+}
+.btn-icon {
+  display: inline-block;
+  background: url(/static/dashboard/img/icon.png) no-repeat;
+  &.btn-icon-confirm {
+    width: 9px;
+    height: 7px;
+    background-position: 0 -53px;
+  }
+  &.btn-icon-cancel {
+    width: 8px;
+    height: 8px;
+    background-position: 0 -63px;
+  }
+}
+
+// Drop down menu
+.dropdown-menu {
+  min-width: 130px;
+  padding: 0;
+  @include box-shadow(inset 0 0 0 rgba(0,0,0,0));
+  border-radius: 0;
+  padding: 0;
+  > li {
+    > a {
+      padding: 0 15px;
+      line-height: 30px;
+    }
+  }
+}
+.dropdown-menu-right {
+  left: 0;
+  right: initial;
+}
+
+// state icon
+.state-icon {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background: url(/static/dashboard/img/state-icon.png) no-repeat;
+  vertical-align: middle;
+  &.icon-true { background-position: 0 0; }
+  &.icon-false { background-position: 0 -15px; }
+}
+
+// chevron-icon
+.chevron-right, .chevron-down {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  background: url(/static/dashboard/img/chevron-icon.png) no-repeat;
+}
+.chevron-down {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+}
+
+// small loading icon
+.strikeLoading { background: url(/static/bootstrap/img/load.gif) no-repeat center; }
+
+// action icon
+.icon {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background: url(/static/dashboard/img/action-icon.png) no-repeat;
+  vertical-align: middle;
+}
+.icon-refresh {
+  width: 15px;
+  height: 20px;
+}
+.icon-add {
+  background-position: 0 -23px;
+}
+.icon-play {
+  background-position: 0 -42px;
+}
+.icon-login {
+  background-position: 0 -61px;
+}
+.icon-onoff {
+  background-position: 0 -78px;
+}
+.icon-more {
+  background-position: 0 -96px;
+}
+.icon-delete {
+  background-position: 0 -115px;
+}
+.icon-edit {
+  background-position: 0 -134px;
+}
+.icon-upload {
+  background-position: 0 -151px;
+}
+.icon-obj-upload {
+  background-position: 0 -185px;
+  transform: rotate(90deg);
+}
+.icon-download {
+  background-position: 0 -168px;
+  transform: rotate(90deg);
+}
+.icon-mount {
+  background-position: 0 -168px;
+}
+.icon-uninstall {
+  background-position: 0 -185px;
+}
+.icon-relation {
+  background-position: 0 -202px;
+}
+.icon-breakoff {
+  background-position: 0 -215px;
+}
+.icon-check {
+  background-position: 0 -550px;
+  width: 16px;
+  height: 16px;
+}
+.icon-pause {
+  background-position: 0 -571px;
+  width: 16px;
+  height: 16px;
+}
+.icon-resume {
+  background-position: 0 -590px;
+  width: 16px;
+  height: 16px;
+}
+
+//search icon
+.fa-search {
+  color: $WizardBtnBdColor;
+}
+
+//add and remove btn style
+.add_to{
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    background-position: 0 -228px;
+    &:hover { background-position: 0 -257px; }
+    &:active { background-position: 0 -286px; }
+}
+.remove_to{
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    background-position: 0 -315px;
+    &:hover { background-position: 0 -344px; }
+    &:active { background-position: 0 -373px; }
+}
+.network_add_to{
+    width: 20px;
+    height: 18px;
+    cursor: pointer;
+    background-position: -1px -403px;
+    &:hover { background-position: -1px -428px; }
+    //&:active { background-position: -1px -453px; }
+}
+.network_remove_to{
+    width: 20px;
+    height: 18px;
+    cursor: pointer;
+    background-position: 0 -478px;
+    &:hover { background-position: 0 -503px; }
+    &:active { background-position: 0 -528px; }
+}
+.instance-btn button { border:none; background:none;}
+.btn-add-disb { position:relative; left:12px; }
+.btn-noborder button{border:none;}

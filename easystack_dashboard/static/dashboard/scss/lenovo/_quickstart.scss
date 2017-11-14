@@ -1,0 +1,111 @@
+#shadow {
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  position: fixed;
+  z-index: 1001;
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+}
+#mbx_wizard {
+  width: 601px;
+  height: 400px;
+  background-color: #fff;
+  position: fixed;
+  z-index: 1002;
+  left: 50%;
+  top: 50%;
+  margin: -200px 0 0 -300px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+#mbx_table {
+  width: 599px;
+  height: 398px;
+  border-collapse: collapse;
+  border: 0px solid #999;
+  background-color: transparent;
+}
+#mbx_table tr {
+  height: 199px;
+}
+#mbx_table td#cell_01 {
+  border-top: 0;
+  border-right: 1px solid #DDDDDD;
+  border-bottom: 0;
+  border-left: 0;
+}
+#mbx_table td#cell_02 {
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 1px solid #DDDDDD;
+  border-left: 0;
+}
+#mbx_table td#cell_03 {
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 1px solid #DDDDDD;
+  border-left: 1px solid #DDDDDD;
+}
+#mbx_table td#cell_04 {
+  border-top: 1px solid #DDDDDD;
+  border-right: 1px solid #DDDDDD;
+  border-bottom: 0;
+  border-left: 0;
+}
+#mbx_table td#cell_05 {
+  border-top: 1px solid #DDDDDD;
+  border-right: 1px solid #DDDDDD;
+  border-bottom: 0;
+  border-left: 0;
+}
+
+#mbx_table td#cell_01 a, #mbx_table td#cell_02 a, #mbx_table td#cell_03 a, #mbx_table td#cell_04 a {
+  width: 199px;
+  display: block;
+  font-size: 64px;
+  text-align: center;
+  padding-top: 10px;
+  margin: 0 auto;
+}
+#mbx_table td#cell_01 .m_s_center, #mbx_table td#cell_02 .m_s_center {
+  margin: 0 auto;
+}
+#mbx_table td#cell_02 .cell02_temp_padding{
+  padding-left: 98px;
+}
+
+#mbx_table td#cell_05 a, #mbx_table td#cell_06 a {
+  width: 199px;
+  display: block;
+  font-size: 64px;
+  text-align: center;
+}
+#mbx_table td#cell_01 div, #mbx_table td#cell_02 div, #mbx_table td#cell_03 div, #mbx_table td#cell_04 div {
+  width: 199px;
+  text-align: center;
+}
+#mbx_wizard a:link, #mbx_wizard a:visited, #mbx_wizard a:hover, #mbx_wizard a:active {
+  color: #399BE1;
+  text-decoration: none;
+}
+#mbx_wizard a#modCancel {
+  position: absolute;
+  top: -28px;
+  left: 572px;
+}
+#mbx_wizard a#modCancel > i {
+  width: 55px;
+  height: 55px;
+  vertical-align: middle;
+  display: inline-block;
+  cursor: pointer;
+}
+#mbx_table td#cell_02 > button,
+#mbx_table td#cell_03 > button,
+#mbx_table td#cell_04 > button {
+  background: transparent;
+  border: 0;
+}

@@ -1,0 +1,110 @@
+{% extends 'es_base.html' %}
+
+{% load i18n %}
+{% load url from future %}
+{% load context_selection %}
+
+{% block title %}{% trans "Network Topology" %}{% endblock %}
+
+{% block main %}
+
+<noscript>
+{% trans "This panel needs javascript support." %}
+</noscript>
+
+<style>
+    .launchButtons > div {
+        float: left;
+    }
+</style>
+
+{% include "project/topology/client_side/_balloon_container.html" %}
+{% include "project/topology/client_side/_balloon_device.html" %}
+{% include "project/topology/client_side/_balloon_port.html" %}
+
+<div class="topologyNavi">
+  <div class="toggleView btn-group" data-toggle="buttons">
+    <label class="btn btn-default" data-value="small">
+      <input type="radio" name="options" id="option1" checked>
+      <span class="fa fa-th"></span>
+      {% trans "Small" %}
+    </label>
+    <label class="btn btn-default" data-value="normal">
+      <input type="radio" name="options" id="option2">
+      <span class="fa fa-th-large"></span>
+      {% trans "Normal" %}
+    </label>
+  </div>
+  <div class="launchButtons">
+      <div ng-controller="projectInstancesCtrl"
+           ng-init="userID = '{{ request.user.id }}'"
+           disabled="disabled">
+          {% inRegionShowNode 'project-instances-create-instances' %}
+              <button
+                      id="create-instances"
+                      class="btn btn-primary btn-action btn-group"
+                      ng-click="openLaunchInstanceWizard({successUrl: '/project/instances/'})"
+                      ng-disabled="(!rootblock.active_fixing && rootblock.billing_need) || instances.length >= quota || !quota"
+                      ng-controller="LaunchInstanceModalCtrl">
+                  <i class="icon icon-add"></i>
+              <span id="create-instance">{% trans 'Create Instance' %}
+                <i ng-show="instances.length >= quota">{% trans '(quota exceeded)' %}</i>
+                <i ng-show="(!rootblock.active_fixing && rootblock.billing_need)">{% trans '(no effective price)' %}</i>
+              </span>
+              </button>
+          {% endinRegionShowNode %}
+
+          {% inRegionShowNode 'project-instances-aws-create-instances' %}
+              <button
+                      id="aws-create-instances"
+                      class="btn btn-primary btn-action btn-group"
+                      ng-click="openAwsLaunchInstanceWizard({successUrl: '/project/instances/'})"
+                      ng-disabled="(!rootblock.active_fixing && rootblock.billing_need) || instances.length >= quota"
+                      ng-controller="AwsLaunchInstanceModalCtrl">
+                  <i class="icon icon-add"></i>
+              <span id="aws-create-instance">{% trans 'Create Instance' %}
+                <i ng-show="instances.length >= quota">{% trans '(quota exceeded)' %}</i>
+                <i ng-show="(!rootblock.active_fixing && rootblock.billing_need)">{% trans '(no effective price)' %}</i>
+              </span>
+              </button>
+          {% endinRegionShowNode %}
+      </div>
+
+      <div ng-controller="projectNetworksController"
+           ng-init="userID = '{{ request.user.id }}'">
+          <action-list>
+              <action action-classes="'btn btn-primary btn-action'"
+                      callback="actions.create.open"
+                      disabled="networks.length >= networkQuota || subnetNum>=subnetQuota">
+                  <i class="icon icon-add"></i>
+              <span id="create-network">{% trans 'Create Network' %}
+                <i ng-show="networks.length >= networkQuota">{% trans '(network quota exceeded)' %}</i>
+                <i ng-show="subnetNum>=subnetQuota">{% trans '(subnet quota exceeded)' %}</i>
+              </span>
+              </action>
+          </action-list>
+      </div>
+  </div>
+</div>
+
+<div id="topologyCanvasContainer">
+  <div class="nodata">
+    {% blocktrans %}There are no networks, routers, or connected instances to display.
+    {% endblocktrans %}
+  </div>
+  {% include "project/topology/_svg_element.html" %}
+</div>
+
+<span data-networktopology="{% url 'horizon:project:topology:json' %}" id="networktopology"></span>
+<div id="topologyMessages"></div>
+
+<script type="text/javascript">
+  if (typeof horizon.network_topology !== 'undefined') {
+    horizon.network_topology.init();
+  } else {
+    addHorizonLoadEvent(function () {
+      horizon.network_topology.init();
+    });
+  }
+</script>
+{% endblock %}

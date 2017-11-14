@@ -1,0 +1,20 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Edit Account Prices" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Edit Account Prices: ") %}
+{% endblock page_header %}
+
+{% block main %}
+  {{ table.render }}
+    <li class="fr">
+      <div class="fr backWrap">
+        <a class="backIcon js-bkBtn" href="javascript:history.go(-1);"></a>
+          <div class="backTips js-bkTips" style="opacity: 0;">
+            <span class="backTipsIcon"></span>
+              <p>{%trans "Return"%}</p>
+          </div>
+      </div>
+    </li>
+{% endblock %}

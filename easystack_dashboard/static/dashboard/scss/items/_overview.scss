@@ -1,0 +1,682 @@
+/**
+ ** Author : limeili
+ ** Module : overview public module
+ ** Data   : 2016-01-25
+**/
+
+/* overview public style start */
+.overview-contentMain {
+  margin: 0 20px auto;
+}
+
+.overview-table {
+  padding: 20px;
+  background: #fff;
+  border-radius: $overview-radius;
+  margin-top: 10px;
+  box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.20);
+  table {
+    margin-bottom: 0;
+  }
+}
+
+.used-bar-wrap {
+  line-height: 12px;
+  font-size: 10px;
+  background: rgb(244, 245, 246);
+  position: relative;
+  z-index: 0;
+  .used-box {
+    height: 12px;
+    position: relative;
+    width: 100%;
+  }
+  .used-box-bar {
+    width: 0;
+    height: inherit;
+    overflow: hidden;
+    color: white;
+    transition: 0.5s width;
+    background: $brand-primary;
+  }
+  .used-box-bar:before, .used-box:before {
+    line-height: 12px;
+    padding-right: 5px;
+    content: attr(data-text);
+    display: block;
+    text-align: right;
+    overflow: hidden;
+  }
+  .used-box:before {
+    width: 100%;
+    position: absolute;
+    z-index: -1;
+  }
+}
+
+.content-overview {
+  margin-right: 10px;
+}
+
+.overview-title.title-all {
+  vertical-align: bottom;
+}
+
+.col-wrap,
+.col-left-wrap,
+.col-right-wrap {
+  padding: 0 0 0 10px;
+  margin-top: -10px;
+}
+
+.col-wrap .col-middle,
+.col-left-wrap .col-left,
+.col-right-wrap .col-right {
+  min-width: 280px;
+  background: #fff;
+  margin-top: 10px;
+  border-radius: $overview-radius;
+}
+
+.col-left-wrap .col-left {
+  background: none;
+  border-radius: none;
+}
+
+.col-right-wrap .col-right {
+  box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.20);
+}
+
+.overview-title {
+  width: 100%;
+  height: 40px;
+  font-size: 16px;
+  color: #333;
+  font-weight: bold;
+  display: table-cell;
+}
+
+.overview-instances {
+  padding: 10px 10px 10px 10px;
+
+  .row {
+    margin: 5px 5px 10px 5px;
+  }
+
+  .status-icon {
+    margin-right: 5px;
+  }
+
+  .status-item-value {
+    display: inline-block;
+    overflow: hidden;
+    width: 17px;
+    font-weight: bold;
+    vertical-align: bottom;
+
+    .a:link, a:visited, a:hover, a:active{
+      text-decoration: none;
+    }
+  }
+}
+
+.col-left-wrap {
+  width: 68%;
+}
+
+.col-wrap {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.col-wrap .col-middle {
+  .col-md-1,
+  .col-md-2,
+  .col-md-3,
+  .col-md-4,
+  .col-md-5,
+  .col-md-6,
+  .col-md-7,
+  .col-md-8,
+  .col-md-9,
+  .col-md-10 {
+    padding: 0;
+  }
+}
+
+.col-wrap .col-middle .project-msg {
+  min-height: 280px;
+}
+
+.col-right-wrap {
+  width: 32%;
+  .title-action {
+    line-height: 50px;
+    padding-left: 10px;
+    display: inline-block;
+    font-size: 14px;
+  }
+  .title-more {
+    color: #3399ff;
+    font-size: 12px;
+    font-weight: normal;
+    margin-left: 10px;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  .overview-ol-con {
+    height: 737px;
+    overflow-y: auto;
+    position: relative;
+    .Loading-bar {
+      text-align: center;
+      margin-top: 50%;
+    }
+    .list-dashed {
+      position: absolute;
+      left: 118px;
+      width: 4px;
+      height: 95.6%;
+      top: 30px;
+      background: $overview-action-line-bg-color;
+    }
+  }
+  ol {
+    margin-left: 140px;
+    margin-top: 50px;
+    padding: 0px;
+    li {
+      width: 85%;
+      border: 1px $overview-action-border-color solid;
+      margin-top: 20px;
+      margin-left: 15px;
+      position: relative;
+      top: -26px;
+      border-radius: $border-radius-base;
+      background: $overview-action-box-bg-color;
+      .dit-icon, .dit-icon-b {
+        display: inline-block;
+        position: absolute;
+        left: -50px;
+        top: 4px;
+        background: #fff;
+      }
+      .list-round-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 6px;
+        background: #3399cc;
+        position: absolute;
+        top: 4px;
+        right: 1px;
+      }
+      .action-inner {
+        padding: 5px 5px 10px 20px;
+        word-wrap: break-word;
+        word-break: break-all;
+      }
+      .list-name {
+        color: #333;
+        font-size: 14px;
+        padding: 5px 10px 5px 20px;
+        word-wrap: break-word;
+        word-break: break-all;
+      }
+      .time-wrap {
+        width: 90px;
+        position: absolute;
+        left: -146px;
+        top: 0;
+        padding-top: 5px;
+        .time-con-1 {
+          height: 14px;
+          line-height: 14px;
+        }
+      }
+      .list-caret, .list-caret:after {
+        display: inline-block;
+        width: 0px;
+        height: 0px;
+        vertical-align: middle;
+        border-top: 8px solid transparent;
+        border-bottom: 8px solid transparent;
+        position: absolute;
+        left: -10px;
+        top: 10px;
+      }
+      .list-caret:after {
+        content: "";
+        border-right: 10px solid $overview-action-border-color;
+        left: 0;
+        top: -10px;
+      }
+      &:last-child {
+        .list-dashed {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+/* overview public style end */
+
+/**
+ ** Author : xinwei
+ ** Module : Admin Manage overview module
+ ** Data   : 2016-01-25
+**/
+
+.overview-info {
+  padding-left: 15px;
+
+  h4 {
+    font-weight: bold;
+    color: #333;
+    margin: 10px 0 20px 0;
+    border-bottom: 1px #e3e3e3 solid;
+    padding-bottom: 10px;
+  }
+  .col-sm-2 {
+    width: 80px;
+  }
+  .col {
+    overflow: hidden;
+    padding: 0;
+  }
+  .col-num {
+    font-size: 12px;
+  }
+  .row {
+    margin: 10px 0 0 0;
+  }
+  .row:first-child {
+    margin-top: 0;
+  }
+  .resource-used-content {
+    padding: 10px 20px 20px 20px;
+    background: #fff;
+    margin: 10px 20px 10px 0;
+    border-radius: $overview-radius;
+    box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.20);
+  }
+  .resource-chart-content {
+    padding: 10px 20px 20px 20px;
+    background: #fff;
+    margin: 10px 20px 10px 0;
+  }
+  .chart-container {
+    padding-top: 15px;
+    padding-left: 15px;
+  }
+
+  .resource-picker-content {
+    padding: 10px 20px 20px 20px;
+    background: #fff;
+    margin: 10px 20px 10px 0;
+  }
+  .resource-picker-group {
+    margin-top: 30px;
+  }
+  .resource-picker {
+  }
+  .resource-picker-button {
+    height: 90px;
+    line-height: 90px;
+    border-width: 0px;
+    color: #fff;
+    text-align: center;
+    font-size: 36px;
+  }
+  .resource-picker-note {
+    padding-top: 7px;
+    height: 90px;
+    line-height: 90px;
+    border-width: 0px;
+    color: #fff;
+    text-align: center;
+    font-size: 16px;
+
+    p {
+      margin-bottom: 0;
+    }
+
+    p:first-child {
+      height: 50px;
+      line-height: 50px;
+      font-size: 25px;
+      font-weight: normal;
+    }
+    p:last-child {
+      height: 20px;
+      line-height: 20px;
+      font-size: 13px;
+    }
+  }
+
+  .project-resource-picker {
+    .resource-picker-button {
+      background-color: #8AB0FF;
+    }
+    .resource-picker-note {
+      background-color: #6699FF;
+    }
+  }
+  .user-resource-picker {
+    .resource-picker-button {
+      background-color: #9999CC;
+    }
+    .resource-picker-note {
+      background-color: #9966CC;
+    }
+  }
+}
+
+/**
+ ** Author : limeili
+ ** Module : project overview module
+ ** Data   : 2016-01-25
+**/
+
+/* project overview start */
+.only-12 {
+  padding-right: 25px;
+}
+
+.project-user-msg,
+.project-msg,
+.project-user-msg-t {
+  margin: 0 10px 0 10px;
+  padding: 0 10px 10px 10px;
+  font-size: 14px;
+  background: #fff;
+  border-radius: $overview-radius;
+  box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.20);
+}
+
+.project-user-msg {
+  margin-right: 0;
+  i {
+    font-size: 12px;
+  }
+  .current-project {
+    width: 230px;
+    display: inline-block;
+    line-height: 14px;
+    font-size: 12px;
+    position: relative;
+    top: 2px;
+  }
+  .current-user {
+    width: 50%;
+    span {
+      display: block;
+      margin-right: 10px;
+    }
+  }
+}
+
+.project-user-msg-t {
+  margin-left: 0;
+  a, i {
+    font-size: 12px;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+}
+
+.project-user-msg-col {
+  padding-left: 0;
+}
+
+.project-msg {
+  min-height: 650px;
+  margin: 20px 10px;
+  margin-bottom: 0;
+  padding: 0 20px 20px 10px;
+  .col {
+    padding: 0;
+  }
+  .col-num {
+    font-size: 12px;
+  }
+  .row {
+    margin: 10px 0 0 0;
+  }
+  .row:first-child {
+    margin-top: 0;
+  }
+  .project-msg-inner {
+    margin-top: 10px;
+    font-size: 12px;
+    b {
+      font-size: 14px;
+      color: $gray-darker;
+    }
+    .bar-wrap {
+      min-width: 85%;
+      margin: 0 60px 0 0;
+    }
+  }
+}
+
+/* project overview end */
+
+/**
+ ** Author : limeili
+ ** Module : mana overview module
+ ** Data   : 2016-01-25
+**/
+
+/* mana overview start */
+.mana-col-left {
+  .col-left {
+    border: none;
+    background: none;
+  }
+  .table .select-col {
+    max-width: 2.5em;
+    text-align: center;
+    width: 2.5em;
+  }
+}
+
+.mana-col-right {
+  .col-right {
+    border: none;
+  }
+}
+
+.row-box {
+  background: #fff;
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .mana-row {
+    padding-right: 40px;
+    margin-top: 30px;
+    .col {
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+  }
+  .table-wrap {
+    height: 300px;
+  }
+}
+
+.resource-box {
+  .row {
+    margin-left: -10px;
+    margin-right: 0;
+  }
+  .col-wrap {
+    padding: 0;
+  }
+  .col-content {
+    height: 315px;
+    background: #fff;
+    margin-left: 10px;
+    table {
+      padding: 0 15px;
+    }
+  }
+  .bar-col {
+    padding-right: 40px;
+  }
+}
+
+.bar-used-normal {
+  color: #3399cc;
+}
+
+.bar-used-warn {
+  color: #ff9933;
+}
+
+.bar-used-peril {
+  color: #ff0000;
+}
+
+.bar-used-normal .bar-used-bg {
+  width: 0;
+  height: 100%;
+  background: #3399cc;
+}
+
+.bar-used-warn .bar-used-bg {
+  width: 0;
+  height: 100%;
+  background: #ff9933;
+}
+
+.bar-used-peril .bar-used-bg {
+  width: 0;
+  height: 100%;
+  background: #ff0000;
+}
+
+.bar-used-value {
+  min-width: 50px;
+  margin-left: 5px;
+  font-size: 12px;
+  text-align: left;
+}
+
+.bar-box {
+  width: 70%;
+  height: 17px;
+  background: #eee;
+  position: relative;
+}
+
+/* mana overview end */
+
+/* magnum overview start */
+.bay-status-line {
+  min-height: 280px;
+  border: 1px #edecec solid;
+  margin: 0 20px 20px 20px;
+  .bay-status-item-panel {
+    display: inline-block;
+    width: 75%;
+    height: 280px;
+    float: right;
+    background: #fbfbfb;
+    .bay-status-item {
+      display: inline-block;
+      background-color: white;
+      border: 1px #edecec solid;
+      width: 31%;
+      height: 80%;
+      margin: 1%;
+      min-width: 380px;
+      p {
+        text-align: center;
+        margin-top: 5px;
+      }
+      .pie-chart-wrap {
+        margin: 0 0 0 15px;
+      }
+    }
+    //.bay-status-item {
+    //  display: inline-block;
+    //  background-color: white;
+    //  border: 1px #edecec solid;
+    //  width: 29%;
+    //  margin: 1%;
+    //  height: 41%;
+    //  p {
+    //    text-align: center;
+    //    margin-top: 5px;
+    //  }
+    //}
+  }
+  .bay-status-pointer-wrap {
+    height: 280px;
+    display: inline-block;
+    .bay-status-pointer {
+      display: inline-block;
+      background: transparent 0px 53px url('/static/dashboard/img/detail-lefttop-icon.png');
+      height: 54px;
+      width: 36px;
+      position: relative;
+      top: 113px;
+      color: rgba(0, 0, 0, 0);
+    }
+  }
+  .prev {
+    transform: scaleX(-1);
+    float: left;
+  }
+  .next {
+    float: right;
+  }
+  .bay-summary-status {
+    margin: 60px 0px 0px 30px;
+    .status-item {
+      display: inline-block;
+      .status-icon {
+        display: inline-block;
+        height: 20px;
+        width: 20px;
+      }
+      .normal {
+        background: transparent 0px 0px url('/static/dashboard/img/top-icon.png');
+      }
+      .disconnected {
+        background: transparent 0px 67px url('/static/dashboard/img/top-icon.png');
+      }
+      .warning {
+        background: transparent 0px 134px url('/static/dashboard/img/top-icon.png');
+      }
+      .initializing {
+        background: transparent 0px 194px url('/static/dashboard/img/top-icon.png');
+      }
+      .status-text {
+        display: inline-block;
+        position: relative;
+        top: -5px;
+        left: 0px;
+      }
+    }
+  }
+  .bay-summary-bar {
+    margin-left: 15px;
+  }
+  .bay-summary {
+    width: 25%;
+    border-right: 1px #edecec solid;
+    min-height: 280px;
+    background-color: #fff;
+    display: inline-block;
+    .bay-summary-title {
+      margin: 15px;
+    }
+  }
+}
+
+/* magnum overview end */

@@ -1,0 +1,19 @@
+<div class="notice_wrap js-notice">
+  <div class="notice_wrap-title">
+    <h5>{{ notice_title }}</h5>
+    <a href="#" class="notice_wrap-title-closed js-closed"></a>
+  </div>
+  <div class="notice_wrap-content">
+  {% autoescape on %}
+    {{ notice_context | linebreaksbr }}
+  {% endautoescape %}
+  </div>
+</div>
+<script>
+/*notice*/
+$(document).ready(function(){
+  $('.js-notice').bind('click',function(){
+    $(this).closest('.js-notice').hide('slow');
+  });
+});
+</script>

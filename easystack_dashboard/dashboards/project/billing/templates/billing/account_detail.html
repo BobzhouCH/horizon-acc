@@ -1,0 +1,5 @@
+{% load i18n %}
+<ul class="billingAccount">
+	<li><span>{% trans "User Name" %}:</span> {{account.name}}</li>
+	<li><span>{% trans "Account Balance" %}:</span> <i class="red">{{account.balance}}</i></li>
+</ul>

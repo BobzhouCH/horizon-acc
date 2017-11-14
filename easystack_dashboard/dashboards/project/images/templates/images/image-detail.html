@@ -1,0 +1,56 @@
+{% load context_selection %}
+
+<div class="detail-page">
+<div class="fl detail-left-icon" ng-click="action.cancel()"></div>
+<div class="detail-page-con">
+
+  <tabset id="images-tab" justified="true" class="def-tabs">
+    <tab id="tab-images-detail" heading="{$ ::label.detail_overview $}">
+      <div class="tab-pane-content">
+
+      <table id="images-list" class="table table-bordered table-hover table-unique">
+        <thead>
+          <tr>
+            <th colspan="100"><span class="detail-title">{$ ::label.properties $}</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.id $}</td>
+            <td id="image-id" class="color449ed2" eagle-eye="data_col">{$ image.id $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.size $}</td>
+            <td id="image-size" class="color3399cc" eagle-eye="data_col">{$ image.size | bytes $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.min_disk $}</td>
+            <td id="image-min-disk" class="color66cc66" eagle-eye="data_col">{$ image.min_disk | gb $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.min_ram $}</td>
+            <td id="image-min-ram" eagle-eye="data_col">{$ image.min_ram | mb $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.disk_format $}</td>
+            <td id="image-disk-format" eagle-eye="data_col">{$ image.disk_format | uppercase $}</td>
+          </tr>
+          {% inRegionShowNode 'project-image-created-at' %}
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.created $}</td>
+            <td id="image-created-at" eagle-eye="data_col">{$ image.created_at | date:'short'  $}</td>
+          </tr>
+          {%  endinRegionShowNode %}
+          {% inRegionShowNode 'project-image-updated-at' %}
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.updated $}</td>
+            <td id="image-updated-at" eagle-eye="data_col">{$ image.updated_at | date:'short'  $}</td>
+          </tr>
+          {%  endinRegionShowNode %}
+        </tbody>
+      </table>
+     </div>
+    </tab>
+  </tabset>
+</div>
+</div>

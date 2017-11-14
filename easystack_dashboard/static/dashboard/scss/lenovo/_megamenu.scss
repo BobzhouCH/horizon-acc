@@ -1,0 +1,109 @@
+$megamenu-normal-bg: #46A4FF;
+$megamenu-font-base: 12px;
+$mega-menu-column-width: 220px;
+$mega-menu-width: $mega-menu-column-width * 1 + 2;
+$mega-menu-focus-color: #3399F3;
+
+#navbar-collapse {
+    > ul {
+        &:first-child {
+            margin-left: 65px;
+
+            > li.dropdown {
+                padding-top: $padding-small-vertical;
+            }
+        }
+
+        &:last-child {
+            > li {
+
+                > a {
+                    font-size: $font-size-small * 2;
+                    outline: 0;
+                }
+            }
+        }
+
+        > li.dropdown {
+            font-weight: bold;
+            height: 65px;
+            padding: 0 auto;
+            margin: 0 auto;
+
+            &:hover {
+                background-color: $megamenu-normal-bg;
+            }
+
+            &.open {
+                background-color: $megamenu-normal-bg;
+
+                > a {
+                    background-color: $megamenu-normal-bg;
+
+                    &:focus {
+                        color: white;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.mega-menu {
+    padding: 0;
+    background-color: $megamenu-normal-bg;
+    border: 0;
+    border-radius: 0;
+    font-size: $megamenu-font-base;
+    z-index: -1;
+    position: fixed;
+    top: 65px;
+
+    &.clearfix:after {
+        content: "\200B";
+        display: block;
+        height: 0;
+        clear: both;
+    }
+
+    li.mega-menu-column {
+        display: block;
+        float: left;
+        padding: 0px 15px;
+        width: $mega-menu-column-width;
+
+        & > ul {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        & > ul > li {
+            width: 100%;
+        }
+
+        & > ul > li > a {
+            display: block;
+            padding: 5px 10px;
+            clear: both;
+            font-weight: normal;
+            line-height: 1.428571429;
+            color: white;
+            white-space: normal;
+
+            &:hover,
+            &:focus {
+                text-decoration: none;
+            }
+        }
+
+        .mega-menu-header {
+            display: block;
+            padding: 10px;
+            margin: 0px;
+            font-weight: bold;
+            color: white;
+            width: 100%;
+            border-bottom: 1px solid #4EA6E0;
+        }
+    }
+}

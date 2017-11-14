@@ -1,0 +1,482 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Firewalls" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Firealls") %}
+{% endblock page_header %}
+
+{% block content_main %}"contentMain tab-main"{% endblock %}
+
+{% block main %}
+
+<tabset id="firewall-tab" class="def-tabs" justified="true">
+  <tab id="tab-firewall-button" heading="{% trans "Firewalls"%}">
+    <div class="tab-pane-content">
+      <hz-magic-search-context filter-facets="filterFacets">
+      <table id="firewalls-list" hz-table ng-cloak hopes-table-drag
+        st-table="ifirewalls"
+        st-safe-src="firewalls"
+        default-sort="name"
+        default-sort-reverse="false"
+        st-magic-search
+        ng-controller="projectFirewallCtrl"
+        ng-init="projectID = '{{ request.user.tenant_id }}'"
+        class="table table-bordered table-hover">
+
+        <thead>
+          <tr>
+            <th colspan="100" class="bare">
+              <div class="table_actions clearfix">
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    callback="actions.refresh">
+                    <i class="icon icon-refresh"></i>
+                    <span id="refresh-firewall"></span>
+                  </action>
+                </action-list>
+
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    callback="actions.create.open">
+                    <i class="icon icon-add"></i>
+                    <span id="create-firewall">{% trans 'Create Firewall' %}</span>
+                  </action>
+                </action-list>
+
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    disabled="numSelected != 1"
+                    callback="actions.associate.open" item="selectedData.aData">
+                    <i class="icon icon-add"></i>
+                    <span id="associate-router">{% trans 'Associate Routers' %}</span>
+                  </action>
+                </action-list>
+
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    disabled="numSelected != 1"
+                    callback="actions.disassociate.open" item="selectedData.aData">
+                    <i class="icon icon-delete"></i>
+                    <span id="disassociate-router">{% trans 'Disassociate Routers' %}</span>
+                  </action>
+                </action-list>
+
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-action btn-danger'"
+                    disabled="numSelected === 0"
+                    callback="actions.deleted.batchDelete">
+                    <i class="icon icon-delete"></i>
+                    <span id="delete-firewall">{% trans 'Delete Firewall' %}</span>
+                  </action>
+                </action-list>
+
+                <action-list dropdown>
+                  <button id="more-firewall" type="button" class="btn btn-primary btn-action" dropdown-toggle>
+                    <i class="icon icon-more"></i>
+                    <span>{% trans 'More' %}</span>
+                  </button>
+                  <menu>
+                    <action
+                      button-type="menu-item"
+                      disabled="numSelected != 1"
+                      callback="actions.edit.open" item="selectedData.aData">
+                      <span id="edit-firewall">{% trans 'Edit' %}</span>
+                    </action>
+                  </menu>
+                </action-list>
+
+                <div class="fr search-bar">
+                  <hz-magic-search-bar id="search-firewall"></hz-magic-search-bar>
+                </div>
+              </div>
+            </th>
+          </tr>
+          <tr eagle-eye="table_heads">
+            <th class="select-col" eagle-eye="select_col">
+              <input type="checkbox" hz-select-page="firewalls"/>
+            </th>
+            <th eagle-eye="data_col">
+              <span st-sort-default="name">{$ ::context.header.name $}</span>
+            </th>
+            <th eagle-eye="data_col"><span>{$ ::context.header.desc $}</span></th>
+            <th eagle-eye="data_col"><span>{$ ::context.header.policy $}</span></th>
+            <th class="text-center" eagle-eye="data_col" style="width: 15%"><span>{$ ::context.header.status $}</span></th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr ng-if="!ifirewallsState">
+            <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+          </tr>
+
+          <tr ng-if="!ifirewalls.length && ifirewallsState">
+            <td colspan="100">{% trans "No Data" %}</td>
+          </tr>
+
+          <tr ng-repeat="firewall in ifirewalls" ng-class="{'st-selected': checked[firewall.id]}">
+            <td class="select-col" eagle-eye="select_col">
+              <input type="checkbox"
+                hz-select="firewall"
+                ng-model="selected[firewall.id].checked"
+                hz-checkbox-group="firewalls"/>
+            </td>
+
+            <!-- Table-row-info-column -->
+            <td eagle-eye="data_col">{$ firewall.name $}</td>
+            <td eagle-eye="data_col">{$ firewall.description $}</td>
+            <td eagle-eye="data_col">{$ firewall.policy.name $}</td>
+            <td class="text-center" >{$ statusToString[firewall.status] $}</td>
+          </tr>
+
+        </tbody>
+
+        <tfoot ng-if="firewalls.length > 10">
+          <tr>
+            <td colspan="100" eagle-eye="data_page">
+              <table-footer></table-footer>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+      </hz-magic-search-context>
+    </div>
+  </tab>
+
+  <tab id="tab-policy-button" heading="{% trans "Firewall Policies"%}">
+    <div class="tab-pane-content">
+      <hz-magic-search-context filter-facets="filterFacets">
+      <table id="policies-list" hz-table ng-cloak hopes-table-drag
+        st-table="ipolicies"
+        st-safe-src="policies"
+        default-sort="name"
+        default-sort-reverse="false"
+        st-magic-search
+        ng-controller="projectFirewallPolicyCtrl"
+        class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th colspan="100" class="bare">
+              <div class="table_actions clearfix">
+
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    callback="actions.refresh">
+                    <i class="icon icon-refresh"></i>
+                    <span id="refresh-policy"></span>
+                  </action>
+                </action-list>
+
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    callback="actions.create.open">
+                    <i class="icon icon-add"></i>
+                    <span id="create-policy">{% trans 'Create Firewall Policy' %}</span>
+                  </action>
+                </action-list>
+
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-action btn-danger'"
+                    disabled="numSelected === 0"
+                    callback="actions.deleted.batchDelete">
+                    <i class="icon icon-delete"></i>
+                    <span id="delete-policy">{% trans 'Delete Firewall Policy' %}</span>
+                  </action>
+                </action-list>
+
+                <action-list dropdown>
+                  <button id="more-policy" type="button" class="btn btn-primary btn-action" dropdown-toggle>
+                    <i class="icon icon-more"></i>
+                    <span>{% trans 'More' %}</span>
+                  </button>
+                  <menu>
+                    <action
+                      button-type="menu-item"
+                      disabled="numSelected != 1"
+                      callback="actions.edit.open" item="selectedData.aData">
+                      <span id="edit-policy">{% trans 'Edit' %}</span>
+                    </action>
+                  </menu>
+                </action-list>
+
+                <div class="fr search-bar">
+                  <hz-magic-search-bar id="search-policy"></hz-magic-search-bar>
+                </div>
+
+              </div>
+            </th>
+          </tr>
+          <tr eagle-eye="table_heads">
+            <th class="select-col" eagle-eye="select_col">
+              <input type="checkbox" hz-select-page="policies"/>
+            </th>
+            <th eagle-eye="data_col" width="30%">
+              <span st-sort-default="name">{$ ::context.header.name $}</span>
+            </th>
+            <th eagle-eye="data_col"><span>{$ ::context.header.desc $}</span></th>
+            <th class="text-center" eagle-eye="data_col" width="10%"><span st-sort="shared">{$ ::context.header.share $}</span></th>
+            <th class="text-center" eagle-eye="data_col" width="10%"><span st-sort="audited">{$ ::context.header.audited $}</span></th>
+
+          </tr>
+        </thead>
+
+        <tbody>
+
+        <tr ng-if="!ipoliciesState">
+          <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+        </tr>
+
+        <tr ng-if="!ipolicies.length && ipoliciesState">
+          <td colspan="100">{% trans "No Data" %}</td>
+        </tr>
+
+        <tr ng-repeat-start="policy in ipolicies"
+          ng-class="{'st-selected': checked[policy.id]}"
+          ng-init="ipolicyIndex = $index"
+          eagle-eye= "data_row">
+          <td class="select-col" eagle-eye="select_col">
+            <input type="checkbox"
+              hz-select="policy"
+              ng-model="selected[policy.id].checked"
+              hz-checkbox-group="policies"/>
+          </td>
+          <!-- Table-row-info-column -->
+          <td eagle-eye="data_col">
+            <span class="row-name">{$ policy.name $}</span>
+            <i class="chevron-right chevron-fixed fr" hz-expand-detail="chevron-right chevron-down" duration="200"></i>
+          </td>
+          <td eagle-eye="data_col">{$ policy.description $}</td>
+          <td class="text-center" eagle-eye="data_col">
+            <i ng-if="policy.shared" class="state-icon icon-true"></i>
+            <i ng-if="!policy.shared" class="state-icon icon-false"></i>
+          </td>
+          <td class="text-center" eagle-eye="data_col">
+            <i ng-if="policy.audited" class="state-icon icon-true"></i>
+            <i ng-if="!policy.audited" class="state-icon icon-false"></i>
+          </td>
+          </tr>
+
+          <tr eagle-eye= "detail_row" ng-repeat-end class="detail-row js-detail-box" data-instanceId="{$ policy.id $}" data-index="{$ ipolicyIndex $}">
+            <td class="detail" colspan="100">
+                <p class="detail-row-name fl">{% trans "Firewall Rules" %}</p>
+                <div class="detail-expanded fl">
+                  <table id="rules-list" class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th colspan="100">
+                          <div class="table_actions clearfix">
+                            <action-list class="btn-addon">
+                              <action
+                                action-classes="'btn btn-default btn-sm'"
+                                callback="actions.addRule.open" item="policy">
+                                <i class="icon icon-add"></i>
+                                <span id="create-rule-in-policy">{% trans 'Add Firewall Rule' %}</span>
+                              </action>
+                            </action-list>
+                          </div>
+                        </th>
+                      </tr>
+                      <tr>
+                        <th class="reorder">
+                          {$ ::context.ruleHeader.priority $}
+                        </th>
+                        <th>{$ ::context.ruleHeader.name $}</th>
+                        <th>{$ ::context.ruleHeader.desc $}</th>
+                        <th>{$ ::context.ruleHeader.action $}</th>
+                        <th>{$ ::context.ruleHeader.protocol $}</th>
+                        <th>{$ ::context.ruleHeader.src_ip $}</th>
+                        <th>{$ ::context.ruleHeader.src_port $}</th>
+                        <th>{$ ::context.ruleHeader.dst_ip $}</th>
+                        <th>{$ ::context.ruleHeader.dst_port $}</th>
+                        <th class="text-center">{$ ::context.ruleHeader.operate $}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-if="!policy.rules.length">
+                        <td colspan="100">{% trans "No Data" %}</td>
+                      </tr>
+                      <tr ng-repeat="rule in policy.rules track by rule.position"
+                        lr-drag-data="policy.rules" lr-drag-src="reorder"
+                        lr-drop-target="reorder" lr-drop-success="updatePriority(e, item, collection)">
+                        <td class="reorder">
+                          <span class="fa fa-sort"></span>
+                          {$ $index + 1 $}
+                        </td>
+                        <td>{$ rule.name $}</td>
+                        <td>{$ rule.description $}</td>
+                        <td>{$ rule.action $}</td>
+                        <td>{$ rule.protocol $}</td>
+                        <td>{$ rule.source_ip_address $}</td>
+                        <td>{$ rule.source_port $}</td>
+                        <td>{$ rule.destination_ip_address $}</td>
+                        <td>{$ rule.destination_port $}</td>
+                        <td class="delect-icon-bt text-center">
+                          <i eagle-eye="delete_rule_button"
+                           class="js-delect-iconbt delect-iconbt"
+                           ng-click="deleteRule(policy, rule)">
+                          </i>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </div>
+            </td>
+          </tr>
+
+        </tbody>
+
+        <tfoot ng-if="policies.length > 10">
+          <tr>
+            <td colspan="100">
+              <table-footer></table-footer>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+      </hz-magic-search-context>
+    </div>
+  </tab>
+
+  <tab id="tab-rule-button" heading="{% trans "Firewall Rules"%}">
+    <div class="tab-pane-content">
+      <hz-magic-search-context filter-facets="filterFacets">
+      <table id="rules-list" hz-table ng-cloak hopes-table-drag
+        st-table="irules"
+        st-safe-src="rules"
+        default-sort="name"
+        default-sort-reverse="false"
+        st-magic-search
+        ng-controller="projectFirewallRuleCtrl"
+        class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th colspan="100" class="bare">
+              <div class="table_actions clearfix">
+
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    callback="actions.refresh">
+                    <i class="icon icon-refresh"></i>
+                    <span id="refresh-rule"></span>
+                  </action>
+                 </action-list>
+
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    callback="actions.create.open">
+                    <i class="icon icon-add"></i>
+                    <span id="create-rule">{% trans 'Create Firewall Rule' %}</span>
+                  </action>
+                </action-list>
+
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-action btn-danger'"
+                    disabled="numSelected === 0"
+                    callback="actions.deleted.batchDelete">
+                    <i class="icon icon-delete"></i>
+                    <span id="delete-rule">{% trans 'Delete Firewall Rule' %}</span>
+                  </action>
+                </action-list>
+
+                <action-list dropdown>
+                  <button id="more-rule" type="button" class="btn btn-primary btn-action" dropdown-toggle>
+                    <i class="icon icon-more"></i>
+                    <span>{% trans 'More' %}</span>
+                  </button>
+                  <menu>
+                    <action
+                      button-type="menu-item"
+                      disabled="numSelected != 1"
+                      callback="actions.edit.open" item="selectedData.aData">
+                      <span id="edit-rule">{% trans 'Edit' %}</span>
+                    </action>
+                  </menu>
+                </action-list>
+
+                <div class="fr search-bar">
+                  <hz-magic-search-bar id="search-rule"></hz-magic-search-bar>
+                </div>
+              </div>
+            </th>
+          </tr>
+          <tr eagle-eye="table_heads">
+            <th class="select-col" eagle-eye="select_col">
+              <input type="checkbox" hz-select-page="rules"/>
+            </th>
+
+            <th st-sort-default="name" eagle-eye="data_col">
+              <span st-sort="name">{$ ::context.header.name $}</span>
+            </th>
+            <th eagle-eye="data_col"><span>{$ ::context.header.desc $}</span></th>
+            <th eagle-eye="data_col"><span>{$ ::context.header.policy $}</span></th>
+            <th eagle-eye="data_col"><span>{$ ::context.header.action $}</span></th>
+            <th eagle-eye="data_col"><span>{$ ::context.header.protocol $}</span></th>
+            <th eagle-eye="data_col"><span>{$ ::context.header.src_ip $}</span></th>
+            <th eagle-eye="data_col"><span>{$ ::context.header.src_port $}</span></th>
+            <th eagle-eye="data_col"><span>{$ ::context.header.dst_ip $}</span></th>
+            <th eagle-eye="data_col"><span>{$ ::context.header.dst_port $}</span></th>
+            <th class="text-center" eagle-eye="data_col"><span>{$ ::context.header.share $}</span></th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+        <tr ng-if="!irulesState">
+          <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+        </tr>
+
+        <tr ng-if="!irules.length && irulesState">
+          <td colspan="100">{% trans "No Data" %}</td>
+        </tr>
+
+        <tr ng-repeat="rule in irules" ng-class="{'st-selected': checked[rule.id]}">
+          <td class="select-col" eagle-eye="select_col">
+            <input type="checkbox"
+              hz-select="rule"
+              ng-model="selected[rule.id].checked"
+              hz-checkbox-group="rules"/>
+          </td>
+          <td eagle-eye="data_col">{$ rule.name $}</td>
+          <td eagle-eye="data_col">{$ rule.description $}</td>
+          <td eagle-eye="data_col">{$ rule.policy.name $}</td>
+          <td eagle-eye="data_col">{$ actionString[rule.action] $}</td>
+          <td eagle-eye="data_col">{$ rule.protocol $}</td>
+          <td eagle-eye="data_col">{$ rule.source_ip_address $}</td>
+          <td eagle-eye="data_col">{$ rule.source_port $}</td>
+          <td eagle-eye="data_col">{$ rule.destination_ip_address $}</td>
+          <td eagle-eye="data_col">{$ rule.destination_port $}</td>
+          <td class="text-center" eagle-eye="data_col">
+            <i ng-if="rule.shared" class="state-icon icon-true"></i>
+            <i ng-if="!rule.shared" class="state-icon icon-false"></i>
+          </td>
+          </tr>
+        </tbody>
+
+        <tfoot ng-if="rules.length > 10">
+          <tr>
+            <td colspan="100" eagle-eye="data_page">
+              <table-footer></table-footer>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+      </hz-magic-search-context>
+    </div>
+  </tab>
+
+</tabset>
+
+{% endblock %}

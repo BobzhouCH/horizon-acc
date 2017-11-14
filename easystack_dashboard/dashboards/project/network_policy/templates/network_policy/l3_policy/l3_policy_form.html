@@ -1,0 +1,194 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+      <fieldset>
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' || context.mode === 'edit'"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="name">
+            *{% trans "Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              type="text"
+              ng-model="l3_policy.name"
+              ng-maxlength="255"/>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "A firewall name is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength && form.name.$dirty">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' || context.mode === 'edit'">
+          <label for="description">
+            {% trans "Description" %}
+          </label>
+          <div class="form-group-right">
+            <textarea
+              id="description"
+              name="description"
+              class="form-control"
+              rows="3"
+              ng-model="l3_policy.description">
+            </textarea>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' || context.mode === 'edit'"
+          ng-class="{'has-error':form.policies.$invalid && form.policies.$dirty}">
+          <label for="policies">
+            *{% trans "IP Version" %}
+          </label>
+          <div class="form-group-right policie-wrap" ng-if="ip_version_seleted">
+            <select id="ip-version" class="form-control" ng-init="l3_policy.ip_version = ip_version_seleted"
+              ng-model="l3_policy.ip_version"
+              ng-options="ip.name for ip in ip_versions track by ip.value">
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' || context.mode === 'edit'"
+          ng-class="{'has-error':form.admin.$invalid && form.IP.$dirty}">
+          <label>
+            {% trans "IP Pool" %}
+          </label>
+          <div class="form-group-right">
+            <input
+              id="ip_pool"
+              name="ip_pool"
+              class="form-control verify-input"
+              type="text"
+              ng-model="l3_policy.ip_pool"
+              />
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' || context.mode === 'edit'"
+          ng-class="{'has-error':form.admin.$invalid && form.IP.$dirty}">
+          <label>
+            <p>{% trans "Subnet Prefix Length" %}</p>
+          </label>
+          <div class="form-group-right">
+            <input
+              id="subnet_prefix_length"
+              name="subnet_prefix_length"
+              class="form-control verify-input"
+              type="text"
+              ng-model="l3_policy.subnet_prefix_length"
+              />
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' || context.mode === 'edit'">
+          <label for="description">
+            <p>{% trans "External Segments" %}</p>
+          </label>
+          <div class="form-group-right">
+
+            <select
+              style="width: 335px;"
+              multiple="multiple"
+              id="external_segments"
+              name="external_segments"
+              class="form-control"
+              ng-model="l3_policy.external_segments"
+              ng-options="('ES:' + t.ES) for t in segmentParameter track by ('ES:' + t.ES)">
+            </select>
+
+            <span
+             class="add-mutiple-btn-fixed"
+             ng-click="action.add_external_segment_parameter.open()">
+             <i class="icon add_to"></i>
+            </span>
+          </div>
+        </div>
+
+        <div style="margin-top:5px;" class="form-group clearfix"
+          ng-if="context.mode === 'create' || context.mode === 'edit'">
+          <label></label>
+          <div class="form-group-right">
+            <input name="policy_name" type="checkbox" ng-model="l3_policy.shared"/> Shared
+          </div>
+        </div>
+
+
+        <!--
+         *
+         * Add external segment parameter
+         *
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'add'"
+          ng-class="{'has-error':form.policies.$invalid && form.policies.$dirty}">
+          <label for="policies">
+            <p>{% trans "External Segment" %}</p>
+          </label>
+          <div class="form-group-right policie-wrap" ng-if="listExternalSwitch">
+
+            <select
+              id="subnet-id"
+              class="form-control"
+              name="subnet_id"
+              ng-init="segment_parameter.external_segment = listExternalSeleted"
+              ng-model="segment_parameter.external_segment"
+              ng-options="list.name for list in listExternals track by list.id">
+            </select>
+
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'add'"
+          ng-class="{'has-error':form.admin.$invalid && form.IP.$dirty}">
+          <label>
+            <p>{% trans "External Segment IP" %}</p>
+          </label>
+          <div class="form-group-right">
+            <input
+              required
+              id="destination"
+              name="destination"
+              class="form-control verify-input"
+              type="text"
+              ng-model="service_parameter.name"/>
+          </div>
+        </div>
+
+      </fieldset>
+    </div>
+
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>
+

@@ -1,0 +1,14 @@
+{%load branding i18n%}
+<script type="text/ng-template" id="delconfig.html">
+
+    <div class="config">
+        <div class="glyphicon glyphicon-exclamation-sign sing_log"></div>
+
+        <p>{% trans "Are you sure to remove" %} {$ removeClusterName $}?</p>
+        <p>{% trans "This action cannot be undone." %}</p>
+        <div class="footer-right-btn">
+            <input type="button" class="btn btn-cancel" value="Cancel" ng-click="close()" />
+            <input type="button" class="btn btn-primary" value="OK" ng-click="removeOk($event)" />
+        </div>
+    </div>
+</script>

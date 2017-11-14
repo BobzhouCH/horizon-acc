@@ -1,0 +1,170 @@
+/*horizon component variables*/
+//== Colors
+//
+//## Gray and brand colors for use across Bootstrap.
+
+$brand-primary:         #03a9f4;
+
+
+// If that blue isn't desired, then consider any of these other
+//colors that are part of the Matieral Design Spec Color Palette
+
+
+$brand-primary:         #009dd9 !default; // button
+$brand-success:         #64bd68 !default; //
+$brand-info:            #7ba6ff !default; //
+$brand-warning:         #ffb300 !default; //
+$brand-danger:          #e44545 !default; //
+$modal-footer-bg:            #fff;  // modal
+
+//$modal-header-border-color:    #000;
+$btn-primary-bg:                 #399BE1;
+$btn-primary-hover-bg:           darken($btn-primary-bg, 20%);
+$btn-primary-active-bg:          darken($btn-primary-bg, 20%);
+$btn-primary-border:             darken($btn-primary-bg, 5%);
+$default-bg-color:               lighten($btn-primary-bg, 5%); // modal title bg
+
+$btn-default-bg:                 #399BE1;
+$btn-success-bg:                 #399BE1;
+$magic-search-button-bg:         $brand-primary;
+$badge-bg:                       $brand-primary;
+$nav-tabs-top-border-color:      $brand-primary;
+$pagination-active-bg:           $brand-primary;
+$WizardNavItemBgColor:           $btn-primary-bg;
+
+//$brand-primary:         #627C7B;
+//$brand-primary:         #455a64;
+//$brand-primary:         #009688;
+
+$gray-dark:             #212121;
+
+$body-bg:               transparent;
+
+//== Navbar
+//
+//##
+
+// Inverted navbar
+// Inverted navbar links
+$navbar-inverse-link-color:                 #fff;
+$navbar-inverse-link-hover-color:           $navbar-inverse-link-color;
+
+// Inverted navbar brand label
+$navbar-inverse-brand-hover-color:          $navbar-inverse-link-color;
+
+
+//== Navs
+//
+//##
+
+//=== Shared nav styles
+$nav-link-padding:                          15px 22px 15px 22px;
+$nav-link-hover-bg:                         transparent;
+
+$nav-disabled-link-color:                   $gray-dark;
+$nav-disabled-link-hover-color:             $gray-dark;
+
+
+
+//this is import from horizon/variables in themes/lenovo
+$logo-padding-top: 195px;
+$sidebar-width: 235px;
+$toggle-nav-collapse-width: 36px;
+$sidebar-top-rank-line-height: 35px;
+$sidebar-collapse-width: 63px;
+$context-selector-height: 60px;
+$content-padding-left: 250px;
+$megamenu-height: 50px;
+$hamburger-transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+$sidebar-animation: $hamburger-transition;
+$dropdown-box-collapsed-left-width: 60px;
+$dropdown-box-collapsed-width: 130px;
+
+//=== base style change
+$font-base: 13px;
+$font-base-color: #333;
+$font-icon-active-color: #4EA6E0;
+$megamenu-font-base: 12px;
+$banner-height: 65px;
+$banner-icon-height: 24px;
+$banner-icon-width: 24px;
+$banner-normal-bg: #399BE1;
+$megamenu-normal-bg: #46A4FF;
+
+//==colors
+//primary color
+$primary:         #009dd9 !default;
+$success:         #64bd68 !default;
+$info:            #7ba6ff !default;
+$warning:         #ffb300 !default;
+$danger:          #e44545 !default;
+//hover/selected color
+$primary-active: #258acd !default;
+$success-active: #4db352 !default;
+$info-active:    #2692d9 !default;
+$warning-active: #ff9900 !default;
+$danger-active:  #cc0000 !default;
+
+//== Buttons
+//
+//## For each of Bootstrap's buttons, define text, background and border color.
+
+$btn-font-weight:                normal !default;
+
+$default-border:                 transparent !default;
+
+$btn-default-color:              #fff !default;
+$btn-default-bg:                 $gray-darker !default;
+$btn-default-border:             transparent !default;
+
+$btn-primary-color:              #fff !default;
+$btn-primary-bg:                 $primary !default;
+$btn-primary-border:             transparent !default;
+
+$btn-success-color:              #fff !default;
+$btn-success-bg:                 $success !default;
+$btn-success-border:             transparent !default;
+
+$btn-info-color:                 #fff !default;
+$btn-info-bg:                    $info !default;
+$btn-info-border:                transparent !default;
+
+$btn-warning-color:              #fff !default;
+$btn-warning-bg:                 $warning !default;
+$btn-warning-border:             transparent !default;
+
+$btn-danger-color:               #fff !default;
+$btn-danger-bg:                  $danger !default;
+$btn-danger-border:              transparent !default;
+
+$btn-link-disabled-color:        $gray-light !default;
+
+//hover or selected style
+$btn-primary-active-bg:          $primary-active !default;
+
+$btn-success-active-bg:          $success-active !default;
+
+$btn-info-active-bg:             $info-active !default;
+
+$btn-warning-active-bg:          $warning-active !default;
+
+$btn-danger-active-bg:           $danger-active !default;
+
+// Allows for customizing button radius independently from global border radius
+$btn-border-radius-base:         $border-radius-base !default;
+$btn-border-radius-large:        $border-radius-large !default;
+$btn-border-radius-small:        $border-radius-small !default;
+
+// for chart on homepage
+$chart-panel:  #0099FF;
+$chart-panel-val: #6699FF;
+$chart-panel-remain: #c9c9c9;
+$chart-process-bar: #FF6633;
+$chart-process-bar-val: #ff9966;
+$chart-process-bar-remain: #f2f2f2;
+$chart-pie: #7872B6;
+$chart-pie-val: #948fc5;
+$chart-pie-remain: #d7d7d7;
+
+/*end horizon component variables*/
+

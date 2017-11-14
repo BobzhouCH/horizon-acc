@@ -1,0 +1,161 @@
+{% load branding i18n %}
+{% load url from future %}
+{% load context_selection %}
+
+
+<div class="info-left">
+    <div class="hosts">
+        <div class="info-top">
+            <span class="title">{% trans "Hosts" %}</span>
+            <span class="hosts-state mdi mdi-alert-circle {$clusterInfo.status_style$}" ng-click="clusterInfoWarn(clusterInfo.status, clusterInfo.statusInfo)">{$clusterInfo.status_message$}</span>
+        </div>
+        <div class="hosts-info">
+            <span >{$clusterInfo.serverActive$}/{$clusterInfo.serversTotal$}</span>
+        </div>
+    </div>
+    <div class="status">
+        <div class="info-top">
+            <span class="title">{% trans "Status" %}</span>
+        </div>
+        <div class="status-info ">
+            <div class="info-item clearfix first">
+                <div class="item-left">
+                    <span class="item-title">{% trans "OSD" %}</span>
+                    <span class="item-info">{$clusterInfo.osdActive$}/{$clusterInfo.osdTotal$}</span>
+                </div>
+                <div class="item-right">
+                    <span class="item-title">{% trans "Mon" %}</span>
+                    <span class="item-info">{$clusterInfo.monActive$}/{$clusterInfo.monTotal$}</span>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="item-left">
+                    <span class="item-title">{% trans "Pool" %}</span>
+                    <span class="item-info">{$clusterInfo.poolActive$}/{$clusterInfo.poolTotal$}</span>
+                </div>
+                <div class="item-right">
+                    <span class="item-title">{% trans "RBD" %}</span>
+                    <span class="item-info">{$clusterInfo.rbdNum$}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="info-right">
+    <div class="band" style="height: 87px;">
+        <div class="info-item clearfix first">
+            <div class="item-left">
+                <div class="info-top">
+                    <span class="title">{% trans "IOPS" %}</span>
+                    <span style="margin-left: 20px">{$clusterInfo.bandwidth$}</span>
+{#                    <span class="unit">{$clusterInfo.bandwunit$}</span>#}
+                </div>
+{#                <div class="hosts-info">#}
+{##}
+{#                </div>#}
+            </div>
+            <div class="item-mid">
+                <div class="info-top">
+                    <span class="title">{% trans "Replication Factor" %}</span>
+                    <span style="margin-left: 20px">{$ replica $}</span>
+                </div>
+            </div>
+                <div class="item-right">
+                <div class="info-top">
+                    <span class="title">{% trans "Journal" %}</span>
+                    <span style="margin-left: 20px">{$ '10G' $}</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="io">
+        <div class="info-top">
+            <span class="title">I/O</span>
+            <span clase="instance-state instance-state-suspending" ng-if="zabbixState.zabbixLoading"></span>
+            <span class="history" ng-if="!zabbixState.zabbixLoading&&zabbixState.zabbixEnable"  ng-click="get_iohistory()">{% trans 'History' %}</span>
+        </div>
+        <div class="info-item clearfix first">
+            <div class="item-left">
+                <span class="item-title">{% trans "Read" %}</span>
+                <span class="item-info">{$clusterInfo.iopsRead | formatUnit$}/s</span>
+{#                <span class="unit">IOPS</span>#}
+            </div>
+            <div class="item-right">
+                <span class="item-title">{% trans "Write" %}</span>
+                <span class="item-info">{$clusterInfo.iopsWrite | formatUnit$}/s</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="info-middle">
+    <div class="cluster-capacity">
+        <div class="info-top">
+            <span class="title">{% trans "Cluster Capacity" %}</span>
+        </div>
+        <div class="view-detail col-xs-12">
+            <div class="usage-view col-xs-6" style="padding-top: 30px">
+                <div class="raw-view">
+                    <div     id="raw-view" >
+                    </div>
+                    <span class="view-percent">{$clusterInfo.rawUsedpercent$}</span>
+                </div>
+                <div class="data-view">
+                    <div id="data-view"  >
+                    </div>
+                    <span class="view-percent">{$clusterInfo.dataUsedpercent$}</span>
+                </div>
+            </div>
+            <div class="info-items col-xs-6">
+                <div class="info-item">
+                    <span class="item-tip"></span>
+                    <div class="item-left">
+                        <span class="item-title">{% trans "Data" %}</span>
+                        <span class="item-info">{$clusterInfo.dataUsed$} / {$clusterInfo.dataTotal | formatNum$}<span class="unit">{$clusterInfo.dataTotal | formatUnits$}</span></span>
+                    </div>
+                </div>
+                <div class="info-item for-raw-view">
+                    <span class="item-tip"></span>
+                    <div class="item-left">
+                        <span class="item-title">{% trans "Raw" %}</span>
+                        <span class="item-info">{$clusterInfo.rawUsed$} / {$clusterInfo.rawTotal | formatNum$}<span class="unit">{$clusterInfo.rawTotal | formatUnits$}</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{#{% include "lenovo/ceph_mgmt/modal/ioHistory.html"  %}#}
+
+
+<script type="text/ng-template" id="ioHistory.html">
+    <div class="ioHistory" >
+        <div id="iohistory_line"></div>
+        <div class="time_group">
+            <span class="title">{% trans "Time Span" %}</span>
+            <div class="btn-group" >
+              <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                <label class="currentTime">{$ time_menulist[0].text $}</label>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu pull-right" >
+                <li ng-repeat="typeitem in time_menulist"  ng-click="switchTimespan($event, typeitem.typeIndex)"><a href="javascript:void(0)">{$ typeitem.text $}</a></li>
+              </ul>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="clusterInfoWarn.html">
+    <div>
+        <a href="#" class="close" ng-click="close()">×</a>
+        <h3>{% trans "WARNING" %}</h3>
+        <p>{$ errorMsg $}</p>
+        <div class="footer-right-btn">
+            <input type="button" class="btn  btn-cancel" value="{% trans 'Cancel' %}" ng-click="close()" style="height:31px"/>
+        </div>
+    </div>
+</script>
+
+
+{% include "lenovo/ceph_mgmt/modal/zabbixSetting.html"  %}

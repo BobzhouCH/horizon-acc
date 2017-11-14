@@ -1,0 +1,256 @@
+{% load i18n %}
+{% load context_selection %}
+
+<div class="detail-page">
+    <div class="detail-left-icon" ng-click="action.cancel()"></div>
+    <div class="detail-page-con">
+
+        <tabset id="volume-tab" justified="true" class="def-tabs">
+
+            <tab id="tab-volume-detail" heading="{$ ::title.Overview $}">
+                <div class="tab-pane-content">
+                    <table id="volume-detail-table" class="table table-bordered table-hover table-unique">
+                        <thead>
+                        <tr>
+                            <th colspan="2" class="table-th-unline"><span class="detail-title">{$ ::title.Info $}</span>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% inRegionShowNode 'project-volumes-tab-volume-id' %}
+                        <tr>
+                            <td eagle-eye="data_col">{$ ::label.ID $}</td>
+                            <td id="volume-id" class="color449ed2" eagle-eye="data_col">{$ volume.id $}</td>
+                        </tr>
+                        {% endinRegionShowNode %}
+                        <tr>
+                            <td eagle-eye="data_col">{$ ::label.Name $}</td>
+                            <td id="volume-name" class="color3399cc" eagle-eye="data_col" title="{$ volume.name $}">{$
+                                volume.name $}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td eagle-eye="data_col">{$ ::label.Status $}</td>
+                            <td id="volume-status" class="color66cc66" eagle-eye="data_col">{$ volume.status |
+                                decode:(volumei18n) $}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td eagle-eye="data_col">{$ ::label.Size $}</td>
+                            <td id="volume-size" eagle-eye="data_col">{$ volume.size | gb $}</td>
+                        </tr>
+                        <tr>
+                            <td eagle-eye="data_col">{$ ::label.created_at $}</td>
+                            <td id="volume-created_at" eagle-eye="data_col">{$ volume.created_at | date:'short' $}</td>
+                        </tr>
+                        <tr>
+                            <td eagle-eye="data_col">{$ ::label.attached_to $}</td>
+                            <td eagle-eye="data_col" class="rsp-p1" ng-if="volume.attachments.length !== 0"><span
+                                    id="attachment-{$ $index $}" ng-repeat="attachment in volume.attachments">{$ attachment.instance_name $} : {$ attachment.device $} <br/></span>
+                            </td>
+                            <td eagle-eye="data_col" id="no-attached" class="rsp-p1"
+                                ng-if="volume.attachments.length === 0"> {$ ::context.error.noAttached $}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td eagle-eye="data_col">{$ ::label.attached_mode $}</td>
+                            <td id="volume-attached_mode" eagle-eye="data_col">{$ volume.metadata.attached_mode | decode:attached_mode $}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </tab>
+
+            {% inRegionShowNode 'project-volumes-tab-volume-snapshot' %}
+            <tab id="tab-volume-snapshot" heading="{$ ::title.Snapshot $}">
+                <div class="tab-pane-content">
+                    <hz-magic-search-context filter-facets="snapshotFacets">
+                    <table id="volumesnapshots" hz-table ng-cloak hopes-table-drag
+                           st-table="ivolumesnapshots"
+                           st-safe-src="volumesnapshots"
+                           default-sort="name"
+                           default-sort-reverse="false"
+                           disabled="disabled"
+                           st-magic-search
+                           class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th colspan="100" class="bare table-th-unline">
+                                <div class="table_actions clearfix">
+                                    <div class="fr search-bar">
+                                      <hz-magic-search-bar id="search"></hz-magic-search-bar>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                        <tr eagle-eye="table_heads">
+                            <th class="rsp-p1" st-sort="name" eagle-eye="data_col">
+                                {$ ::context.header.name $}
+                            </th>
+                            <th class="rsp-p2" st-sort="describes" eagle-eye="data_col">{$ ::context.header.description
+                                $}
+                            </th>
+                            <th class="rsp-p2" st-sort="state" eagle-eye="data_col">{$ ::context.header.state $}</th>
+                            <th class="rsp-p2" st-sort="public" eagle-eye="data_col">{$ ::context.header.size $}</th>
+                            <th class="rsp-p2" st-sort="created" eagle-eye="data_col">{$ ::context.header.created_at
+                                $}
+                            </th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr ng-if="!ivolumesnapshots.length">
+                            <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+                        </tr>
+                        <tr ng-repeat="volume in ivolumesnapshots">
+                            <!-- Table-row-info-column -->
+                            <td class="rsp-p1" eagle-eye="data_col" title="{$ volume.name $}">{$ volume.name $}</td>
+                            <td class="rsp-p2" eagle-eye="data_col" title="{$ volume.description $}">{$
+                                volume.description $}
+                            </td>
+                            <td class="rsp-p2" eagle-eye="data_col">{$ volume.status | decode:(volumei18n) $}</td>
+                            <td class="rsp-p2" eagle-eye="data_col">{$ volume.size | gb$}</td>
+                            <td class="rsp-p2" eagle-eye="data_col">{$ volume.created_at | date:'short' $}</td>
+                        </tr>
+                        </tbody>
+
+                        <tfoot ng-if="volumesnapshots.length > 10">
+                        <tr>
+                            <td colspan="100" eagle-eye="data_page">
+                                <table-footer></table-footer>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                    </hz-magic-search-context>
+                </div>
+            </tab>
+            {% endinRegionShowNode %}
+            {% inRegionShowNode 'project-volumes-tab-volume-backup' %}
+            <tab id="tab-volume-snapshot" heading="{$ ::title.Backup $}">
+                <div class="tab-pane-content">
+                    <hz-magic-search-context filter-facets="backupFacets">
+                    <table id="volumebackups" hz-table ng-cloak hopes-table-drag
+                           st-table="ivolumebackups"
+                           st-safe-src="volumebackups"
+                           default-sort="created_at"
+                           default-sort-reverse="true"
+                           disabled="disabled"
+                           st-magic-search
+                           class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th colspan="100" class="bare table-th-unline">
+                                <div class="table_actions clearfix">
+                                    <div class="fr search-bar">
+                                      <hz-magic-search-bar id="search"></hz-magic-search-bar>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                        <tr eagle-eye="table_heads">
+                            <th class="select-col" eagle-eye="select_col">
+                            </th>
+                            <th st-sort="name" eagle-eye="data_col">
+                                {$ ::context.header.name $}
+                            </th>
+                            <th st-sort="description" eagle-eye="data_col">{$ ::context.header.description
+                                $}
+                            </th>
+                            <th st-sort="size" eagle-eye="data_col">{$ ::context.header.size $}</th>
+                            <th st-sort="is_incremental" eagle-eye="data_col">{$ ::context.header.type $}</th>
+                            <th st-sort="created_at" eagle-eye="data_col">{$ ::context.header.backup_time $}
+                            </th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr ng-if="!ivolumebackups.length">
+                            <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+                        </tr>
+                        <tr ng-repeat="volume in ivolumebackups">
+                            <!-- Table-row-info-column -->
+                            <td class="select-col" eagle-eye="select_col">
+                              <input type="radio"
+                                     ng-show="!volume.is_incremental"
+                                     ng-model="$parent.selectedVolume"
+                                     ng-value="volume"
+                                     ng-click='onSelectVolumeBackup(volume)'/>
+                            </td>
+                            <td eagle-eye="data_col" title="{$ volume.name $}">{$ volume.name $}</td>
+                            <td eagle-eye="data_col" title="{$ volume.description $}">{$
+                                volume.description $}
+                            </td>
+                            <td eagle-eye="data_col">{$ volume.size | gb$}</td>
+                            <td eagle-eye="data_col">{$ volume.is_incremental | decode: backup_type_map $}
+                            </td>
+                            <td eagle-eye="data_col">{$ volume.created_at | date:'short' $}</td>
+                        </tr>
+                        </tbody>
+
+                        <tfoot ng-if="volumebackups.length > 5">
+                        <tr>
+                            <td colspan="100" eagle-eye="data_page">
+                                <div st-pagination="" st-items-by-page="5" st-displayed-pages="5"></div>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                    </hz-magic-search-context>
+                </div>
+                <div class="volume-detail-backup-row-bottom" ng-if="volumebackupsTree.length > 0 && showVolumebackupsTree">
+                    <div class="overview-ol-con">
+                        <div ng-if="showLoadingBackups" class="loading-bar"><img class="load-detail"
+                                                                                    src="/static/bootstrap/img/loading.gif"
+                                                                                    alt=""/></div>
+                        <div id="action-top"
+                          ng-if="volumebackupsTree.length > 0 && !showLoadingBackups"
+                          class="list-add action-cursor"
+                          ng-style="{ opacity: (volume.status != 'available' ? '0.5' : 1) }"
+                          ng-click="volume.status != 'available' || createBackup([volume])"></div>
+                        <div id="action-line" ng-if="volumebackupsTree.length > 0 && !showLoadingBackups" class="list-dashed"></div>
+                        <ol id="recent-list" ng-if="!showLoadingBackups">
+                            <li id="list-{$ $index $}" ng-repeat="backup in volumebackupsTree" ng-init="backupIndex = $index">
+                                <div class="time-wrap">
+                                    <p class="f14 txt-c time-con-1">{$ splitArrStr(backup.created_at)[0] $}</p>
+                                    <!--<p class="f12 txt-c gray_2 time-con-2">{$ splitArrStr(backup.created_at)[1] $}</p>-->
+                                </div>
+                                <span ng-class="backupIndex == 0 ? 'dit-icon-b' : 'dit-icon'">
+                                    <!--<div ng-if="activIndex == 0" class="list-round-dot"></div>-->
+                                    <img ng-src="/static/dashboard/img/volume-backup-timeline-dot.png" width="24" height="15"/>
+                                </span>
+                                <div class="line-wrap">
+
+                                </div>
+                                <div>
+                                    <div class="list-caret"></div>
+                                    <p class="list-name">{$ backup.name $}</p>
+                                    <div class="action-inner">
+                                        <span>{$ ::context.header.size $}:</span>
+                                        <span>{$ backup.size | gb $}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span>{$ ::context.header.type $}:</span>
+                                        <span>{$ backup.is_incremental | decode: backup_type_map $}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span>{$ ::context.header.backup_time $}:</span>
+                                        <span>{$ splitArrStr(backup.created_at)[1] $}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span class="action-cursor" ng-click="deleteBackup([backup])"><img ng-src="/static/dashboard/img/volume-backup-timeline-delete.png" width="15" height="15" style="margin-top: -3px;"/></span>
+                                    </div>
+                                </div>
+                                <!--<div ng-if="!activ.resource || activ.resource == 'None'">
+                                    <div class="list-caret"></div>
+                                    <div class="list-dashed"></div>
+                                    <p class="list-name" style="padding: 20px 10px 20px 20px;">{$ activ.action |
+                                        decode:operationlogi18n $}</p>
+                                    &lt;!&ndash;<div class="action-inner" style="box-sizing: content-box !important; display:none" >
+                                        <span class="gray_3">{$ activ.type | decode:operationlogi18n $} : </span>
+                                        <span class="blue_1">{$ activ.resource $}</span>
+                                    </div>&ndash;&gt;
+                                </div>-->
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </tab>
+            {% endinRegionShowNode %}
+        </tabset>
+    </div>
+</div>

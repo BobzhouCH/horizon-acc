@@ -1,0 +1,230 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Hypervisors" %}{% endblock %}
+
+{% block page_header %}
+{% include "easystack_dashboard/common/_es_page_header.html" with title=_("Hypervisors") %}
+{% endblock page_header %}
+
+{% block content_main %}"contentMain tab-main"{% endblock %}
+
+{% block main %}
+
+<div ng-controller="hypervisorTableController">
+<tabset id="system-tab" justified="true" class="def-tabs">
+
+<!-- hypervisors -->
+<tab id="hypervisors-tab" heading="{% trans 'Hypervisors' %}">
+  <div class="tab-pane-content">
+    <hz-magic-search-context filter-facets="hypervisorsFilterFacets" >
+    <table ng-cloak hopes-table-drag
+      hz-table
+      st-table="ihypervisors"
+      st-safe-src="hypervisors"
+      default-sort="hypervisor_hostname"
+      default-sort-reverse="false"
+      st-magic-search
+      class="table table-bordered table-hover">
+
+      <thead>
+        <!-- search filter -->
+        <tr>
+          <th colspan="100" class="bare">
+              <div class="table_actions clearfix">
+                <div class="fr search-bar">
+                  <hz-magic-search-bar id="services-search"></hz-magic-search-bar>
+                </div>
+              </div>
+          </th>
+        </tr>
+
+        <!-- table headers -->
+        <tr>
+          <th width="20%">
+            <span eagle-eye="select_col" st-sort="hypervisor_hostname" st-sort-default="hypervisor_hostname">
+              {$ ::context.header.hostname $}
+            </span>
+          </th>
+          <th><span eagle-eye="data_col" st-sort="hypervisor_type">{$ ::context.header.type $}</span></th>
+          <th><span eagle-eye="data_col" st-sort="vcpus_used">{$ ::context.header.vcpu_used $}</span></th>
+          <th><span eagle-eye="data_col" st-sort="vcpus">{$ ::context.header.vcpu_total $}</span></th>
+          <th><span eagle-eye="data_col" st-sort="memory_mb_used">{$ ::context.header.ram_used $}</span></th>
+          <th><span eagle-eye="data_col" st-sort="memory_mb">{$ ::context.header.ram_total $}</span></th>
+          <th><span eagle-eye="data_col" st-sort="local_gb_used">{$ ::context.header.local_storage_used $}</span></th>
+          <th><span eagle-eye="data_col" st-sort="local_gb">{$ ::context.header.local_storage_total $}</span></th>
+          <th><span eagle-eye="data_col" st-sort="running_vms">{$ ::context.header.instances $}</span></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr ng-if="!ihypervisorsState">
+          <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+        </tr>
+        <tr ng-if="!ihypervisors.length && ihypervisorsState">
+          <td colspan="100">{% trans "No Data" %}</td>
+        </tr>
+        <!-- hypervisors data -->
+        <tr ng-repeat-start="hv in ihypervisors">
+          <td eagle-eye="select_col">
+            <span class="row-name">{$ hv.hypervisor_hostname $}</span>
+            <i class="chevron-right chevron-fixed fr" hz-expand-detail="chevron-right chevron-down" duration="200"></i>
+          </td>
+          <td eagle-eye="data_col">{$ hv.hypervisor_type $}</td>
+          <td eagle-eye="data_col">{$ hv.vcpus_used $}</td>
+          <td eagle-eye="data_col">{$ hv.vcpus $}</td>
+          <td eagle-eye="data_col">{$ hv.memory_mb_used $}</td>
+          <td eagle-eye="data_col">{$ hv.memory_mb $}</td>
+          <td eagle-eye="data_col">{$ hv.local_gb_used $}</td>
+          <td eagle-eye="data_col">{$ hv.local_gb $}</td>
+          <td eagle-eye="data_col">{$ hv.running_vms $}</td>
+        </tr>
+
+        <tr eagle-eye= "detail_row" ng-repeat-end class="detail-row">
+            <td class="detail" colspan="100">
+                <p class="detail-row-name fl">{$ context.instances $}</p>
+                <div class="detail-expanded fl">
+                  <table id="rules-list" class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th eagle-eye="data_col">{$ ::context.header.instancename $}</th>
+                        <th eagle-eye="data_col">{$ ::context.header.instanceid $}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-if="!host_servers[hv.hypervisor_hostname].length">
+                        <td colspan="100">{% trans "No Data" %}</td>
+                      </tr>
+                      <tr ng-repeat="server in host_servers[hv.hypervisor_hostname]">
+                        <td eagle-eye="data_col">{$ server.name $}</td>
+                        <td eagle-eye="data_col">{$ server.uuid $}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+            </td>
+         </tr>
+
+      </tbody>
+      <tfoot ng-if="hypervisors.length > 10">
+        <tr>
+          <td colspan="100">
+            <table-footer></table-footer>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+    </hz-magic-search-context>
+  </div>
+</tab>
+
+<!-- compute hosts -->
+<tab id="compute-hosts-tab" heading="{% trans 'Compute Host' %}">
+  <div class="tab-pane-content">
+    <hz-magic-search-context filter-facets="computeFilterFacets" >
+    <table ng-cloak hopes-table-drag hz-table
+      st-table="inovaservices"
+      st-safe-src="novaservices"
+      default-sort="host"
+      default-sort-reverse="false"
+      st-magic-search
+      class="table table-bordered table-hover">
+
+      <thead>
+
+        <!-- search filter -->
+        <tr>
+          <th colspan="100" class="bare">
+              <div class="table_actions clearfix table_search_client">
+                <action-list>
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    callback="actions.compute_refresh">
+                    <i class="icon icon-refresh"></i>
+                    <span id="compute-refresh"></span>
+                  </action>
+                </action-list>
+
+                <action-list>
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    disabled="numSelected != 1 || enabled"
+                    callback="actions.enable"
+                    item="this">
+                    <i class="icon icon-add"></i>
+                    <span id="enable-host">{% trans 'Enable' %}</span>
+                  </action>
+                </action-list>
+
+                 <action-list class="btn-addon">
+                   <action
+                     action-classes="'btn btn-primary btn-action'"
+                     disabled="numSelected != 1 || !enabled"
+                     callback="actions.disable.open"
+                     item="this">
+                     <i class="icon icon-delete"></i>
+                     <span id="diable-host">{% trans 'Disable' %}</span>
+                   </action>
+                 </action-list>
+
+                <div class="fr search-bar">
+                  <hz-magic-search-bar id="compute-search"></hz-magic-search-bar>
+                </div>
+              </div>
+          </th>
+        </tr>
+
+        <!-- services headers -->
+        <tr>
+          <th eagle-eye="select_col" class="select-col">
+             <input type="checkbox" hz-select-page="services"/>
+          </th>
+          <th><span eagle-eye="data_col" st-sort="host">{$ ::context.header.host $}</span></th>
+          <th><span eagle-eye="data_col" st-sort="zone">{$ ::context.header.zone $}</span></th>
+          <th><span eagle-eye="data_col" st-sort="status">{$ ::context.header.enabled $}</span></th>
+          <th><span eagle-eye="data_col" st-sort="state">{$ ::context.header.state $}</span></th>
+          <th><span eagle-eye="data_col" st-sort="updated_at">{$ ::context.header.update $}</span></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr ng-if="!inovaservicesState">
+          <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+        </tr>
+        <tr ng-if="!inovaservices.length && inovaservicesState">
+          <td colspan="100">{% trans "No Data" %}</td>
+        </tr>
+        <!-- services data -->
+        <tr ng-repeat="service in inovaservices" ng-class="{'st-selected': checked[service.id]}">
+          <td eagle-eye="select_col" class="select-col">
+             <input type="checkbox" hz-select="service"
+                ng-model="selected[service.id].checked"
+                hz-checkbox-group="services"
+                ng-click="actions.select_host(service, selectedData.aData)"/>
+          </td>
+          <td eagle-eye="data_col">{$ service.host $}</td>
+          <td eagle-eye="data_col">{$ service.zone $}</td>
+          <td eagle-eye="data_col">
+            <i ng-if="service.status" class="state-icon icon-true"></i>
+            <i ng-if="!service.status" class="state-icon icon-false"></i>
+          </td>
+          <td eagle-eye="data_col">{$ service.state $}</td>
+          <td eagle-eye="data_col">{$ service.updated_at $}</td>
+        </tr>
+
+      </tbody>
+      <tfoot ng-if="novaservices.length > 10">
+        <tr>
+          <td colspan="100">
+            <table-footer></table-footer>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+    </hz-magic-search-context>
+  </div>
+</tab>
+
+
+</tabset>
+</div>
+{% endblock %}

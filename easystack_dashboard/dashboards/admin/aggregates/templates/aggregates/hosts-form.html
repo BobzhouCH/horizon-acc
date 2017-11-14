@@ -1,0 +1,143 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The canSelectUsers pane. -->
+<div class="modal-body clearfix row">
+  <div class="modal-description ng-scope">
+    <p>{% trans "Hosts can belong to multiple aggregates, but not belong to multiple Avalability Zone, if you add host to multiple aggregates which belong to different AZ, last aggregates will take effect." %}</p>
+  </div>
+  <!-- Modal-form-left: Contains the form controls -->
+  <div class="edit-host-left col-sm-6">
+    <hz-magic-search-context filter-facets="filterFacets">
+    <table id="select-users-list"
+      hz-table
+      ng-cloak
+      st-table="ihosts"
+      st-safe-src="hosts"
+      default-sort-reverse="true"
+      st-magic-search
+      class="table table-bordered table-hover">
+
+      <thead>
+        <tr>
+          <th colspan="100">
+            <div class="table_actions clearfix">
+              <span>{% trans "All Available Hosts" %}</span>
+              <div class="fr search-bar">
+                <hz-magic-search-bar id="search-available-hosts"></hz-magic-search-bar>
+              </div>
+            </div>
+          </th>
+        </tr>
+        <tr class="sr-only">
+          <th colspan="100"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr ng-if="loadingHosts">
+          <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif" alt="" /></td>
+        </tr>
+
+        <tr ng-if="!ihosts.length && !loadingHosts">
+          <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+        </tr>
+
+        <tr ng-repeat="host in ihosts">
+          <td eagle-eye="data_col"><span title="{$ host.hypervisor_hostname $}">{$ host.hypervisor_hostname $}</span></td>
+          <td class="text-center" eagle-eye="data_col">
+            <div
+              ng-click="hostsAction.setHostsData('add', host, $index)">
+              <span class="icon add_to"></span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+
+      <tfoot ng-if="hosts.length > 5">
+        <tr>
+          <td colspan="100" eagle-eye="data_page">
+            <div st-pagination="" st-items-by-page="5" st-displayed-pages="5"></div>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+    </hz-magic-search-context>
+  </div>
+
+  <!-- Modal-form-right: The selectedUsers. -->
+  <div class="edit-host-right col-sm-6">
+    <div class="clearfix required">
+      <hz-magic-search-context filter-facets="filterFacets">
+      <table id="selected-users"
+        hz-table
+        ng-cloak
+        st-table="iselectedHosts"
+        st-safe-src="selectedHosts"
+        default-sort="name"
+        default-sort-reverse="false"
+        class="table table-bordered table-hover">
+
+        <thead>
+          <tr>
+            <th colspan="100">
+              <div class="table_actions clearfix">
+                <span>{% trans "Selected Hosts" %}</span>
+                <div class="fr search-bar">
+                  <hz-magic-search-bar id="search-selected-hosts"></hz-magic-search-bar>
+                </div>
+              </div>
+            </th>
+          </tr>
+          <tr class="sr-only">
+              <th colspan="100"></th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr ng-if="!iselectedHosts.length">
+            <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+          </tr>
+
+          <tr ng-repeat="selectedHost in iselectedHosts">
+            <td eagle-eye="data_col"><span title="{$ selectedHost.hypervisor_hostname $}">{$ selectedHost.hypervisor_hostname $}</span></td>
+            <td class="text-center" eagle-eye="data_col">
+              <div
+                ng-click="hostsAction.setHostsData('remove', selectedHost, $index)">
+                <span class="icon remove_to"></span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+
+        <tfoot ng-if="selectedHost.length > 5">
+          <tr>
+            <td colspan="100">
+              <div st-pagination="" st-items-by-page="5" st-displayed-pages="5"></div>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+      </hz-magic-search-context>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal-footer: Project can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

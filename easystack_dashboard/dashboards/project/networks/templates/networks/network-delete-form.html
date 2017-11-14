@@ -1,0 +1,75 @@
+{% load i18n %}
+<div class="modal-header clearfix">
+  <h3 class="modal-title"><span ng-bind="::context.title"></span></h3>
+  <p class="modal-colsed" ng-click="cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+
+<div class="modal-body delete-body" ng-if="!portLoading">
+  <div class="modal-description mt10 delete-danger-message" ng-if="context.usedPorts.length>0">
+    <p class=" alert-danger" ng-bind="::context.message.danger"></p>
+  </div>
+  <div ng-if="context.usedPorts.length==0">
+    <div class="modal-description warning mt10 mb20" ng-if="context.notUsedPorts.length>0">
+      <p ng-bind="::context.message.warning"></p>
+    </div>
+    <p id="tips-text" class="txt-c" ng-bind="::context.body"></p>
+    <p class="txt-c" ng-bind="::context.tips"></p>
+  </div>
+</div>
+
+<div ng-if="!portLoading">
+  <div ng-if="context.names.length !== 1" class="delete-ins-one clearfix">
+    <ul class="col-md-12" ng-class="context.names.length % 2 == 0 ? 'border-bottom-even' : 'border-bottom-odd'">
+    <li ng-repeat="item in context.names" class="col-md-6"><span class="text col-md-10" title="{$ item.name $}">{$ item.name $}</span></li>
+    </ul>
+  </div>
+  <div ng-if="context.names.length == 1" class="delete-ins-more clearfix">
+    <ul class="col-md-12">
+    <li ng-repeat="item in context.names" class="col-md-12"><span class="text col-md-11">{$ item.name $}</span></li>
+    </ul>
+  </div>
+</div>
+<div ng-if="portLoading" style="text-align:center"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td></div>
+
+<div class="delete-ins-one clearfix" ng-if="!portLoading && context.notUsedPorts.length>0">
+  <div><label class="port-list-title">{% trans 'Ports in use on the network:' %}</label></div>
+  <ul class="col-md-12 border-bottom-even">
+    <li class="col-md-4">{% trans 'Type' %}</li>
+    <li class="col-md-8">{% trans 'Name' %}</li>
+    <li ng-repeat-start="item in context.notUsedPorts" class="col-md-4">
+      <span class="text col-md-10">{% trans 'Virtual Interfaces' %}</span>
+    </li>
+    <li ng-repeat-end class="col-md-8"><span class="text col-md-12" title="{$ item.name $}">{$ item.name $}</span></li>
+  </ul>
+</div>
+
+
+<div class="delete-ins-one clearfix" ng-if="!portLoading && context.usedPorts.length>0">
+  <div><label class="port-list-title">{% trans 'Devices on the network:' %}</label></div>
+  <ul class="col-md-12 border-bottom-even">
+    <li class="col-md-4">{% trans 'Type' %}</li>
+    <li class="col-md-8">{% trans 'Name' %}</li>
+    <li ng-repeat-start="item in context.usedPorts" class="col-md-4">
+      <span class="text col-md-10" ng-if="item.device_type=='instance'">{% trans 'Instances' %}</span>
+      <span class="text col-md-10" ng-if="item.device_type=='router'">{% trans 'Router' %}</span>
+      <span class="text col-md-10" ng-if="item.device_type=='loadbalance'">{% trans 'Loadbalancers' %}</span>
+      <span class="text col-md-10" ng-if="item.device_type=='port'">{% trans 'Virtual Interfaces' %}</span>
+    </li>
+    <li ng-repeat-end class="col-md-8"><span class="text col-md-12" title="{$ item.device_name $}">{$ item.device_name $}</span></li>
+  </ul>
+</div>
+
+<div class="modal-footer modal-footer-wrap">
+  <button id="cancel-button" class="btn btn-primary"
+    type="button" ng-click="cancel()">
+    <span ng-bind="::context.cancel"></span>
+  </button>
+  <button id="submit-button" class="btn btn-action btn-danger"
+    ng-disabled = "context.usedPorts.length>0 || portLoading"
+    type="button" ng-click="submit()">
+    <span ng-bind="::context.submit"></span>
+  </button>
+</div>

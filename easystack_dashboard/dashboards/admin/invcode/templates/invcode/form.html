@@ -1,0 +1,122 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+      <fieldset>
+        <!--
+          KeyPair name input (required):
+            Create-mode: show
+            Edit-mode: show
+            Password-mode: show but disable
+        -->
+        <div ng-if="enable_billing" class="form-group clearfix"
+          ng-class="{'has-error':!valid_worth}">
+          <label for="worth">
+            *{% trans "Worth" %}
+          </label>
+          <div class="form-group-right">
+          <input required
+            id="worth"
+            name="worth"
+            class="form-control"
+            type="text"
+            ng-model="invcode.worth"
+            ng-change="checkWorth()"
+            ng-maxlength="255"
+            placeholder="{% trans 'Worth of invcode' %}">
+          <p class="help-block alert-fixed alert-danger"
+            ng-show="form.name.$invalid && form.name.$dirty">
+            {% trans "worth is required" %}
+          </p>
+          <p class="help-block alert-fixed alert-danger"
+            ng-show="!valid_worth">
+            {% trans "The worth must be greater than zero, up to two decimal places." %}
+          </p>
+          </div>
+       </div>
+
+       <!--<div class="form-group inline-group clearfix required inline-group-first"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label class="control-label fl" for="type">
+            {% trans "Type" %}
+          </label>
+          <div class="rightCol fl">
+          <input
+            id="type"
+            name="type"
+            class="form-control"
+            type="text"
+            ng-model="invcode.codetype"
+           ng-maxlength="255"
+            placeholder="{% trans 'Type of invcode' %}">
+       </div>
+        </div>-->
+
+        <div class="form-group clearfix">
+          <label for="expired">
+            *{% trans "Expired Time" %}
+          </label>
+            <div class="form-group-right">
+              <input 
+                 id='expired'
+                 name= 'expired'
+                 required
+                 readonly="true"
+                 size="16"
+                 type="text"
+                 class="form-control verify-input datepicker-time form_datetime"
+                 ng-model="invcode.expired"
+                 placeholder="{% trans 'Please select the expired time' %}">
+           </div>
+        </div>
+
+        <div class="form-group clearfix">
+          <label for="number">
+            *{% trans "Number" %}
+          </label>
+          <div class="form-group-right" ng-class="{'has-error':form.number.$invalid && form.number.$dirty}">
+             <input
+               id="number"
+               name="number"
+               required
+               class="form-control no-input-number"
+               type="number"
+               ng-init="invcode.number=1"
+               min="1"
+               max="100"
+               ng-model="invcode.number"
+               ng-pattern="/^[-+]?\d*$/"
+               placeholder="{% trans 'Number of invcodes to be created' %}">
+
+               <div class="help-block alert-fixed alert-danger" ng-show="form.number.$dirty && form.number.$invalid">
+                <p ng-show="form.number.$error.required ">{% trans "Invitation code must be" %} 1~100</p>
+                <p ng-show="form.number.$error.number || form.number.$error.min || form.number.$error.max">{% trans "Invitation code must be" %} 1~100</p>
+                <p ng-show="!form.number.$error.min && form.number.$error.pattern">{% trans "Number must be an integer" %}</p>
+              </div>
+          </div>
+        </div>
+      </fieldset>
+
+    <!-- Modal-form-right: The description text. -->
+
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid || !valid_worth"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

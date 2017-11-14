@@ -1,0 +1,196 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Tickets" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Tickets") %}
+{% endblock page_header %}
+
+{% block main %}
+
+<hz-magic-search-context filter-facets="filterFacets">
+  <table id="ticket-list" hz-table ng-cloak hopes-table-drag
+    st-table="itickets"
+    st-safe-src="tickets"
+    default-sort="no"
+    default-sort-reverse="true"
+    ng-controller="adminTicketsCtrl"
+    disabled="disabled"
+    ng-init="userID = '{{ request.user.id }}'"
+    st-magic-search
+    class="table table-bordered table-hover">
+
+    <!--
+      Table-head:
+      This is where we add things like filtering and batch actions.
+      This is where we add column headers.
+    -->
+    <thead>
+      <tr>
+        <th class="bare" colspan="100">
+          <div class="table_actions clearfix pull-left">
+            <action-list class="btn-addon">
+              <action
+                action-classes="'btn btn-primary btn-action'"
+                disabled="!iticketState"
+                callback="actions.refresh">
+                <i class="icon icon-refresh"></i>
+                <span id="refresh"></span>
+              </action>
+            </action-list>
+
+            <action-list>
+              <action
+                action-classes="'btn btn-primary btn-action'"
+                disabled="numSelected != 1"
+                callback="actions.edit.open"
+                item="selectedData.aData">
+                <i class="icon icon-edit"></i>
+                <span id="edit">{% trans 'Update Ticket Status' %}</span>
+              </action>
+            </action-list>
+            <action-list>
+              <action
+                action-classes="'btn btn-action btn-danger'"
+                disabled="numSelected === 0"
+                callback="actions.deleted.batchDelete">
+                <i class="icon icon-delete"></i>
+                <span id="delete-ticket">{% trans 'Delete Ticket' %}</span>
+              </action>
+             </action-list>
+             <action-list>
+              <action
+                action-classes="'btn btn-primary  btn-action'"
+                disabled="itickets.length === 0"
+                callback="actions.download">
+                <i class="icon icon-download"></i>
+                <span id="download-ticket">{% trans 'Export Excel' %}</span>
+              </action>
+             </action-list>
+          </div>
+
+          <div class="table_actions display-group clearfix pull-right">
+            <button
+              type="button"
+              class="btn default"
+              ng-click="change('Solved')"
+              ng-class="{active:showContext.cur_show_status=='Solved'}"
+              ng-disabled="!iticketState || showContext.cur_show_status=='Solved'">
+                {% trans 'Solved Tickets' %}
+            </button>
+            <button
+              type="button"
+              class="btn default"
+              ng-click="change('Unsolved')"
+              ng-class="{active:showContext.cur_show_status=='Unsolved'}"
+              ng-disabled="!iticketState || showContext.cur_show_status=='Unsolved'">
+                {% trans 'Unsolved Tickets' %}
+            </button>
+            <button
+              type="button"
+              class="btn default"
+              ng-click="change('All')"
+              ng-class="{active:showContext.cur_show_status=='All'}"
+              ng-disabled="!iticketState || showContext.cur_show_status=='All'">
+                {% trans 'All Tickets' %}
+            </button>
+            <div class="form-group fr">
+              <label for="type_id">
+                {% trans 'Ticket Type' %}
+              </label>
+              <div class="form-group-right">
+                <select
+                  id="type_id"
+                  name="type_id"
+                  class="form-control type-id"
+                  ng-change="change()"
+                  ng-options="type.id as type.type_name for type in types"
+                  ng-model="showContext.cur_type_id">
+                  <option value="">
+                    {% trans 'All Type' %}
+                  </option>
+                 </select>
+              </div>
+              <div class="fr search-bar">
+                <hz-magic-search-bar id="search"></hz-magic-search-bar>
+              </div>
+           </div>
+          </div>
+        </th>
+      </tr>
+
+      <!--
+        Table-column-headers:
+        This is where we declaratively define the table column headers.
+        Include the select all checkbox if you want to enable select all
+        for performing batch actions.
+      -->
+      <tr>
+        <th eagle-eye="select_col" class="select-col">
+          <input type="checkbox"
+            hz-select-page="tickets"/>
+        </th>
+        <th><span eagle-eye="data_col" st-sort="no">{$ ::context.header.ticket_no $}</span></th>
+        <th><span eagle-eye="data_col" st-sort="title">{$ ::context.header.title $}</span></th>
+        <th><span eagle-eye="data_col" st-sort="user_name">{$ ::context.header.user $}</span></th>
+        <th><span eagle-eye="data_col">{$ ::context.header.project_name $}</span></th>
+        <th><span eagle-eye="data_col">{$ ::context.header.project_id $}</span></th>
+        <th><span eagle-eye="data_col" st-sort="type_name">{$ ::context.header.ticket_type $}</span></th>
+        <th><span eagle-eye="data_col" st-sort="status_name">{$ ::context.header.status $}</span></th>
+        <th><span eagle-eye="data_col" st-sort="update_at">{$ ::context.header.update_time $}</span></th>
+        <th><span eagle-eye="data_col" st-sort="create_at">{$ ::context.header.create_time $}</span></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr ng-if="!iticketState">
+        <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+      </tr>
+
+      <tr ng-if="!itickets.length && iticketState">
+        <td colspan="100">{% trans "No Data" %}</td>
+      </tr>
+      <tr ng-if="iticketState" ng-repeat="ticket in itickets" ng-class="{'st-selected': checked[ticket.id]}">
+
+        <!--
+          Table-row-checkbox:
+          User can select and unselect this row by clicking on this checkbox.
+          Batch actions can then be perform on selected rows.
+        -->
+        <td eagle-eye="select_col" class="select-col">
+          <input type="checkbox"
+            hz-select="ticket"
+            ng-model="selected[ticket.id].checked"
+            hz-checkbox-group="tickets"/>
+        </td>
+
+        <!-- Table-row-info-column -->
+        <td eagle-eye="data_col"><a href="javascript:;" ng-click="actions.detail.open(ticket)">{$ ticket.no $}</a></td>
+        <td eagle-eye="data_col" title="{$ ticket.title $}">{$ ticket.title $}</td>
+        <td eagle-eye="data_col">{$ ticket.user_name $}</td>
+        <td eagle-eye="data_col">{$ ticket.project_name $}</td>
+        <td eagle-eye="data_col" title="{$ ticket.requester_project_id $}">{$ ticket.requester_project_id $}</td>
+        <td eagle-eye="data_col">{$ ticket.type_name | transTicketType $}</td>
+        <td eagle-eye="data_col">{$ ticket.status_name | transTicketStatus $}</td>
+        <td eagle-eye="data_col">{$ ticket.update_at $}</td>
+        <td eagle-eye="data_col">{$ ticket.create_at $}</td>
+      </tr>
+
+    </tbody>
+
+    <!--
+      Table-footer:
+      This is where we display number of items and pagination controls.
+      Ensure colspan is greater or equal to number of column-headers.
+    -->
+    <tfoot ng-if="tickets.length > 10">
+      <tr>
+        <td colspan="100">
+          <table-footer></table-footer>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</hz-magic-search-context>
+
+{% endblock %}

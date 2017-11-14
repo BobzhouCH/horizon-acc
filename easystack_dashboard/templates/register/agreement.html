@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+{% load i18n %}
+{% load i18n branding %}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8">
+<title>{% site_branding %}</title>
+<meta name="author" content="" />
+<meta name="Copyright" content="" />
+{% include 'favicon.html' %}
+<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}register/style/index.css">
+<style>
+.title {
+  text-align: center;
+  margin: 50px 0;
+  font-size: 30px;
+}
+.agreement-content {
+  width: 1000px;
+  margin: 0 auto;
+  line-height: 22px;
+}
+</style>
+</head>
+<body>
+    <h1 class="title">{% site_branding %}用户注册协议</h1>
+    <div class="agreement-content">
+      用户注册协议...
+    </div>
+</body>
+</html>

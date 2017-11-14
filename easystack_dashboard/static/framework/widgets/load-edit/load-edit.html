@@ -1,0 +1,28 @@
+<div class="load-edit form-group" ng-class="{ 'has-error': scriptLength >= config.MAX_SCRIPT_SIZE }">
+  <label for="customization-script" class="control-label">
+    <span class="fl">{$ config.label.intro $}</span>
+    <span ng-show="scriptModified">
+      {$ config.label.rightTitle $}</span>
+  </label>
+  <span class="pull-right" ng-class="{ 'text-danger': scriptLength >= config.MAX_SCRIPT_SIZE }">
+    <span>
+      {$  config.label.rightTopPanel $}: {$ (scriptLength || 0) | bytes $} {$ config.label.propOf $} {$ config.MAX_SCRIPT_SIZE | bytes $}
+    </span>
+  </span>
+  <textarea class="form-control"
+            rows="8"
+            id="customization-script"
+            name="customization-script"
+            ng-maxlength="config.MAX_SCRIPT_SIZE"
+            ng-model="textContent">
+  </textarea>
+  <span class="help-block"
+        ng-show="scriptLength >= config.MAX_SCRIPT_SIZE">
+    {$ ::config.label.limitError $}
+  </span>
+</div>
+
+<div class="form-group" ng-show="config.fileApiSupported">
+    <label for="load-script">{$ ::config.label.file$}</label>
+    <input id="load-script" type="file">
+</div>

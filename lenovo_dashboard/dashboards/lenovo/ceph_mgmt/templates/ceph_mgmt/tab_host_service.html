@@ -1,0 +1,62 @@
+{% load branding i18n %}
+{% load url from future %}
+{% load context_selection %}
+
+<div class="left-option col-xs-4">
+{#    <div class="server-service-box">#}
+{#        <div ng-if="server.mons.length >0">#}
+{#            <div ng-repeat="mon in server.mons">#}
+{#               <div>{$ mon.name $}</div>#}
+{#               <div class="state">{$ mon.state $}</div>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div ng-if="server.mdses.length >0">#}
+{#            <div ng-repeat="mds in server.mdses">#}
+{#               <div>{$ mds.name $}</div>#}
+{#               <div class="state">{$ mds.state $}</div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+    <div class="batch-operation hidden">
+        <a>{% trans 'Batch Operation' %}</a>
+    </div>
+    <div class="osd-remove-box hidden">
+        <div class="osd-remove-tip">
+            <p>{% trans 'Following OSDs will be removed' %}:</p>
+            <div class="osd-remove-selected-box">{$ osdNameSelected $}</div>
+        </div>
+        <div class="batch-operation server-remove-btn">
+            {% trans 'Remove' %}
+        </div>
+    </div>
+
+</div>
+
+<div class="right-list col-xs-8">
+    <osd-list server="{$ server.id $}">
+        <div class="osd-box col-xs-3" ng-repeat="mon in server.mons">
+            <div class="osd osd-shadow"></div>
+            <div class="osd osd-click-enable {$ mon.state=='active'?'up':'down' $}" name="{$ mon.name $}" id="{$ mon.name $}">
+                <span class="osd-status"></span><span class="osd-name">mon</span>
+                <br>
+
+                <span class="osd-name" style="font-size: 11px">{$ "role:"+mon.role $}</span>
+{#                <span class="osd-action"  ng-if="osd.osdStatus == 'up'" ng-click="osdAction.stop($event,server.id,osd)">{% trans 'Stop' %}</span>#}
+{#                <span class="osd-action"  ng-if="osd.osdStatus != 'up'" ng-click="osdAction.start($event,server.id,osd)">{% trans 'Start' %}</span>#}
+            </div>
+
+        </div>
+        <div class="osd-box col-xs-3" ng-repeat="osd in server.osdsList">
+            <div class="osd osd-shadow"></div>
+            <div class="osd osd-click-enable {$ osd.osdStatus $}" name="{$ osd.osdName $}" id="{$ osd.osdId $}">
+                <span class="osd-status"></span><span class="osd-name">{$ osd.osdName $}</span>
+{#                <span class="osd-action"  ng-if="osd.osdStatus == 'up'" ng-click="osdAction.stop($event,server.id,osd)">{% trans 'Stop' %}</span>#}
+{#                <span class="osd-action"  ng-if="osd.osdStatus != 'up'" ng-click="osdAction.start($event,server.id,osd)">{% trans 'Start' %}</span>#}
+            </div>
+
+        </div>
+    </osd-list>
+</div>
+
+{% include "lenovo/ceph_mgmt/modal/deleteOsd.html"  %}
+

@@ -1,0 +1,128 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Instance Snapshot" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Volume Snapshot") %}
+{% endblock page_header %}
+
+{% block main %}
+
+<hz-magic-search-context filter-facets="filterFacets">
+<table id="volume-snapshot" hz-table ng-cloak hopes-table-drag
+      st-table="ivolumes"
+      st-safe-src="volumes"
+      default-sort="created"
+      default-sort-reverse="true"
+      st-magic-search
+      ng-controller="snapshotsVolumeCtrl"
+      disabled="disabled"
+      class="table table-bordered table-hover">
+  <thead>
+  <tr>
+    <th colspan="100" class="bare">
+      <div class="table_actions clearfix">
+        <action-list>
+          <action
+            action-classes="'btn btn-primary btn-action'"
+            callback="actions.refresh">
+            <i class="icon icon-refresh"></i>
+            <span id="refresh-volume"></span>
+          </action>
+        </action-list>
+
+        <action-list>
+          <action
+          action-classes="'btn btn-primary btn-action'"
+          disabled="disabled || (!rootblock.active_fixing && rootblock.billing_need) || disableCreate"
+          callback="actions.create.open"
+          item="selectedData.aData">
+          <i class="icon icon-add"></i>
+          <span id="create-volume">{% trans 'Create Volume' %}</span>
+          </action>
+        </action-list>
+
+        <action-list>
+          <action
+          action-classes="'btn btn-default btn-sm btn-danger'"
+          disabled="numSelected === 0 || disableDelete"
+          callback="actions.deleted.batchDelete">
+          <i class="icon icon-delete"></i>
+          <span id="delete-volume-snapshot">{% trans 'Delete Volume Snapshot' %}</span>
+          </action>
+        </action-list>
+
+        <action-list dropdown>
+          <button id="network-more" type="button" class="btn btn-primary btn-action" dropdown-toggle>
+            <i class="icon icon-more"></i>
+            <span>{% trans 'More' %}</span>
+          </button>
+          <menu>
+            <action
+              button-type="menu-item"
+              disabled="numSelected != 1"
+              callback="actions.edit.open" item="selectedData.aData">
+              <span id="volume-snapshot-edit">{% trans 'Edit' %}</span>
+            </action>
+          </menu>
+        </action-list>
+
+        <div class="fr search-bar">
+          <hz-magic-search-bar id="search"></hz-magic-search-bar>
+        </div>
+      </div>
+    </th>
+  </tr>
+  <tr eagle-eye="table_heads">
+  <th class="select-col" eagle-eye="select_col">
+    <input type="checkbox"
+      hz-select-page="volumes"/>
+  </th>
+  <th class="rsp-p1" st-sort-default="name" eagle-eye="data_col">
+    <span st-sort="name">{$ ::context.header.name $}</span>
+  </th>
+  <th eagle-eye="data_col"><span st-sort="description">{$ ::context.header.describes $}</span></th>
+  <th eagle-eye="data_col"><span st-sort="status">{$ ::context.header.state $}</span></th>
+  <th eagle-eye="data_col"><span st-sort="size">{$ ::context.header.size $}</span></th>
+  <th eagle-eye="data_col"><span st-sort="volume_name">{$ ::context.header.volume_name $}</span></th>
+  <th eagle-eye="data_col"><span st-sort="created_at">{$ ::context.header.created $}</span></th>
+ </tr>
+</thead>
+
+  <tbody>
+
+    <tr ng-if="!volumeState">
+      <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+    </tr>
+
+    <tr ng-if="!ivolumes.length && volumeState">
+      <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+    </tr>
+    <tr ng-repeat="volume in ivolumes" ng-class="{'st-selected': checked[volume.id]}">
+      <td class="select-col" eagle-eye="select_col">
+      <input type="checkbox"
+        hz-select="volume"
+        ng-model="selected[volume.id].checked"
+        hz-checkbox-group="volumes"/>
+      </td>
+     <!-- Table-row-info-column -->
+     <td eagle-eye="data_col">{$ volume.name $}</td>
+     <td eagle-eye="data_col">{$ volume.description $}</td>
+     <td eagle-eye="data_col">{$ volume.status | decode:volumesnapshotStatus $}</td>
+     <td eagle-eye="data_col">{$ volume.size| gb$}</td>
+     <td eagle-eye="data_col">{$ volume.volume_name $}</td>
+     <td eagle-eye="data_col">{$ volume.created_at $}</td>
+   </tr>
+ </tbody>
+
+<tfoot ng-if="volumes.length > 10">
+   <tr>
+     <td colspan="100" eagle-eye="data_page">
+       <table-footer></table-footer>
+     </td>
+   </tr>
+</tfoot>
+</table>
+</hz-magic-search-context>
+
+{% endblock %}

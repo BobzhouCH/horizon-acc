@@ -1,0 +1,26 @@
+{% extends "easystack_dashboard/common/_es_modal_form.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block form_id %}create_prices_form{% endblock %}
+{% block form_action %}{% url 'horizon:admin:billing:prices:create_price' price.id %}{% endblock %}
+
+{% block modal-header %}{% trans "Bind Price to Account" %}{% endblock %}
+
+{% block modal-body %}
+
+<div class="left createUser_wrap">
+    <fieldset>
+    {% include "easystack_dashboard/self_defined_templates/price_form/_bind_price_to_account_form_fields.html" %}
+    </fieldset>
+</div>
+
+{% endblock %}
+
+<div class="btnWarp">
+  {% block modal-footer %}
+  <div class="Private_btn txt-r">
+    <input id="bind-price-account" class="btn_3" type="submit" value="{% trans "Bind Price to Account" %}" />
+  </div>
+{% endblock %}
+</div>

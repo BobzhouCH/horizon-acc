@@ -1,0 +1,99 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+    <h3 class="modal-title">{$ ::context.title $}</h3>
+    <p class="modal-colsed" ng-click="action.cancel()">
+        <i class="modal-colsed-icon"></i>
+    </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+    <fieldset>
+        <!--
+          Aggregate Name (required):
+            Create-mode: show
+            Edit-mode: show
+        -->
+        <!--<pre>{$ form|json $}</pre>-->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.host.$invalid && form.host.$dirty}">
+          <label for="name">
+            *{% trans "Aggregate Name" %}
+          </label>
+          <div class="form-group-right">
+            <input type="input" required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              ng-maxlength="255"
+              ng-model="aggregate.name">
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "An aggregate name is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+        <!--
+          Availability Zone (option):
+            Create-mode: show
+            Edit-mode: show
+        -->
+        <div class="form-group clearfix">
+          <label for="host">
+            {% trans "Availability Zone" %}
+          </label>
+          <div class="form-group-right"
+               ng-class="{'has-error':form.availability_zone.$invalid && form.availability_zone.$dirty}">
+            <input type="input"
+              id="availability_zone"
+              name="availability_zone"
+              class="form-control verify-input"
+              ng-maxlength="255"
+              ng-model="aggregate.availability_zone">
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.availability_zone.$error.required && form.availability_zone.$dirty">
+              {% trans "An availability zone name is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.availability_zone.$error.maxlength">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+        <!--<div class="form-group clearfix"
+             ng-class="{'has-error':form.availability_zone.$invalid && form.availability_zone.$dirty}">
+            <label for="availability_zone">
+                {% trans "Availability Zone" %}
+            </label>
+            <div class="form-group-right">
+                <select class="form-control"
+                        id="availability_zone"
+                        name="availability_zone"
+                        required ng-model="aggregate.availability_zone"
+                        ng-options="zone.zoneName for zone in zones"></select>
+            </div>
+        </div>-->
+      </fieldset>
+    </div>
+
+    <!-- Modal-form-right: The description text. -->
+
+  <!--</div>-->
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

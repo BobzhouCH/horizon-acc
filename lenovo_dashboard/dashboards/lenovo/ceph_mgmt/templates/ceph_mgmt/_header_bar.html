@@ -1,0 +1,22 @@
+{% load branding i18n %}
+{% load url from future %}
+{% load context_selection %}
+
+{% if thinkstackAll %}
+<div>thinkstackAll</div>
+<div id="switch-function">
+    <div class="switcher-vmware">
+        <div class="vmware-name">机房3</div>
+        <div class="vmware-state">
+            <label>健康状态：</label>
+            <label>良好</label>
+            <label class="cluster-position">中国，北京市，朝阳区望京西路6号</label>
+        </div>
+    </div>
+    <div class="switcher_tab">
+        <a href="">资源池</a>
+        <a href="horizon/admin">物理拓扑</a>
+        <a href="" class="active">Storage</a>
+    </div>
+</div>
+{% endif %}

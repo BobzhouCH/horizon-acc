@@ -1,0 +1,244 @@
+{% load i18n %}
+
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<form class="mt20" novalidate name="subForm" ng-submit="submit(subForm.$valid)">
+
+  <fieldset>
+    <div class="modal-body clearfix">
+
+      <div ng-if="context.mode == 'createDns'" class="form-group clearfix"
+        ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+        <label for="name">
+          {% trans 'DNS Servers' %}
+        </label>
+        <div class="form-group-right network-num-list" enter-check="data">
+          <input type="text"
+            class="verify-input"
+            ng-model="data.dns_0"
+            ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+            ng-required="true"> <em>.</em>
+
+          <input type="text"
+            class="verify-input"
+            ng-model="data.dns_1"
+            ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+            ng-required="true"> <em>.</em>
+
+          <input type="text"
+            class="verify-input"
+            ng-model="data.dns_2"
+            ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+            ng-required="true"> <em>.</em>
+
+          <input type="text"
+            class="verify-input"
+            ng-model="data.dns_3"
+            ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+            ng-required="true">
+        </div>
+      </div>
+
+      <div ng-if="context.mode == 'createHostRoute'" enter-check="data">
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="name">
+            {% trans 'Network Segment' %}
+          </label>
+          <div class="form-group-right network-num-list">
+            <input type="text"
+              class="verify-input"
+              ng-model="data.segment_0"
+              ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+              ng-required="true"> <em>.</em>
+
+            <input type="text"
+              class="verify-input"
+              ng-model="data.segment_1"
+              ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+              ng-required="true"> <em>.</em>
+
+            <input type="text"
+              class="verify-input"
+              ng-model="data.segment_2"
+              ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+              ng-required="true"> <em>.</em>
+
+            <input type="text"
+              class="verify-input"
+              ng-model="data.segment_3"
+              ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+              ng-required="true">
+            <span>/</span>
+            <input type="text"
+              class="verify-input"
+              ng-model="data.segment_4"
+              ng-pattern="/^(\d|1\d|2\d|30|31|32)$/"
+              ng-required="true"
+              tag="segment">
+
+          </div>
+        </div>
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="name">
+            {% trans 'NextHop' %}
+          </label>
+          <div class="form-group-right network-num-list">
+            <input type="text"
+              class="verify-input"
+              ng-model="data.leap_0"
+              ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+              ng-required="true"> <em>.</em>
+
+            <input type="text"
+              class="verify-input"
+              ng-model="data.leap_1"
+              ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+              ng-required="true"> <em>.</em>
+
+            <input type="text"
+              class="verify-input"
+              ng-model="data.leap_2"
+              ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+              ng-required="true"> <em>.</em>
+
+            <input type="text"
+              class="verify-input"
+              ng-model="data.leap_3"
+              ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+              ng-required="true">
+
+          </div>
+         </div>
+       </div>
+
+      <div ng-if="context.mode == 'createAddressPool'" class="form-group clearfix"
+        ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+        <label for="name">
+          {% trans "Address Pool" %}
+        </label>
+        <div class="form-group-right network-num-list" address-poll-check="data" is-address-poll="true" enter-check="data">
+          <span class="address-pool-num" ng-if="data.address_1">{$ data.pool_0 $}</span>
+          <span ng-if="!data.address_1" class="pop-tips" ng-class="{ 'pop-error': subForm.name1.$invalid && subForm.name1.$dirty }">
+            <input type="text" name="name1"
+              class="verify-input"
+              popover="{% trans 'Your IP allocation pool must be in subnet CIDR' %}"
+              popover-placement="top"
+              popover-append-to-body="false"
+              popover-trigger="focus"
+              ng-model="data.pool_0"
+              ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+              ng-required="true">
+          </span> <em>.</em>
+
+          <span class="address-pool-num" ng-if="data.address_2">{$ data.pool_1 $}</span>
+          <span ng-if="!data.address_2" class="pop-tips" ng-class="{ 'pop-error': subForm.name2.$invalid && subForm.name2.$dirty }">
+            <input type="text" name="name2"
+              class="verify-input"
+              popover="{% trans 'Your IP allocation pool must be in subnet CIDR' %}"
+              popover-placement="top"
+              popover-append-to-body="false"
+              popover-trigger="focus"
+              ng-model="data.pool_1"
+              ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+              ng-required="true">
+          </span> <em>.</em>
+
+          <span class="pop-tips" ng-class="{ 'pop-error': subForm.name3.$invalid && subForm.name3.$dirty }">
+            <input type="text" name="name3"
+              class="verify-input"
+              popover="{% trans 'Your IP allocation pool must be in subnet CIDR' %}"
+              popover-placement="top"
+              popover-append-to-body="false"
+              popover-trigger="focus"
+              ng-model="data.pool_2"
+              ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+              ng-required="true">
+          </span> <em>.</em>
+
+          <span class="pop-tips" ng-class="{ 'pop-error': subForm.name4.$invalid && subForm.name4.$dirty }">
+            <input type="text" name="name4"
+              class="verify-input"
+              popover="{% trans 'Your IP allocation pool must be in subnet CIDR' %}"
+              popover-placement="top"
+              popover-append-to-body="false"
+              popover-trigger="focus"
+              ng-model="data.pool_3"
+              ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+              ng-required="true">
+          </span>
+
+          <span><i class="glyphicon glyphicon-minus glyphicon-color"></i></span>
+
+          <span class="address-pool-num" ng-if="data.address_3">{$ data.pool_4 $}</span>
+          <span ng-if="!data.address_3" class="pop-tips" ng-class="{ 'pop-error': subForm.name5.$invalid && subForm.name5.$dirty }">
+            <input type="text" name="name5"
+              class="verify-input"
+              popover="{% trans 'Your IP allocation pool must be in subnet CIDR' %}"
+              popover-placement="top"
+              popover-append-to-body="false"
+              popover-trigger="focus"
+              ng-model="data.pool_4"
+              ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+              ng-required="true">
+          </span> <em>.</em>
+
+          <span class="address-pool-num" ng-if="data.address_4">{$ data.pool_5 $}</span>
+          <span ng-if="!data.address_4" class="pop-tips" ng-class="{ 'pop-error': subForm.name6.$invalid && subForm.name6.$dirty }">
+            <input type="text" name="name6"
+              class="verify-input"
+              popover="{% trans 'Your IP allocation pool must be in subnet CIDR' %}"
+              popover-placement="top"
+              popover-append-to-body="false"
+              popover-trigger="focus"
+              ng-model="data.pool_5"
+              ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+              ng-required="true">
+          </span> <em>.</em>
+
+          <span class="pop-tips" ng-class="{ 'pop-error': subForm.name7.$invalid && subForm.name7.$dirty }">
+            <input type="text" name="name7"
+              class="verify-input"
+              popover="{% trans 'Your IP allocation pool must be in subnet CIDR' %}"
+              popover-placement="top"
+              popover-append-to-body="false"
+              popover-trigger="focus"
+              ng-model="data.pool_6"
+              ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+              ng-required="true"> <em>.</em>
+          </span>
+
+          <span class="pop-tips" ng-class="{ 'pop-error': subForm.name8.$invalid && subForm.name8.$dirty }">
+            <input type="text" name="name8"
+              class="verify-input"
+              popover="{% trans 'Your IP allocation pool must be in subnet CIDR' %}"
+              popover-placement="top"
+              popover-append-to-body="false"
+              popover-trigger="focus"
+              ng-model="data.pool_7"
+              ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+              ng-required="true">
+          </span>
+
+        </div>
+      </div>
+
+    </div>
+  </fieldset>
+
+</form>
+
+<!-- Modal-footer: network can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="subForm.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

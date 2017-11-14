@@ -1,0 +1,161 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Volumes" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Volumes") %}
+{% endblock page_header %}
+
+{% block main %}
+
+<hz-magic-search-context filter-facets="filterFacets">
+  <table id="volumes-list" hz-table ng-cloak hopes-table-drag
+    st-table="ivolumes"
+    st-safe-src="volumes"
+    default-sort="created_at"
+    default-sort-reverse="true"
+    ng-init="userID = '{{ request.user.id }}'"
+    st-magic-search
+    ng-controller="adminVolumesCtrl"
+    class="table table-bordered table-hover">
+
+    <!--
+      Table-head:
+      This is where we add things like filtering and batch actions.
+      This is where we add column headers.
+    -->
+    <thead>
+
+      <!--
+        Table-batch-actions:
+        This is where batch actions like searching, creating, and deleting.
+      -->
+      <tr>
+        <th colspan="100" class="bare">
+          <div class="table_actions clearfix">
+            <action-list>
+              <action
+                action-classes="'btn btn-primary btn-action'"
+                callback="actions.refresh">
+                <i class="icon icon-refresh"></i>
+                <span id="refresh"></span>
+              </action>
+            </action-list>
+            <action-list>
+              <action
+                action-classes="'btn btn-primary btn-action'"
+                callback="actions.updateVolumeStatus.open"
+                item="selectedData.aData"
+                disabled="numSelected !== 1">
+                <i class="icon icon-add"></i>
+                <span id="updateStatus">{% trans 'Update Volume Status' %}</span>
+              </action>
+            </action-list>
+            <action-list>
+              <action
+                action-classes="'btn btn-primary btn-action'"
+                disabled="numSelected !== 1"
+                callback="actions.edit.open"
+                item="selectedData.aData">
+                <i class="icon icon-edit"></i>
+                <span id="edit">{% trans 'Edit' %}</span>
+              </action>
+            </action-list>
+            <action-list>
+              <action
+                action-classes="'btn btn-action btn-danger'"
+                disabled="checkDeleteBtn($table)"
+                callback="actions.deleted.batchDelete"
+                item="selectedData.aData">
+                <i class="icon icon-delete"></i>
+                <span id="delete">{% trans 'Delete Volume' %}</span>
+              </action>
+            </action-list>
+
+            <div class="fr search-bar" ng-if="ivolumesState">
+              <hz-magic-search-bar id="search"></hz-magic-search-bar>
+            </div>
+          </div>
+        </th>
+      </tr>
+
+      <!--
+        Table-column-headers:
+        This is where we declaratively define the table column headers.
+        Include the select all checkbox if you want to enable select all
+        for performing batch actions.
+      -->
+      <tr>
+        <th class="select-col" eagle-eye="select_col">
+          <input type="checkbox" hz-select-page="volumes"/>
+        </th>
+        <th>
+          <span st-sort="name" eagle-eye="data_col">{$ ::context.header.name $}</span>
+        </th>
+        <th><span eagle-eye="data_col">{$ ::context.header.description $}</span></th>
+        <th><span st-sort="domain" eagle-eye="data_col">{$ ::context.header.domain $}</span></th>
+        <th><span st-sort="tenant_name" eagle-eye="data_col">{$ ::context.header.tenant_name $}</span></th>
+        <th><span st-sort="size" eagle-eye="data_col">{$ ::context.header.size $}</span></th>
+        <th><span st-sort="status" eagle-eye="data_col">{$ ::context.header.status $}</span></th>
+        <th><span eagle-eye="data_col">{$ ::context.header.volume_type $}</span></th>
+        <th><span eagle-eye="data_col">{$ ::context.header.attachments $}</span></th>
+        <th><span st-sort="created_at" eagle-eye="data_col">{$ ::context.header.created_at $}</span></th>
+
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr ng-if="!ivolumesState">
+        <td colspan="100"  class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+      </tr>
+
+      <tr ng-if="!ivolumes.length && ivolumesState">
+        <td colspan="100">{% trans "No Data" %}</td>
+      </tr>
+      <tr ng-repeat="volume in ivolumes" ng-class="{'st-selected': checked[volume.id]}">
+
+        <!--
+          Table-row-checkbox:
+          User can select and unselect this row by clicking on this checkbox.
+          Batch actions can then be perform on selected rows.
+        -->
+        <td class="select-col" eagle-eye="select_col">
+          <input type="checkbox"
+            hz-select="volume"
+            ng-model="selected[volume.id].checked"
+            hz-checkbox-group="volumes"/>
+        </td>
+
+        <!-- Table-row-info-column -->
+        <td eagle-eye="data_col">{$ volume.name $}</td>
+        <td eagle-eye="data_col">{$ volume.description $}</td>
+        <td eagle-eye="data_col">{$ volume.domain $}</td>
+        <td eagle-eye="data_col">{$ volume.tenant_name $}</td>
+        <td eagle-eye="data_col">{$ volume.size | gb $}</td>
+        <td eagle-eye="data_col">{$ volume.status | decode:volumeStatus $}</td>
+        <td eagle-eye="data_col">{$ volume.volume_type | decode:volumeType $}</td>
+        <td eagle-eye="data_col">
+          {$ volume.attachment_string $}
+        </td>
+        <td eagle-eye="data_col">{$ volume.created_at | date:'short'  $}</td>
+
+      </tr>
+
+    </tbody>
+
+    <!--
+      Table-footer:
+      This is where we display number of items and pagination controls.
+      Ensure colspan is greater or equal to number of column-headers.
+    -->
+    <tfoot ng-if="volumes.length > 10">
+      <tr>
+        <td colspan="100">
+          <table-footer></table-footer>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</hz-magic-search-context>
+
+{% endblock %}

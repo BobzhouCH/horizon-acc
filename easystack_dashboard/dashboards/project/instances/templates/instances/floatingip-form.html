@@ -1,0 +1,164 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+ <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+      <div class="modal-description" ng-if="context.mode === 'associate'">
+          <p>
+            {% trans "Your instance's subnet has to be connected to router which is set gateway." %}
+          </p>
+      </div>
+      <fieldset>
+        <!--
+          FloatingIp name input (required):
+            Associate-mode: show,disabled
+            Disassociate-mode: show,disabled
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label class="control-label fl required" for="name">
+            {% trans "Instance Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              type="text"
+              ng-model="instance.name"
+              ng-maxlength="255"
+              ng-disabled="context.mode === 'associate' || context.mode === 'disassociate'"
+              placeholder="{% trans 'enter a instance name' %}"/>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$invalid && form.name.$dirty">
+              {% trans "A instance name is required." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+          Associate nic input (required):
+            Associate-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'associate'"
+          ng-class="{'has-error':form.nic.$invalid && form.nic.$dirty}">
+          <label class="control-label fl required" for="nic">
+            {% trans "Instance Nic" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="nic"
+              name="nic"
+              class="form-control verify-input"
+              ng-class="{strikeLoading: !dropdown.nics}"
+              ng-init="instance.nic = dropdown.nics[0].id"
+              ng-model="instance.nic"
+              ng-change="instance.nicName = dropdown.nicsMap[instance.nic].name">
+              <option value="" disabled>
+                {$ (dropdown.nics && dropdown.nics.length) ? "{% trans 'Select a Nic (reachable to external net)' %}"
+                   : "{% trans 'No Nic to select' %}" $}
+              </option>
+              <option
+                ng-repeat="nic in dropdown.nics"
+                ng-selected="nic.id === instance.nic"
+                value="{$ nic.id $}">
+                {$ nic.name $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!--
+          Associate floating ip input (required):
+            Associate-mode: show
+            Disassociate-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'associate'"
+          ng-class="{'has-error':form.floatingip.$invalid && form.floatingip.$dirty}">
+          <label class="control-label fl required" for="floatingip">
+            {% trans "Floating IP" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="floatingip"
+              name="floatingip"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.nics}"
+              ng-init="instance.floatingip = dropdown.portFloatingipsMap[instance.nic][0].id"
+              ng-model="instance.floatingip"
+              ng-change="instance.floatingipName = dropdown.floatingipsMap[instance.floatingip].name">
+              <option value="" disabled>
+                {$ dropdown.portFloatingipsMap[instance.nic].length
+                   ? "{% trans 'Select a Floating IP' %}" : "{% trans 'No Floating IP to select' %}" $}
+              </option>
+              <option
+                ng-repeat="floatingip in dropdown.portFloatingipsMap[instance.nic]"
+                ng-selected="floatingip.id === instance.floatingip"
+                ng-disabled="floatingip.id === 0"
+                value="{$ floatingip.id $}">
+                {$ floatingip.name $} ({% trans 'Bandwidth' %}: {$ floatingip.bandwidth $} Mbps)
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!--
+          Disassociate floating ip input (required):
+            Disassociate-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'disassociate'"
+          ng-class="{'has-error':form.floatingip.$invalid && form.floatingip.$dirty}">
+          <label class="control-label fl required" for="floatingip">
+            {% trans "Floating IP" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="floatingip"
+              name="floatingip"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.floatingips}"
+              ng-model="instance.floatingip"
+              ng-change="instance.floatingipName = dropdown.floatingipsMap[instance.floatingip].name">
+              <option value="" disabled>
+                {$ (dropdown.floatingips && dropdown.floatingips.length) ? "{% trans 'Select a Floating IP' %}"
+                   : "{% trans 'No Floating IP to select' %}" $}
+              </option>
+              <option
+                ng-repeat="floatingip in dropdown.floatingips"
+                ng-selected="floatingip.id === instance.floatingip"
+                ng-disabled="floatingip.id === 0"
+                value="{$ floatingip.id $}">
+                {$ floatingip.name $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+      </fieldset>
+    </div>
+
+    <!-- Modal-form-right: The description text. -->
+
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+  ng-disabled="form.$invalid"
+  ng-click="action.submit()">
+  {$ ::context.submit $}
+</button>
+</div>

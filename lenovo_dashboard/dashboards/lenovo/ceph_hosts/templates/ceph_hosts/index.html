@@ -1,0 +1,18 @@
+{% extends 'lenovo/base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Ceph Management" %}{% endblock %}
+
+{% block page_header %}
+    {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Ceph Management") %}
+{% endblock page_header %}
+
+{% block content_main %}"contentMain tab-main"{% endblock %}
+
+{% block main %}
+<div>
+<ceph-m-host></ceph-m-host>
+</div>
+
+{% endblock %}
+
+

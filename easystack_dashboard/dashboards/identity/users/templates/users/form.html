@@ -1,0 +1,284 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+      <fieldset>
+        <!--
+          User name input (required):
+            Create-mode: show
+            Edit-mode: show
+            Password-mode: show but disable
+        -->
+        <div class="form-group clearfix">
+          <label for="name">
+            *{% trans "User Name" %}
+          </label>
+          <div class="form-group-right" ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+            <input required
+              id="name"
+              name="name"
+              class="form-control"
+              type="text"
+              ng-model="user.name"
+              ng-maxlength="255"
+              ng-disabled="context.mode==='password'"
+              ng-change="checkName()"
+              placeholder="{% trans 'Enter a user name' %}" autocomplete="off">
+            <p class="help-block alert alert-danger user-alert"
+              ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "A user name is required." %}
+            </p>
+            <p class="help-block alert alert-danger user-alert"
+              ng-show="form.name.$error.maxlength">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+            <p class="help-block alert alert-danger user-alert"
+                 ng-show="hasName && (!form.name.$error.required || !form.name.$dirty)">
+                {% trans "User name is used." %}
+            </p>
+         </div>
+        </div>
+
+        <!--
+          Email input (optional):
+            Create-mode: show
+            Edit-mode: show
+            Password-mode: hide
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode !== 'password'">
+          <label for="email">
+            *{% trans "Email" %}
+          </label>
+          <div class="form-group-right" ng-class="{'has-error':(form.email.$invalid || hasEmail) && form.email.$dirty}">
+            <input required
+              id="email"
+              name="email"
+              class="form-control"
+              type="text"
+              ng-model="user.email"
+              ng-pattern="/^([a-zA-Z0-9_\.-]+)@([\da-zA-Z\.-]+)\.([a-zA-Z\.]{2,6})$/"
+              placeholder="user@domain.com"
+              autocomplete="off"
+              ng-change="checkEmail()"
+              ng-disabled="context.mode === 'edit' || user.id === currentUser.id">
+              <p class="help-block alert alert-danger user-alert"
+                 ng-show="hasEmail">
+                {% trans "User Email is used." %}
+              </p>
+              <p class="help-block alert alert-danger user-alert"
+                 ng-show="form.email.$invalid && form.email.$dirty">
+                {% trans "Please enter a valid email address." %}
+              </p>
+          </div>
+
+        </div>
+
+        <!--
+          Password input (required):
+          User can toggle password visibility by clicking on icon.
+          There is no restriction on the password.
+            Create-mode: show
+            Edit-mode: hide
+            Password-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode !== 'edit'">
+          <label for="password">
+            *{% trans "Password" %}
+          </label>
+            <div class="form-group-right" ng-class="{'has-error':form.password.$invalid && form.password.$dirty}">
+            <div class="has-feedback" ng-init="show=false">
+              <input required ng-minlength="8"
+                id="password"
+                name="password"
+                class="form-control"
+                type="{$ show?'text':'password' $}"
+                ng-model="user.password"
+                ng-pattern="/(?!^(\d+|[a-zA-Z]+|[~!@#$%^&*?]+)$)^[\w~!@#$%\^&*?]+$/"
+                placeholder="{% trans 'Enter a password' %}" autocomplete="off">
+              <span ng-click="show=!show"
+                class="form-control-feedback glyphicon glyphicon-eye-{$ show?'open':'close' $}">
+              </span>
+            </div>
+            <p class="help-block alert alert-danger user-alert"
+              ng-show="form.password.$dirty && !form.password.$viewValue">
+              {% trans "A password is required." %}
+            </p>
+            <p class="help-block alert alert-danger user-alert"
+              ng-show="form.password.$invalid && form.password.$dirty && form.password.$viewValue.length>=8">
+              {% trans "Password must contains two kind of types (eg. Numbers, Characters or symbol) and 8 length." %}
+            </p>
+            <p class="help-block alert alert-danger user-alert"
+              ng-show="form.password.$dirty && form.password.$viewValue.length<8 && form.password.$viewValue.length>0">
+              {% trans "Please enter at least 8 charactors." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+          Confirmation password input (required):
+          User can toggle password visibility by clicking on icon.
+          An error message is shown When confirmation password does not match.
+            Create-mode: show
+            Edit-mode: hide
+            Password-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode !== 'edit'">
+          <label for="cpassword">
+            *{% trans "Confirm Password" %}
+          </label>
+          <div class="form-group-right" ng-class="{'has-error':form.cpassword.$error.match && form.cpassword.$dirty}">
+            <div class="has-feedback" ng-init="cshow=false">
+              <input required
+                id="cpassword"
+                name="cpassword"
+                class="form-control"
+                type="{$cshow?'text':'password'$}"
+                ng-model="user.cpassword"
+                hz-password-match="form.password"
+                placeholder="{% trans 'Confirm the password' %}" autocomplete="off">
+              <span ng-click="cshow=!cshow"
+                class="form-control-feedback glyphicon glyphicon-eye-{$cshow?'open':'close'$}">
+              </span>
+            </div>
+            <p class="help-block alert alert-danger user-alert"
+              ng-show="form.cpassword.$error.match && form.cpassword.$dirty">
+              {% trans "A matching confirmation password is required." %}
+            </p>
+          </div>
+        </div>
+
+       <!--
+          Domain selection (required)
+            Create-mode: show
+            Edit-mode: hide
+            Password-mode: hide
+        -->
+        <div class="form-group clearfix"
+          ng-show="cloudAdmin" ng-if="context.mode === 'create'">
+          <label for="domain">
+            *{% trans "Domain" %}
+          </label>
+          <div class="form-group-right" ng-class="{'has-error':form.domain.$invalid && form.domain.$dirty}">
+            <select
+              id="domain"
+              name="domain"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.domains}"
+              ng-model="user.domain_id"
+              ng-change="selectDomain(user.domain_id)">
+              <option value="" disabled selected>
+                {% trans 'Select a domain' %}
+              </option>
+              <option
+                ng-repeat="domain in dropdown.domains"
+                value="{$domain.id$}">
+                {$ domain.name $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+
+        <!--
+          Primary project selection (required)
+            Create-mode: show
+            Edit-mode: show
+            Password-mode: hide
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create'">
+          <label for="project">
+            *{% trans "Primary Project" %}
+          </label>
+          <div class="form-group-right" ng-class="{'has-error':form.project.$invalid && form.project.$dirty}">
+            <!--<select required
+              id="project"
+              name="project"
+              class="form-control"
+              ng-class="{strikeLoading: projectsLoading}"
+              ng-model="user.project_id">
+              <option value="" disabled selected>
+                {% trans 'Select a project' %}
+              </option>
+              <option
+                ng-repeat="project in dropdown.projects"
+                ng-selected="project.id===user.tenantId || project.id===user.default_project_id"
+                ng-click="user.project=project.name"
+                value="{$project.id$}">
+                {$ project.name $}
+              </option>
+          </select>-->
+
+            <select
+              id="project-name"
+              class="form-control"
+              ng-class="{strikeLoading: projectsLoading}"
+              required
+              ng-model="dropdown.project_data"
+              ng-change="selectProject()"
+              ng-options="project.name for project in dropdown.projects">
+              <option value="" disabled selected>{% trans 'Select a project' %}</option>
+            </select>
+
+          </div>
+        </div>
+
+        <!--
+          Role selection (required):
+            Create-mode: show
+            Edit-mode: hide
+            Password-mode: hide
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' && dropdown.roles">
+          <label for="role">
+            {% trans "Role" %}
+          </label>
+          <div class="form-group-right" ng-class="{'has-error':form.role.$invalid && form.role.$dirty}">
+            <select required
+              id="role"
+              name="role"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.roles}"
+              ng-model="user.role_id"
+              ng-init="user.role_id = dropdown.roles[0].id">
+              <option value="" disabled>
+                *{% trans 'Select a role' %}
+              </option>
+              <option
+                ng-repeat="role in dropdown.roles"
+                ng-selected="role.id===user.role_id"
+                eagle-eye="{$role.name$}"
+                value="{$role.id$}">
+                {$ role.name | decode:roleName $}
+              </option>
+            </select>
+          </div>
+        </div>
+      </fieldset>
+    <!-- Modal-form-right: The description text. -->
+
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid || hasName || hasEmail"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

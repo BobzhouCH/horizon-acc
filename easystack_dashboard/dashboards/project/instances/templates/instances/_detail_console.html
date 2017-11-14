@@ -1,0 +1,27 @@
+{% load i18n %}
+{% load url from future %}
+
+<iframe id="console_embed" ng-src={$console_url$} frameborder="no" border="0" mozallowfullscreen webkitallowfullscreen allowfullscreen style="width:100%;color:#000;"></iframe>
+<script type="text/javascript">
+    var fix_height = function() {
+      var leftHeight= $("#js-leftPane").height();
+      var windowHeight= $(window).height();
+      var topHeight= $("#instance_details").height() + $(".topPane").height() + 25;
+      var consoleHeight= leftHeight >= windowHeight ? leftHeight : windowHeight - topHeight;
+      $("#console_embed").css({ height: consoleHeight + 'px'});
+    };
+
+    // there are two code paths to this particular block; handle them both
+    if (typeof($) != 'undefined') {
+        $(document).ready(fix_height);
+    } else {
+        addHorizonLoadEvent(fix_height);
+    }
+
+    /*document.getElementById('console_embed').focus();*/
+    $("#instance_details li").eq(2).on('click',function(){
+      setTimeout(function(){
+        document.getElementById('console_embed').focus();
+      },300);
+    });
+</script>

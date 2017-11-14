@@ -1,0 +1,224 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% load context_selection %}
+{% block title %}{% trans "Volumes" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Volumes") %}
+{% endblock page_header %}
+
+{% block main %}
+
+<hz-magic-search-context filter-facets="filterFacets">
+<table id="volume-table" hz-table ng-cloak hopes-table-drag
+  st-table="ivolumes"
+  st-safe-src="volumes"
+  default-sort="created_at"
+  default-sort-reverse="true"
+  st-magic-search
+  ng-controller="projectVolumesCtrl"
+  ng-init="userID = '{{ request.user.id }}'"
+  disabled="disabled"
+  class="table table-bordered table-hover">
+
+  <!--
+    Table-head:
+    This is where we add things like filtering and batch actions.
+    This is where we add column headers.
+  -->
+  <thead>
+
+    <!--
+      Table-batch-actions:
+      This is where batch actions like searching, creating, and deleting.
+    -->
+    <tr>
+      <th colspan="100" class="bare">
+        <div class="table_actions clearfix">
+
+          <action-list>
+            <action
+              action-classes="'btn btn-primary btn-action'"
+              callback="actions.refresh">
+              <i class="icon icon-refresh"></i>
+              <span id="refresh"></span>
+            </action>
+          </action-list>
+
+          <action-list>
+            <action
+              action-classes="'btn btn-primary btn-action'"
+              disabled="(!rootblock.active_fixing && rootblock.billing_need) || volumesAvailable === 0 || gigabytesAvailable === 0"
+              callback="actions.create.open">
+              <i class="icon icon-add"></i>
+              <span id="create-volume">{% trans 'Create Volume' %}
+                <i ng-show="volumesAvailable === 0 || gigabytesAvailable === 0">{% trans '(quota exceeded)' %}</i>
+                <i ng-show= "(!rootblock.active_fixing && rootblock.billing_need)">{% trans '(no effective price)' %}</i>
+              </span>
+            </action>
+          </action-list>
+
+          <action-list>
+            <action
+              action-classes="'btn btn-primary btn-action'"
+              disabled="disabled || disableAttach"
+              callback="actions.attach.open" item="selectedData.aData">
+              <i class="icon icon-mount"></i>
+              <span id="attach-instance">{% trans 'Attach to Instance' %}</span>
+            </action>
+          </action-list>
+
+          <action-list>
+            <action
+              action-classes="'btn btn-primary btn-action'"
+              disabled="disabled || disableDetach"
+              callback="actions.detach.open" item="selectedData.aData">
+              <i class="icon icon-uninstall"></i>
+              <span id="detach-from-instance">{% trans 'Detach from Instance' %}</span>
+            </action>
+          </action-list>
+
+          <action-list>
+            <action
+              action-classes="'btn btn-action btn-danger'"
+              disabled="numSelected === 0 || disableDelete"
+              callback="actions.deleted.batchDelete">
+              <i class="icon icon-delete"></i>
+              <span id="delete-volume">{% trans 'Delete Volume' %}</span>
+            </action>
+          </action-list>
+
+          {% inRegionShowNode 'project-volumes-more' %}
+          <action-list dropdown>
+            <button id="more" type="button" class="btn btn-primary btn-action" dropdown-toggle>
+              <i class="icon icon-more"></i>
+              <span>{% trans 'More' %}</span>
+            </button>
+            <menu>
+              <action
+                button-type="menu-item"
+                disabled="disabled"
+                callback="actions.edit.open"
+                item="selectedData.aData">
+                <span id="edit">{% trans 'Edit' %}</span>
+              </action>
+              <action
+                button-type="menu-item"
+                disabled="(!rootblock.active_fixing && rootblock.billing_need) || disabled || disableSnapshot"
+                callback="actions.createsnapshot.open" item="selectedData.aData">
+                <span id="create-snapshot">{% trans 'Create Snapshot' %}</span>
+              </action>
+              <action
+                button-type="menu-item"
+                disabled="disabled || disableExtend || (!rootblock.active_fixing && rootblock.billing_need)"
+                callback="actions.extended.open"
+                item="selectedData.aData">
+                <span id="extend-size">{% trans 'Extend Size' %}</span>
+              </action>
+              <action
+                button-type="menu-item"
+                disabled="(!rootblock.active_fixing && rootblock.billing_need) || disabled || disableSnapshot"
+                callback="actions.createbackup.open"
+                item="selectedData.aData">
+                <span id="create-backup">{% trans 'Create Backup' %}</span>
+              </action>
+            </menu>
+          </action-list>
+          {%  endinRegionShowNode %}
+          <div class="fr search-bar" ng-if="ivolumesState">
+            <hz-magic-search-bar id="search"></hz-magic-search-bar>
+          </div>
+        </div>
+      </th>
+    </tr>
+    <!--
+      Table-column-headers:
+      This is where we declaratively define the table column headers.
+      Include the select all checkbox if you want to enable select all
+      for performing batch actions.
+    -->
+    <tr eagle-eye="table_heads">
+      <th class="select-col" eagle-eye="select_col">
+        <input type="checkbox"
+          hz-select-page="volumes"/>
+      </th>
+      <th eagle-eye="data_col"><span st-sort="name">{$ ::context.header.name $}</span></th>
+      {% inRegionShowNode 'project-volumes-description' %}
+      <th eagle-eye="data_col"><span st-sort="description">{$ ::context.header.description $}</span></th>
+      {%  endinRegionShowNode %}
+      <th eagle-eye="data_col"><span st-sort="size">{$ ::context.header.size $}</span></th>
+      <th eagle-eye="data_col"><span st-sort="status">{$ ::context.header.status $}</span></th>
+      <th eagle-eye="data_col"><span st-sort="volume_type">{$ ::context.header.volume_type $}</span></th>
+      <th eagle-eye="data_col"><span st-sort="attachments">{$ ::context.header.attachments $}</span></th>
+      <th eagle-eye="data_col"><span st-sort="metadata.attached_mode">{$ ::context.header.attached_mode $}</span></th>
+      <th eagle-eye="data_col"><span st-sort="created_at">{$ ::context.header.created_at $}</span></th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <tr ng-if="!ivolumesState">
+      <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+    </tr>
+
+    <tr ng-if="!ivolumes.length && ivolumesState">
+      <td colspan="100" eagle-eye="empty_table">{% trans "No data" %}</td>
+    </tr>
+
+    <tr ng-repeat="volume in ivolumes" ng-class="{'st-selected': checked[volume.id]}">
+
+      <!--
+        Table-row-checkbox:
+        User can select and unselect this row by clicking on this checkbox.
+        Batch actions can then be perform on selected rows.
+      -->
+      <td class="select-col" eagle-eye="select_col">
+        <input type="checkbox"
+          hz-select="volume"
+          ng-model="selected[volume.id].checked"
+          hz-checkbox-group="volumes"/>
+      </td>
+
+      <!-- Table-row-info-column -->
+      <td class="rsp-p1" eagle-eye="data_col">
+        <a ng-click="actions.createDetail.open(volume)" href="javascript:;"
+          data-url="/project/volumes/detail/{$ volume.id $}">
+          {$ volume.name $}
+        </a>
+      </td>
+      {% inRegionShowNode 'project-volumes-description' %}
+      <td eagle-eye="data_col" title="{$ volume.description $}">{$ volume.description $}</td>
+      {%  endinRegionShowNode %}
+      <td eagle-eye="data_col">{$ volume.size | gb  $}</td>
+      <td eagle-eye="data_col">{$ volume.status | decode:volumeStatus $}</td>
+      <td eagle-eye="data_col">{$ volume.volume_type | decode:volumeType $}</td>
+      <td eagle-eye="data_col">
+        <span ng-if="volume.attachments.length !== 0" ng-repeat="attachment in volume.attachments">
+          <span>{$ attachment.instance_name $} : {$ attachment.device $} </span><br/>
+        </span>
+        <span ng-if="volume.attachments.length === 0">
+          {$ ::context.error.noAttached $}
+        </span>
+      </td>
+      <td eagle-eye="data_col">{$ volume.metadata.attached_mode | decode:attached_mode $}</td>
+      <td class="rsp-p1" eagle-eye="data_col">{$ volume.created_at $}</td>
+    </tr>
+  </tbody>
+
+  <!--
+    Table-footer:
+    This is where we display number of items and pagination controls.
+    Ensure colspan is greater or equal to number of column-headers.
+  -->
+
+  <tfoot ng-if="volumes.length > 10">
+    <tr>
+      <td colspan="100" eagle-eye="data_page">
+        <table-footer></table-footer>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+</hz-magic-search-context>
+
+{% endblock %}

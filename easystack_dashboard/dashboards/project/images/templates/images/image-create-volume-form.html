@@ -1,0 +1,164 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+    <div class="images-box form-wrap">
+      <fieldset>
+        <!--
+          Image name input (required):
+            Create-mode: show
+            Edit-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode == 'image2volume'"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="name">
+            *{% trans "Volume Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              type="text"
+              ng-model="image.name"
+              ng-maxlength="255"
+              ng-disabled=""
+              placeholder="{% trans 'enter a volume name' %}">
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength && form.name.$dirty">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "A volume name is required." %}
+            </p>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode == 'image2volume'"
+          ng-class="{'has-error':form.description.$invalid && form.description.$dirty}">
+          <label for="description">
+            {% trans "Description" %}
+          </label>
+          <div class="form-group-right">
+            <textarea
+              id="description"
+              name="description"
+              class="form-control"
+              type="description"
+              ng-maxlength="1024"
+              ng-model="image.description"
+              placeholder="{% trans 'enter description of the volume' %}">
+            </textarea>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.description.$invalid && form.description.$dirty">
+              {% trans "Name length should be no more than 1024 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'image2volume' && !dropdown.typesHide"
+          ng-class="{'has-error':form.type.$invalid && form.type.$dirty}">
+          <label for="type">
+            {% trans "Type" %}
+          </label>
+          <div class="form-group-right">
+            <select
+              id="type"
+              name="type"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.types}"
+              ng-init="image.volume_type=dropdown.types[0].name"
+              ng-model="image.volume_type">
+              <option value="" disabled>
+                {% trans 'volume type will be default' %}
+              </option>
+              <option
+                ng-repeat="type in dropdown.types"
+                ng-selected="type.name===image.volume_type"
+                value="{$ type.name $}">
+                {$ type.name $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group clearfix no-input-number"
+          ng-if="context.mode == 'image2volume'"
+          ng-class="{'has-error':form.size.$invalid && form.size.$dirty}">
+          <label for="size">
+            {% trans "Size" %}
+          </label>
+          <div class="form-group-right">
+            <!--input required
+              id="size"
+              name="size"
+              class="form-control"
+              type="number"
+              min="{$ image.minSize $}"
+              max="{$ image.maxSize $}"
+              ng-model="image.size"
+              placeholder="{% trans '{$ image.minSize $}~{$ image.maxSize $} G' %}"/>
+            -->
+            <dragbar id="size"
+              name="size"
+              config="image.sizeConfig"
+              pattern="[0-9]+"
+              ng-model="image.size">
+            </dragbar>
+            <p class="help-block alert-fixed alert-danger"
+               ng-show="quota_exceeded && !(form.size.$invalid && form.size.$dirty)">
+            {% trans "Your volume gigabytes quota exceeded." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="(form.size.$error.max || form.size.$error.min) && form.size.$dirty">
+              <span>{% trans "Volume size must be in" %} </span>
+              {$ image.sizeConfig.min $}~{$ image.sizeConfig.max $} G
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+               ng-show="!(form.size.$error.max || form.size.$error.min) && form.size.$error.pattern && form.size.$dirty">
+              {% trans "Volume size must be integer" %}
+            </p>
+          </div>
+        </div>
+
+        <p class="billing-info text-right" ng-if="context.mode === 'image2volume'" ng-show="showBilling && !noFixing">
+          <span class="orange">{$ price * image.size | price $}{% trans 'Yuan' %}</span>/{% trans 'Hour' %}
+          <span class="gray_3">({$ price * image.size * 24 * 30 | price $}{% trans 'Yuan' %}/{% trans 'Month' %})</span>
+        </p>
+        <p class="billing-info-tips text-right" ng-if="context.mode === 'image2volume'" ng-show="noFixing">
+          <span class="gray_3">{% trans 'No Active Fixing' %}</span>
+        </p>
+        <p class="billing-info-tips text-right" ng-if="context.mode === 'image2volume'" ng-show="showNoBalance">
+          <span class="red">{% trans 'No Enough Balance' %}</span>
+        </p>
+
+      </fieldset>
+    </div>
+
+    <!-- Modal-form-right: The description text. -->
+
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary btn-a" type="button"
+    ng-disabled="form.$invalid || quota_exceeded"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

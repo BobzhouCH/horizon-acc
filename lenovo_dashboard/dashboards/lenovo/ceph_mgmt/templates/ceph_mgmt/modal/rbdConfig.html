@@ -1,0 +1,171 @@
+{%load i18n%}
+<script type="text/ng-template" id="rbdConfig.html">
+    <div class="public_content">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="close()">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only">{% trans "Close" %}</span>
+            </button>
+            <h4 class="modal-title">
+                 {% trans "Rbd Config" %}
+            </h4>
+        </div>
+        <div class="modal-body public-body">
+            <div class="body-left public-body-left">
+                <ul class="body-left-nav public-config-nav">
+                    <li class="li-border">{% trans "General" %}</li>
+                    <li>{% trans "Qos" %}</li>
+                    <li>{% trans "Snapshot" %}</li>
+                    <li>{% trans "Advance" %}</li>
+                </ul>
+            </div>
+            <div class="body-right">
+                <div class="body-content">
+                    <div class="content-box" style="display: block">
+                        <div class="list-group">
+                            <label>{% trans "RBD Name" %}</label>
+                            <input type="text" ng-model="rbd.name" placeholder="{$ rbdName $}" />
+                        </div>
+                        <div class="list-group capacity">
+                            <label>{% trans "Capacity" %}</label>
+                            <span style="width: 180px!important;">
+                                <input type="text" ng-model="rbd.capacity" placeholder="{$ rbdCapacity $}" oninput="if(value.length>0) value=value.slice(0,3)" style="width: 120px!important;" requrid=""/>
+                                <select class="read-select" ng-options="act.id as act.value for act in activities" ng-model="selectedSite"></select>
+                            </span>
+                        </div>
+                        <div class="list-group">
+                            <label>{% trans "Dup Size" %}</label>
+                            <input type="text" ng-model="rbd.usedsize" placeholder="{$ rbdUsedSize $}" oninput="if(value.length>0)value=value.slice(0,2)" />
+                        </div>
+                        <div class="list-group dup-box">
+                            <div class="dup-show-notes">
+                                <label for="dup-show-notes">{% trans "Deduplication" %}</label>
+                                <div class="slidebox">
+                                    <input id="dup-show-notes" type="checkbox" name="dup-show-notes" checked="checked">
+                                    <label for="dup-show-notes"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group compression">
+                            <div class="compression-show-notes">
+                                <label for="compression-show-notes">{% trans "Compression" %}</label>
+                                <div class="slidebox">
+                                    <input id="compression-show-notes" type="checkbox" name="compression-show-notes" checked="checked">
+                                    <label for="compression-show-notes"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-box">
+                        <div class="list-group">
+                            <div class="QoS-show-notes">
+                                <label for="QoS-show-notes">{% trans "QoS Limitation" %}</label>
+                                <div class="slidebox">
+                                    <input id="QoS-show-notes" type="checkbox" name="QoS-show-notes" checked="checked">
+                                    <label for="QoS-show-notes"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group read-box">
+                            <span>{% trans "Read" %}</span>
+                            <p>
+                                <input type="text" value="6500" >
+                                <select class="read-select">
+                                    <option value="Mbps">Mbps</option>
+                                    <option value="Gbps">Gbps</option>
+                                    <option>Kbps</option>
+                                </select>
+                                <input type="text" value="2500" >IOPS
+                            </p>
+                            <p>
+                                <input type="text" value="6500" >
+                                <select class="read-select">
+                                    <option value="Mbps">Mbps</option>
+                                    <option value="Gbps">Gbps</option>
+                                    <option>Kbps</option>
+                                </select>
+                                <input type="text" value="2500" >IOPS
+                            </p>
+                        </div>
+                    </div>
+                    <div class="content-box">
+                        <div class="list-group">
+                            <div class="search-box">
+                                <input type="search" /><a class="glyphicon glyphicon-search "></a>
+                            </div>
+                            <div class="create-snapshot">
+                                <button ng-click="createSnapshot('sm')">{% trans "Create Snapshot" %}</button>
+                            </div>
+                        </div>
+                        <div class="table-list">
+                            <table class="table">
+                                <tr ng-repeat="snap in rbdSnapshotList">
+                                    <td>
+                                        <span class="table-list-title">{$ snap.name $}</span>
+                                        <span class="table-list-time">{$ snap.size $}</span>
+                                    </td>
+                                    <td>
+                                        <button ng-click="repeatSnapshot()">
+                                            <b class="glyphicon glyphicon-repeat"></b>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button ng-click="editSnapshot('sm')">
+                                            <b class="glyphicon glyphicon-file"></b>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button ng-click="deleteSnapshot('sm',snap.id,snap.name)">
+                                            <b class="glyphicon glyphicon-trash"></b>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <ul class="pagination">
+                            <li><a ng-click="Previous()"><< {% trans "prev" %}</a></li>
+                            <li ng-repeat="page in pageList" ng-class="{active: isActivePage(page)}">
+                                <a ng-click="selectPage(page)" ng-bind="page"></a>
+                            </li>
+                            <li><a ng-click="Nexts()">{% trans "next" %} >></a></li>
+                        </ul>
+                    </div>
+                    <div class="content-box">
+                        <div class="advance-box">
+                            <p>{% trans "Copy to Pool" %}</p>
+                            <select class="current-select">
+                                <option value="Current (Pool 1)">{% trans "Current (Pool" %} 1)</option>
+                                <option value="Current (Pool 1)">{% trans "Current (Pool" %} 2)</option>
+                                <option value="Current (Pool 1)">{% trans "Current (Pool" %} 3)</option>
+                            </select>
+                            <button>{% trans "start" %}</button>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="7" aria-valuemin="0" aria-valuemax="100" style="width: 37%;">
+                                    37%
+                                </div>
+                            </div>
+                        </div>
+                        <div class="advance-box">
+                            <p>{% trans "Mirror To Cluster" %}</p>
+                            <select class="current-select">
+                                <option value="Current (Pool 1)">{% trans "Current (Pool" %} 1)</option>
+                                <option value="Current (Pool 1)">{% trans "Current (Pool" %} 2)</option>
+                                <option value="Current (Pool 1)">{% trans "Current (Pool" %} 3)</option>
+                            </select>
+                            <button>{% trans "start" %}</button>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="7" aria-valuemin="0" aria-valuemax="100" style="width: 37%;">
+                                    37%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-list">
+                    <button class="cancel" ng-click="cancel()">{% trans "Cancel" %}</button>
+                    <button class="btn-ok" ng-show="!is_show" ng-click="rbdModify(rbd.name,rbd.capacity,selectedSite)">{% trans "OK" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

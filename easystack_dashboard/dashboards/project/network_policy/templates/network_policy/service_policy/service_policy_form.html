@@ -1,0 +1,172 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+      <fieldset>
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}"
+          ng-if="context.mode === 'create' || context.mode === 'edit'">
+          <label for="name">
+            *{% trans "Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              type="text"
+              ng-model="service_policy.name"
+              ng-maxlength="255"/>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "A name is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength && form.name.$dirty">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' || context.mode === 'edit'">
+          <label for="description">
+            {% trans "Description" %}
+          </label>
+          <div class="form-group-right">
+            <textarea
+              id="description"
+              name="description"
+              class="form-control"
+              rows="4"
+              ng-model="service_policy.description">
+            </textarea>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create'">
+          <label for="description">
+            <p>{% trans "Network Service Parameters" %}</p>
+          </label>
+          <div class="form-group-right">
+            <select
+              style="width: 335px;"
+              multiple="multiple"
+              id="network_service_params"
+              name="network_service_params"
+              class="form-control"
+              ng-model="service_policy.network_service_params"
+              ng-options="('Type:' + t.type + ',Name:' + t.name + ',Value:' + t.value)
+                for t in addTypes track by ('Type:' + t.type + ',Name:' + t.Name + ',Value:' + t.value)">
+            </select>
+            <span class="add-mutiple-btn-fixed"
+               ng-click="action.add_network_service_parameter.open()">
+               <i class="icon add_to"></i>
+            </span>
+
+            <!--<select
+              multiple="multiple"
+              id="network_service_params"
+              name="network_service_params"
+              class="form-control"
+              rows="4"
+              ng-model="service_policy.network_service_params"
+              placeholder="{% trans 'Enter a firewall description' %}">
+            </select>-->
+          </div>
+        </div>
+
+        <div style="margin-top:5px"
+          class="form-group clearfix"
+          ng-if="context.mode === 'create' || context.mode === 'edit'">
+          <label></label>
+          <div class="form-group-right">
+            <input name="policy_name" type="checkbox" ng-model="service_policy.shared"/> Shared
+          </div>
+        </div>
+
+
+        <!--
+         *
+         * Add network service parameter
+         *
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'add'"
+          ng-class="{'has-error':form.policies.$invalid && form.policies.$dirty}">
+          <label for="policies">
+            *{% trans "Type" %}
+          </label>
+          <div class="form-group-right policie-wrap" ng-if="types.length>0">
+
+            <select
+              id="subnet-id"
+              class="form-control"
+              name="subnet_id"
+              ng-init="service_parameter.type = types[0]"
+              ng-model="service_parameter.type"
+              ng-options="list for list in types track by list">
+            </select>
+
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'add'"
+          ng-class="{'has-error':form.admin.$invalid && form.IP.$dirty}">
+          <label>
+            *{% trans "Name" %}
+          </label>
+          <div class="form-group-right">
+            <input
+              required
+              id="destination"
+              name="destination"
+              class="form-control verify-input"
+              type="text"
+              ng-model="service_parameter.name"/>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'add'"
+          ng-class="{'has-error':form.admin.$invalid && form.IP.$dirty}">
+          <label>
+            *{% trans "Value" %}
+          </label>
+          <div class="form-group-right">
+            <input
+              required
+              id="destination"
+              name="destination"
+              class="form-control verify-input"
+              type="text"
+              ng-model="service_parameter.value"/>
+          </div>
+        </div>
+
+      </fieldset>
+    </div>
+
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>
+

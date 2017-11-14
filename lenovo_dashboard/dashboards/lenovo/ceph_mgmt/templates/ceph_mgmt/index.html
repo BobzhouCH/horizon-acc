@@ -1,0 +1,55 @@
+{% extends 'lenovo/base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Storage Management" %}{% endblock %}
+
+{% block main %}
+
+<div id="cluster-storage" ng-controller="StorageCtrl"  ng-cloak>
+        {% include "lenovo/ceph_mgmt/_header_bar.html" %}
+
+
+
+    <div ng-if="nocluster" id="add-cluster-init" style="height: {$ add_cluster_height $} ">
+        <div id="create-one-box" ng-if="!addClusters">
+            <div class="logo"></div>
+            <div id="nocluster-tips">{% trans "No cluster has been created yet." %}</div>
+            <div class="btn btn-primary add-cluster-btn" ng-click="HadNoClusterToAdd()">{% trans 'Create One' %}</div>
+        </div>
+        <div ng-if="addClusters" id="create-clusters-box">
+            <div>
+                <form>
+                     <h1>{% trans 'Add New Cluster' %}</h1>
+                     <p><label>{% trans "Cluster Name : " %}</label><input type="text" ng-model="cluster.name" name="clusterName" /></p>
+                     <p><label>{% trans "Cluster Address : " %}</label><input type="text" ng-model="cluster.addr" name="clusterAddr" /></p>
+                     <div class="btn btn-primary add-cluster-btn" ng-click="AddCluster()">{% trans 'OK' %}</div>
+                 </form>
+             </div>
+        </div>
+    </div>
+
+
+    <div ng-if="!nocluster">
+
+
+
+        <div>
+            {% include "lenovo/ceph_mgmt/_top_bar.html" %}
+{#            <stTopBar></stTopBar>#}
+            <div id="cluster-info">
+            {% include "lenovo/ceph_mgmt/cluster_info.html" %}
+            </div>
+            {% include "lenovo/ceph_mgmt/tab_views.html" %}
+        </div>
+
+
+
+
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+
+

@@ -1,0 +1,186 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "floatingIP" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("floatingIP") %}
+{% endblock page_header %}
+
+{% block main %}
+
+<hz-magic-search-context filter-facets="filterFacets">
+<table id="floatingIP-list" hz-table ng-cloak hopes-table-drag
+  st-table="ifloatingIP"
+  st-safe-src="floatingIP"
+  default-sort="ip"
+  default-sort-reverse="false"
+  st-magic-search
+  ng-controller="projectFloatingIPCtrl"
+  ng-init="userID = '{{ request.user.id }}'"
+  diabled="disabled"
+  class="table table-bordered table-hover">
+
+  <!--
+    Table-head:
+    This is where we add things like filtering and batch actions.
+    This is where we add column headers.
+  -->
+  <thead>
+
+    <!--
+      Table-batch-actions:
+      This is where batch actions like searching, creating, and deleting.
+    -->
+    <tr>
+       <th colspan="100" class="bare">
+       <div class="table_actions clearfix">
+            <action-list>
+            <action
+              action-classes="'btn btn-primary btn-action'"
+              callback="actions.refresh">
+              <i class="icon icon-refresh"></i>
+              <span id="refresh"></span>
+            </action>
+          </action-list>
+          <action-list>
+            <action
+              action-classes="'btn btn-primary btn-action'"
+              disabled="(!rootblock.active_fixing && rootblock.billing_need) || floatingIP.length >= quota"
+              callback="actions.allocate.open">
+              <i class="icon icon-add"></i>
+              <span id="Apply-IP">{% trans 'Apply For IP To Project' %}
+                <i ng-show= "floatingIP.length >= quota">{% trans '(quota exceeded)' %}</i>
+                <i ng-show= "(!rootblock.active_fixing && rootblock.billing_need)">{% trans '(no effective price)' %}</i>
+              </span>
+            </action>
+          </action-list>
+
+          <action-list>
+            <action
+              action-classes="'btn btn-action btn-danger'"
+              disabled="numSelected === 0 || disableRelease"
+              callback="actions.release.batchRelease">
+              <i class="icon icon-delete"></i>
+              <span id="release-floating-ip">{% trans 'Release Floating IPs' %}</span>
+            </action>
+          </action-list>
+          <action-list dropdown>
+             <button id="more" type="button" class="btn btn-primary btn-action" dropdown-toggle>
+               <i class="icon icon-more"></i>
+               <span>{% trans 'More' %}</span>
+                 </button>
+                 <menu>
+                   <action
+                     button-type="menu-item"
+                     disabled="disabled || (!rootblock.active_fixing && rootblock.billing_need)"
+                     callback="actions.bandwidth.open" item="selectedData.aData">
+                     <span id="update-bandwidth">{% trans 'Update Bandwidth' %}</span>
+                    </action>
+                    <action
+                      button-type="menu-item"
+                      disabled="disabled || selectedData.aData[0].port_id"
+                      callback="actions.associateRouter.open" item="selectedData.aData">
+                      <span id="associate-router">{% trans 'Associate Router' %}</span>
+                    </action>
+                    <action
+                      button-type="menu-item"
+                      disabled="disabled || selectedData.aData[0].port_id"
+                      callback="actions.associateInst.open" item="selectedData.aData">
+                      <span id="associate-instance">{% trans 'Associate Instance' %}</span>
+                    </action>
+                    <action
+                      button-type="menu-item"
+                      disabled="disabled || !selectedData.aData[0].port_id"
+                      callback="actions.disassociate.open" item="selectedData.aData">
+                      <span id="disassociate">{% trans 'Disassociate' %}</span>
+                    </action>
+                 </menu>
+          </action-list>
+
+          <div class="fr search-bar">
+            <hz-magic-search-bar id="search"></hz-magic-search-bar>
+          </div>
+       </div>
+       </th>
+    </tr>
+
+    <!--
+      Table-column-headers:
+      This is where we declaratively define the table column headers.
+      Include the select all checkbox if you want to enable select all
+      for performing batch actions.
+    -->
+    <tr eagle-eye="table_heads">
+      <th class="select-col" eagle-eye="select_col">
+        <input type="checkbox"
+          hz-select-page="floatingIPs"/>
+      </th>
+      <th eagle-eye="data_col">
+        <span st-sort-default="ip">{$ ::context.header.ip $}</span>
+      </th>
+      <th eagle-eye="data_col"><span st-sort="instance">{$ ::context.header.instance_type $}</span></th>
+        <th eagle-eye="data_col"><span st-sort="instance">{$ ::context.header.instance $}</span></th>
+      <th eagle-eye="data_col"><span st-sort="bandwidth">{$ ::context.header.bandwidth $}</span></th>
+      <th eagle-eye="data_col"><span st-sort="pool">{$ ::context.header.pool $}</span></th>
+
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <tr ng-if="!ifloatingIPState">
+      <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+    </tr>
+
+    <tr ng-if="!ifloatingIP.length && ifloatingIPState">
+      <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+    </tr>
+
+    <tr ng-repeat="floatingIP in ifloatingIP" ng-class="{'st-selected': checked[floatingIP.id]}">
+
+      <!--
+        Table-row-checkbox:
+        User can select and unselect this row by clicking on this checkbox.
+        Batch actions can then be perform on selected rows.
+      -->
+      <td class="select-col" eagle-eye="select_col">
+        <input type="checkbox"
+          hz-select="floatingIP"
+          ng-model="selected[floatingIP.id].checked"
+          hz-checkbox-group="floatingIPs"/>
+      </td>
+
+      <!-- Table-row-info-column -->
+      <td eagle-eye="data_col">{$ floatingIP.ip $}</td>
+      <td eagle-eye="data_col">
+        <span ng-if="floatingIP.instance_name">
+        {$ floatingIP.instance_type | decode:deviceType $}
+        </span>
+      </td>
+      <td eagle-eye="data_col">
+        <span ng-if="floatingIP.instance_name">
+            {$ floatingIP.instance_name $}
+        </span>
+      </td>
+      <td eagle-eye="data_col">{$ floatingIP.bandwidth $}</td>
+      <td eagle-eye="data_col">{$ floatingIP.pool.name $}</td>
+    </tr>
+
+  </tbody>
+
+  <!--
+    Table-footer:
+    This is where we display number of items and pagination controls.
+    Ensure colspan is greater or equal to number of column-headers.
+  -->
+  <tfoot ng-if="floatingIP.length > 10">
+    <tr>
+      <td colspan="100" eagle-eye="data_page">
+        <table-footer></table-footer>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+</hz-magic-search-context>
+
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends "easystack_dashboard/common/_es_modal_form.html" %}
+
+{% load i18n %}
+{% load i18n branding %}
+{% load url from future %}
+{% block modal-header %}{% trans "Log In" %}{% endblock %}
+{% block modal_class %}login {% if hide %}modal hide{% endif %}{% endblock %}
+
+{% block form_action %}{% url 'login' %}{% endblock %}
+{% block autocomplete %}{{ HORIZON_CONFIG.password_autocomplete }}{% endblock %}
+
+{% block modal_top %}{% endblock %}
+
+{% block modal-body %}
+  <fieldset>
+    {% if next %}<input type="hidden" name="{{ redirect_field_name }}" value="{{ next }}" />{% endif %}
+    {% block form_field %}
+		{% for hidden in form.hidden_fields %}
+		  {{ hidden }}
+		{% endfor %}
+        <div class="es-small-wrap">
+            <div class="login-modal-header">
+                <h2><img src="/static/dashboard/img/_logo-black.png"></h2>
+            </div>
+            <div class="login-modal-body">
+                <div class="es-content">
+                    {% if not request.session.login_locked %}
+                        <div class="es-ip-use es-input-wrap">
+                            {% if form.non_field_errors %}
+                              <input class="es-hover-bor-err js-login_txt" id="id_username" type="text" data-err="true" name="username" placeholder={% trans "USEREMAIL" %} autocomplete='off'/>
+                            {%else%}
+                              <input class="js-login_txt" id="id_username" type="text" name="username" placeholder={% trans "USEREMAIL" %} autocomplete='off' />
+                            {% endif %}
+                            <strong></strong>
+                        </div>
+                        <div class="es-ip-use es-pass-wrap">
+                            {% if form.non_field_errors %}
+                              <input class="es-hover-bor-err js-login_txt" id="id_password" type="password" data-err="true" placeholder={% trans "PASSWORD" %} name="password" autocomplete="off" />
+                              {%else%}
+                              <input class="js-login_txt" id="id_password" type="password" name="password" placeholder={% trans "PASSWORD" %} autocomplete="off" />
+                            {% endif %}
+                            <strong></strong>
+                        </div>
+                        {% if False and LDAP_EDITABLE %}
+                          <div class="login-modal-register pull-right">
+                              <a href="{{ WEBROOT }}register/">{% trans "Sign Up" %}</a>
+                          </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="es-errorWrap">
+                  <div class="js-tip">
+                  {% if request.session.login_locked %}
+                      <div class="es-con">
+                          <span></span>
+                          <p class="es-con-tips">
+                              {% trans 'Login failed too many times, please try again later.' %}
+                          </p>
+                      </div>
+                  {%else%}
+                         {% if form.non_field_errors %}
+                              <div class="es-con">
+                                  <span></span>
+                                  <p class="es-con-tips">{% trans form.non_field_errors.0 %}</p>
+                              </div>
+                         {% endif %}
+                  {% endif %}
+
+                  {% if field.errors %}
+                    {% for error in field.errors %}
+                        <div class="es-con"><span></span><p class="es-con-tips">{{ error }}</p></div>
+                    {% endfor %}
+                  {% endif %}
+
+                  {% if request.COOKIES.logout_reason %}
+                    <div class="es-con"><span></span><p class="es-con-tips">{{ request.COOKIES.logout_reason }}</p></div>
+                  {% endif %}
+
+                  {% if request.user.is_authenticated and 'next' in request.GET %}
+                    <div class="es-con"><span></span><p class="es-con-tips">{% trans "You don't have permissions" %}</p></div>
+                  {% endif  %}
+                  </div>
+                </div>
+            </div>
+            {% if not request.session.login_locked %}
+                <div class="login-modal-footer">
+                    <div>
+                        <button class="es-button js-loginBtn" type="submit" style="display: none;">{% trans "Login" %}</button>
+                        <span class="es-button es-button-no js-loginBtn" type="submit">{% trans "Login" %}</span>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+	{% endblock %}
+  </fieldset>
+{% endblock %}
+
+{% block modal-footer %}
+{% endblock %}
+

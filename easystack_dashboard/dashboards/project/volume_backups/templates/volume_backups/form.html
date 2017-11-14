@@ -1,0 +1,194 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+    <h3 class="modal-title">{$ ::context.title $}</h3>
+    <p class="modal-colsed" ng-click="action.cancel()">
+        <i class="modal-colsed-icon"></i>
+    </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+    <div class="modal-body clearfix">
+        <!-- Modal-form-left: Contains the form controls -->
+        <div class="modal-description mt10" >
+          <p>
+            {% trans "It will be set full backup type default when you create a backup for a volume at first. After that, you can create a increment backup or full." %}
+          </p>
+        </div>
+        <div class="left form-wrap">
+            <fieldset>
+                <!--
+                  Volume name input (required):
+                    Create-mode: show
+                    Extend-mode: show,disabled
+                -->
+                <div class="form-group clearfix">
+                    <label class="control-label fl required" for="name">
+                        *{% trans "Volume Backup" %}
+                    </label>
+                    <div class="form-group-right"
+                         ng-class="{'has-error':form.volume.$invalid && form.volume.$dirty}"
+                         ng-if="context.mode === 'create'">
+                        <select required
+                                id="volume"
+                                name="volume"
+                                class="form-control"
+                                ng-class="{strikeLoading: !volumes}"
+                                ng-change="changeVolume(backup.volume)"
+                                ng-model="backup.volume"
+                                ng-options="volume as volume.name for volume in volumes">
+                            <option value="" disabled>
+                               {% trans 'select a volume' %}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group-right"
+                         ng-class="{'has-error':form.volume.$invalid && form.volume.$dirty}"
+                         ng-if="context.mode === 'create-v'">
+                        <input required disabled
+                                id="volume_name"
+                                name="volume_name"
+                                class="form-control"
+                                ng-model="backup.volume_name">
+                        <input required disabled
+                                id="volume"
+                                name="volume"
+                                class="form-control"
+                                style="display:none"
+                                ng-model="backup.volume">
+                    </div>
+                </div>
+
+                <div class="form-group clearfix">
+                    <label class="control-label fl required" for="name">
+                        *{% trans "Volume Backup Name" %}
+                    </label>
+                    <div class="form-group-right"
+                         ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+                        <input required
+                               id="name"
+                               name="name"
+                               class="form-control verify-input"
+                               type="text"
+                               ng-model="backup.name"
+                               ng-maxlength="255"
+                               placeholder="{% trans 'enter a volume backup name' %}"/>
+                        <p class="help-block alert-fixed alert-danger"
+                           ng-show="form.name.$error.required && form.name.$dirty">
+                            {% trans "A volume backup name is required." %}
+                        </p>
+                        <p class="help-block alert-fixed alert-danger"
+                           ng-show="form.name.$error.maxlength && form.name.$dirty">
+                            {% trans "Name length should be less than 255 chars." %}
+                        </p>
+                    </div>
+                </div>
+                <!--
+                  Description input (optional):
+                    Create-mode: show
+                -->
+                <div class="form-group clearfix">
+                    <label class="control-label fl" for="description">
+                        {% trans "Description" %}
+                    </label>
+                    <div class="form-group-right"
+                         ng-class="{'has-error':form.description.$invalid && form.description.$dirty}">
+                        <textarea
+                                id="description"
+                                name="description"
+                                rows="4"
+                                class="form-control"
+                                type="description"
+                                ng-maxlength="255"
+                                ng-model="backup.description"
+                                placeholder="{% trans 'enter description of the volume backup' %}">
+                        </textarea>
+                        <p class="help-block alert-fixed alert-danger"
+                           ng-show="form.description.$error.maxlength">
+                            {% trans "Description length should be less than 255 chars." %}
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group clearfix"
+                     ng-class="{'has-error':form.type.$invalid && form.type.$dirty}">
+                    <label class="control-label fl required" for="type">
+                        {% trans "Backup Type" %}
+                    </label>
+                    <div class="form-group-right">
+                        <div class="form-group-right">
+                            <input type="radio"
+                                   id="backup_type"
+                                   name="backup_type"
+                                   class="form-control radio-select-input"
+                                   value="full"
+                                   ng-model="backup.backup_type">{% trans "Full Backup" %}
+                            <input type="radio"
+                                   id="backup_type2"
+                                   name="backup_type2"
+                                   class="form-control radio-select-input"
+                                   style="margin-left:45px;"
+                                   value="increment"
+                                   ng-disabled="increDisableTag"
+                                   ng-model="backup.backup_type">{% trans "Incremental Backup" %}
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-show="showBilling && !noFixing && !showBalance && backup.volume"
+                     ng-if="preBilling"
+                     class="form-group clearfix">
+                    <label for="btype">
+                        {% trans "Billing Type" %}
+                    </label>
+                    <div class="form-group-right" style="width: 40%;">
+                        <select required
+                                id="unit"
+                                name="unit"
+                                class="form-control"
+                                style="width: 80%;"
+                                ng-change="changePayment(unitSelect)"
+                                ng-model="unitSelect"
+                                ng-options="payment as payment.unitLabel for payment in payment_type">
+                        </select>
+                    </div>
+                    <div ng-if="unitSelect.unit=='H'" style="padding-top:10px;">
+                        <span class="orange">{$ price * backup.volume.size | price $}{% trans 'Yuan' %}</span>/{% trans 'Hour' %}
+                    </div>
+                    <div ng-if="unitSelect.unit=='M'" style="padding-top:10px;">
+                        <span class="orange">{$ price * backup.volume.size | price $}{% trans 'Yuan' %}</span>/{% trans 'Month' %}
+                    </div>
+                    <div ng-if="unitSelect.unit=='Y'" style="padding-top:10px;">
+                        <span class="orange">{$ price * backup.volume.size | price $}{% trans 'Yuan' %}</span>/{% trans 'Year' %}
+                    </div>
+                </div>
+                <div ng-if="!preBilling">
+                    <p class="billing-info text-right"
+                       ng-show="showBilling && !noFixing && !showBalance && backup.volume">
+                        <span class="orange">{$ price * backup.volume.size | price $}{% trans 'Yuan' %}</span>/{% trans 'Hour' %}
+                        <span class="gray_3">({$ price * backup.volume.size * 24 * 30 | price $}{% trans 'Yuan' %}/{% trans 'Month' %})</span>
+                    </p>
+                </div>
+                <p class="billing-info-tips text-right"
+                   ng-show="noFixing">
+                    <span class="gray_3">{% trans 'No Active Fixing' %}</span>
+                </p>
+                <p class="billing-info-tips text-right"
+                   ng-show="showBalance">
+                    <span class="red">{% trans 'No Enough Balance' %}</span>
+                </p>
+            </fieldset>
+        </div>
+
+    </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+    <button id="submit-button" class="btn btn-primary" type="button"
+            ng-disabled="form.$invalid || volumeSizeChange || volume.size < volumeDef.defVal || quota_exceeded || (showBilling&&showBalance) || (showBilling&&noFixing)"
+            ng-click="action.submit()">
+        {$ ::context.submit $}
+    </button>
+</div>

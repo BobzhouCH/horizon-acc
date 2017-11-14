@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+{% load i18n %}
+{% load i18n branding %}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8">
+<title>{% site_branding %}</title>
+<meta name="author" content="" />
+<meta name="Copyright" content="" />
+{% include 'favicon.html' %}
+<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}register/style/index.css">
+</head>
+<script src="{{ STATIC_URL }}register/js/jquery-1.11.2.js"></script>
+<body>
+  {% if EMAIL_ACTIVATION %}
+    <div class="register-logo"><img src="/static/dashboard/img/loginLogo.png"></div>
+    <div class="register-wrap mail-box other">
+      <div class="conterWrap">
+          <p class="success-title"><i class="send-success-icon"></i><span class="success-text">邮件已发送</span></p>
+          <div class="login-text">
+              <p class="f16 color-a">请在48小时内登录邮箱点击激活链接完成注册</p>
+          </div>
+          <p class="line-hr mt40"></p>
+          <div class="verify">
+              <form action="" method="POST">{% csrf_token %}
+              <dl class="mail-text-list">
+                  <dt class="color-a f16">没有收到验证邮箱怎么办？</dt>
+                  <dd><i class="dit-icon"></i>请检查是否在垃圾邮件中</dd>
+                  <dd>
+                      <p><i class="dit-icon"></i>如果未收到，请点击重新发送</p>
+                      <div class="mt10">
+                          <label class="email-title" for="email">邮箱</label>
+                          <input class="email-input" type="text" name="email" id="id_email" readonly="true"
+                          {% if email %}
+                            value="{{ email }}"
+                          {% endif %}/>
+
+                          {% if resent %}
+                               <span>邮件已发送</span>
+                          {% endif %}
+                          <input id="submit" type="submit" class="login-btn ml10 mb20" value='重新发送'/>
+                      </div>
+                  </dd>
+                  <dd><i class="dit-icon"></i>一直收不到？试试<a href="{{ WEBROOT }}register/">更换邮箱</a></dd>
+                  <dd><i class="dit-icon"></i><a href="{{ login_url }}">用已激活账号登录</a></dd>
+              </dl>
+              </form>
+          </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+    emailFormatCheck();
+    $("#id_email").bind("keyup", emailFormatCheck);
+
+    function emailFormatCheck(){
+        var email = $("#id_email").val();
+        var format = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+        if (!email.match(format)) {
+            $("#submit").attr("disabled", true);
+            $("#submit").css({ 'background': '#ccc' });
+        }else{
+            $("#submit").attr("disabled", false);
+            $("#submit").removeAttr('style');
+        }
+    }
+   </script>
+   {% else %}
+    <div class="register-logo"><img src="/static/dashboard/img/loginLogo.png"></div>
+    <div class="register-wrap other">
+      <div class="conterWrap position-size">
+        <h2>用户注册成功</h2>
+        <div class="tips-icon" style="top: 38px;"><span class="success-icon"></div>
+        <div class="tips-content">
+          <p>请联系管理员激活账户</p>
+        </div>
+      </div>
+    </div>
+   {% endif %}
+</body>
+</html>

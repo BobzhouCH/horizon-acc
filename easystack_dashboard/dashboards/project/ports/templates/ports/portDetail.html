@@ -1,0 +1,62 @@
+{% load i18n %}
+{% load context_selection %}
+
+<div class="detail-page">
+  <div class="detail-left-icon" ng-click="action.cancel()"></div>
+  <div class="detail-page-con">
+
+    <tabset id="port-tab" justified="true" class="def-tabs">
+
+        <tab id="tab-volume-detail" heading="{$ ::title.Overview $}">
+          <div class="tab-pane-content">
+            <table id="volume-detail-table" class="table table-bordered table-hover table-unique">
+              <thead>
+                <tr>
+                  <th colspan="2" class="table-th-unline"><span class="detail-title">{$ ::title.Info $}</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td eagle-eye="data_col">{$ ::label.ID $}</td>
+                  <td id="port-id" class="color449ed2" eagle-eye="data_col">{$ port.id $}</td>
+                </tr>
+                <tr>
+                  <td eagle-eye="data_col">{$ ::label.Name $}</td>
+                  <td id="port-name" class="color3399cc" eagle-eye="data_col" title="{$ port.name $}">{$ port.name $}</td>
+                </tr>
+                <tr>
+                  <td eagle-eye="data_col">{$ ::label.subnet_name $}</td>
+                  <td id="port-status" class="color66cc66" eagle-eye="data_col">{$ port.subnet_name $}</td>
+                </tr>
+                <tr>
+                  <td eagle-eye="data_col">{$ ::label.ip_address $}</td>
+                  <td id="port-size" eagle-eye="data_col">{$ port.fixed_ips[0].ip_address$}</td>
+                </tr>
+                <tr>
+                  <td eagle-eye="data_col">{$ ::label.mac_address $}</td>
+                  <td id="port-mac-address" eagle-eye="data_col">{$ port.mac_address $}</td>
+                </tr>
+                <tr>
+                  <td eagle-eye="data_col">{$ ::label.instance_name $}</td>
+                  <td id="port-instance-name" eagle-eye="data_col">{$ port.instance_name $}</td>
+                </tr>
+                <tr>
+                  <td eagle-eye="data_col">{$ ::label.security_group $}</td>
+                    <td eagle-eye="data_col"><div id="group-name-{$ $index $}" ng-repeat="group in port.security_groups_array" style="overflow:hidden; text-overflow:ellipsis;">{$ group.name $}</div></td>
+                </tr>
+                <tr>
+                  <td eagle-eye="data_col">{$ ::label.mbps $}</td>
+                  <td id="port-status" eagle-eye="data_col">{$ port.max_mbps$}<span ng-if="port.max_mbps">mbps</span></td>
+                </tr>
+                <tr>
+                  <td eagle-eye="data_col">{$ ::label.Status $}</td>
+                  <td id="port-status" eagle-eye="data_col">{$ port.status |decode:operationStatus$}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </tab>
+
+    </tabset>
+    </div>
+</div>

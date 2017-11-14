@@ -1,0 +1,10 @@
+<div class="fl" st-pagination="" st-items-by-page="pageSize" st-displayed-pages="10"></div>
+<div class="fr select-page">
+  <span> {$ show $} </span>
+  <select ng-model='pageSize' ng-options="pSize for pSize in pageSizes">
+    <!--<option value="10"> 10 </option>
+    <option value="15"> 15 </option>
+    <option value="20"> 20 </option>-->
+   </select>
+  <span> {$ entries $} </span>
+</div>

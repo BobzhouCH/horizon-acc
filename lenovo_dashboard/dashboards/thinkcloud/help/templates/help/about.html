@@ -1,0 +1,37 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}
+    {% trans "About" %}
+{% endblock %}
+{% block page_header %}
+    {% include "easystack_dashboard/common/_es_page_header.html" with title=_("About") %}
+{% endblock page_header %}
+{% block main %}
+    <div class="help-header">
+        <h1>{% trans "About" %}</h1>
+    </div>
+    <hr/>
+    <div class="about">
+        <div class="content">
+            <div class="about-container">
+                <img class="openstack-logo" src="{{ STATIC_URL }}dashboard/img/_logo-black.png" alt="logo">
+                <span>{% trans "ThinkCloud NFV Telecom 4.1T" %}</span>
+                <!-- RELEASE_4.1_MERGE_CONFLICT -->
+                <!--<span>{# {% trans "ThinkCloud OpenStack Enterprise " %} #} {{ RELEASE_NUM }}</span>-->
+            </div>
+            <div class="version-container">
+                {% trans "Version: " %}{% trans "Release v4.1T" %}
+                <!-- RELEASE_4.1_MERGE_CONFLICT -->
+                <!-- {#{% trans "Version: " %}{% trans "Release " %} {{ RELEASE_NUM }} #}-->
+            </div>
+            <div class="product-container">
+                <div class="product-name">{% trans "ThinkCloud NFV Telecom 4.1T" %}</div>
+                <!-- RELEASE_4.1_MERGE_CONFLICT -->
+                <!-- <div class="product-name">{# {% trans "ThinkCloud OpenStack Enterprise " %} {{ RELEASE_NUM }} #}</div> -->
+                <div class="product-copyright">{% trans "All rights reserved By Lenovo" %}</div>
+                <!--<div class="product-license"></div>-->
+                <!--<div class="product-tos"></div>-->
+            </div>
+        </div>
+    </div>
+{% endblock %}

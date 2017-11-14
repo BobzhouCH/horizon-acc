@@ -1,0 +1,5 @@
+notice_context: !!python/str "\u8FD9\u91CC\u663E\u793A\u901A\u77E5\u5185\u5BB9, \u6682\
+  \u65F6\u4E0D\u652F\u6301\u591A\u6761\u901A\u77E5\n\n                           \
+  \                                      ------\u7EA2\u9886\u5DFE"
+notice_display: true
+notice_title: !!python/str "\u901A\u77E5"

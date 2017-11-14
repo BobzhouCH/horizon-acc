@@ -1,0 +1,106 @@
+{% load i18n %}
+{% block css %}
+    <style>
+        .form-group > label {
+            width: 180px;
+            line-height: 25px;
+        }
+
+        .form-group > .form-group-right {
+            height: 25px;
+            line-height: 25px;
+            width: 200px;
+        }
+
+        .official-width > .form-group > label {
+            width: 280px;
+        }
+
+        .official-width > .form-group > .form-group-right {
+            width: 60px;
+        }
+    </style>
+{% endblock %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+    <h3 class="modal-title">{$ ::context.title $}</h3>
+
+    <p class="modal-colsed" ng-click="action.cancel()">
+        <i class="modal-colsed-icon"></i>
+    </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<div class="modal-body clearfix">
+
+    <div ng-if="context.type_before_trans == 'trial'">
+        <div class="form-group clearfix">
+            <label>
+                {$ ::context.type_text $}:
+            </label>
+
+            <div class="form-group-right">
+                <lable>{$ ::context.type $}</lable>
+            </div>
+        </div>
+        <div class="form-group clearfix">
+            <label>
+                {$ ::context.deadline_text $}:
+            </label>
+
+            <div class="form-group-right">
+                <lable>{$ ::context.deadline $}</lable>
+            </div>
+        </div>
+
+        <div class="form-group clearfix">
+            <label>
+                {$ ::context.left_date_text $}:
+            </label>
+
+            <div class="form-group-right">
+                <lable>{$ ::context.left_date $}</lable>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="context.type_before_trans != 'trial'" class="official-width">
+        <div class="form-group clearfix">
+            <label>
+                {$ ::context.type_text $}:
+            </label>
+
+            <div class="form-group-right">
+                <lable>{$ ::context.type $}</lable>
+            </div>
+        </div>
+        <div class="form-group clearfix">
+            <label>
+                {$ ::context.max_nodes_text $}:
+            </label>
+
+            <div class="form-group-right">
+                <lable>{$ ::context.max_nodes $}</lable>
+            </div>
+        </div>
+        <div class="form-group clearfix">
+            <label>
+                {$ ::context.cur_nodes_text $}:
+            </label>
+
+            <div class="form-group-right">
+                <lable>{$ ::context.cur_nodes $}</lable>
+            </div>
+        </div>
+    </div>
+
+
+    </div>
+
+    <!-- Modal-footer: User can submit or cancel form here. -->
+    <div class="modal-footer">
+        <button id="submit-button" class="btn btn-primary" type="button" ng-click="action.cancel()">
+            {$ ::context.submit $}
+        </button>
+    </div>

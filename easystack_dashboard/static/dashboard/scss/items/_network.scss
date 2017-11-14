@@ -1,0 +1,354 @@
+/**
+ ** Author : zhaoyongsheng
+ ** Module : NetWork Module css
+ ** Data   : 2015-11-21
+**/
+
+
+// Author : zhaoyongsheng
+// Module : the style for creating networks-form
+// Data   : 2015-11-21
+
+/*start*/
+#network-tab {
+  .subnet-rcol-check input[type="checkbox"]{
+    width: 20px;
+  }
+  .subnet-rcol-span {
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 7px;
+  }
+  .form-group-network {
+    margin: 0;
+  }
+  .fg-network-bottom {
+    margin: 0;
+  }
+  .network[type="text"] {
+    width: 30px;
+    text-align: center;
+    vertical-align: middle;
+    margin-bottom: 8px;
+  }
+  .network[type="radio"] {
+    margin-top: 9px;
+  }
+  .more-options {
+    display: inline-block;
+    margin-left: 28px;
+    cursor: pointer;
+  }
+  #table-network {
+    width: 100%;
+    border: 1px solid grey;
+    border-collapse: collapse;
+    tr:nth-child(1) {
+    height: 5px;
+      td {
+        border-bottom: 1px solid grey;
+      }
+    }
+    tr:nth-child(2) td {
+      padding: 6px;
+      border-bottom: 1px solid grey;
+    }
+    tr:nth-child(3) {
+      height: 15px;
+      td>span {
+        border-right: 1px solid grey;
+        width: 6px;
+        padding: 2px 4px;
+      }
+    }
+  }
+  .glyphicon-color {
+    color: grey;
+  }
+}
+/*end*/
+
+
+// Author: zhaoyongsheng
+// Module: the style for creating subNet-form
+// Data  : 2015-12-04
+
+/*the following is for subNet form start*/
+.form-group .form-group-left { width: 115px; }
+.form-control-gateway { width: 73%; }
+.subnet-dhcp { display: inline-block; margin-top: 10px; }
+.network-address {
+  .address-w[type="text"] { width: 30px; text-align: center; }
+  .network-option-row {
+    span { display: inline-block; margin-left: 20px; cursor: pointer; }
+  }
+}
+/*end*/
+
+
+// Author: limeili
+// Module: the style for creating creat-network-form
+// Data  : 2015-12-17
+
+/*creat-subnet-form starts*/
+.networksListContent, .neutronListContent {
+  .modal-dialog { width:620px; }
+  .form-group-right { width:420px; }
+}
+.EditNetworkListContent .tab-content { width:460px;}
+.inline-group .subnet-rcol{ width:498px !important;}
+.address-pool-num {
+  display: inline-block;
+  width: 38px;
+  line-height: 26px;
+  text-align: center;
+  border: 1px #eaeaea solid;
+  background: #f5f6fa;
+  position: relative;
+  top: 1px;
+}
+.networksListContent,
+.neutronListContent {
+  .inline-group .subnet-rcol input {}
+  .gatewayInfo {
+    width: 120px;
+    position:relative;
+    top:7px;
+    left:-27px;
+  }
+  input[type="radio"], input[type="checkbox"] {
+    margin: auto;
+    vertical-align: middle;
+  }
+  .subnet-rcol-check {
+    span {
+      display: inline-block;
+    }
+  }
+  .address-w {
+    height: 30px !important;
+    line-height: 30px;
+  }
+  .more-options {
+    line-height: 30px;
+  }
+  .ip-line-prev {
+    margin-bottom: 9px;
+  }
+  #gateway_ip {
+    width: 60%;
+    display:inline-block;
+  }
+}
+
+.network-label-box {
+  line-height: 30px;
+  margin-bottom: 10px;
+  span {
+    margin-right: 10px;
+  }
+}
+
+.networt-address-box {
+    width:100%;
+    .network-address{
+        float:left;
+    }
+    .more-options{
+      display:inline;
+      float:right;
+    }
+    .network-address{
+      .address-w {
+        width:56px;
+        text-align:center;
+      }
+      .address-w-selec{
+        margin-top: 0;
+      }
+    }
+}
+
+.subnet-advanced-off,
+.more-options{ cursor: pointer;}
+.subnet-rcol-color{ color:#0d9dd9;}
+.dnsListContent {
+  .modal-dialog{ width: 450px; }
+  .inline-group label { width: 90px; }
+  .inline-group .subnet-rcol { width: 270px; }
+}
+.addressPoolListContent {
+  .modal-dialog{ width: 600px; }
+  .inline-group label { width: 120px; }
+  .inline-group .subnet-rcol { width: 400px; }
+  .form-group-right { width:420px; }
+}
+.network-set-list {
+  border: 1px #62c0b0 solid;
+  li {
+    height: 30px;
+    line-height: 30px;
+    padding-left: 10px;
+    border-bottom: 1px #62c0b0 solid;
+    cursor: pointer;
+    &:hover { background: #DFF2EF; }
+    .network-btn { color: #999; cursor: pointer; }
+    .network-btn:hover { color: #666; }
+    .network-btn:active { color: #666; background: #f5f4f4; }
+  }
+  .active { background: #DFF2EF; }
+  li:first-child {}
+  li:last-child {
+    padding-left: 0;
+    height: 20px;
+    line-height: 16px;
+    color: #999;
+    border-top: 1px #62c0b0 solid;
+    border-bottom: 0;
+    background: #dff2ef;
+    cursor: default;
+    span {
+      display: inline-block;
+      width:18px;
+      line-height:inherit;
+      font-size:12px;
+      text-align: center;
+    }
+  }
+  li:nth-last-child(2) { background: #fff; cursor: default; border-bottom: 0; }
+  .segment { display: inline-block; width: 190px; }
+}
+.network-num-list {
+  input { width:38px; height:28px; line-height:28px; text-align: center; }
+  em { font-szie: 14px; color: #666; }
+}
+/*creat-subnet-form ends*/
+
+// Author: xinwei
+// Module: the style for creating creat-firewalls-form
+// Data  : 2016-01-06
+
+/* policies select size */
+.policie-select-size { width: 265px; }
+.policie-wrap .btn-add { position: relative; top: 3px; }
+
+
+// Author: limeili
+// Module: the style for create firewalls rule
+// Data  : 2016-01-06
+
+/* create firewalls rule starts */
+
+.routersListContent {
+    .network-num-list input { height:30px; }
+    .firewallrule-ip .form-group-right {width:230px; }
+    .firewallrule-sort {
+      .form-group-right { width:50px; }
+      label { width:70px; }
+    }
+    .form-group-right {width:368px; }
+    .modal-dialog { width:546px; }
+    .rule-button-add {
+      position: absolute;
+      top: 3px;
+      right: -30px;
+    }
+}
+
+/* create firewalls rule ends */
+
+
+/*
+ * GBP group based policy css *
+ *
+ */
+.add_to_mutiple {
+    vertical-align: top;
+    margin-top: 24px;
+}
+.add-mutiple-btn-fixed{
+  position: relative;
+  top: -26px;
+}
+
+/*
+ *
+ * Ports SoftEther
+ *
+ */
+.ports-stripWarp {
+  opacity: 0.4;
+}
+
+/*
+ *
+ * Loadba lancers
+ *
+ */
+.poolListContent {
+  .modal-dialog {
+    width: 460px;
+  }
+  input[type="radio"], input[type="checkbox"] {
+    vertical-align: text-bottom;
+  }
+}
+
+.lb-batch-content {
+  padding:20px;
+  .modal-dialog {
+    width:680px;
+    .form-group .form-group-right {
+      width: 170px;
+      position: relative;
+    }
+    .form-group {
+      margin-top: 0;
+      margin-bottom: 15px;
+    }
+    .form-inline-lb {
+      display:inline-block;
+    }
+    .transfer-allocated {
+      action-list.btn-group notifications {
+        right: -2em;
+        bottom: -0.3em;
+      }
+      .action-col {
+        width:65px;
+      }
+      .has-error input[type='number'] {
+        border-width: 1px ;
+        border-color: #e36159;
+      }
+      input[type='number']{
+        border-width:0;
+        background: 0;
+        padding-top: 10px;
+        line-height: 10px;
+        &:focus{
+          border-width: 1px;
+          background: #FFFFFF;
+        }
+      }
+    }
+  }
+}
+
+.subnet-delete-content,.network-delete-content {
+    .delete-danger-message {
+      background-color: #f2dede;
+      border: 1px #ec7689 solid;
+      color: #e36159;
+    }
+
+    .port-list-title {
+      font-weight: bold;
+      font-size: 12px;
+      line-height: 24px;
+    }
+    .delete-ins-one ul, .delete-ins-more ul {
+        max-height: 180px;
+    }
+
+}

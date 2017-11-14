@@ -1,0 +1,100 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+     <!-- <div class="modal-description mt10">
+          <p>
+            {% trans "QoS Specs can be associated with volume types.It is used to map to a set of quality of service capabilities requested by the volume owner. This is equivalent to the 'cinder qos-create' command. Once the QoS Spec gets created,click the 'Add Extra Specs' button to manage the key-value specs for the QoS Spec.Each QoS Specs entity will have a 'Consumer' value which indicates where the administrator would like the QoS policy to be enforced. This value can be 'front-end' (Nova Compute), 'back-end' (Cinder back-end), or 'both'." %}
+          </p>
+      </div>-->
+      <fieldset>
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.extraspec.$invalid && form.extraspec.$dirty}" ng-show="context.mode != 'edit'">
+          <label for="extraspeckey">
+            *{% trans "Key" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="extraspeckey"
+              name="extraspeckey"
+              class="form-control"
+              ng-if="extraspectype == 'pre'"
+              ng-model="extraspec.extraspeckey">
+
+              <option value="" disabled>{% trans "Select a key" %}</option>
+              <option ng-if="!preextraspec.state" ng-hide="preextraspec.state" ng-disabled="preextraspec.state" ng-value="preextraspec.id" ng-repeat="preextraspec in preextraspecs">{$ preextraspec.name $}</option>
+            </select>
+            <input required
+              id="extraspeckeys"
+              name="extraspeckeys"
+              type="text"
+              class="form-control verify-input"
+              ng-if="extraspectype == 'self'"
+              ng-maxlength="255"
+              ng-model="extraspec.extraspeckey"
+              placeholder="{% trans 'Enter an extra spec key' %}">
+              <p class="help-block alert-fixed alert-danger"
+                ng-show="form.extraspeckeys.$error.required && form.extraspeckeys.$dirty">
+                {% trans "An extra spec key is required." %}
+              </p>
+              <p class="help-block alert-fixed alert-danger"
+                ng-show="form.extraspeckeys.$error.maxlength && form.extraspeckeys.$dirty">
+                {% trans "Key length should be less than 255 chars." %}
+              </p>
+          </div>
+          <!--<help-panel>
+            <ng-include src="helpUrl"></ng-include>
+          </help-panel>-->
+          <!--<span class="help-icon" data-toggle="tooltip" data-placement="top" title="{$ helpTxt $}"><span class="fa fa-question-circle"></span></span>-->
+         </div>
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.extraspecvalue.$invalid && form.extraspecvalue.$dirty}">
+          <label for="extraspecvalue">
+            *{% trans "Value" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="extraspecvalue"
+              name="extraspecvalue"
+              type="text"
+              class="form-control verify-input"
+              ng-maxlength="255"
+              ng-model="extraspec.extraspecvalue"
+              placeholder="{% trans 'Enter an extra spec value' %}">
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.extraspecvalue.$error.required && form.extraspecvalue.$dirty">
+              {% trans "An extra spec value is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.extraspecvalue.$error.maxlength && form.extraspecvalue.$dirty">
+              {% trans "Value length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <!--<help-panel>
+          <ng-include src="helpUrl"></ng-include>
+        </help-panel>-->
+    </fieldset>
+    <!-- Modal-form-right: The description text. -->
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

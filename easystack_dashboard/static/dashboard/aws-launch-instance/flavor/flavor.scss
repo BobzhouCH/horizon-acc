@@ -1,0 +1,20 @@
+.instances-flavor-wrap { width:100%; margin-left:auto; margin-right:auto; }
+.instances-flavo-name { width:140px; height:14px; line-height:14px; margin-bottom:10px; }
+.instances-flavo-rect-wrap { width:100%; height:14px; line-height:14px; position:relative; }
+.instances-flavo-rect_bg { width:100%; height:14px; background:#afafaf; position:absolute; top:0; left:0; z-index:5; }
+.instances-flavo-rect { width:auto; height:14px; background:#eff0f0; position:relative; z-index:10; cursor:pointer; }
+.instances-flavo-btn { display:inline-block; width:15px; height:31px; background:url(img/arw_icon_2.png) no-repeat; position:absolute; top:-8px; left:50px; z-index:50; cursor:pointer; }
+.instances-flavo-cpu ul {}
+.instances-flavo-cpu ul li { float:left; text-align:center; margin:0 5%; }
+.instances-flavo-cpu ul .instances-flavo-line { display:inline-block; width:2px; height:10px; margin:0 auto; background:#eff0f0; }
+.instances-flavo-cpu .instances-flavo-btn { left:29px; }
+.instances-flavo-memory .instances-flavo-btn { left:34px; }
+.instances-flavo-memory .instances-flavo-rect { left: 42px; width: 72px; }
+.instances-flavo-disk .instances-flavo-btn { left:32px; }
+
+.instances-flavo-memory ul {}
+.instances-flavo-memory ul li { float:left; text-align:center; margin:0 3%; }
+.instances-flavo-memory ul .instances-flavo-line { display:inline-block; width:2px; height:10px; margin:0 auto; background:#eff0f0; }
+
+.instances-flavo-disk ul li { float:left; text-align:center; margin:0 4%; }
+.instances-flavo-disk ul .instances-flavo-line { display:inline-block; width:2px; height:10px; margin:0 auto; background:#eff0f0; }

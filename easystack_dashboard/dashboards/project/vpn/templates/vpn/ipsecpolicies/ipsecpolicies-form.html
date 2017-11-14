@@ -1,0 +1,300 @@
+{% load i18n %}
+{% load context_selection %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+        <!-- Modal-form-left: Contains the form controls -->
+        <div class="modal-description mt10" >
+          <p>
+            <div>{$ mdescription $}</div>
+            <div>{$ authorizationdes $}</div>
+            <div>{$ encapsulationdes $}</div>
+            <div>{$ encryptiondes $}</div>
+            <div>{$ Lifetimedes $}</div>
+            <div>{$ pfsdes $}</div>
+            <div>{$ Transformdes $}</div>
+            <div>{$ alldes $}</div>
+          </p>
+        </div>
+    <!-- Modal-form-left: Contains the form controls -->
+      <fieldset>
+        <!--
+          Volume name input (required):
+            Create-mode: show
+            Edit-mode: show
+            Extend-mode: show,disabled
+            Attach-mode: show,disabled
+            Detach-mode: show,disabled
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="name">
+            *{% trans "Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              type="text"
+              ng-model="ipsecpolicy.name"
+              ng-maxlength="255"
+              placeholder="{% trans 'enter an IPSec Policy name' %}"/>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "An IPSec Policy name is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength && form.name.$dirty">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+          Description input (optional):
+            Create-mode: show
+            Edit-mode: show
+        -->
+        <div class="form-group clearfix">
+          <label for="description">
+            {% trans "Description" %}
+          </label>
+          <div class="form-group-right"
+               ng-class="{'has-error':form.description.$invalid && form.description.$dirty}">
+            <textarea
+              id="description"
+              name="description"
+              class="form-control"
+              rows="4"
+              ng-maxlength="255"
+              type="description"
+              ng-model="ipsecpolicy.description"
+              placeholder="{% trans 'enter description of the IPSec Policy' %}">
+            </textarea>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.description.$error.maxlength">
+              {% trans "Description length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+          Type selection (option):
+            Create-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.auth_algorithm.$invalid && form.auth_algorithm.$dirty}">
+          <label for="auth_algorithm">
+            {% trans "Authorization algorithm" %}
+          </label>
+          <div class="form-group-right">
+            <select
+              id="auth_algorithm"
+              name="auth_algorithm"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.auth_algorithms}"
+              ng-init="ipsecpolicy.auth_algorithm=(ipsecpolicy.auth_algorithm !=udefined? ipsecpolicy.auth_algorithm:dropdown.auth_algorithms[0].key)"
+              ng-model="ipsecpolicy.auth_algorithm">
+              <option
+                ng-repeat="auth_algorithm in dropdown.auth_algorithms"
+                ng-selected="auth_algorithm.key===ipsecpolicy.auth_algorithm"
+                value="{$ auth_algorithm.key $}">
+                {$ auth_algorithm.value $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!--
+           Image Selection (option):
+            Create-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.encapsulation_mode.$invalid && form.encapsulation_mode.$dirty}">
+          <label class="control-label fl required" for="name">
+            {% trans "Encapsulation mode" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="encapsulation_mode"
+              name="encapsulation_mode"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.encapsulation_modes}"
+              ng-init="ipsecpolicy.encapsulation_mode =(ipsecpolicy.encapsulation_mode !=udefined? ipsecpolicy.encapsulation_mode:dropdown.encapsulation_modes[0].key)"
+              ng-model="ipsecpolicy.encapsulation_mode">
+              <option
+                ng-repeat="encapsulation_mode in dropdown.encapsulation_modes"
+                ng-selected="encapsulation_mode.key === ipsecpolicy.encapsulation_mode"
+                value="{$ encapsulation_mode.key $}">
+                {$ encapsulation_mode.value $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group clearfix">
+          <label for="encryption_algorithm">
+            {% trans "Encryption algorithm" %}
+          </label>
+          <div class="form-group-right">
+            <select
+              id="encryption_algorithm"
+              name="encryption_algorithm"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.encryption_algorithms}"
+              ng-init="ipsecpolicy.encryption_algorithm=(ipsecpolicy.encryption_algorithm !=udefined? ipsecpolicy.encryption_algorithm:dropdown.encryption_algorithms[0].key)"
+              ng-model="ipsecpolicy.encryption_algorithm">
+              <option
+                ng-repeat="s in dropdown.encryption_algorithms"
+                ng-selected="s.key===ipsecpolicy.encryption_algorithm"
+                value="{$ s.key $}">
+                {$ s.value $}
+              </option>
+            </select>
+          </div>
+        </div>
+        <!--
+           Instance Snapshot Selection (option):
+            Create-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.lifetime_units.$invalid && form.lifetime_units.$dirty}">
+          <label class="control-label fl required" for="name">
+            {% trans "Lifetime units" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="lifetime_units"
+              name="lifetime_units"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.lifetime_units}"
+              ng-init="ipsecpolicy.lifetime.units = (ipsecpolicy.lifetime.units !=udefined? ipsecpolicy.lifetime.units:dropdown.lifetime_units[0].key)"
+              ng-model="ipsecpolicy.lifetime.units">
+              <option
+                ng-repeat="lifetime_unit in dropdown.lifetime_units"
+                ng-selected="lifetime_unit.key === ipsecpolicy.lifetime.units"
+                value="{$ lifetime_unit.key $}">
+                {$ lifetime_unit.value $}
+              </option>
+            </select>
+          </div>
+        </div>
+        <!--
+          Size input (required):
+            Create-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.lifetime_value.$invalid && form.lifetime_value.$dirty}">
+          <label for="lifetime_value">
+            {% trans "Lifetime value for IKE keys" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="lifetime_value"
+              name="lifetime_value" type="number"
+              class="form-control verify-input"
+              type="text"
+              min="60"
+              ng-init="ipsecpolicy.lifetime.value= (ipsecpolicy.lifetime.value !=udefined? ipsecpolicy.lifetime.value:3600)"
+              ng-model="ipsecpolicy.lifetime.value"
+              ng-maxlength="255"/>
+            <span class="glyphicon glyphicon-question-sign help-fixed"
+                  popover="{$ helpInfo $}"
+                  popover-placement="right"
+                  popover-append-to-body="true"
+                  popover-trigger="hover"></span>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.lifetime_value.$error.maxlength && form.lifetime_value.$dirty">
+              {% trans "{$ helpInfo $}" %}
+            </p>
+          </div>
+        </div>
+
+
+        <!--
+          Attach instance input (required):
+            Attach-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.pfs.$invalid && form.pfs.$dirty}">
+          <label for="pfs">
+            <p>{% trans "Perfect Forward Secrecy" %}</p>
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="pfs"
+              name="pfs"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.pfses}"
+              ng-init="ipsecpolicy.pfs=(ipsecpolicy.pfs !=udefined? ipsecpolicy.pfs:dropdown.pfses[0].key)"
+              ng-model="ipsecpolicy.pfs">
+              <option
+                ng-repeat="pfs in dropdown.pfses"
+                ng-selected="pfs.key===ipsecpolicy.pfs"
+                value="{$ pfs.key $}">
+                {$ pfs.value $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!--
+          Detach instance input (required):
+            Detach-mode: show,disabled
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.transform_protocol.$invalid && form.transform_protocol.$dirty}">
+          <label for="transform_protocol">
+            <p>{% trans "Transform Protocol" %}</p>
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="transform_protocol"
+              name="transform_protocol"
+              class="form-control verify-input"
+              ng-class="{strikeLoading: !dropdown.transform_protocols}"
+              ng-init="ipsecpolicy.transform_protocol=(ipsecpolicy.transform_protocol !=udefined? ipsecpolicy.transform_protocol:dropdown.transform_protocols[0].key)"
+              ng-model="ipsecpolicy.transform_protocol"
+              >
+              <option
+                ng-repeat="transform_protocol in dropdown.transform_protocols"
+                ng-selected="transform_protocol.key === ipsecpolicy.transform_protocol"
+                value="{$ transform_protocol.key $}">
+                {$ transform_protocol.value $}
+              </option>
+            </select>
+          </div>
+        </div>
+      </fieldset>
+
+    <!-- Modal-form-right: The description text. -->
+
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-if="context.mode == 'create'"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-if="context.mode == 'edit'"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

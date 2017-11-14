@@ -1,0 +1,147 @@
+{% extends 'lenovo/base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Network Switches" %}{% endblock %}
+
+{% block page_header %}
+    {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Network Switches") %}
+{% endblock page_header %}
+
+{% block content_main %}"contentMain tab-main"{% endblock %}
+
+{% block main %}
+
+<hz-magic-search-context filter-facets="filterFacets">
+    <table id="network_switches_list" hz-table ng-cloak hopes-table-drag
+           st-table="iswitches"
+           st-safe-src="switches"
+           ng-controller="lenovoNetworkSwitchesCtrl"
+           ng-init="userID = '{{ request.user.id }}'"
+           disabled="disabled"
+           st-magic-search
+           class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th colspan="100" class="bare">
+                    <!--<pre>{$ switches|json $}</pre>
+                    <pre>{$ switch|json $}</pre>
+                    <pre>{$ nodes|json $}</pre>-->
+                    <div class="table_actions clearfix">
+                        <action-list class="btn-addon">
+                            <action action-classes="'btn btn-default btn-sm'"
+                                    callback="actions.refresh"
+                                    disabled="isAdding || isEditting || isDeleting">
+                                <i class="icon icon-refresh"></i>
+                                <span id="refresh"></span>
+                            </action>
+                        </action-list>
+                        <action-list>
+                            <action action-classes="'btn btn-primary btn-action'"
+                                    callback="actions.modal.createSwitch"
+                                    disabled="isAdding || isEditting || isDeleting">
+                                <i class="icon icon-add"></i>
+                                <span id="create-switch">{$ ::context.action.create $}</span>
+                            </action>
+                        </action-list>
+                        <action-list>
+                            <action action-classes="'btn btn-action btn-primary'"
+                                    disabled="numSelected !== 1 || isAdding || isEditting || isDeleting"
+                                    callback="actions.modal.editSwitch" item="selectedData.aData">
+                                <i class="icon icon-edit"></i>
+                                <span id="edit-switch">{$ ::context.action.edit $}</span>
+                            </action>
+                        </action-list>
+                        <action-list>
+                            <action action-classes="'btn btn-action btn-danger'"
+                                    disabled="numSelected === 0 || isAdding || isEditting || isDeleting"
+                                    callback="actions.modal.deleteSwitch" item="selectedData.aData">
+                                <i class="icon icon-delete"></i>
+                                <span id="delete-switch">{$ ::context.action.delete $}</span>
+                            </action>
+                        </action-list>
+                        <div class="fr search-bar">
+                            <hz-magic-search-bar id="search"></hz-magic-search-bar>
+                        </div>
+                    </div>
+                </th>
+            </tr>
+            <tr eagle-eye="table_heads">
+                <th class="select-col" eagle-eye="select_col">
+                    <input id="switches_all_checkbox" type="checkbox" hz-select-page="switches" ng-disabled="isAdding || isEditting || isDeleting" />
+                </th>
+                <th><span st-sort="ip" eagle-eye="data_col">{$ ::context.header.ipAddress $}</span></th>
+                <th><span st-sort="hostname" eagle-eye="data_col">{$ ::context.header.hostname $}</span></th>
+                <th><span st-sort="hw_type" eagle-eye="data_col">{$ ::context.header.hardwareType $}</span></th>
+                <th><span st-sort="username" eagle-eye="data_col">{$ ::context.header.username $}</span></th>
+                <th><span st-sort="cpu" eagle-eye="data_col">{$ ::context.header.cpu $}</span></th>
+                <th><span st-sort="memory" eagle-eye="data_col">{$ ::context.header.memory $}</span></th>
+                <!--<th><span st-sort="os_type" eagle-eye="data_col">{$ ::context.header.osType $}</span></th>
+                <th><span st-sort="protocol" eagle-eye="data_col">{$ ::context.header.protocol $}</span></th>-->
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-if="!switchState">
+                <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif" alt="" /></td>
+            </tr>
+            <tr ng-if="!iswitches.length && switchState">
+                <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+            </tr>
+            <tr ng-repeat="switch in iswitches" ng-class="{'st-selected': checked[switch.id]}">
+                <td class="select-col" eagle-eye="select_col">
+                    <input type="checkbox"
+                           hz-select="switch"
+                           ng-model="selected[switch.id].checked"
+                           hz-checkbox-group="switches"
+                           ng-disabled="isAdding || isEditting || isDeleting" />
+                </td>
+                <td eagle-eye="data_col">
+                    <a ng-click="actions.modal.openDetail(switch)" href="javascript:;">
+                        {$ switch.ip $}
+                    </a>
+                </td>
+                <td eagle-eye="data_col">{$ switch.hostname $}</td>
+                <td eagle-eye="data_col">{$ switch.hw_type $}</td>
+                <td eagle-eye="data_col">{$ switch.username $}</td>
+                <td eagle-eye="data_col">{$ switch.cpu $}</td>
+                <td eagle-eye="data_col">{$ switch.memory $}</td>
+                <!--<td eagle-eye="data_col">{$ switch.os_type $}</td>
+                <td eagle-eye="data_col">{$ switch.protocol $}</td>-->
+            </tr>
+            <tr ng-if="isAdding">
+                <td colspan="100" class="Loading-bar">
+                    {$ ::context.header.adding $}<img class="load-detail" src="/static/bootstrap/img/loading.gif" alt="" />
+                </td>
+            </tr>
+            <tr ng-if="isEditting">
+                <td colspan="100" class="Loading-bar">
+                    {$ ::context.header.editting $}<img class="load-detail" src="/static/bootstrap/img/loading.gif" alt="" />
+                </td>
+            </tr>
+            <tr ng-if="isDeleting">
+                <td colspan="100" class="Loading-bar">
+                    {$ ::context.header.deleting $}<img class="load-detail" src="/static/bootstrap/img/loading.gif" alt="" />
+                </td>
+            </tr>
+        </tbody>
+        <tfoot ng-if="switches.length > 10">
+            <tr>
+                <td colspan="100" eagle-eye="data_page">
+                    <table-footer></table-footer>
+                </td>
+            </tr>
+        </tfoot>
+        <!--<tfoot id="switches_pagination" ng-show="showPagination()">
+            <tr>
+                <td colspan="100" class="text-center">
+                    <style>
+                        .pagination {
+                            display: inline-block;
+                        }
+                    </style>
+                    <div st-pagination="" st-items-by-page="12" st-displayed-pages="20"></div>
+                </td>
+            </tr>
+        </tfoot>-->
+    </table>
+</hz-magic-search-context>
+
+{% endblock %}

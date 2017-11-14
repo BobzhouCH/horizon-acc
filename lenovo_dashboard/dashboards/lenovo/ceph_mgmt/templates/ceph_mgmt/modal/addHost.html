@@ -1,0 +1,39 @@
+{%load i18n%}
+<script type="text/ng-template" id="addHost.html">
+    <div ng-controller="StTopBarCtrl">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="close()">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only">{% trans "Close" %}</span>
+            </button>
+            <h4 class="modal-title">{% trans "ADD NEW HOST" %}</h4>
+        </div>
+        <div class="modal-body">
+            <div class="list-group">
+                <input type="text" name="server_name" ng-model="addServer.name" placeholder="Host Name" />
+            </div>
+            <div class="list-group">
+                <input type="text" name="public_ip" ng-model="addServer.publicIp" placeholder="Public IP" />
+            </div>
+            <div class="list-group">
+                <input type="text" name="external_ip"  ng-model="addServer.externalIp" placeholder="Cluster IP" />
+            </div>
+            <div class="list-group">
+                <input type="text" name="user_name" ng-model="addServer.userName" placeholder="User Name" />
+            </div>
+            <div class="list-group">
+                <input type="password" name="pass"  ng-model="addServer.pass" placeholder="password" />
+            </div>
+            <div class="list-group">
+                <input type="password" name="con_pass"  ng-model="addServer.conPass" placeholder="Confirm Password" />
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="cancel" ng-click="close()">{% trans "Cancel" %}</button>
+            <button class="btn-ok" ng-click="AddHostAction($event)">{% trans "OK" %}</button>
+        </div>
+    </div>
+</script>
+
+
+

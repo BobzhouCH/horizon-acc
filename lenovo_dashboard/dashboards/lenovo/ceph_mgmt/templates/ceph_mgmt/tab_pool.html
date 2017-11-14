@@ -1,0 +1,149 @@
+{% load branding i18n %}
+{% load url from future %}
+{% load context_selection %}
+
+<!--Pool panel -->
+<div class="tab-views">
+    <!--tab_pool start-->
+    <div role="tabpanel" class="tab-pane" id="tab_pool">
+        <!--Pool-top start-->
+        <div class="pool-top">
+            <div class="pool-top-bar">
+                <!--pool-select start-->
+                <div class="dropdown pool-select" tabindex="1">
+                    <button class="btn dropdown-toggle">
+                        <span>{$ poolNames || poolList[0].name $}</span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu poolList">
+                        <li role="presentation" ng-bind="pool.name" ng-repeat="pool in poolList"
+                            ng-click="changePools(pool.name,pool.dedup_rate,pool.deduplication,pool.pg_num,pool.size,pool.rq,pool.wq,pool.id)">
+                        </li>
+                           <li ng-click="poolManage('lg')" style="background:#60c0af;">{% trans "Pool Management" %}</li>
+                    </ul>
+                </div>
+                <!--pool-select end-->
+                <!--pool_top_config_add start-->
+                <div class="pool_top_config_add">
+                    <button type="button" class="config" ng-click="poolConfig(poolId,poolNames,pgNum,dedupRate,duplicate)">
+                        <b class="glyphicon glyphicon-cog"></b> {% trans "Config" %}
+                    </button>
+                    <button class="addPool" ng-click="add_Pool()">
+                        <b class="glyphicon glyphicon-plus"></b> {% trans "Add Pool" %}
+                    </button>
+                </div>
+                <!--pool_top_config_add end-->
+            </div>
+            <!--ng-repeat="num in pool.poolTopNum"-->
+            <div class="pool-top-number">
+                <div class="pool-top-number-left">
+                    <div class="col-xs-4">
+                        <p>{% trans "Duplicate" %}</p>
+                        <h4 ng-bind="duplicate +'%'"></h4>
+                    </div>
+                    <div class="col-xs-4">
+                        <p>{% trans "PG Num" %}</p>
+                        <h4 ng-bind="pgNum"></h4>
+                    </div>
+                    <div class="col-xs-4">
+                        <p>{% trans "Crush Rule" %}</p>
+                        <h4 ng-bind="'Profile  '+crushSize"></h4>
+                    </div>
+                </div>
+                <div class="pool-top-number-right">
+                    <div class="col-xs-6">
+                        <p>{% trans "Read Qos Limitation" %}</p>
+                        <h4 ng-bind="rq"></h4>
+                    </div>
+                    <div class="col-xs-6">
+                        <p>{% trans "Write Qos Limitation" %}</p>
+                        <h4 ng-bind="wq"></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Pool-top -->
+        <!--Pool-body -->
+        <div class="pool-body">
+            <!--pool_rbdHead start-->
+            <div class="pool_rbdHead">
+                <div class="col-xs-10 pool_rbd">
+                   {% trans " RBD" %}
+                </div>
+                <div class="col-xs-2 pool_add_rbd">
+                    <button class="add_rbd" ng-click="addRbd(poolNames)">
+                        <b class="glyphicon glyphicon-plus"></b>
+                        {% trans "Add RBD" %}
+                    </button>
+                </div>
+            </div>
+            <!--pool_rbdHead end-->
+            <!--pool_rbd_list start-->
+            <div class="pool_rbd_list">
+                <table class="table" border="1" style="margin-bottom: 0">
+                    <thead>
+                    <tr>
+                        <td ng-click="col='name';desc=!desc">{% trans "Name" %}</td>
+                        <td ng-click="col='capacity';desc=!desc">{% trans "Capacity" %}</td>
+                        <td ng-click="col='usedsize';desc=!desc">{% trans "Duplicate" %}</td>
+                        <td ng-click="col='Bandwidth';desc=!desc">{% trans "Bandwidth" %}</td>
+                        <td ng-click="col='Read';desc=!desc">{% trans "Read Qos Limitation" %}</td>
+                        <td ng-click="col='Write';desc=!desc">{% trans "Write Qos Limitation" %}</td>
+                        <td>{% trans "Export to iSCSI" %}</td>
+                        <td>{% trans "Settings" %}</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="rbd in rbdList | filter: id | orderBy:col:desc">
+                        <td>{$ rbd.name $}</td>
+                        <td>
+                            <span class="item-info">
+                                {$ rbd.usedsize | formatUnit $} /
+                                <span class="unit">{$ rbd.capacity | formatUnit$}</span>
+                            </span>
+                        </td>
+                        <td>
+                            <!--{$ rbd.usedsize $}-->
+                            <!--{$ rbd.capacity $}-->
+                            <span class="unit">{$ selectedSite.value $}</span>
+                        </td>
+                        <td>
+                            <span >{$clusterInfo.bandwidth$}</span>
+                            <span class="unit">{$clusterInfo.bandwunit$}</span>
+                        </td>
+                        <td>{$ rbd.RedQos $}</td>
+                        <td>{$ rbd.WriteQos $}</td>
+                        <td>
+                            <button class="trash" ng-click="export()">
+                                <em class="glyphicon glyphicon-arrow-right"></em>
+                            </button>
+                        </td>
+                        <td>
+                            <button class="sett" ng-click="rbdConfig(rbd.id,rbd.name,rbd.capacity,rbd.usedsize)">
+                                <em class="glyphicon glyphicon-cog"></em>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr><td colspan="8"><button class="btn btn-primary btn-lg btn-block" ng-click="rbdManagement('lg')">{% trans "RBD MANAGEMENT" %}</button></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <!--pool_rbd_list end-->
+        </div>
+        <!--Pool-body end-->
+    </div>
+    <!--tab_pool end-->
+</div>
+
+{% include "lenovo/ceph_mgmt/modal/poolManagement.html" %}
+{% include "lenovo/ceph_mgmt/modal/poolConfig.html" %}
+{% include "lenovo/ceph_mgmt/modal/addPool.html"  %}
+{% include "lenovo/ceph_mgmt/modal/poolDelete.html" %}
+{% include "lenovo/ceph_mgmt/modal/rbdManagement.html" %}
+{% include "lenovo/ceph_mgmt/modal/addRbd.html" %}
+{% include "lenovo/ceph_mgmt/modal/export.html" %}
+{% include "lenovo/ceph_mgmt/modal/rbdConfig.html" %}
+{% include "lenovo/ceph_mgmt/modal/rbdDelete.html" %}
+{% include "lenovo/ceph_mgmt/modal/createSnapshot.html" %}
+{% include "lenovo/ceph_mgmt/modal/editSnapshot.html" %}
+{% include "lenovo/ceph_mgmt/modal/deleteSnapshot.html" %}

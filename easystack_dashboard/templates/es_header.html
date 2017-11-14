@@ -1,0 +1,130 @@
+{% load branding i18n %}
+{% load url from future %}
+{% load context_selection %}
+{% load navigation %}
+
+{% check_cloud_admin as is_cloud_admin %}
+{% check_domain_admin as is_domain_admin %}
+{% check_project_admin as is_project_admin %}
+
+<!-- <h1 class="brand"><a href="{% site_branding_link %}">{% site_branding %}</a></h1>-->
+
+  <nav class="navbar">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="{{ WEBROOT }}">
+          <img class="openstack-logo" src="{{ STATIC_URL }}dashboard/img/_logo.png" alt="OpenStack Dashboard" />
+        </a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="navbar-collapse">
+        <ul class="nav navbar-nav">
+            {% if is_cloud_admin or is_domain_admin or is_project_admin %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" role="button" aria-expanded="false">
+                        {% trans "Administration" %}
+                        <span class="fa fa-caret-down"></span>
+                    </a>
+                    {% horizon_admin_megamenu %}
+                </li>
+            {% endif %}
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" role="button" aria-expanded="false">
+                    {% trans "All Services" %}
+                    <span class="fa fa-caret-down"></span>
+                </a>
+                {% horizon_service_megamenu %}
+            </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a href="#" role="button" aria-expanded="false">
+              <span class="fa fa-user" title="{{ request.user.username }}"></span>
+            </a>
+          </li>
+          <li ng-controller="alarmCtrl">
+            <!--<a href="#" role="button" aria-expanded="false">-->
+            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" 
+               aria-expanded="false" aria-haspopup="true" ng-mouseenter="dropdownEnter($event)">
+                <span class="mdi mdi-bell" title="{% trans 'alarms' %}"></span>
+                <span class="badge badge-customize" ng-show="resourceAlarmCount + hardwareAlarmCount > 0">{$ resourceAlarmCount + hardwareAlarmCount $}</span>
+            </a>
+            <ul id="alarm_list" class="dropdown-menu">
+                <li>
+                    <a href="{% url 'horizon:project:alerts:index' %}">
+                        <span class='mdi mdi-security-network'></span>
+                        <span>{$ resourceAlarmCount + hardwareAlarmCount $}</span>
+                        {% trans "Resource Alarms" %}
+                    </a>
+                </li>
+                {% if is_cloud_admin %}
+                <li>
+                    <a href="{% url 'horizon:lenovo:physical_servers:index' %}">
+                        <span class='mdi mdi-security'></span>
+                        <span>{$ hardwareAlarmCount $}</span>
+                        {% trans "System Alerts" %}
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+          </li>
+          <li class="dropdown" ng-controller="settingsCtrl">
+              <a href="#" class="dropdown-toggle" role="button" aria-expanded="false" aria-haspopup="true">
+                  <span class="fa fa-cog"></span>
+                  <span class="fa fa-caret-down"></span>
+              </a>
+              <ul id="editor_list" class="dropdown-menu">
+{#                  <li>#}
+{#                      <a href="#" target="_blank">#}
+{#                          <span class="fa fa-question-circle"></span>#}
+{#                          {% trans "Help" %}#}
+{#                      </a>#}
+{#                  </li>#}
+                  <li>
+                      <a href="{% url 'horizon:settings:user:index' %}">
+                          <span class="fa fa-cog"></span>
+                          {% trans "Profile Setting" %}
+                      </a>
+                  </li>
+                  <li>
+                      <a href="#" ng-click="actions.edit.open()">
+                          <span class="fa fa-cog"></span>
+                          {% trans "Change Password" %}
+                      </a>
+                  </li>
+                  <li class="divider"></li>
+                  <li>
+                      <a href="{% url 'horizon:thinkcloud:help:support' %}">
+                          <span class="fa fa-cog"></span>
+                          {% trans "Support Services" %}
+                      </a>
+                  </li>
+                  <!-- begin:<wujx9>:<new feature(license)>:<action (a)>:<date(2016-11-16)> -->
+                  <li ng-show="license_user=='admin'">
+                      <a href="javascript:;" ng-click="actions.license.license()">
+                          <span class="fa fa-cog"></span>
+                          {% trans "License Info" %}
+                      </a>
+                  </li>
+                  <!-- end:<wujx9>:<new feature(license)>:<action (a)>:<date(2016-11-16)> -->
+                  <li>
+                      <a href="{% url 'horizon:thinkcloud:help:about' %}">
+                          <span class="fa fa-cog"></span>
+                          {% trans "About" %}
+                      </a>
+                  </li>
+                  <li class="divider"></li>
+                  <li>
+                      <a href="{% url 'logout' %}">
+                          <span class="fa fa-sign-out"></span>
+                          {% trans "Sign Out" %}
+                      </a>
+                  </li>
+              </ul>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </nav>
+

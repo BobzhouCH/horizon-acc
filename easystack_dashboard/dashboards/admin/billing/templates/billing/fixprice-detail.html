@@ -1,0 +1,223 @@
+{% load context_selection %}
+
+<div class="detail-page">
+<div class="fl detail-left-icon" ng-click="action.cancel()"></div>
+<div class="detail-page-con">
+  <tabset id="images-tab" justified="true" class="def-tabs">
+    <tab id="tab-images-detail" heading="{$ ::label.detail_overview $}">
+       <div class="tab-pane-content">
+  <!--fixing price detail table-->
+  <div class="js-billing-content-items table-box-hover" record-data>
+    <form novalidate name="form" ng-submit="submit(form.$valid)">
+      <hz-magic-search-context filter-facets="fixPricesFilterFacets" ng-controller="filterFacetsCtrl">
+      <table id="fix-prices-detail" hz-table ng-cloak hopes-table-drag
+        st-table="ifixPricesDetail"
+        st-safe-src="fixPricesDetail"
+        default-sort="name"
+        default-sort-reverse="false"
+        st-magic-search
+        class="table table-bordered table-hover">
+
+        <thead>
+
+          <tr>
+            <th colspan="100" class="bare">
+              <div class="table_actions  clearfix">
+                <ul class="fl horizontal-button-group" es-tab callback="filterProduct">
+                  <li id="all" class="btn active fl" val="all">{$ ::context.All  $}</li>
+                  <li id="instance" class="btn fl" val="instance">{$ ::context.Instance  $} </li>
+                  <li id="others" class="btn fl" val="!instance">{$ ::context.Others  $}</li>
+                </ul>
+                <div class="fr search-bar">
+                  <hz-magic-search-bar id="fix-prices-search"></hz-magic-search-bar>
+                </div>
+              </div>
+            </th>
+          </tr>
+
+          <!--fixing price detail header-->
+          <tr>
+            <th eagle-eye="data_col"st-sort="id">
+              {$ ::context.headerDetail.itemId $}
+            </th>
+            <th eagle-eye="data_col" st-sort="rule_dscription"
+              st-sort-default="rule_dscription">
+              {$ ::context.headerDetail.rules $}
+            </th>
+            <th eagle-eye="data_col" st-sort="fee">{$ ::context.headerDetail.price $} / {$ ::context.Yuan  $}</th>
+            <th eagle-eye="data_col" st-sort="unit" ng-if="preBilling">{$ ::context.headerDetail.priceMonth $}</th>
+            <th eagle-eye="data_col" st-sort="unit" ng-if="preBilling">{$ ::context.headerDetail.priceYear $}</th>
+            <th eagle-eye="data_col" st-sort="type">{$ ::context.headerDetail.type $}</th>
+            <th eagle-eye="data_col" st-sort="ptype">{$ ::context.headerDetail.ptype $}</th>
+          </tr>
+        </thead>
+
+        <tbody>
+            <tr ng-if="!ifixPricesDetailState">
+              <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif" alt="" /></td>
+            </tr>
+
+            <tr ng-if="!ifixPricesDetail.length && ifixPricesDetailState" eagle-eye="empty_table">
+              <td colspan="100">{$:: context.NoData $}</td>
+            </tr>
+          <!--fixing price detail data-->
+          <tr ng-if="ifixPricesDetail.length && ifixPricesDetailState" ng-class="{'st-selected': checked[fixPrice.id]}"
+            ng-repeat="fixPrice in ifixPricesDetail">
+
+            <td eagle-eye="data_col">{$ fixPrice.id $}</td>
+            <td eagle-eye="data_col"><span title="{$ fixPrice.rule_dscription $}">{$ fixPrice.rule_dscription $}</span></td>
+            <td eagle-eye="data_col" class="js-getbackground" ng-if="!detail.is_applied && preBilling" style="max-width: 170px;">
+              <div class="clearfix"
+                digital-list="fixPrice"
+                watch-price>
+                <input required
+                  name="fee_hour"
+                  class="fee input-tran input-width fl"
+                  type="text"
+                  title="{$ fixPrice.fee_hour $}"
+                  value="{$ fixPrice.fee_hour | price $}"/>
+                <i class="price-icon"></i>
+                <p class="price-insert fl">
+                  <span class="btn btn-confirm storage">
+                    <i class="btn-icon btn-icon-confirm"></i>
+                    {$::context.Update$}
+                  </span>
+                  <em>|</em>
+                  <span class="btn btn-cancel cancel">
+                    <i class="btn-icon btn-icon-cancel"></i>
+                    {$:: context.Cancel $}
+                  </span>
+                </p>
+              </div>
+            </td>
+            <td eagle-eye="data_col" class="js-getbackground" ng-if="!detail.is_applied && !preBilling">
+              <div class="clearfix"
+                digital-list="fixPrice"
+                watch-price>
+                <input required
+                  name="fee_hour"
+                  class="fee input-tran input-width fl"
+                  type="text"
+                  title="{$ fixPrice.fee_hour $}"
+                  value="{$ fixPrice.fee_hour | price $}"/>
+                <i class="price-icon"></i>
+                <p class="price-insert fl" style="margin-top: -10px;">
+                  <span class="btn btn-confirm storage">
+                    <i class="btn-icon btn-icon-confirm"></i>
+                    {$::context.Update$}
+                  </span>
+                  <em>|</em>
+                  <span class="btn btn-cancel cancel">
+                    <i class="btn-icon btn-icon-cancel"></i>
+                    {$:: context.Cancel $}
+                  </span>
+                </p>
+              </div>
+            </td>
+            <td eagle-eye="data_col" class="js-getbackground" ng-if="detail.is_applied">
+              <div class="clearfix"
+                digital-list="fixPrice"
+                watch-price>
+                <input required disabled
+                  name="fee_hour"
+                  class="fee input-tran input-width fl"
+                  type="text"
+                  title="{$ fixPrice.fee_hour $}"
+                  value="{$ fixPrice.fee_hour | price $}"/>
+              </div>
+            </td>
+            <!--<td eagle-eye="data_col">{$ fixPrice.unit | decode:billingUnits $}</td>-->
+            <td eagle-eye="data_col" class="js-getbackground" ng-if="!detail.is_applied && preBilling" style="max-width: 170px;">
+              <div class="clearfix"
+                digital-list="fixPrice"
+                watch-price>
+                <input required
+                  name="fee_month"
+                  class="fee input-tran input-width fl"
+                  type="text"
+                  title="{$ fixPrice.fee_month $}"
+                  value="{$ fixPrice.fee_month | price $}"/>
+                <i class="price-icon"></i>
+                <p class="price-insert fl">
+                  <span class="btn btn-confirm storage">
+                    <i class="btn-icon btn-icon-confirm"></i>
+                    {$::context.Update$}
+                  </span>
+                  <em>|</em>
+                  <span class="btn btn-cancel cancel">
+                    <i class="btn-icon btn-icon-cancel"></i>
+                    {$:: context.Cancel $}
+                  </span>
+                </p>
+              </div>
+            </td>
+            <td eagle-eye="data_col" class="js-getbackground" ng-if="detail.is_applied && preBilling">
+              <div class="clearfix"
+                digital-list="fixPrice"
+                watch-price>
+                <input required disabled
+                  name="fee_month"
+                  class="fee input-tran input-width fl"
+                  type="text"
+                  title="{$ fixPrice.fee_month $}"
+                  value="{$ fixPrice.fee_month | price $}"/>
+              </div>
+            </td>
+            <td eagle-eye="data_col" class="js-getbackground" ng-if="!detail.is_applied && preBilling" style="max-width: 170px;">
+              <div class="clearfix"
+                digital-list="fixPrice"
+                watch-price>
+                <input required
+                  name="fee_year"
+                  class="fee input-tran input-width fl"
+                  type="text"
+                  title="{$ fixPrice.fee_year $}"
+                  value="{$ fixPrice.fee_year | price $}"/>
+                <i class="price-icon"></i>
+                <p class="price-insert fl">
+                  <span class="btn btn-confirm storage">
+                    <i class="btn-icon btn-icon-confirm"></i>
+                    {$::context.Update$}
+                  </span>
+                  <em>|</em>
+                  <span class="btn btn-cancel cancel">
+                    <i class="btn-icon btn-icon-cancel"></i>
+                    {$:: context.Cancel $}
+                  </span>
+                </p>
+              </div>
+            </td>
+            <td eagle-eye="data_col" class="js-getbackground" ng-if="detail.is_applied && preBilling">
+              <div class="clearfix"
+                digital-list="fixPrice"
+                watch-price>
+                <input required disabled
+                  name="fee_year"
+                  class="fee input-tran input-width fl"
+                  type="text"
+                  title="{$ fixPrice.fee_year $}"
+                  value="{$ fixPrice.fee_year | price $}"/>
+              </div>
+            </td>
+            <td eagle-eye="data_col">{$ fixPrice.type | decode:priceTypes $}</td>
+            <td eagle-eye="data_col">{$ fixPrice.ptype | decode:productTypes $}</td>
+
+          </tr>
+        </tbody>
+        <tfoot ng-if="fixPricesDetail.length>10 ">
+          <tr>
+            <td colspan="100">
+              <table-footer></table-footer>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+      </hz-magic-search-context>
+    </form>
+  </div>
+
+</div>
+      </tab>
+</tabset>
+</div>
+</div>

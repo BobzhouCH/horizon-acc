@@ -1,0 +1,65 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+    <h3 class="modal-title">{$ ::context.title $}</h3>
+    <p class="modal-colsed" ng-click="action.cancel()">
+        <i class="modal-colsed-icon"></i>
+    </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+    <div class="left form-wrap">
+      <fieldset>
+        <!--
+          Instance name input (required):
+            Create-mode: show
+            Edit-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'edit'"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="name">
+            *{% trans "Instance Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              ng-maxlength="255"
+              ng-model="instance.name"
+              ng-disabled="">
+
+            <p class="help-block alert-fixed alert-danger"
+               ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "A instance name is required." %}
+            </p>
+
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength && form.name.$dirty">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+
+         </div>
+       </div>
+
+      </fieldset>
+    </div>
+
+    <!-- Modal-form-right: The description text. -->
+
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid || showBalance"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

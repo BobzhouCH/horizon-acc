@@ -1,0 +1,55 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+    <div class="left form-wrap">
+      <fieldset>
+         <!--
+          Image name input (optional):
+            Create-mode: show
+            Edit-mode: show
+        -->
+        <div class="form-group inline-group clearfix required inline-group-first"
+          ng-if="context.mode === 'createimage'"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label class="control-label fl required" for="name">
+            {% trans "Image Name" %}
+          </label>
+          <div class="rightCol fl">
+            <input required
+              id="image_name"
+              name="image_name"
+              class="form-control verify-input"
+              type="text"
+              ng-model="volume.image_name"
+              ng-maxlength="255"
+              placeholder="{% trans 'Enter a image name' %}"/>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$invalid && form.name.$dirty">
+              {% trans "A image name is required." %}
+            </p>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer txt-c">
+  <button id="submit-button" class="btn btn-a" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

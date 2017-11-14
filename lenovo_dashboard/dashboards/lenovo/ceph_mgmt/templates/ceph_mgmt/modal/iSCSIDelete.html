@@ -1,0 +1,20 @@
+{%load i18n%}
+<script type="text/ng-template" id="iSCSIDelete.html">
+    <div class="modal-header">
+        <div class="sing-log">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="list-group">
+            <p>{% trans "Are you sure to delete" %} <b>{$ deleteiSCSIName $}</b>?</p>
+        </div>
+        <div class="list-group">
+            <p>{% trans "This action cannot be undone." %}</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="cancel" ng-click="cancel()">{% trans "Cancel" %}</button>
+        <button class="btn-ok" ng-click="deleteISCSIOk($event)">{% trans "Ok" %}</button>
+    </div>
+</script>

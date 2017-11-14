@@ -1,0 +1,186 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Alerts" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Alerts") %}
+{% endblock page_header %}
+
+{% block main %}
+<tabset id="" class="def-tabs" justified="true">
+    <tab id="tab-alert-button" heading={% trans "Alerts"%}>
+      <div class="tab-pane-content">
+        <hz-magic-search-context filter-facets="filterFacets">
+        <table id="alerts-list" hz-table hopes-table-drag
+          ng-controller="alertsListController"
+          st-table="ialerts"
+          st-safe-src="alerts"
+          disabled="disabled"
+          st-magic-search
+          class="table table-bordered table-hover">
+
+          <thead>
+            <tr>
+              <th colspan="100" class="bare">
+                <div class="table_actions clearfix">
+                   <action-list>
+                      <action
+                        action-classes="'btn btn-primary btn-action'"
+                        callback="actions.refresh">
+                        <i class="icon icon-refresh"></i>
+                        <span id="refresh"></span>
+                      </action>
+                   </action-list>
+                   <action-list>
+                      <action
+                        action-classes="'btn btn-primary btn-action'"
+                        callback="actions.clear"
+                        item="selectedData.aData"
+                        disabled="selectedData.aData.length == 0">
+                        <span id="clear">Clear</span>
+                      </action>
+                   </action-list>
+                  <div class="fr search-bar">
+                    <hz-magic-search-bar id="search"></hz-magic-search-bar>
+                  </div>
+                </div>
+              </th>
+            </tr>
+            <tr eagle-eye="table_heads">
+              <th class="select-col" eagle-eye="select_col">
+                <input type="checkbox"
+                       hz-select-page="alerts"/>
+              </th>
+              <th width="15%" ng-cloak><span eagle-eye="data_col" st-sort="name" st-sort-default="name">{$ ::context.header.name $}</span></th>              
+              <th width="10%" ng-cloak><span eagle-eye="data_col" st-sort="severity">{$ ::context.header.severity $}</span></th>
+              <th width="10%" ng-cloak><span eagle-eye="data_col" st-sort="state">{$ ::context.header.state $}</span></th>
+              <th width="5%" ng-cloak><span eagle-eye="data_col" st-sort="enabled">{$ ::context.header.enabled $}</span></th>
+             
+              <th width="25%" ng-cloak><span eagle-eye="data_col" st-sort="description">{$ ::context.header.description $}</span></th>
+              <th style="min-width: 160px;" ng-cloak><span eagle-eye="data_col" st-sort="timestamp" st-sort-default="reverse">{$ ::context.header.timestamp $}</span></th>
+              <th width="15%" ng-cloak><span eagle-eye="data_col">Clear</span></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr ng-if="!alertState">
+              <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+            </tr>
+
+            <tr ng-if="!ialerts.length && alertState">
+              <td colspan="100" eagle-eye="empty_table">{% trans "No data" %}</td>
+            </tr>
+
+            <tr ng-repeat="alert in ialerts" ng-class="{'st-selected': checked[alert.alarm_id]}">
+              <td class="select-col" eagle-eye="select_col">
+                    <input type="checkbox"
+                        hz-select="alert"
+                        ng-model="selected[alert.alarm_id].checked"
+                        hz-checkbox-group="alerts"/>
+              </td>
+              <td ng-cloak eagle-eye="data_col" style="white-space: normal;line-height: 24px"><a href="javascript:;" ng-click="actions.createDetail.open(alert.alarm_id)" data-url="/project/alerts/detail/{$ alert.alarm_id $}">{$ alert.name $}</a></td>
+              <td ng-cloak eagle-eye="data_col" style="white-space: normal;line-height: 24px">{$ alert.severity$}</td>
+              <td ng-cloak eagle-eye="data_col" style="white-space: nowrap;line-height: 24px">{$ alert.state $}</td>
+              <td ng-cloak eagle-eye="data_col" style="white-space: normal;line-height: 24px">{$ alert.enabled $}</td>
+             
+              <td ng-cloak eagle-eye="data_col" style="white-space: nowrap;line-height: 24px" title="{$ alert.description $}">{$ alert.description $}</td>
+              <td ng-cloak eagle-eye="data_col" style="white-space: nowrap;line-height: 24px">{$ alert.create_time $}</td>
+              <td>
+                <action-list ng-click="actions.singleClear(alert.alarm_id, alert.state)">
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    callback="">
+                    <span id="singleClear">Clear</span>
+                  </action>
+               </action-list>
+              </td>
+            </tr>
+          </tbody>
+
+          <tfoot ng-if="alerts.length > 10">
+            <tr>
+              <td colspan="100" eagle-eye="data_page">
+                <table-footer></table-footer>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+        </hz-magic-search-context>
+      </div>
+    </tab>
+
+    <tab id="tab-history-subnet" heading={% trans "History"%}>
+      <div class="tab-pane-content">
+        <hz-magic-search-context filter-facets="filterFacets">
+        <table id="histories-list" hz-table hopes-table-drag
+          ng-controller="alertsListController"
+          st-table="ihistories"
+          st-safe-src="histories"
+          disabled="disabled"
+          st-magic-search
+          class="table table-bordered table-hover">
+
+          <thead>
+            <tr>
+              <th colspan="100" class="bare">
+                <div class="table_actions clearfix">
+                   <action-list>
+                      <action
+                        action-classes="'btn btn-primary btn-action'"
+                        callback="actions.refresh">
+                        <i class="icon icon-refresh"></i>
+                        <span id="refresh"></span>
+                      </action>
+                   </action-list>
+                  <div class="fr search-bar">
+                    <hz-magic-search-bar id="search"></hz-magic-search-bar>
+                  </div>
+                </div>
+              </th>
+            </tr>
+            <tr eagle-eye="table_heads">
+              <th width="15%" ng-cloak><span eagle-eye="data_col" st-sort="name" st-sort-default="name">{$ ::context.header.name $}</span></th> 
+             
+              <th width="15%" ng-cloak><span eagle-eye="data_col" st-sort="severity">{$ ::context.header.severity $}</span></th>
+              <th width="15%" ng-cloak><span eagle-eye="data_col" st-sort="state">{$ ::context.header.state $}</span></th>
+                          
+              <th width="20%" ng-cloak><span eagle-eye="data_col" st-sort="description">{$ ::context.header.description $}</span></th>
+              <th style="min-width: 160px" ng-cloak><span eagle-eye="data_col" st-sort="timestamp" st-sort-default="reverse">{$ ::context.header.timestamp $}</span></th>
+              <th width="22%" ng-cloak><span eagle-eye="data_col" st-sort="alarm_id">{$ ::context.header.alarm_id $}</span></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr ng-if="!historyState">
+              <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+            </tr>
+
+            <tr ng-if="!ihistories.length && historyState">
+              <td colspan="100" eagle-eye="empty_table">{% trans "No data" %}</td>
+            </tr>
+
+            <tr ng-repeat="history in ihistories">
+              <td ng-cloak eagle-eye="data_col" style="white-space: normal;line-height: 24px">{$ history.name $}</td>
+          
+              <td ng-cloak eagle-eye="data_col" style="white-space: normal;line-height: 24px">{$ history.severity $}</td>
+              <td ng-cloak eagle-eye="data_col" style="white-space: nowrap;line-height: 24px">{$ history.state $}</td>
+              
+              <td ng-cloak eagle-eye="data_col" style="white-space: nowrap;line-height: 24px" title="{$ history.description $}">{$ history.description $}</td>
+              <td ng-cloak eagle-eye="data_col" style="white-space: nowrap;line-height: 24px">{$ history.create_time $}</td>
+              <td ng-cloak eagle-eye="data_col" style="white-space: normal;line-height: 24px">{$ history.alarm_id $}</td>
+            </tr>
+          </tbody>
+
+          <tfoot ng-if="histories.length > 10">
+            <tr>
+              <td colspan="100" eagle-eye="data_page">
+                <table-footer></table-footer>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+        </hz-magic-search-context>
+      </div>
+    </tab>
+</tabset>
+{% endblock %}

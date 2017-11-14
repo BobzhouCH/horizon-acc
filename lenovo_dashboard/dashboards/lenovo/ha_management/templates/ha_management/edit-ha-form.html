@@ -1,0 +1,274 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The canSelectNodes pane. -->
+<div class="modal-body clearfix">
+  <!-- Modal-form-left: Contains the form controls -->
+  <div class="nodes-left">
+    <div class="modal-header node-modal-header">
+        <h4 class="modal-title node-modal-title">{$ ::context.header.unmangedHosts $}</h4>
+    </div>
+    <div class="clearfix required">
+    <hz-magic-search-context filter-facets="filterFacets">
+      <table id="select-nodes-list"
+      hz-table
+      ng-cloak
+      st-table="iunmanagedNodes"
+      st-safe-src="unmanagedNodes"
+      default-sort="hostname"
+      default-sort-reverse="false"
+      disabled="disabled"
+      st-magic-search
+      class="table table-bordered table-hover">
+
+      <thead>
+        <!--
+          Table-batch-actions:
+          This is where batch actions like searching, creating, and deleting.
+        -->
+        <tr>
+          <th colspan="100">
+            <div class="table_actions clearfix">
+              <action-list class="btn-addon">
+                <action
+                  action-classes="'btn btn-primary'"
+                  disabled="numSelected === 0"
+                  callback="action.addNodes"
+                  item="selectedData.aData">
+                  <span id="enable-node">{$ ::context.header.add $}</span>
+                </action>
+              </action-list>
+                <div class="fr search-bar">
+                    <hz-magic-search-bar id="search"></hz-magic-search-bar>
+                </div>
+            </div>
+          </th>
+        </tr>
+
+        <!--
+          Table-column-headers:
+          This is where we declaratively define the table column headers.
+          Include the select all checkbox if you want to enable select all
+          for performing batch actions.
+        -->
+        <tr eagle-eye="table_heads">
+          <th class="select-col" eagle-eye="select_col">
+            <input type="checkbox"
+              ng-init="tables.unmanagedNodes = $table"
+              hz-select-page="unmanagedNodes"/>
+          </th>
+          <th st-sort="hostname" st-sort-default="name" eagle-eye="data_col">
+            {$ ::context.header.hostname $}
+          </th>
+          <th st-sort="ip" eagle-eye="data_col">
+            {$ ::context.header.ip $}
+          </th>
+          <th class="txt-c" eagle-eye="data_col" >{$ ::context.header.action $}</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+
+        <tr ng-if="!unmanagedNodes.length ">
+          <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+        </tr>
+
+        <tr ng-repeat="node in iunmanagedNodes"
+          ng-class="{'st-selected': checked[node.id]}">
+          <!--
+            Table-row-checkbox:
+            Project can select and unselect this row by clicking on this checkbox.
+            Batch actions can then be perform on selected rows.
+          -->
+          <td class="select-col" eagle-eye="select_col">
+            <input type="checkbox"
+              hz-select="node"
+              ng-model="selected[node.id].checked"
+              hz-checkbox-group="unmanagedNodes"/>
+          </td>
+          <td eagle-eye="data_col"><span class="user-name cut" title="{$ node.hostname $}">{$ node.hostname $}</span></td>
+          <td eagle-eye="data_col"><span class="user-name cut" title="{$ node.ip $}">{$ node.ip $}</span></td>
+          <td class="text-center" eagle-eye="data_col">
+              <div
+                ng-click="action.addNode(node)">
+                <span class="icon add_to"></span>
+              </div>
+          </td>
+        </tr>
+      </tbody>
+
+      <!--
+        Table-footer:
+        This is where we display number of items and pagination controls.
+        Ensure colspan is greater or equal to number of column-headers.
+      -->
+      <tfoot ng-if="unmanagedNodes.length>5">
+        <tr>
+          <td colspan="100" eagle-eye="data_page">
+            <div st-pagination="" st-items-by-page="5" st-displayed-pages="8"></div>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+    </hz-magic-search-context>
+    </div>
+  </div>
+
+  <!-- Modal-form-right: The selectedUsers. -->
+  <div class="nodes-right">
+    <div class="modal-header node-modal-header" >
+        <h4 class="modal-title node-modal-title">{$ ::context.header.managedHosts $}</h4>
+    </div>
+    <!-- Project form users fieldset -->
+    <div class="clearfix required">
+    <hz-magic-search-context filter-facets="filterFacets">
+      <table id="selected-nodes"
+        hz-table
+        ng-cloak
+        hopes-table-drag
+        st-table="imanagedNodes"
+        st-safe-src="managedNodes"
+        default-sort="hostname"
+        default-sort-reverse="false"
+        disabled="disabled"
+        st-magic-search
+        class="table table-bordered table-hover">
+
+        <thead>
+          <!--
+            Table-batch-actions:
+            This is where batch actions like searching, creating, and deleting.
+          -->
+          <tr>
+            <th colspan="100">
+              <div class="table_actions clearfix">
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-primary'"
+                    disabled="numSelected === 0"
+                    callback="action.removeNodes"
+                    item="selectedData.aData">
+                    <span id="remove-nodes">{$ ::context.header.remove $}</span>
+                  </action>
+                </action-list>
+                <div class="fr search-bar">
+                    <hz-magic-search-bar id="search"></hz-magic-search-bar>
+                </div>
+              </div>
+            </th>
+          </tr>
+
+          <!--
+            Table-column-headers:
+            This is where we declaratively define the table column headers.
+            Include the select all checkbox if you want to enable select all
+            for performing batch actions.
+          -->
+          <tr eagle-eye="table_heads">
+            <th class="select-col" eagle-eye="select_col">
+              <input type="checkbox"
+                ng-init="tables.managedNodes = $table"
+                hz-select-page="managedNodes"/>
+              <!--{$ numSelected $}-->
+            </th>
+            <th width="140" st-sort="hostname" st-sort-default="hostname" eagle-eye="data_col">
+              {$ ::context.header.hostname $}
+            </th>
+            <th eagle-eye="data_col"  st-sort="ip" >
+              {$ ::context.header.ip $}
+            </th>
+            <th class="txt-c" eagle-eye="data_col">{$ ::context.header.action $}</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr ng-if="!managedNodes.length">
+            <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+          </tr>
+
+          <tr ng-repeat="node in imanagedNodes"
+            ng-class="{'st-selected': checked[node.id]}">
+            <!--
+              Table-row-checkbox:
+              Project can select and unselect this row by clicking on this checkbox.
+              Batch actions can then be perform on selected rows.
+            -->
+            <td class="select-col" eagle-eye="select_col">
+              <input type="checkbox"
+                hz-select="node"
+                ng-model="selected[node.id].checked"
+                hz-checkbox-group="managedNodes"/>
+            </td>
+            <td eagle-eye="data_col"><span class="user-name cut" title="{$ node.hostname $}">{$ node.hostname $}</span></td>
+            <td eagle-eye="data_col"><span class="user-name cut" title="{$ node.ip $}">{$ node.ip $}</span></td>
+            <td class="text-center" eagle-eye="data_col">
+              <div
+                ng-click="action.removeNode(node)">
+                <span class="icon remove_to"></span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+
+        <!--
+          Table-footer:
+          This is where we display number of items and pagination controls.
+          Ensure colspan is greater or equal to number of column-headers.
+        -->
+        <tfoot ng-if="managedNodes.length>5">
+          <tr>
+            <td colspan="100">
+              <div st-pagination="" st-items-by-page="5" st-displayed-pages="8"></div>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </hz-magic-search-context>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal-footer: Project can submit or cancel form here. -->
+<div class="modal-footer">
+  <div class="computeha-input form-group clearfix">
+           <label class="computeha-input-label" for="haservice">
+            {$ ::context.header.haservice $}
+          </label>
+          <div class="computeha-input-radio form-group-right" >
+            <input type="radio"
+              id="haservice1"
+              name="haservice"
+              value="1"
+              ng-model="hastatus.userSelectHAService"
+              >
+              <img class="image-icon" style="margin-left:10px" ng-src="{{ STATIC_URL }}{$ haServiceStatusImgMapping[1] $}" width="16" height="16">
+              {$ ::context.hastatus.enable $}
+            <input type="radio"
+              id="haservice2"
+              name="haservice"
+              value="0"
+              ng-model="hastatus.userSelectHAService"
+              >
+              <img class="image-icon" style="margin-left:10px" ng-src="{{ STATIC_URL }}{$ haServiceStatusImgMapping[0] $}" width="16" height="16">
+              {$ ::context.hastatus.disable $}
+          </div>
+ </div>
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-click="action.revert()">
+    {$ ::context.revert $}
+  </button>
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

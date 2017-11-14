@@ -1,0 +1,110 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Instance_firewalls" %}{% endblock %}
+
+{% block page_header %}
+{% include "easystack_dashboard/common/_es_page_header.html" with title=_("Instance_firewalls") %}
+{% endblock page_header %}
+
+{% block main %}
+<hz-magic-search-context filter-facets="filterFacets">
+  <table id="security-groups-list" hz-table ng-cloak hopes-table-drag
+    st-table="iinstance_firewalls"
+    st-safe-src="instance_firewalls"
+    default-sort="name"
+    default-sort-reverse="false"
+    ng-controller="projectInstance_firewallsController"
+    ng-init="userID = '{{ request.user.id }}'"
+    st-magic-search
+    class="table table-bordered table-hover">
+
+  <thead>
+    <tr>
+      <th colspan="100" class="bare">
+        <div class="table_actions clearfix">
+          <action-list>
+              <action
+                action-classes="'btn btn-primary btn-action'"
+                callback="actions.refresh">
+                <i class="icon icon-refresh"></i>
+                <span id="refresh"></span>
+              </action>
+            </action-list>
+          <action-list>
+            <action action-classes="'btn btn-primary btn-action'"
+              callback="actions.create.open" disabled= "instance_firewalls.length >= quota">
+              <i class="icon icon-add"></i>
+              <span id="create-security-group">{% trans 'Create Security Group' %}
+                <i ng-show= "instance_firewalls.length >= quota">{% trans '(quota exceeded)' %}</i>
+              </span>
+            </action>
+          </action-list>
+          <action-list>
+            <action action-classes="'btn btn-action btn-danger'"
+              disabled="numSelected === 0"
+              callback="actions.deleted.batchDelete"
+              item="selectedData.aData">
+              <i class="icon icon-delete"></i>
+              <span id="delete-security-group">{% trans 'Delete Security Group' %}</span>
+            </action>
+          </action-list>
+
+          <div class="fr search-bar">
+            <hz-magic-search-bar id="search"></hz-magic-search-bar>
+          </div>
+        </div>
+      </th>
+    </tr>
+
+    <tr eagle-eye="table_heads">
+      <th class="select-col" eagle-eye="select_col">
+        <input type="checkbox" hz-select-page="instance_firewalls"/>
+      </th>
+      <th width="30%">
+          <span st-sort="name" st-sort-default="name" eagle-eye="data_col">{$ ::context.header.name $}</span>
+      </th>
+      <th>
+          <span st-sort="description" eagle-eye="data_col">{$ ::context.header.description $}</span>
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr ng-if="!instance_firewallState">
+        <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+    </tr>
+    <tr ng-if="!iinstance_firewalls.length && instance_firewallState">
+        <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+    </tr>
+    <tr eagle-eye= "data_row" ng-repeat-start="instance_firewall in iinstance_firewalls" ng-init="iinstanceIndex = $index" ng-class="{'st-selected': checked[instance_firewall.id]}">
+      <td class="select-col" eagle-eye="select_col">
+        <input type="checkbox"
+          hz-select="instance_firewall"
+          ng-model="selected[instance_firewall.id].checked"
+          hz-checkbox-group="instance_firewalls"/>
+      </td>
+      <td eagle-eye="data_col">
+        <span class="row-name">{$ instance_firewall.name $}</span>
+        <i class="chevron-right chevron-fixed fr" edit-rules-row="{$instance_firewall.id$}"  duration="200" eagle-eye="expand"></i>
+      </td>
+      <td eagle-eye="data_col">{$ instance_firewall.description $}</td>
+    </tr>
+    <tr eagle-eye= "detail_row" ng-repeat-end class="detail-row js-detail-box" data-instanceId="{$instance_firewall.id$}" data-index="{$ iinstanceIndex $}">
+      <td class="detail" colspan="100" eagle-eye="data_col">
+        <p class="detail-row-name fl">{% trans "Security Group Rules" %}</p>
+        <div class="detail-expanded fl"></div>
+      </td>
+    </tr>
+  </tbody>
+
+  <tfoot ng-if="instance_firewalls.length > 10">
+    <tr>
+      <td colspan="100" eagle-eye="data_page">
+          <table-footer></table-footer>
+      </td>
+    </tr>
+  </tfoot>
+
+  </table>
+</hz-magic-search-context>
+{% endblock %}

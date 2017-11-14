@@ -1,0 +1,19 @@
+{
+  "return_data": [
+    {
+      "status": "success",
+      "msg": "add success",
+      "hostname": "hostname2"
+    },
+    {
+      "status": "success",
+      "msg": "add success",
+      "hostname": "host4"
+    },
+    {
+      "status": "success",
+      "msg": "add success",
+      "hostname": "host3"
+    }],
+  "return_code": 0
+}

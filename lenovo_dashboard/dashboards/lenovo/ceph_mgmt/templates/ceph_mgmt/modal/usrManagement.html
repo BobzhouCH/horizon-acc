@@ -1,0 +1,40 @@
+{%load i18n%}
+<script type="text/ng-template" id="usrManagement.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="close()">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">{% trans "Close" %}</span>
+        </button>
+        <h4 class="modal-title">{% trans "Usr Management" %}</h4>
+    </div>
+    <div class="modal-body managementPublicBody usrManageBody">
+            <div class="list-group">
+                <form role="form" name="myForm" class="form-horizontal" novalidate="">
+                    <div class="list-group form-group has-feedback">
+                        <label for="usrName">{% trans "userName" %}</label>
+                        <input type="text" class="form-control" id="usrName" name="usrName" ng-model='addUsr.name' placeholder="Please enter a name"  required="" />
+                        <span class="glyphicon glyphicon-ok form-control-feedback" ng-show="myForm.usrName.$dirty && myForm.usrName.$valid"></span>
+                    </div>
+                    <div class="list-group form-group has-feedback">
+                        <label for="usrPassword">{% trans "Password" %}</label>
+                        <input type="password" class="form-control" id="usrPassword" name="usrPassword" ng-model='addUsr.password' placeholder="Please input a password"  required="" />
+                        <span class="glyphicon glyphicon-ok form-control-feedback" ng-show="myForm.usrPassword.$dirty && myForm.usrPassword.$valid"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="list-group">
+                <div class="pull-left">
+                    <span class="usrListName">{% trans "Default Permissions" %}</span>
+                </div>
+                <div class="pull-right">
+                    <span class="usrList-status">W</span>
+                    <span class="usrList-status">R</span>
+                </div>
+            </div>
+
+    </div>
+    <div class="modal-footer userMangeFooter">
+        <button type="button" class="btn-ok"  ng-click="usrManagementOk()">{% trans "OK" %}</button>
+        <button type="button" class="cancel"  ng-click="cancel()">{% trans "Cancel" %}</button>
+    </div>
+</script>

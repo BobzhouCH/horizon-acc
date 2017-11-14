@@ -1,0 +1,174 @@
+{% load branding i18n %}
+{% load url from future %}
+{% load context_selection %}
+
+<div class="tab-views">
+    <div class="host-contain col-xs-4 col-lg-4 col-md-4 clearfix" ng-repeat="server in servers">
+        <div class="server-outer-border" ng-if="server.status == 1">
+            <div class="server-inner-border server-batch" name="{$ server.servername $}" id="{$ server.id $}" ng-if="server.state == 1 || server.state == 3">
+                <div class="host-head">
+                   <div class="dropdown host-block" tabindex='1'>
+{#                        <div class="dropdown-toggle host-select">#}
+{#                            <div class="host-name-wrap">#}
+{#                                <p title="{$ server.servername $}">#}
+{#                                    {$ server.servername $}#}
+{#                                </p>#}
+{#                            </div>#}
+{#                            <button class="btn btn-default dropdown-toggle host-select" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">#}
+                       <div class="btn btn-default dropdown-toggle host-select"  id="dropdownMenu1">
+
+                                {$ server.servername $}
+{#                                <span class="caret"></span>#}
+                            </div>
+{#                            <span class="caret"></span>#}
+{#                        </div>#}
+{#                        <ul class="dropdown-menu">#}
+{#                            <li ng-click="osdAction.add(server)">#}
+{#                                <p>#}
+{#                                    {% trans "Add a OSD"  %}#}
+{#                                </p>#}
+{#                            </li>#}
+{#                            <li class="server-batch-btn" >#}
+{#                                <p>#}
+{#                                    {% trans "Remove OSDs"  %}#}
+{#                                </p>#}
+{#                            </li>#}
+{#                            <li class="divider"></li>#}
+{#                            <li ng-click="hostSettings.management(server)">#}
+{#                                <p>#}
+{#                                    MON / MDS </br>#}
+{#                                    Management#}
+{#                                </p>#}
+{#                            </li>#}
+{#                            <li class="divider"></li>#}
+{#                            <li ng-click="serverAction.restart(server.id, server.servername)">#}
+{#                                <p>#}
+{#                                  {% trans "Restart"  %}#}
+{#                                </p>#}
+{#                            </li>#}
+{#                            <li ng-click="serverAction.remove(server.id, server.servername)">#}
+{#                                <p>#}
+{#                                  {% trans "Remove Host" %}#}
+{#                                </p>#}
+{#                            </li>#}
+{#                        </ul>#}
+                   </div>
+                   <div class="cpu-ram">
+                        <div class="cpu-block"  hover-cpu="{server:{$ server.id $}, type:'cpu'}">
+                            <div style="width: 30px;">CPU</div>
+                            <div class="progress">
+                              <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {$ server.cpuUsage $}%;">
+                              </div>
+                            </div>
+                            <div>{$ server.cpuUsage $}%</div>
+                            <div ng-if="zabbixState.zabbixEnable" class="cpu-ram-pop hide">
+                                <div id="cpu-chart-{$ server.id $}" style="width: 380px;height: 180px"></div>
+                            </div>
+                        </div>
+                        <div class="ram-block"  hover-cpu="{server:{$ server.id $}, type:'mem'}">
+                            <div style="width: 30px;">{% trans 'RAM' %}</div>
+                            <div class="progress">
+                              <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {$ server.ramUsage $}%;">
+                              </div>
+                            </div>
+                            <div>{$ server.ramUsage $}%</div>
+                            <div ng-if="zabbixState.zabbixEnable" class="cpu-ram-pop hide">
+                                <div id="ram-chart-{$ server.id $}" style="width: 380px;height: 180px"></div>
+                            </div>
+                        </div>
+                   </div>
+            </div>
+                <div class="host-body">
+               <ul class="nav nav-tabs myTab col-xs-12" ng-click="hostBodyTab($event)">
+                  <li class="col-xs-4" ng-click="serverTab.networkList(server)"><a href="#tab_network_{$ server.id $}">{% trans 'Network' %}</a></li>
+                  <li class="active col-xs-4" ng-click="serverTab.serviceList(server)"><a href="#tab_service_{$ server.id $}">{% trans 'Service' %}</a></li>
+                  <li class="col-xs-4" ng-click="serverTab.IOList(server)"><a href="#tab_io_{$ server.id $}">{% trans 'I/O' %}</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane" id="tab_network_{$ server.id $}">
+                    {% include "lenovo/ceph_mgmt/tab_host_network.html" %}
+                  </div>
+                  <div class="tab-pane active" id="tab_service_{$ server.id $}">
+                    {% include "lenovo/ceph_mgmt/tab_host_service.html" %}
+                  </div>
+                  <div class="tab-pane" id="tab_io_{$ server.id $}">
+                    {% include "lenovo/ceph_mgmt/tab_host_io.html" %}
+                  </div>
+                </div>
+            </div>
+            </div>
+
+            <div class="server-inner-border" ng-if="server.state == 0 || server.state == 2">
+                <div class="host-head">
+                   <div class="dropdown host-block" tabindex='1'>
+{#                        <div class="dropdown-toggle host-select">#}
+{#                            <div class="host-name-wrap">#}
+{#                                <p title="{$ server.servername $}">#}
+{#                                    {$ server.servername $}#}
+{#                                </p>#}
+{#                            </div>#}
+{#                        </div>#}
+                       <div class="btn btn-default dropdown-toggle host-select"  id="dropdownMenu1">
+
+                                {$ server.servername $}
+{#                                <span class="caret"></span>#}
+                            </div>
+                   </div>
+                </div>
+                <div class="host-body">
+
+                    <div class="deploy-circle-box" server="{$server.id$}">
+                        <div ng-if="server.state == 0">
+                            <canvas id="deploy-circle-{$server.id$}" class="deploy-circle"  width="300" height="200"></canvas>
+                        </div>
+                        <div ng-if="server.state == 2">
+                            <canvas id="deploy-circle-{$server.id$}" class="deploy-circle"  width="300" height="200"></canvas>
+                        </div>
+
+                        <div class="pie_progress__label" ng-if="server.state == 0">{% trans "Adding" %}</div>
+                        <div class="pie_progress__label" ng-if="server.state == 2">{% trans "Deploying" %}</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="server-outer-border" ng-if="server.status == 0">
+            <div class="server-inner-border offline">
+                <div class="host-head">
+                   <div class="dropdown host-block" tabindex='1'>
+                       <div class="btn btn-default dropdown-toggle host-select"  id="dropdownMenu1">
+
+                                {$ server.servername $}
+{#                                <span class="caret"></span>#}
+                            </div>
+{#                        <div class="dropdown-toggle host-select">#}
+{#                            <div class="host-name-wrap">#}
+{#                                <p title="{$ server.servername $}">#}
+{#                                    {$ server.servername $}#}
+{#                                </p>#}
+{#                            </div>#}
+{#                            <span class="caret"></span>#}
+{#                        </div>#}
+{#                        <ul class="dropdown-menu">#}
+{#                            <li ng-click="serverAction.remove(server.id, server.servername)">#}
+{#                                <p>#}
+{#                                  <span class="fa fa-cog"></span>#}
+{#                                  {% trans "Remove Host" %}#}
+{#                                </p>#}
+{#                            </li>#}
+{#                        </ul>#}
+                   </div>
+                   <div class="host-down-state">
+                        {% trans "Shut Down"  %}
+                   </div>
+                </div>
+                <div class="host-body">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% include "lenovo/ceph_mgmt/modal/historyChart.html"  %}
+{% include "lenovo/ceph_mgmt/modal/hostSettings.html"  %}

@@ -1,0 +1,255 @@
+{% load i18n %}
+<div class="modal-header clearfix">
+<h3 class="modal-title">{$ ::context.title $}</h3>
+<p class="modal-colsed" ng-click="disable || action.cancel()">
+<i class="modal-colsed-icon"></i>
+</p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit()">
+<div class="modal-body clearfix">
+
+<!-- Modal-form-left: Contains the form controls -->
+<div>
+<fieldset>
+
+<div ng-controller="editAlarmCtroller" monitor-wrap>
+
+    <div class="alarm-step clearfix js-tab">
+        <ul>
+            <li class="fl mr10 step-active"><span class="step-circle"><span>1</span><i></i></span><div class="step-title">{%trans "Set Alarm Metric"%}</div><div class="step-line"></div> </li>
+            <li class="fl mr10"><span class="step-circle"><span>2</span><i></i></span><div class="step-title">{%trans "Set Notification"%}</div></li>
+        </ul>
+    </div>
+
+    <div class="alarm-content">
+        <div class="alarm-list clearfix js-wrap">
+
+            <div class="alarm-list-main pt30 js-module">
+                <div class="title-wrap ml20">
+                    <i></i>
+                    <span>{%trans "Choosen Resource"%}</span>
+                </div>
+
+                <p class="ml20" ng-show="!state">{%trans "Please wait..."%}</p>
+
+                <div class="alarm-select-content" ng-show="state">
+                    <table id="selected-alarm" class="table table-bordered table-hover selected-data-table">
+                        <thead>
+                            <tr eagle-eye="table_heads">
+                                <th width="320" eagle-eye="data_col">{%trans "Name"%}</th>
+                                <th width="178" eagle-eye="data_col">{%trans "Description"%}</th>
+                                <th width="190" eagle-eye="data_col">{%trans "Alarm Metric"%}</th>
+                            </tr>
+                        </thead>
+                        <tbody
+                            remove-resources  add-data="addmonitors" s-name="attrname"
+                            monitor-data="monitors" imonitor-data="imonitors">
+                            <tr>
+                                <td height="45" eagle-eye="data_col"><span class="cut edit-monitor-name">{$ editData.resource_name $}</span></td>
+                                <td eagle-eye="data_col"><span class="cut monitor-desc">{$ addmonitor.description $}</span></td>
+                                <td eagle-eye="data_col">{$ editData.sMonitor_name | util $}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="clearfix alarm-select-wrap" ng-show="state">
+                    <div class="clearfix alarm-select-list">
+                        <div class="fl resource-left">
+                            <div class="title-wrap">
+                                <i></i>
+                                <span>{%trans "Set Resources"%}</span>
+                            </div>
+                            <table class="mt20" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>*{%trans "Name"%}</td>
+                                        <td ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+                                            <input id="alarm-name" class="form-control ml10" name="name" ng-model="editData.name" type="text" ng-maxlength="255" required placeholder="{%  trans "Please input a name" %}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td>
+                                            <div class="ml10 red" ng-show="form.name.$dirty">
+                                                <p ng-show="form.name.$error.required">{%trans "Name can not be empty."%}</p>
+                                                <p ng-show="form.name.$error.maxlength">{%trans "Name length should be less than 255 chars."%}</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{%trans "Description"%}</td>
+                                        <td><textarea id="alarm-description" class="form-control ml10" name="description" ng-model="editData.description" rows="4"></textarea></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="fr resource-right">
+                            <div class="title-wrap">
+                                <i></i>
+                                <span>{%trans "Set Alarm Metric"%}</span>
+                            </div>
+                            <table class="mt20" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>{%trans "Alarm Periodic"%}</td>
+                                        <td>
+                                            <select id="select-periodic" class="form-control ml10" name="period" ng-model="editData.threshold_rule.period">
+                                                <option value="" disabled>
+                                                  {% trans 'Select a periodic' %}
+                                                </option>
+                                                <option value="300" ng-selected="editData.threshold_rule.period == 300">5{%trans "Minutes"%}</option>
+                                                <option value="900" ng-selected="editData.threshold_rule.period == 900">15{%trans "Minutes"%}</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{%trans "Continue"%}</td>
+                                        <td>
+                                            <input id="periodics" class="ml10 verify-input" type="number" min="1" name="evaluation_periods" required ng-model="editData.threshold_rule.evaluation_periods" />
+                                            <span>{%trans "periodics"%}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td>
+                                            <!--<div class="ml10 red" ng-show="form.evaluation_periods.$dirty">
+                                                <p ng-show="form.evaluation_periods.$error.required">不能为空</p>
+                                            </div>-->
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{$ editData.editMonitor_name | util $}</td>
+                                        <td>
+                                            <select id="statistic" class="form-control ml10 fl" name="statistic" ng-model="editData.threshold_rule.statistic">
+                                                <option value="" disabled>
+                                                  {% trans 'Select a value' %}
+                                                </option>
+                                                <option value="avg" ng-selected="editData.threshold_rule.period == 'avg'">{% trans 'Avg' %}</option>
+                                                <option value="max" ng-selected="editData.threshold_rule.period == 'max'">{% trans 'Max' %}</option>
+                                                <option value="min" ng-selected="editData.threshold_rule.period == 'min'">{% trans 'Min' %}</option>
+                                                <option value="sum" ng-selected="editData.threshold_rule.period == 'sum'">{% trans 'Sum' %}</option>
+                                            </select>
+                                            <select id="comparison-operator" class="form-control ml5 fl" name="comparison_operator" style="width:70px;" ng-model="editData.threshold_rule.comparison_operator">
+                                                <option value="" disabled>
+                                                  {% trans 'Select a value' %}
+                                                </option>
+                                                <option value="gt" ng-selected="editData.threshold_rule.comparison_operator == 'gt'">{% trans 'gt' %}</option>
+                                                <option value="lt" ng-selected="editData.threshold_rule.comparison_operator == 'lt'">{% trans 'lt' %}</option>
+                                            </select>
+                                            <input id="threshold" class="fl ml5 verify-input" type="number" min="1" max="10240" required name="threshold" ng-model="editData.threshold_rule.threshold" style="width: 50px;"/>
+                                            <span class="unit-s">
+                                                {$ editData.unit $}
+                                                <!--<span class="red unit-s-tips" ng-show="form.threshold.$dirty">
+                                                    <span ng-show="form.threshold.$error.required">不能为空</span>
+                                                </span>-->
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td>
+                                            <p><span class="ml10">{% trans 'will triger alarm' %}</span></p>
+                                            <p id="automatically-fill" class="ml10" ng-click="addDescription()"><a href="javascript:;">{% trans "Automatically fill in the description" %}</a></p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="clearfix mt10">
+                        <span class="btn btn-primary disabled fr mr20" ng-show="form.$invalid">{% trans 'Next' %}</span>
+                        <span id="metric-next" class="btn btn-primary fr mr20 js-next" ng-show="!form.$invalid" type="button">{% trans 'Next' %}</span>
+                    </div>
+                </div>
+         </div>
+
+         <div class="alarm-list-main pt30"
+            notice-resource
+            notice-alarm-states	="editAlarmStates"
+            notice-contacts		="contacts"
+            notice-add			="editAddNotices">
+                <div class="alarm-contacts">
+                    <div class="ml20">
+                        <span>{% trans 'If Notify User' %}</span>
+                        <span>
+                            <input id="selected-yes" type="radio" id="radio-1-1" name="radio-1-set" class="regular-radio"
+                                ng-checked = "notice_checked.sw"
+                                ng-init = "notice_checked.sw" ng-click="noticeChecked(1)"/>
+                            <label for="radio-1-1">{% trans 'Yes' %}</label>
+                        </span>
+                        <span>
+                            <input id="selected-no" type="radio" id="radio-1-1" name="radio-1-set" class="regular-radio" ng-checked = "!notice_checked.sw" ng-click="noticeChecked(0)"/>
+                            <label for="radio-1-1">{% trans 'No' %}</label>
+                        </span>
+                    </div>
+                    <div class="alarm-contacts-table" ng-show="notice_checked.sw">
+                        <table id="selected-notify" class="table-rsp">
+                            <tbody>
+                                <tr ng-repeat="editAddNotice in editAddNotices">
+                                    <td>{% trans 'When resource state is' %}</td>
+                                    <td>
+                                        <p class="alarm-contacts-s1 cut">{$ editAddNotice.state | decode:alarmstatei18n $}</p>
+                                    </td>
+                                    <td>{% trans 'notify' %}</td>
+                                    <td>
+                                        <p class="alarm-contacts-s2 cut" ng-click="actions.createNoticeList.open(editAddNotice,'edit')"><a class="a_link">{$ editAddNotice.data.name $}</a></p>
+                                    </td>
+                                    <td>
+                                        <span class="js-noticeMove" data-states="{$ editAddNotice.state $}"><i class="icon remove_to"></i></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table id="notify-list" class="table-rsp">
+                            <tbody>
+                                <tr>
+                                    <td>{% trans 'When resource state is' %}</td>
+                                    <td>
+                                        <select id="alarm-state" name="" class="form-control alarm-resources-state js-alarmState" ng-class="{strikeLoading: !editAlarmStates}">
+                                            <option value="" disabled>
+                                              {% trans 'Select a state' %}
+                                            </option>
+                                            <option ng-selected="$first" value="{$ editAlarmState $}" ng-repeat="editAlarmState in editAlarmStates track by $index">{$ editAlarmState | decode:alarmstatei18n $}</option>
+                                        </select>
+                                    </td>
+                                    <td>{% trans 'notify' %}</td>
+                                    <td>
+                                        <select id="select-contact-name" name="" class="form-control alarm-resources-state js-contact" ng-class="{strikeLoading: !contacts}">
+                                            <option value="" disabled>
+                                              {% trans 'Select a contact' %}
+                                            </option>
+                                            <option ng-selected="$first" value="{$ contact.name $}" ng-repeat="contact in contacts track by $index">{$ contact.name $}</option>
+                                        </select>
+                                    </td>
+                                    <td ng-show="ldap_editable"><a id="create-contact-info" class="a_link" ng-click="actions.createNoticeList.open()">{% trans 'Create contact info' %}</a></td>
+                                    <td><span id="add-contact-info-btn" class="js-noticeAdd" ng-hide="!editAlarmStates.length"><i class="icon add_to"></i></span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="clearfix mt10">
+                    <button id="submit-button" class="btn btn-primary fr mr20" type="button"
+                    ng-disabled="!editAddNotices.length && notice_checked.sw"
+                    ng-click="disable || action.submit()">{% trans 'Save' %}</button>
+                    <span id="notification-back" class="btn btn-primary mr20 fr js-up">{% trans 'Prev' %}</span>
+                </div>
+         </div>
+
+    </div>
+</div>
+
+</div>
+</fieldset>
+</div>
+
+</div>
+</form>

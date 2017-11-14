@@ -1,0 +1,35 @@
+{%load i18n%}
+<script type="text/ng-template" id="clusterManage.html">
+    <div class="modal-header">
+        <button type="button" class="close cluster-close" ng-click="close()">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">{% trans "Close" %}</span>
+        </button>
+        <h4 class="clusterManage-title">
+            {% trans "CLUSTER MANAGEMENT" %}
+            <button class="addCluster"  ng-click="add_new_cluster()">
+                <span class="glyphicon glyphicon-plus"></span> {% trans "Add New" %}
+            </button>
+        </h4>
+    </div>
+    <div class="modal-body">
+        <div class="list-group clusterList">
+            <div class="list-group-item" ng-repeat="cluster in clusterList">
+                <div class="pull-left">
+                    <span>{$ cluster.name $}</span>
+                    <span><b class="glyphicon glyphicon-map-marker"></b> {$ cluster.addr $}</span>
+                </div>
+                <div class="pull-right">
+                    <button class="glyphicon glyphicon-edit" ng-click='putedit(cluster.id, cluster.name,cluster.addr)'></button>
+                    <button class="glyphicon glyphicon-trash" ng-click='remove(cluster.id,cluster.name)'></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="cancel manageFooterCancel"  ng-click="close()">{% trans "Cancel" %}</button>
+    </div>
+{#    {% include "lenovo/ceph_mgmt/modal/clusterPutVal.html" %}#}
+{#{% include "lenovo/ceph_mgmt/modal/clusterRemove.html" %}#}
+{#{% include "lenovo/ceph_mgmt/modal/add_host_cluster.html" %}#}
+</script>

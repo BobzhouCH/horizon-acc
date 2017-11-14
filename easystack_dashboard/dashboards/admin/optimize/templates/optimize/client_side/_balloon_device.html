@@ -1,0 +1,31 @@
+{% extends "easystack_dashboard/client_side/es_template.html" %}
+{% load horizon %}
+
+{% block id %}balloon_device{% endblock %}
+
+{% block template %}
+{% jstemplate %}
+<table class="detailInfoTable">
+  <caption>[[name]]</caption>
+  <tbody>
+    <tr>
+      <th>[[id_label]]</th>
+      <td>[[id]]</td>
+    </tr>
+    <tr>
+      <th>[[cpuusage_label]]</th>
+      <td>
+        <span class="[[cpuusage]]">[[cpuusage]]</span>
+      </td>
+    </tr>
+
+    <!--<tr>
+      <th>[[memory_label]]</th>
+      <td>
+        <span class="[[memory_label]]">[[memoryusage]]</span>
+      </td>
+    </tr>-->
+  </tbody>
+</table>
+{% endjstemplate %}
+{% endblock %}

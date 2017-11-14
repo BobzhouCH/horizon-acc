@@ -1,0 +1,160 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Instance Snapshot" %}{% endblock %}
+
+{% block page_header %}
+{% include "easystack_dashboard/common/_es_page_header.html" with title=_("Volume Backup") %}
+{% endblock page_header %}
+
+{% block main %}
+
+<hz-magic-search-context filter-facets="filterFacets">
+    <table id="volume-backup" hz-table ng-cloak hopes-table-drag
+           st-table="ivolumebackups"
+           st-safe-src="volumebackups"
+           default-sort="created"
+           default-sort-reverse="true"
+           st-magic-search
+           ng-controller="VolumeBackupCtrl"
+           disabled="disabled"
+           class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th colspan="100" class="bare">
+                <div class="table_actions clearfix">
+                    <action-list>
+                        <action
+                                action-classes="'btn btn-primary btn-action'"
+                                callback="actions.refresh">
+                            <i class="icon icon-refresh"></i>
+                            <span id="refresh-volume"></span>
+                        </action>
+                    </action-list>
+
+                    <action-list>
+                        <action
+                                action-classes="'btn btn-primary btn-action'"
+                                disabled="(!rootblock.active_fixing && rootblock.billing_need) || backupsAvailable === 0 || backupGigabytesAvailable ===0 "
+                                callback="actions.create.open"
+                                item="selectedData.aData">
+                            <i class="icon icon-add"></i>
+                            <span id="create-volume-backup">{% trans 'Create Volume Backup' %}
+                              <i ng-show="backupsAvailable === 0 || backupGigabytesAvailable ===0 ">{% trans '(quota exceeded)' %}</i>
+                              <i ng-show= "(!rootblock.active_fixing && rootblock.billing_need)">{% trans '(no effective price)' %}</i>
+                            </span>
+                        </action>
+                    </action-list>
+                    <action-list>
+                        <action
+                                action-classes="'btn btn-primary btn-action'"
+                                disabled="numSelected !== 1"
+                                callback="actions.edit.open"
+                                item="selectedData.aData">
+                            <i class="icon icon-resume"></i>
+                            <span id="restore-volume-backup">{% trans 'Restore Volume Backup' %}</span>
+                        </action>
+                    </action-list>
+                    <action-list>
+                        <action
+                                action-classes="'btn btn-default btn-sm btn-danger'"
+                                disabled="numSelected === 0 || disableDelete"
+                                callback="actions.deleted.batchDelete">
+                            <i class="icon icon-delete"></i>
+                            <span id="delete-volume-backup">{% trans 'Delete Volume Backup' %}</span>
+                            <!--<pre>{$ deleteHint|json $}</pre>-->
+                            <span ng-show="deleteHint != ''">{$ deleteHint $}</span>
+                        </action>
+                    </action-list>
+                    <div class="fr search-bar">
+                        <hz-magic-search-bar id="search"></hz-magic-search-bar>
+                    </div>
+                </div>
+            </th>
+        </tr>
+        <tr eagle-eye="table_heads">
+            <th class="select-col" eagle-eye="select_col">
+                <input type="checkbox" hz-select-page="volumebackups"/>
+            </th>
+            <th class="rsp-p1" st-sort-default="name" eagle-eye="data_col">
+                <span st-sort="name">{$ ::context.header.name $}</span>
+            </th>
+            <th eagle-eye="data_col"><span st-sort="description">{$ ::context.header.describes $}</span></th>
+            <th eagle-eye="data_col"><span st-sort="status">{$ ::context.header.state $}</span></th>
+            <th eagle-eye="data_col"><span st-sort="size">{$ ::context.header.size $}</span></th>
+            <th eagle-eye="data_col"><span st-sort="volume_name">{$ ::context.header.volume_name $}</span></th>
+            <th eagle-eye="data_col"><span st-sort="is_incremental">{$ ::context.header.backup_type $}</span></th>
+            <th eagle-eye="data_col"><span st-sort="created_at">{$ ::context.header.created $}</span></th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr ng-if="!volumebackupState">
+            <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"
+                                                       alt=""/></td>
+        </tr>
+
+        <tr ng-if="!ivolumebackups.length && volumebackupState">
+            <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+        </tr>
+        <tr ng-repeat-start="volume in ivolumebackups" ng-class="{'st-selected': checked[volume.id]}"
+            ng-init="ibackupIndex = $index">
+            <td class="select-col" eagle-eye="select_col">
+                <input type="checkbox"
+                       hz-select="volume"
+                       ng-model="selected[volume.id].checked"
+                       hz-checkbox-group="volumebackups"/>
+            </td>
+            <!-- Table-row-info-column -->
+            <td eagle-eye="data_col">
+                <span class="row-name">{$ volume.name $}</span>
+                <i class="chevron-right chevron-fixed fr" hz-expand-detail="chevron-right chevron-down" duration="200"></i>
+            </td>
+            <td eagle-eye="data_col">{$ volume.description $}</td>
+            <td eagle-eye="data_col">{$ volume.status | decode:volumesnapshotStatus $}</td>
+            <td eagle-eye="data_col">{$ volume.size| gb$}</td>
+            <td eagle-eye="data_col">{$ volume.volume_name $}</td>
+            <td eagle-eye="data_col">
+                {$ volume.is_incremental | decode:backup_type_map $}
+                <!--<span ng-show="volume.has_dependent_backups">{% trans "(Has Dependent)" %}</span>-->
+            </td>
+            <td eagle-eye="data_col">{$ volume.created_at $}</td>
+        </tr>
+        <tr eagle-eye="detail_row" ng-repeat-end class="detail-row js-detail-box" data-instanceId="{$ volume.id $}"
+            data-index="{$ ibackupIndex $}">
+            <td class="detail" colspan="100">
+                <p class="detail-row-name fl">{% trans "Details" %}</p>
+                <div class="detail-expanded fl">
+                    <table id="backup-list" class="table table-bordered table-hover">
+                        <thead>
+                        <tr></tr>
+                        <tr>
+                            <th>{$ ::context.header.has_dependent_backups $}</th>
+                            <th>{$ ::context.header.fail_reason $}</th>
+                            <th>{$ ::context.header.availability_zone $}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td title="{$ volume.has_dependent_backups| yesno $}">{$ volume.has_dependent_backups | yesno $}</td>
+                            <td title="{$ volume.fail_reason $}">{$ volume.fail_reason $}</td>
+                            <td title="{$ volume.availability_zone $}">{$ volume.availability_zone $}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+
+        <tfoot ng-if="volumebackups.length > 10">
+        <tr>
+            <td colspan="100" eagle-eye="data_page">
+                <div st-pagination="" st-items-by-page="10" st-displayed-pages="10"></div>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</hz-magic-search-context>
+
+{% endblock %}

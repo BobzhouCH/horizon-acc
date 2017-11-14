@@ -1,0 +1,207 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <div class="modal-description mt10">
+      <p>
+        {% trans "Instance resource and resource pool must belong to the same network or subnet." %}
+      </p>
+    </div>
+    <!-- Modal-form-left: Contains the form controls -->
+    <fieldset ng-if="context.mode === 'add' || context.mode === 'modifyWeight'">
+      <!--
+        Resource pool name:
+          Add-mode: show
+          Modify-mode: show
+      -->
+      <div class="form-group clearfix"
+        ng-class="{'has-error':form.resource-pool.$invalid && form.resource-pool.$dirty}">
+        <label for="resource-pool">
+          *{% trans "Resouce Pool" %}
+        </label>
+        <div class="form-group-right">
+          <input
+            id="resource-pool"
+            name="resource-pool"
+            class="form-control verify-input"
+            type="text"
+            ng-model="pool.name"
+            ng-disabled="context.mode === 'add' || context.mode === 'modifyWeight'"/>
+        </div>
+      </div>
+
+      <!--
+        Subnet name:
+      -->
+
+      <div class="form-group clearfix"
+        ng-class="{'has-error':form.subnet.$invalid && form.subnet.$dirty}">
+        <label for="subnet">
+          *{% trans "Subnet" %}
+        </label>
+        <div class="form-group-right">
+          <select
+            id="subnet"
+            name="subnet"
+            class="form-control"
+            ng-class="{strikeLoading: !vip_subnets}"
+            ng-model="member.subnet"
+            ng-change="changeSubnetToSelect(member.subnet)"
+            ng-required="context.mode === 'add'"
+            ng-disabled="context.mode === 'modifyWeight'">
+            <option value="" disabled>
+              {$ (vip_subnets && vip_subnets.length)? "{% trans 'select a subnet' %}": "{% trans 'No Subnet Available' %}" $}
+            </option>
+            <option
+              ng-repeat="subnet in vip_subnets"
+              value="{$ subnet.id $}"
+              ng-selected ="member.subnet_id === subnet.id">
+              {$ subnet.name $}:{$ subnet.cidr $}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!--
+        Instance(instance selection:
+          Add-mode: enable
+          Modify-mode: disable
+      -->
+
+      <div class="form-group clearfix" ng-if="context.mode === 'add'"
+        ng-class="{'has-error':form.subnet.$invalid && form.subnet.$dirty}">
+        <label for="instance">
+           *{% trans "Instance" %}
+        </label>
+        <div class="form-group-right">
+          <select
+            id="instance2"
+            name="instance2"
+            class="form-control"
+            ng-model="member.address"
+            ng-required="context.mode === 'add'">
+            <option value="" disabled>
+              {$ (instancesNetIncluded && instancesNetIncluded.length)? "{% trans 'select a instance' %}": "{% trans 'No Instance Available' %}" $}
+            </option>
+            <option
+             ng-repeat="instance in instancesNetIncluded"
+             ng-selected="member.address === instance.address"
+              value="{$ instance.address $}">
+              {$ instance.name $}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group clearfix" ng-if="context.mode === 'modifyWeight'"
+        ng-class="{'has-error':form.instance.$invalid && form.instance.$dirty}">
+        <label for="instance">
+          *{% trans "Instance" %}
+        </label>
+        <div class="form-group-right">
+          <input
+            id="instance"
+            name="instance"
+            class="form-control verify-input"
+            type="text"
+            ng-model="member.instance_name"
+            ng-disabled="context.mode === 'modifyWeight'"/>
+        </div>
+      </div>
+
+      <!--
+        Port Number:
+          Add-mode: enable
+          Modify-mode: disable
+      -->
+      <div class="form-group clearfix"
+        ng-class="{'has-error':form.port.$invalid && form.port.$dirty}">
+        <label for="port">
+          *{% trans "Port Number" %}
+        </label>
+        <div class="form-group-right">
+          <input
+            id="port"
+            name="port"
+            class="form-control verify-input"
+            style="width: 40%"
+            type="number"
+            min="1"
+            max="65535"
+            ng-model="member.protocol_port"
+            ng-required="context.mode === 'add'"
+            ng-disabled="context.mode === 'modifyWeight'"
+            placeholder="{% trans 'enter a port' %}"/>
+          <span class="ml5">{% trans "Port number range: 1~65535" %}</span>
+          <p class="help-block alert-fixed alert-danger"
+            ng-show="form.port.$error.required && form.port.$dirty">
+            {% trans "A port number is required." %}
+          </p>
+          <p class="help-block alert-fixed alert-danger"
+            ng-show="form.port.$error.min && form.port.$error.max && form.port.$dirty">
+            {% trans "Port number range: 1~65535" %}
+          </p>
+        </div>
+      </div>
+
+      <!--
+        Weight:
+          Add-mode: enable
+          Modify-mode: enable
+      -->
+      <div class="form-group clearfix"
+        ng-class="{'has-error':form.weight.$invalid && form.weight.$dirty}">
+        <label for="weight">
+          *{% trans "Weight" %}
+        </label>
+        <div class="form-group-right">
+          <input required
+            id="weight"
+            name="weight"
+            class="form-control verify-input"
+            style="width: 40%"
+            type="number"
+            min="1"
+            max="100"
+            ng-model="member.weight"
+            placeholder="{% trans 'enter a weight' %}"/>
+          <span class="ml5">{% trans "Weight range: 1~100" %}</span>
+          <p class="help-block alert-fixed alert-danger"
+            ng-show="form.weight.$error.required && form.weight.$dirty">
+            {% trans "A weight is required." %}
+          </p>
+          <p class="help-block alert-fixed alert-danger"
+            ng-show="form.weight.$error.min && form.weight.$error.max && form.weight.$dirty">
+            {% trans "Weight range: 1~100" %}
+          </p>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button-add" class="btn btn-primary" type="button"
+    ng-if="context.mode === 'add'"
+    ng-disabled="form.$invalid || memberWeightChange || volume.size < volumeDef.defVal || showBalance || quota_exceeded"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+
+  <button id="submit-button-modify" class="btn btn-primary" type="button"
+    ng-if="context.mode === 'modifyWeight'"
+    ng-disabled="form.$invalid ||!subnetDataReady || memberWeightChange || volume.size < volume.oldSize || showBalance || quota_exceeded"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

@@ -1,0 +1,57 @@
+{% load horizon i18n %}
+{% load url from future %}
+{% load context_selection %}
+{% load compress %}
+{% load navigation %}
+
+{% is_nav_collapsed as nav_collapsed %}
+{% user_home_url as HOME_URL %}
+
+<div class="sidebar-wrapper">
+    <ul class="collapse-nav">
+        <li id="more_wizard">
+            <a href="javascript:void(0)">
+                <i title="{% trans 'Quick start' %}"></i>
+            </a>
+        </li>
+        <li id="colla_button">
+            <a class="toggle-nav-collapse" href="javascript:void(0)" title="Open/Close">
+                <span class="fa {% if nav_collapsed %}fa-angle-right{% else %}fa-angle-left{% endif %}"></span>
+            </a>
+        </li>
+        <li class="clear_both"></li>
+    </ul>
+
+    <div class="collapse navbar-collapse">
+        {% inRegionShowNode 'top-project-menu-aws' %}
+            {% show_project_list %}
+        {% endinRegionShowNode %}
+
+        {% show_region_list %}
+    </div>
+
+    <ul id="sidebar-drawer" class="nav nav-pills nav-stacked">
+
+        <li class="openstack-dashboard{% if request.path == HOME_URL %} active{% endif %}">
+            <a class="openstack-spin" href="{{ HOME_URL }}"
+               tabindex="1">
+                        <span class="nav-icon mdi mdi-home" aria-hidden="true"
+                              title="{% trans "Home" %}"></span>
+                <span>{% trans "Home" %}</span>
+            </a>
+        </li>
+        {% for dashboard, panel in components %}
+            {% if user|has_permissions:panel %}
+                <li class="openstack-dashboard{% if current.slug == dashboard.slug and current_panel == panel.slug %} active{% endif %}">
+                    <a class="openstack-spin" href="{{ panel.get_absolute_url }}"
+                       tabindex="{{ forloop.counter|add:1 }}">
+                        <span class="nav-icon {% panel_icon_class dashboard panel %}" aria-hidden="true"
+                              title="{{ panel.name }}"></span>
+                        <span>{{ panel.name }}</span>
+                    </a>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>
+

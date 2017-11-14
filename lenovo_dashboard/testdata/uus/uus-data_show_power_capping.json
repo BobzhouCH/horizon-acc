@@ -1,0 +1,10 @@
+{
+  "return_data": {
+    "IsCapable": true,
+    "Cap": 337,
+    "Min": 301,
+    "IsEnable": true,
+    "Max": 337
+  },
+  "return_code": 0
+}

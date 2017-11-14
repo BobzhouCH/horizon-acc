@@ -1,0 +1,463 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<form class="ml10 mr10" novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body resize-wrap clearfix">
+    <!-- TODO: Please wait for XinWei -->
+    <!-- Modal-form-left: Contains the form controls -->
+      <fieldset>
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'resize'"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="name">
+            CPU
+          </label>
+          <div class="form-group-right">
+            <ul id="cpuList" class="resize-list js-cpu">
+              <li data-f="1">
+                <span>1CPU</span>
+                <i></i>
+              </li>
+              <li data-f="2">
+                <span>2CPU</span>
+                <i></i>
+              </li>
+              <li data-f="4">
+                <span>4CPU</span>
+                <i></i>
+              </li>
+              <li data-f="8">
+                <span>8CPU</span>
+                <i></i>
+              </li>
+              <li data-f="16">
+                <span>16CPU</span>
+                <i></i>
+              </li>
+              <li data-f="32">
+                <span>32CPU</span>
+                <i></i>
+              </li>
+              <li data-f="64">
+                <span>64CPU</span>
+                <i></i>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'resize'"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="name">
+            RAM
+          </label>
+          <div class="form-group-right">
+            <ul id="ramList" class="resize-list js-ram">
+              <li data-f="512">
+                <span>512M</span>
+                <i></i>
+              </li>
+              <li data-f="1024">
+                <span>1G</span>
+                <i></i>
+              </li>
+              <li data-f="2048">
+                <span>2G</span>
+                <i></i>
+              </li>
+              <li data-f="4096">
+                <span>4G</span>
+                <i></i>
+              </li>
+              <li data-f="8192">
+                <span>8G</span>
+                <i></i>
+              </li>
+              <li data-f="16384">
+                <span>16G</span>
+                <i></i>
+              </li>
+              <li data-f="32768">
+                <span>32G</span>
+                <i></i>
+              </li>
+              <li data-f="65536">
+                <span>64G</span>
+                <i></i>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'resize'"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="name">
+            {$ "Disk"|trans $}
+          </label>
+          <div class="form-group-right">
+            <ul id="diskList" class="resize-list js-disk">
+              <li data-f="20">
+                <span>20G</span>
+                <i></i>
+              </li>
+              <li data-f="40">
+                <span>40G</span>
+                <i></i>
+              </li>
+              <li data-f="60">
+                <span>60G</span>
+                <i></i>
+              </li>
+              <li data-f="80">
+                <span>80G</span>
+                <i></i>
+              </li>
+              <li data-f="100">
+                <span>100G</span>
+                <i></i>
+              </li>
+              <li data-f="200">
+                <span>200G</span>
+                <i></i>
+              </li>
+              <li data-f="500">
+                <span>500G</span>
+                <i></i>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </fieldset>
+  </div>
+</form>
+
+<tabset id="instance-resize" justified="true" class="def-tabs" ng-if="todo">
+  <tab id="instance-resize-quick" heading="{$ ::context.quickOption $}">
+    <div class="tab-pane-content">
+      <!-- Modal-form: The body of this pane. -->
+      <form class="ml10 mr10" novalidate name="form" ng-submit="submit(form.$valid)">
+        <div class="modal-body resize-wrap clearfix">
+          <!-- TODO: Please wait for XinWei -->
+          <!-- Modal-form-left: Contains the form controls -->
+            <fieldset>
+              <div class="form-group clearfix"
+                ng-if="context.mode === 'resize'"
+                ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+                <label for="name">
+                  CPU
+                </label>
+                <div class="form-group-right">
+                  <ul id="cpuList" class="resize-list js-cpu">
+                    <li data-f="1">
+                      <span>1CPU</span>
+                      <i></i>
+                    </li>
+                    <li data-f="2">
+                      <span>2CPU</span>
+                      <i></i>
+                    </li>
+                    <li data-f="4">
+                      <span>4CPU</span>
+                      <i></i>
+                    </li>
+                    <li data-f="8">
+                      <span>8CPU</span>
+                      <i></i>
+                    </li>
+                    <li data-f="16">
+                      <span>16CPU</span>
+                      <i></i>
+                    </li>
+                    <li data-f="32">
+                      <span>32CPU</span>
+                      <i></i>
+                    </li>
+                    <li data-f="64">
+                      <span>64CPU</span>
+                      <i></i>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="form-group clearfix"
+                ng-if="context.mode === 'resize'"
+                ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+                <label for="name">
+                  RAM
+                </label>
+                <div class="form-group-right">
+                  <ul id="ramList" class="resize-list js-ram">
+                    <li data-f="512">
+                      <span>512M</span>
+                      <i></i>
+                    </li>
+                    <li data-f="1024">
+                      <span>1G</span>
+                      <i></i>
+                    </li>
+                    <li data-f="2048">
+                      <span>2G</span>
+                      <i></i>
+                    </li>
+                    <li data-f="4096">
+                      <span>4G</span>
+                      <i></i>
+                    </li>
+                    <li data-f="8192">
+                      <span>8G</span>
+                      <i></i>
+                    </li>
+                    <li data-f="16384">
+                      <span>16G</span>
+                      <i></i>
+                    </li>
+                    <li data-f="32768">
+                      <span>32G</span>
+                      <i></i>
+                    </li>
+                    <li data-f="65536">
+                      <span>64G</span>
+                      <i></i>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="form-group clearfix"
+                ng-if="context.mode === 'resize'"
+                ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+                <label for="name">
+                  {$ "Disk"|trans $}
+                </label>
+                <div class="form-group-right">
+                  <ul id="diskList" class="resize-list js-disk">
+                    <li data-f="20">
+                      <span>20G</span>
+                      <i></i>
+                    </li>
+                    <li data-f="40">
+                      <span>40G</span>
+                      <i></i>
+                    </li>
+                    <li data-f="60">
+                      <span>60G</span>
+                      <i></i>
+                    </li>
+                    <li data-f="80">
+                      <span>80G</span>
+                      <i></i>
+                    </li>
+                    <li data-f="100">
+                      <span>100G</span>
+                      <i></i>
+                    </li>
+                    <li data-f="200">
+                      <span>200G</span>
+                      <i></i>
+                    </li>
+                    <li data-f="500">
+                      <span>500G</span>
+                      <i></i>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </fieldset>
+        </div>
+      </form>
+    </div>
+  </tab>
+
+  <tab ng-if="isShow" id="instance-resize-advanced" heading="{$ ::context.advancedOption $}">
+    <form novalidate name="form" ng-submit="submit(form.$valid)">
+      <div class="modal-body clearfix">
+        <table id="select-flavors-list" hz-table ng-cloak
+          st-table="iselectedFlavors"
+          st-safe-src="selectedFlavors"
+          default-sort="name"
+          default-sort-reverse="false"
+          disabled="disabled"
+          class="table-striped table-rsp modern mt10">
+
+          <thead>
+            <tr>
+              <th class="rsp-p1" eagle-eye="data_col" st-sort="name" st-sort-default="name">
+                {$ ::context.header.name $}
+              </th>
+              <th class="rsp-p2" eagle-eye="data_col" st-sort="vcpus">
+                {$ ::context.header.vcpus $}
+              </th>
+              <th class="rsp-p2" eagle-eye="data_col" st-sort="ram">
+                {$ ::context.header.ram $}
+              </th>
+              <th class="rsp-p2" eagle-eye="data_col" st-sort="disk">
+                {$ ::context.header.disk $}
+              </th>
+              <th class="txt-c" eagle-eye="data_col">{$ ::context.header.action $}</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr ng-if="!selectedFlavors.length">
+              <td colspan="100">{% trans "No Data" %}</td>
+            </tr>
+
+            <tr ng-repeat="flavor in iselectedFlavors"
+              ng-class="{'st-selected': checked[flavor.id]}">
+              <td class="rsp-p1" eagle-eye="data_col"><span title="{$ flavor.name $}">{$ flavor.name $}</span></td>
+              <td class="rsp-p2" eagle-eye="data_col">{$ flavor.vcpus $} {% trans "C" %}</td>
+              <td class="rsp-p2" eagle-eye="data_col">{$ flavor.ram $} {% trans "MB" %}</td>
+              <td class="rsp-p2" eagle-eye="data_col">{$ flavor.disk $} {% trans "GB" %}</td>
+              <td class="rsp-p1 text-center" eagle-eye="button_action">
+                <button class="btn text-center"
+                  style="width: 30px;"
+                  type="button"
+                  ng-click="action.removeFlavor(flavor)">
+                  <i class="fa fa-minus"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+
+          <tfoot>
+            <tr>
+              <td colspan="100">
+                <div st-pagination="" st-items-by-page="1" st-displayed-pages="10"></div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <table id="select-flavors-list" hz-table ng-cloak
+          st-table="icanSelectFlavors"
+          st-safe-src="canSelectFlavors"
+          default-sort="name"
+          default-sort-reverse="false"
+          disabled="disabled"
+          class="table-striped table-rsp modern">
+
+          <thead>
+            <tr>
+              <th colspan="100" class="bare">
+                <div class="table_actions clearfix">
+                  <div class="fr has-feedback">
+                    <search-bar id="search-flavors-add" style="width: 80px;" icon-classes="fa-search" placeholder="{% trans "Filter" %}"></search-bar>
+                  </div>
+                </div>
+              </th>
+            </tr>
+
+            <tr>
+              <th class="rsp-p1" st-sort="name" st-sort-default="name" eagle-eye="data_col">
+                {$ ::context.header.name $}
+              </th>
+              <th class="rsp-p2" st-sort="vcpus" eagle-eye="data_col">
+                {$ ::context.header.vcpus $}
+              </th>
+              <th class="rsp-p2" st-sort="ram" eagle-eye="data_col">
+                {$ ::context.header.ram $}
+              </th>
+              <th class="rsp-p2" st-sort="disk" eagle-eye="data_col">
+                {$ ::context.header.disk $}
+              </th>
+              <th class="txt-c" eagle-eye="data_col">{$ ::context.header.action $}</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr ng-if="loadingCanSelectFlavors">
+              <td colspan="100" class="Loading-bar" id="loading"><img class="load-detail" src="/static/bootstrap/img/loading.gif" alt="" /></td>
+            </tr>
+
+            <tr ng-if="!canSelectFlavors.length && !loadingCanSelectFlavors">
+              <td colspan="100" id="nodata">{% trans "No Data" %}</td>
+            </tr>
+
+            <tr ng-repeat="flavor in icanSelectFlavors"
+              ng-class="{'st-selected': checked[flavor.id]}">
+              <td class="rsp-p1" eagle-eye="data_col"><span title="{$ flavor.name $}">{$ flavor.name $}</span></td>
+              <td class="rsp-p2" eagle-eye="data_col">{$ flavor.vcpus $} {% trans "C" %}</td>
+              <td class="rsp-p2" eagle-eye="data_col">{$ flavor.ram $} {% trans "MB" %}</td>
+              <td class="rsp-p2" eagle-eye="data_col">{$ flavor.disk $} {% trans "GB" %}</td>
+              <td class="rsp-p1 text-center" eagle-eye="button_action">
+                <button class="btn text-center"
+                  style="width: 30px;"
+                  type="button"
+                  ng-click="action.addFlavor(flavor)"
+                  ng-disabled="flavor.disable">
+                  <i class="fa fa-plus"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+
+          <tfoot>
+            <tr>
+              <td colspan="100">
+                <div st-pagination="" st-items-by-page="4" st-displayed-pages="10"></div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </form>
+  </tab>
+</tabset>
+
+<!-- Modal-footer: Flavor can submit or cancel form here. -->
+<div class="modal-footer">
+
+  <div ng-show="showBilling && !noFixing" ng-if="preBilling" class="form-group clearfix">
+    <label for="btype">
+      {% trans "Billing Type" %}
+    </label>
+    <div class="form-group-right" style="width: 40%;">
+      <select required
+        id="unit"
+        name="unit"
+        class="form-control"
+        disabled="context.mode === 'resize'"
+        style="width: 80%;"
+        ng-change="changePayment(unitSelect)"
+        ng-model="unitSelect"
+        ng-options="payment as payment.unitLabel for payment in payment_type">
+      </select>
+    </div>
+    <div ng-if="unitSelect.unit=='H'" style="padding-top:10px;">
+      <span class="orange">{$ price | price $}{% trans 'Yuan' %}</span>/{% trans 'Hour' %}
+    </div>
+    <div ng-if="unitSelect.unit=='M'" style="padding-top:10px;">
+      <span class="orange">{$ price | price $}{% trans 'Yuan' %}</span>/{% trans 'Month' %}
+    </div>
+    <div ng-if="unitSelect.unit=='Y'" style="padding-top:10px;">
+      <span class="orange">{$ price | price $}{% trans 'Yuan' %}</span>/{% trans 'Year' %}
+    </div>
+  </div>
+  <div class="resize-price" ng-if="showBilling && !noFixing && !preBilling">
+    <div>{% trans "Price" %}</div>
+    <div>
+      <span class="orange">{$ instancePrice $}</span> {% trans "Yuan" %}/{% trans "Hour" %}
+      <span class="orange">{$ monthInstancePrice $}</span> {% trans "Yuan" %}/{% trans "Month" %}
+    </div>
+  </div>
+  <p class="billing-info-tips text-right" ng-show="noFixing"><span class="gray_3">{% trans 'No Active Fixing' %}</span></p>
+  <p class="billing-info-tips text-right" ng-show="showBalance"><span class="red">{% trans 'No Enough Balance' %}</span></p>
+
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid || instance.flavor==null || instance.flavor==oldFlavor.id || showBalance"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

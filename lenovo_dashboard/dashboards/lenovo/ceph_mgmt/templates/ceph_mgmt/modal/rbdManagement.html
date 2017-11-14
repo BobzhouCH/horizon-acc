@@ -1,0 +1,60 @@
+{%load i18n%}
+<script type="text/ng-template" id="rbdManagement.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="close()">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">{% trans "CLOSE" %}</span>
+        </button>
+        <h4 class="modal-title">
+            {% trans "RBD MANAGEMENT" %}
+        </h4>
+    </div>
+    <div class="modal-body pool-list">
+        <table class="table table-striped table-responsive text-center">
+            <tr>
+                <!--<th><input type="checkbox" id="ck_all" ng-model="selectAll" /></th>-->
+                <th ng-click="col='name';desc=!desc">{% trans "Name" %}</th>
+                <th ng-click="col='capacity';desc=!desc">{% trans "Capacity" %}</th>
+                <th ng-click="col='usedsize';desc=!desc">{% trans "Duplicate" %}</th>
+                <th ng-click="col='Bandwidth';desc=!desc">{% trans "Bandwidth" %}</th>
+                <th ng-click="col='Read';desc=!desc">{% trans "Read Qos Limitation" %}</th>
+                <th ng-click="col='Write';desc=!desc">{% trans "Write Qos Limitation" %}</th>
+                <th>{% trans "Delete" %}</th>
+            </tr>
+            <tr ng-repeat="rbd in rbdList | filter: id | orderBy:col:desc">
+                <!--<td>-->
+                    <!--<input type="checkbox" name="cbx" value="{$ rbd.id $}" ng-click="isSelected(rbd)" ng-checked="selectAll" />-->
+                <!--</td>-->
+                <td>{$ rbd.name $}</td>
+                <td>
+                    <span class="item-info">
+                        {$ rbd.usedsize | formatUnit $} /
+                        <span class="unit">{$ rbd.capacity | formatUnit$}</span>
+                    </span>
+                </td>
+                <td>
+                    <!--{$ rbd.usedsize $}-->
+                    <!--{$ rbd.capacity $}-->
+                    <span class="unit">{$ selectedSite.value $}</span>
+                </td>
+                <td>
+                    <span >{$clusterInfo.bandwidth$}</span>
+                    <span class="unit">{$clusterInfo.bandwunit$}</span>
+                </td>
+                <td>{$ rbd.RedQos $}</td>
+                <td>{$ rbd.WriteQos $}</td>
+                <td>
+                    <button ng-click="rbdDelete(rbd.id,rbd.name)">
+                        <b class="glyphicon glyphicon-trash"></b>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <div class="pull-right">
+            <button class="cancel" ng-click="cancel()">{% trans "Cancel" %}</button>
+            <button class="btn-ok" ng-click="Ok()">{% trans "OK" %}</button>
+        </div>
+    </div>
+</script>

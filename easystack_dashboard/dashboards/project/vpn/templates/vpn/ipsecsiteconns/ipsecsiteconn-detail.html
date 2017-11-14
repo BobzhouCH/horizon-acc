@@ -1,0 +1,98 @@
+{% load context_selection %}
+
+<div class="detail-page">
+<div class="fl detail-left-icon" ng-click="action.cancel()"></div>
+<div class="detail-page-con">
+
+  <tabset id="ipsecpolicies-tab" justified="true" class="def-tabs">
+    <tab id="tab-images-detail" heading="{$ ::label.detail_overview $}">
+      <div class="tab-pane-content">
+
+      <table id="ipsecsiteconns-list" class="table table-bordered table-hover table-unique">
+        <thead>
+          <tr>
+            <th colspan="100"><span class="detail-title">{$ ::label.properties $}</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.id $}</td>
+            <td id="ipsecsiteconn-id" class="color449ed2" eagle-eye="data_col">{$ ipsecsiteconn.id $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.vpnsname_or_id $}</td>
+            <td id="ipsecsiteconn-vpnsname_or_id" class="color3399cc" eagle-eye="data_col">{$ ipsecsiteconn.vpnservice.name || ipsecsiteconn.vpnservice_id $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.ikep_name_or_id $}</td>
+            <td id="ipsecsiteconn-ikep_name_or_id" class="color66cc66" eagle-eye="data_col">{$ ipsecsiteconn.ikepolicy.name || ipsecsiteconn.ikepolicy_id  $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.ipsecp_name_or_id $}</td>
+            <td id="ipsecsiteconn-ipsecp_name_or_id" eagle-eye="data_col">{$ ipsecsiteconn.ipsecpolicy.name || ipsecsiteconn.ipsecpolicy_id $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.peer_address $}</td>
+            <td id="ipsecsiteconn-peer_address" eagle-eye="data_col">{$ ipsecsiteconn.peer_address $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.peer_id $}</td>
+            <td id="ipsecsiteconn-peer_id" eagle-eye="data_col">{$ ipsecsiteconn.peer_id $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.peer_cidrs $}</td>
+            <td id="ipsecpolicy-lifetime_value" eagle-eye="data_col">
+              <ul ng-if="ipsecsiteconn.peer_cidrs"  ng-repeat="peer_cidr in ipsecsiteconn.peer_cidrs">
+                <li>
+                  <span>{$ peer_cidr $}</span>
+                </li>
+              </ul>
+             </td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.psk $}</td>
+            <td id="ipsecsiteconn-psk" eagle-eye="data_col">{$ ipsecsiteconn.psk $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.mtu $}</td>
+            <td id="ipsecsiteconn-mtu" eagle-eye="data_col">{$ ipsecsiteconn.mtu $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.initiator $}</td>
+            <td id="ipsecsiteconn-initiator" eagle-eye="data_col">{$ ipsecsiteconn.initiator $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.dpd_action $}</td>
+            <td id="ipsecsiteconn-dpd_action" eagle-eye="data_col">{$ ipsecsiteconn.dpd.action $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.dpd_interval $}</td>
+            <td id="ipsecsiteconn-dpd_interval" eagle-eye="data_col">{$ ipsecsiteconn.dpd.interval $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.dpd_timeout $}</td>
+            <td id="ipsecsiteconn-dpd_timeout" eagle-eye="data_col">{$ ipsecsiteconn.dpd.timeout $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.auth_mode $}</td>
+            <td id="ipsecsiteconn-auth_mode" eagle-eye="data_col">{$ ipsecsiteconn.auth_mode $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.route_mode $}</td>
+            <td id="ipsecsiteconn-route_mode" eagle-eye="data_col">{$ ipsecsiteconn.route_mode $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.status $}</td>
+            <td id="ipsecsiteconn-status" eagle-eye="data_col">{$ ipsecsiteconn.status | decode:ipsecsiteconnStatus $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.admin_state_up $}</td>
+            <td id="ipsecsiteconn-admin_state_up" eagle-eye="data_col">{$ ipsecsiteconn.admin_state_up | decode:admin_states $}</td>
+          </tr>
+        </tbody>
+      </table>
+     </div>
+    </tab>
+  </tabset>
+</div>
+</div>

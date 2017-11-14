@@ -1,0 +1,107 @@
+{% load branding i18n %}
+{% load url from future %}
+{% load context_selection %}
+
+<div class="tab-views">
+    <div role="tabpanel" class="tab-pane" id="tab_iSCSI">
+        <!--iSCSI-top start-->
+        <div class="iSCSI-top">
+            <div class="iSCSI-top-bar">
+                <!--iSCSI-select start-->
+                <div class="dropdown iSCSI-select" tabindex="1">
+                    <button class="btn dropdown-toggle">
+                        <span>{$ iSCSINames || iSCSIList[0].name $}</span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu iSCSIList">
+                        <li role="presentation" ng-bind="iSCSI.name" ng-repeat="iSCSI in iSCSIList" ng-click="changeISCSIs(iSCSI.name,iSCSI.id)">
+                        </li>
+                        <li ng-click="iSCSIManagement()" style="background:#60c0af;">{% trans "iSCSI Management" %}</li>
+                    </ul>
+                </div>
+                <!--iSCSI-select end-->
+                <!--iSCSI_top_config_add start-->
+                <div class="iSCSI_top_target_add">
+                    <button type="button" class="target" ng-click="targetSettings(iSCSIId, iSCSINames)">
+                        <b class="glyphicon glyphicon-cog"></b> {% trans "Target Settings" %}
+                    </button>
+                    <button class="addTarget" ng-click="addTarget()">
+                        <b class="glyphicon glyphicon-plus"></b> {% trans "Add Target" %}
+                    </button>
+                </div>
+                <!--iSCSI_top_config_add end-->
+            </div>
+        </div>
+        <!--iSCSI-top end-->
+        <!--iSCSI-body -->
+        <div class="iSCSI-body">
+            <!--iSCSI_volumeHead start-->
+            <div class="iSCSI_volumeHead">
+                <div class="col-xs-10 iSCSI_volume">
+                    {% trans "volume" %}
+                </div>
+                <div class="col-xs-2 iSCSI_add_volume">
+                    <button class="add_volume" ng-click="addVolume(iSCSINames)">
+                        <b class="glyphicon glyphicon-plus"></b>
+                        {% trans "Add volume" %}
+                    </button>
+                </div>
+            </div>
+            <!--iSCSI_volumeHead end-->
+            <!--iSCSI_volume_list start-->
+            <div class="iSCSI_volume_list">
+                <table class="table" border="1" style="margin-bottom: 0">
+                    <thead>
+                    <tr>
+                        <td>{% trans "Status" %}</td>
+                        <td ng-click="col='name';desc=!desc">{% trans "Volume Name" %}</td>
+                        <td ng-click="col='lunId';desc=!desc">{% trans "LUN ID" %}</td>
+                        <td ng-click="col='capacity';desc=!desc">{% trans "Capacity" %}</td>
+                        <td ng-click="col='source';desc=!desc">{% trans "Source" %}</td>
+                        <td>{% trans "Snapshot" %}</td>
+                        <td colspan="2">{% trans "Action" %}</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="volume in volumeList | filter: id | orderBy:col:desc">
+                        <td><span class="volume-status"></span></td>
+                        <td>{$ volume.name $}</td>
+                        <td>{$ volume.lunId $}</td>
+                        <td>{$ volume.capacity $}</td>
+                        <td>{$ volume.source $}</td>
+                        <td>
+                            <button class="shot" ng-click="arrowShot()">
+                                <em class="glyphicon glyphicon-arrow-right"></em>
+                            </button>
+                        </td>
+                        <td>
+                            <button class="play-circle" ng-click="playVolume()">
+                                <em class="glyphicon glyphicon-play-circle"></em>
+                            </button>
+                        </td>
+                        <td>
+                            <button class="trash" ng-click="volumeDelete(volume.id,volume.name)">
+                                <em class="glyphicon glyphicon-trash"></em>
+                            </button>
+                        </td>
+
+                    </tr>
+                    <!--<tr>-->
+                        <!--<td colspan="8"><button class="btn btn-primary btn-lg btn-block" ng-click="volumeManagement('lg')">volume MANAGEMENT</button>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    </tbody>
+                </table>
+            </div>
+            <!--iSCSI_volume_list end-->
+        </div>
+        <!--iSCSI-body end-->
+    </div>
+</div>
+
+{% include "lenovo/ceph_mgmt/modal/iSCSIManagement.html" %}
+{% include "lenovo/ceph_mgmt/modal/targetSettings.html" %}
+{% include "lenovo/ceph_mgmt/modal/addTarget.html" %}
+{% include "lenovo/ceph_mgmt/modal/iSCSIDelete.html" %}
+{% include "lenovo/ceph_mgmt/modal/volumeDelete.html" %}
+{% include "lenovo/ceph_mgmt/modal/addVolume.html" %}

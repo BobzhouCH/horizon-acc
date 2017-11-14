@@ -1,0 +1,54 @@
+{% load i18n %}
+
+<div class="modal-header clearfix">
+    <h3 class="modal-title">{% trans "Billing Detail of the selected Product" %}</h3>
+    <p class="modal-colsed" ng-click="action.cancel()">
+        <i class="modal-colsed-icon"></i>
+    </p>
+</div>
+
+<div class="modal-body clearfix">
+    <div ng-if="items.length > 0">
+    <table class="table table-bordered table-hover"
+       hz-table
+       st-table="iitems"
+       default-sort="charge_from"
+       default-sort-reverse="true"
+       st-safe-src="items">
+    <thead>
+       <tr>
+          <th colspan="100">
+            <div class="fr mt10 mb10 search-bar">
+               <search-bar placeholder="{% trans "Filter" %}"> </search-bar>
+            </div>
+          </th>
+       </tr>
+
+       <tr>
+          <th st-sort="charge_fee">{% trans "Detail Amount" %} ({% trans 'Yuan' %})</th>
+          <th st-sort="charge_from">{% trans "Charge From" %}</th>
+          <th st-sort="charge_to">{% trans "Charge To" %}</th>
+          <th st-sort="type">{% trans "Type" %}</th>
+          <th st-sort="description">{% trans "Description" %}</th>
+       </tr>
+    </thead>
+    <tbody>
+       <tr ng-repeat="item in iitems">
+             <td>{$ item.charge_fee $}</td>
+             <td>{$ item.charge_from $}</td>
+             <td>{$ item.charge_to $}</td>
+             <td>{$ item.type | decode:consumeType $}</td>
+             <td><span title="{$ item.description | decode:billingDescription $}">{$ item.description | decode:billingDescription $}</span></td>
+        </tr>
+     </tbody>
+     <tfoot>
+        <tr>
+           <td colspan="100">
+              <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
+           </td>
+        </tr>
+     </tfoot>
+     </table>
+     </div>
+     <div class="mt20 mb30 txt-c" ng-if="items.length == 0">{% trans "No Data" %}</div>
+ </div>

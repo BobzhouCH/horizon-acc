@@ -1,0 +1,1432 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Horizon\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-12-16 05:15+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Alice Liu <liull31@lenovo.com>\n"
+"Language-Team: Lenovo ThinkCloud Team\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: api/lenovo_uus.py:424 api/lenovo_uus.py:440
+msgid "Authentication"
+msgstr "认证"
+
+#: api/lenovo_uus.py:604
+#, python-format
+msgid "switch %s is not a CNOS switch or does not enabled rest supported"
+msgstr "添加IP为 %s 的交换机失败，请确保交换机为CNOS交换机并已打开REST服务 "
+
+#: api/lenovo_uus.py:606
+#, python-format
+msgid "can not connect to the switch %s"
+msgstr "无法连接到交换机 %s"
+
+#: api/lenovo_uus.py:712
+#, python-format
+msgid "switch %s can not create portmapping"
+msgstr "交换机 %s 不能创建端口映射"
+
+#: api/lenovo_uus.py:894
+#, python-format
+msgid "%s failed with return code '%d'"
+msgstr "%s 失败，返回代码 %d"
+
+#: dashboards/lenovo/dashboard.py:6
+#: dashboards/lenovo/ceph_hosts/templates/ceph_hosts/index.html:3
+#: dashboards/lenovo/ceph_hosts/templates/ceph_hosts/index.html:6
+msgid "Ceph Management"
+msgstr "Ceph管理"
+
+#: dashboards/lenovo/dashboard.py:8
+msgid "Infrastructure"
+msgstr "基础设施"
+
+#: dashboards/lenovo/dashboard.py:26
+msgid "vmware datacenter"
+msgstr "vmware数据中心"
+
+#: dashboards/lenovo/dashboard.py:34
+msgid "Policy Management"
+msgstr "策略管理"
+
+
+#: dashboards/lenovo/dashboard.py:17
+msgid "Miscellaneous"
+msgstr ""
+
+#: dashboards/lenovo/dashboard.py:26
+msgid "Lenovo Manager"
+msgstr "Lenovo 管理器"
+
+#: dashboards/lenovo/ceph_hosts/panel.py:9
+msgid "Ceph Hosts"
+msgstr "Ceph主机"
+
+#: dashboards/lenovo/ceph_mgmt/panel.py:9
+msgid "Ceph Overview"
+msgstr "Ceph概况"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/_top_bar.html:28
+msgid "Version"
+msgstr "版本："
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/cluster_info.html:9
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_group.html:18
+msgid "Hosts"
+msgstr "主机"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/cluster_info.html:18
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_iSCSI.html:56
+#: dashboards/lenovo/upgrade/templates/upgrade/index.html:56
+msgid "Status"
+msgstr "状态"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/cluster_info.html:23
+msgid "OSD"
+msgstr "OSD"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/cluster_info.html:27
+msgid "Mon"
+msgstr "监控结点"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/cluster_info.html:33
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_ceph.html:121
+msgid "Pool"
+msgstr "存储池"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/cluster_info.html:37
+msgid "RBD"
+msgstr "RBD"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/cluster_info.html:49
+msgid "IOPS"
+msgstr ""
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/cluster_info.html:59
+msgid "Replication Factor"
+msgstr "重复因子"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/cluster_info.html:65
+msgid "Journal"
+msgstr ""
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/cluster_info.html:76
+msgid "History"
+msgstr "记录"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/cluster_info.html:80
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addPool.html:67
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addRbd.html:52
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:86
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolConfig.html:59
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:70
+msgid "Read"
+msgstr "读"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/cluster_info.html:85
+msgid "Write"
+msgstr "写"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/cluster_info.html:94
+msgid "Cluster Capacity"
+msgstr "集群容量"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/cluster_info.html:113
+msgid "Data"
+msgstr "数据"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/cluster_info.html:120
+msgid "Raw"
+msgstr "原始数据"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/cluster_info.html:135
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/ioHistory.html:6
+msgid "Time Span"
+msgstr "时间跨度"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/cluster_info.html:152
+msgid "WARNING"
+msgstr "警告"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/cluster_info.html:155
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_group_ediTap.html:8
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/AddProfile.html:22
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addHost.html:32
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addNewFolder.html:60
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addPool.html:92
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addRbd.html:91
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addTarget.html:16
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addVolume.html:60
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/add_host_cluster.html:25
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/clusterManage.html:30
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/clusterPutVal.html:19
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/clusterRemove.html:17
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/createSnapshot.html:26
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/deleteOsd.html:18
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/deleteOsd.html:36
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/deleteSnapshot.html:17
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/editSnapshot.html:22
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:135
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/hostSettings.html:84
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/iSCSIDelete.html:17
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/iSCSIManagement.html:34
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/modifyconfig.html:21
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolConfig.html:82
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolDelete.html:22
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolManagement.html:40
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:165
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdDelete.html:17
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdManagement.html:56
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/targetSettings.html:22
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/usrManagement.html:38
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/volumeDelete.html:18
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/volumeManagement.html:59
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/zabbixSetting.html:116
+msgid "Cancel"
+msgstr "取消"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/index.html:3
+#: dashboards/lenovo/ceph_pools/templates/ceph_pools/index.html:3
+msgid "Storage Management"
+msgstr "存储管理"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/index.html:15
+msgid "No cluster has been created yet."
+msgstr "没有集群被创建。"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/index.html:16
+msgid "Create One"
+msgstr "创建一个"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/index.html:21
+msgid "Add New Cluster"
+msgstr "添加新集群"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/index.html:22
+msgid "Cluster Name : "
+msgstr "集群名："
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/index.html:23
+msgid "Cluster Address : "
+msgstr "集群地址："
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/index.html:24
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_ceph.html:134
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_group_ediTap.html:9
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/AddProfile.html:23
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addHost.html:33
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addPool.html:93
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addRbd.html:92
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addTarget.html:17
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addVolume.html:61
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/add_host_cluster.html:26
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/deleteSnapshot.html:18
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:136
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/hostSettings.html:85
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/modifyconfig.html:22
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolConfig.html:83
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:166
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdManagement.html:57
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/usrManagement.html:37
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/volumeManagement.html:60
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/zabbixSetting.html:115
+msgid "OK"
+msgstr "确定"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_ceph.html:11
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_ceph.html:32
+msgid "Folder1"
+msgstr "文件夹1"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_ceph.html:14
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_ceph.html:62
+msgid "Folder2"
+msgstr "文件夹2"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_ceph.html:20
+msgid "usrManagement"
+msgstr "用户管理"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_ceph.html:23
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addNewFolder.html:5
+msgid "Add New Folder"
+msgstr "添加新文件夹"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_ceph.html:39
+msgid "Folder1-1"
+msgstr "文件夹1-1"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_ceph.html:42
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_ceph.html:72
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_ceph.html:103
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_ceph.html:112
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_ceph.html:144
+msgid "Admin"
+msgstr "管理员"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_ceph.html:69
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_ceph.html:141
+msgid "Folder21"
+msgstr "文件夹21"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_ceph.html:89
+msgid "Share With"
+msgstr "共享"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_ceph.html:93
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addNewFolder.html:41
+msgid "Add Usr"
+msgstr "添加用户"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_ceph.html:96
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_ceph.html:128
+msgid "admin1"
+msgstr "管理员1"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_ceph.html:97
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_ceph.html:129
+msgid "admin2"
+msgstr "管理员2"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_ceph.html:125
+msgid "Admini"
+msgstr "管理员i"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_group.html:22
+msgid "OSDs"
+msgstr "OSD"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_group.html:57
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_group_ediTap.html:30
+msgid "Drag hosts here to create a new group."
+msgstr "拖动主机到此用于创建组。"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_group_ediTap.html:13
+msgid "Please specify a name for this group./You heven't selected any OSDs yet"
+msgstr "请制定组名。/还未选择任何OSD"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_group_ediTap.html:18
+msgid "add Group"
+msgstr "添加组"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_group_ediTap.html:19
+msgid "Group1"
+msgstr "组1"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_group_ediTap.html:20
+msgid "Group2"
+msgstr "组2"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_group_ediTap.html:23
+msgid "Modify Group"
+msgstr "编辑组"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_group_ediTap.html:24
+msgid "Remove Group"
+msgstr "移除组"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_host.html:69
+msgid "RAM"
+msgstr "内存"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_host.html:83
+msgid "Network"
+msgstr "网络"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_host.html:84
+msgid "Service"
+msgstr "服务"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_host.html:85
+msgid "I/O"
+msgstr ""
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_host.html:128
+msgid "Adding"
+msgstr "添加"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_host.html:129
+msgid "Deploying"
+msgstr "部署"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_host.html:163
+msgid "Shut Down"
+msgstr "关机"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_host_io.html:6
+msgid "Total Capacity"
+msgstr "总容量"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_host_io.html:8
+msgid "Active Time"
+msgstr "有效时间"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_host_io.html:16
+msgid "USED"
+msgstr "使用率"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_host_network.html:6
+msgid "Interface"
+msgstr "接口"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_host_service.html:21
+msgid "Batch Operation"
+msgstr "批处理"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_host_service.html:25
+msgid "Following OSDs will be removed"
+msgstr "以下OSD将被移除"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_host_service.html:29
+msgid "Remove"
+msgstr "移除"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_iSCSI.html:19
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/iSCSIManagement.html:8
+msgid "iSCSI Management"
+msgstr "iSCSI管理"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_iSCSI.html:26
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/targetSettings.html:5
+msgid "Target Settings"
+msgstr "设置Target"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_iSCSI.html:29
+msgid "Add Target"
+msgstr "添加Target"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_iSCSI.html:41
+msgid "volume"
+msgstr "卷"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_iSCSI.html:46
+msgid "Add volume"
+msgstr "添加卷"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_iSCSI.html:57
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addVolume.html:22
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:31
+msgid "Volume Name"
+msgstr "卷名"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_iSCSI.html:58
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addVolume.html:48
+msgid "LUN ID"
+msgstr "LUN ID"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_iSCSI.html:59
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_pool.html:87
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addVolume.html:26
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:35
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:30
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdManagement.html:17
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/volumeManagement.html:16
+msgid "Capacity"
+msgstr "容量"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_iSCSI.html:60
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addVolume.html:52
+msgid "Source"
+msgstr "源"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_iSCSI.html:61
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:15
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:18
+msgid "Snapshot"
+msgstr "快照"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_iSCSI.html:62
+msgid "Action"
+msgstr "操作"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_pool.html:22
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolManagement.html:9
+msgid "Pool Management"
+msgstr "存储池管理"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_pool.html:29
+msgid "Config"
+msgstr "配置"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_pool.html:32
+msgid "Add Pool"
+msgstr "添加存储池"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_pool.html:41
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_pool.html:88
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdManagement.html:18
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/volumeManagement.html:17
+msgid "Duplicate"
+msgstr "复制"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_pool.html:45
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addPool.html:27
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolConfig.html:22
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolManagement.html:17
+msgid "PG Num"
+msgstr "PG数"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_pool.html:49
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolManagement.html:18
+msgid "Crush Rule"
+msgstr "Crush规则"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_pool.html:55
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_pool.html:90
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdManagement.html:20
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/volumeManagement.html:19
+msgid "Read Qos Limitation"
+msgstr "Qos读限速"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_pool.html:59
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_pool.html:91
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolManagement.html:20
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdManagement.html:21
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/volumeManagement.html:20
+msgid "Write Qos Limitation"
+msgstr "Qos写限速"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_pool.html:71
+msgid " RBD"
+msgstr ""
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_pool.html:76
+msgid "Add RBD"
+msgstr "添加RBD"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_pool.html:86
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdManagement.html:16
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/volumeManagement.html:15
+msgid "Name"
+msgstr "名字"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_pool.html:89
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdManagement.html:19
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/volumeManagement.html:18
+msgid "Bandwidth"
+msgstr "带宽"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_pool.html:92
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:5
+msgid "Export to iSCSI"
+msgstr "导出至iSCSI"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_pool.html:93
+msgid "Settings"
+msgstr "设置"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/tab_pool.html:127
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdManagement.html:9
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/volumeManagement.html:9
+msgid "RBD MANAGEMENT"
+msgstr "RBD管理"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/AddProfile.html:5
+msgid "Add Crush Rule Profile"
+msgstr "添加Crush规则配置文件"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addHost.html:7
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/add_host_cluster.html:6
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/clusterManage.html:6
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/iSCSIManagement.html:6
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolManagement.html:6
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:7
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/usrManagement.html:6
+msgid "Close"
+msgstr "关闭"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addHost.html:9
+msgid "ADD NEW HOST"
+msgstr "添加新主机"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addNewFolder.html:11
+msgid "Folder"
+msgstr "文件夹"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addNewFolder.html:15
+msgid "Sharing"
+msgstr "共享"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addNewFolder.html:24
+msgid "Folder Name"
+msgstr "文件夹名"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addNewFolder.html:29
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addPool.html:22
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolConfig.html:18
+msgid "Pool Name"
+msgstr "存储池名"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addNewFolder.html:38
+msgid "New Usr"
+msgstr "新用户"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addNewFolder.html:47
+msgid "Admin1"
+msgstr "管理员1"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addNewFolder.html:58
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addPool.html:90
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addRbd.html:89
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addVolume.html:58
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:133
+msgid "Prev"
+msgstr "后退"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addNewFolder.html:59
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addPool.html:91
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addRbd.html:90
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addVolume.html:59
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:134
+msgid "Next"
+msgstr "前进"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addNewFolder.html:61
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/clusterPutVal.html:20
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/clusterRemove.html:18
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/createSnapshot.html:27
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/deleteOsd.html:19
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/deleteOsd.html:37
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/deleteOsd.html:88
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/editSnapshot.html:23
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/iSCSIDelete.html:18
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/iSCSIManagement.html:35
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolDelete.html:23
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolManagement.html:41
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdDelete.html:18
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/targetSettings.html:23
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/volumeDelete.html:19
+msgid "Ok"
+msgstr "确定"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addPool.html:5
+msgid "New Pool"
+msgstr "新存储池"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addPool.html:11
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addRbd.html:12
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addVolume.html:12
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:11
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolConfig.html:10
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:16
+msgid "General"
+msgstr "常规"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addPool.html:14
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addRbd.html:16
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:19
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:17
+msgid "Qos"
+msgstr ""
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addPool.html:39
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolConfig.html:31
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:42
+msgid "Deduplication"
+msgstr "去重"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addPool.html:48
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolConfig.html:40
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:51
+msgid "Compression"
+msgstr "压缩"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addPool.html:59
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addRbd.html:44
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:78
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolConfig.html:51
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:62
+msgid "QoS Limitation"
+msgstr "Qos限额"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addRbd.html:6
+msgid "NEW RBD"
+msgstr "新RBD"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addRbd.html:19
+msgid "Advanced"
+msgstr "高级"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addRbd.html:26
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:26
+msgid "RBD Name"
+msgstr "RBD名"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addRbd.html:75
+msgid "Object Size"
+msgstr "对象大小"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addRbd.html:79
+msgid "CRUSH Rules"
+msgstr "CRUSH规则"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addRbd.html:81
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addRbd.html:82
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addRbd.html:83
+msgid "Rule"
+msgstr "规则"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addTarget.html:5
+msgid "Add New Target"
+msgstr "添加新Target"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addVolume.html:6
+msgid "New Volume"
+msgstr "新卷"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addVolume.html:15
+msgid "Others"
+msgstr "其他"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addVolume.html:33
+msgid "iSCSI Name"
+msgstr "iSCSI名"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/addVolume.html:40
+msgid "Volume Status"
+msgstr "卷状态"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/add_host_cluster.html:8
+msgid "ADD NEW CLUSTER"
+msgstr "添加新集群"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/clusterManage.html:9
+msgid "CLUSTER MANAGEMENT"
+msgstr "集群管理"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/clusterManage.html:11
+msgid "Add New"
+msgstr "添加新"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/clusterPutVal.html:5
+msgid "CLUSTER INFORMATION"
+msgstr "集群信息"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/clusterPutVal.html:13
+msgid "Address"
+msgstr "地址"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/clusterRemove.html:10
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/delconfig.html:7
+msgid "Are you sure to remove"
+msgstr "确定要移除"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/clusterRemove.html:13
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/delconfig.html:8
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/deleteSnapshot.html:13
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/iSCSIDelete.html:13
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolDelete.html:14
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdDelete.html:13
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/volumeDelete.html:14
+msgid "This action cannot be undone."
+msgstr "操作不可取消。"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/createSnapshot.html:5
+msgid "Add New Snapshot"
+msgstr "添加新快照"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/createSnapshot.html:11
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/editSnapshot.html:10
+msgid "SnapName"
+msgstr "快照名"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/createSnapshot.html:18
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/editSnapshot.html:15
+msgid "SnapTime"
+msgstr "快照时间"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/deleteOsd.html:11
+msgid "Are you sure you want to permanently delete these OSDs from"
+msgstr "确定要永久删除OSD: "
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/deleteOsd.html:32
+msgid "Are you sure you want to permanently delete server"
+msgstr "确定要永久删除服务"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/deleteOsd.html:44
+msgid "Add New OSD"
+msgstr "添加新OSD"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/deleteOsd.html:45
+msgid "Select one or more disks to create a OSD."
+msgstr "选择一个或者多个硬盘用以创造OSD。"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/deleteOsd.html:84
+msgid "Are you sure you want to {$ actionType $} the cluster ?"
+msgstr "确定{$ actionType $}集群？"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/deleteSnapshot.html:10
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolDelete.html:11
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdDelete.html:10
+msgid "Are you sure to remover"
+msgstr "确定删除"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/editSnapshot.html:5
+msgid "Edit Now Snapshot"
+msgstr "编辑当前快照"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:23
+msgid "I/O Control"
+msgstr "I/O控制"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:39
+msgid "Destination"
+msgstr "目标"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:41
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:42
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:43
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:49
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:50
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:51
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:137
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:138
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:139
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:151
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:152
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:153
+msgid "Current (Pool"
+msgstr "当前(存储池"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:47
+msgid "Target"
+msgstr "Target"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:57
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:59
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:60
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:61
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:62
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:63
+msgid "Frequency"
+msgstr "频率"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:67
+msgid "Start Date"
+msgstr "起始日期"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:71
+msgid "Quantity"
+msgstr "数量"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:72
+msgid "Must Between 1 and 1000"
+msgstr "必须位于1到100之间"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:109
+msgid "Permitted Initiators"
+msgstr ""
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:110
+msgid "Add"
+msgstr "添加"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:116
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:117
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:118
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:124
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:125
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/export.html:126
+msgid "Read Only"
+msgstr "制只读"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/historyChart.html:6
+msgid "Time Range"
+msgstr "时间范围"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/hostSettings.html:6
+msgid "Host Settings"
+msgstr "设置主机"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/hostSettings.html:24
+msgid ""
+"To deploy new monitors,you need to remove some monitors in the cluster first."
+msgstr "部署新的监视器之前请先删除某些监视器。"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/hostSettings.html:26
+msgid "Max monitors allowed in this cluster"
+msgstr "允许最大的监视器数"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/hostSettings.html:54
+msgid "Deploy"
+msgstr "部署"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/hostSettings.html:57
+msgid ""
+"To deploy new monitors, you need to remove some monitors in the cluster "
+"first."
+msgstr "部署新的监视器之前，请先删除某些监视器。"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/hostSettings.html:58
+msgid "Max MDS allowed in this cluster"
+msgstr "允许最大的MDS数"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/iSCSIDelete.html:10
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/volumeDelete.html:11
+msgid "Are you sure to delete"
+msgstr "确定要删除"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/iSCSIManagement.html:13
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/targetSettings.html:10
+msgid "iSCSIName"
+msgstr "iSCSI名"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/iSCSIManagement.html:14
+msgid "Refresh"
+msgstr "刷新"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/iSCSIManagement.html:15
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolManagement.html:21
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdManagement.html:22
+msgid "Delete"
+msgstr "删除"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/modifyconfig.html:6
+msgid "Modify Profiles Config"
+msgstr "改变配置"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/modifyconfig.html:10
+msgid "Profiles Name"
+msgstr "配置文件名"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/modifyconfig.html:15
+msgid "Profiles Pass"
+msgstr "配置文件通过"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolConfig.html:5
+msgid "Pool Config"
+msgstr "存储池配置"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolConfig.html:26
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:37
+msgid "Dup Size"
+msgstr "副本数"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolDelete.html:18
+msgid "Input error please re-enter!"
+msgstr "输入错误请重新输入！"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolManagement.html:15
+msgid "PoolName"
+msgstr "存储池名"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolManagement.html:16
+msgid "Duplication"
+msgstr "副本"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/poolManagement.html:19
+msgid "Red Qos Limitation"
+msgstr "Qos读限速"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:10
+msgid "Rbd Config"
+msgstr "配置Rbd"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:19
+msgid "Advance"
+msgstr "高级"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:97
+msgid "Create Snapshot"
+msgstr "创建快照"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:126
+msgid "prev"
+msgstr "后退"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:130
+msgid "next"
+msgstr "前进"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:135
+msgid "Copy to Pool"
+msgstr "拷贝到存储池"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:141
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:155
+msgid "start"
+msgstr "启动"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdConfig.html:149
+msgid "Mirror To Cluster"
+msgstr "镜像到集群"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/rbdManagement.html:6
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/volumeManagement.html:6
+msgid "CLOSE"
+msgstr "关闭"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/targetSettings.html:15
+msgid "iSCSIAddress"
+msgstr "iSCSI地址"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/usrManagement.html:8
+msgid "Usr Management"
+msgstr "用户管理"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/usrManagement.html:14
+msgid "userName"
+msgstr "用户名"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/usrManagement.html:19
+msgid "Password"
+msgstr "密码"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/usrManagement.html:27
+msgid "Default Permissions"
+msgstr "默认许可"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/zabbixSetting.html:7
+msgid "Settings Cluster"
+msgstr "集群设置"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/zabbixSetting.html:24
+msgid "Zabbix Monitor IP"
+msgstr "Zabbix监控器IP"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/zabbixSetting.html:28
+msgid "Zabbix User"
+msgstr "Zabbix用户名"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/zabbixSetting.html:32
+msgid "Zabbix Password"
+msgstr "Zabbix密码"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/zabbixSetting.html:90
+msgid "Zabbix Server IP is required."
+msgstr "请输入Zabbix服务器IP地址。"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/zabbixSetting.html:95
+msgid "Zabbix User is required."
+msgstr "请输入Zabbix用户名。"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/zabbixSetting.html:100
+msgid "Zabbix Password is required."
+msgstr "请输入Zabbix密码。"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/zabbixSetting.html:105
+msgid "Zabbix User should be less than 32 chars."
+msgstr "Zabbix用户名不得少于32个字符。"
+
+#: dashboards/lenovo/ceph_mgmt/templates/ceph_mgmt/modal/zabbixSetting.html:110
+msgid "Zabbix Password should be less than 32 chars."
+msgstr "Zabbix密码长度不得小于32个字符。"
+
+#: dashboards/lenovo/ceph_pools/panel.py:9
+msgid "Ceph Pools"
+msgstr "Ceph存储池"
+
+#: dashboards/lenovo/ha_management/panel.py:9
+#: dashboards/lenovo/ha_management/templates/ha_management/index.html:3
+#: dashboards/lenovo/ha_management/templates/ha_management/index.html:6
+msgid "HA Management"
+msgstr "高可用管理"
+
+#: dashboards/lenovo/ha_management/templates/ha_management/edit-ha-form.html:81
+#: dashboards/lenovo/ha_management/templates/ha_management/edit-ha-form.html:195
+#: dashboards/lenovo/ha_management/templates/ha_management/index.html:64
+#: dashboards/lenovo/network_switches/templates/network_switches/index.html:86
+#: dashboards/lenovo/physical_servers/templates/physical_servers/index.html:157
+#: dashboards/lenovo/upgrade/templates/upgrade/index.html:67
+msgid "No Data"
+msgstr "无数据"
+
+#: dashboards/lenovo/network_switches/panel.py:9
+#: dashboards/lenovo/network_switches/templates/network_switches/index.html:3
+#: dashboards/lenovo/network_switches/templates/network_switches/index.html:6
+msgid "Network Switches"
+msgstr "网络交换机"
+
+#: dashboards/lenovo/network_switches/templates/network_switches/detail.html:11
+msgid "Detail"
+msgstr "节点详情"
+
+#: dashboards/lenovo/network_switches/templates/network_switches/detail.html:74
+msgid "Port Mapping"
+msgstr "端口映射"
+
+#: dashboards/lenovo/network_switches/templates/network_switches/detail/create.html:50
+msgid "Please input nodename"
+msgstr "请输入节点名称"
+
+#: dashboards/lenovo/network_switches/templates/network_switches/detail/create.html:54
+msgid "Nodename should be less than 255 characters"
+msgstr "节点名称不能超过255个字符"
+
+#: dashboards/lenovo/network_switches/templates/network_switches/detail/create.html:101
+#: dashboards/lenovo/network_switches/templates/network_switches/detail/edit.html:44
+msgid "Please input port"
+msgstr "请输入端口"
+
+#: dashboards/lenovo/network_switches/templates/network_switches/detail/create.html:105
+#: dashboards/lenovo/network_switches/templates/network_switches/detail/edit.html:48
+msgid "Port should be less than 255 characters"
+msgstr "端口不能超过255个字符"
+
+#: dashboards/lenovo/network_switches/templates/network_switches/detail/edit.html:40
+msgid "eg: 1/20 or portchannel:20"
+msgstr "示例：1/20 或 端口通道：20"
+
+#: dashboards/lenovo/network_switches/templates/network_switches/switch/create.html:29
+msgid "eg: 0.0.0.0 ~ 255.255.255.255"
+msgstr "示例：0.0.0.0 ~ 255.255.255.255"
+
+#: dashboards/lenovo/network_switches/templates/network_switches/switch/create.html:34
+msgid "Please input an ip address"
+msgstr "请输入IP 地址"
+
+#: dashboards/lenovo/network_switches/templates/network_switches/switch/create.html:39
+msgid "Please input an valid ip address"
+msgstr "请输入有效的IP 地址"
+
+#: dashboards/lenovo/network_switches/templates/network_switches/switch/create.html:57
+#: dashboards/lenovo/network_switches/templates/network_switches/switch/edit.html:32
+#: dashboards/lenovo/physical_servers/templates/physical_servers/server/auth.html:60
+msgid "Please input username"
+msgstr "请输入用户名"
+
+#: dashboards/lenovo/network_switches/templates/network_switches/switch/create.html:62
+#: dashboards/lenovo/network_switches/templates/network_switches/switch/edit.html:37
+#: dashboards/lenovo/physical_servers/templates/physical_servers/server/auth.html:65
+msgid "Username should be less than 255 characters"
+msgstr "用户名不能超过255个字符"
+
+#: dashboards/lenovo/network_switches/templates/network_switches/switch/create.html:81
+#: dashboards/lenovo/network_switches/templates/network_switches/switch/edit.html:55
+#: dashboards/lenovo/physical_servers/templates/physical_servers/server/auth.html:84
+msgid "Please input password"
+msgstr "请输入密码"
+
+#: dashboards/lenovo/network_switches/templates/network_switches/switch/create.html:86
+#: dashboards/lenovo/network_switches/templates/network_switches/switch/edit.html:60
+#: dashboards/lenovo/physical_servers/templates/physical_servers/server/auth.html:89
+msgid "Password should be less than 255 characters"
+msgstr "密码不能超过255个字符"
+
+#: dashboards/lenovo/network_switches/templates/network_switches/switch/create.html:100
+msgid "eg: 1 ~ 65536"
+msgstr "示例：1 ~ 65536"
+
+#: dashboards/lenovo/network_switches/templates/network_switches/switch/create.html:104
+msgid "Please input SSH Port"
+msgstr "请输入 SSH 端口"
+
+#: dashboards/lenovo/network_switches/templates/network_switches/switch/create.html:108
+msgid "SSH Port should be less than 255 characters"
+msgstr "SSH 端口不能超过255个字符"
+
+#: dashboards/lenovo/network_switches/templates/network_switches/switch/create.html:144
+msgid "Default is 443"
+msgstr "默认443"
+
+#: dashboards/lenovo/network_switches/templates/network_switches/switch/create.html:149
+msgid "Please input an REST port"
+msgstr "请输入一个REST 端口"
+
+#: dashboards/lenovo/network_switches/templates/network_switches/switch/create.html:154
+msgid "REST Port should be less than 255 characters"
+msgstr "REST 端口不能超过255个字符"
+
+#: dashboards/lenovo/overview/panel.py:9
+#: dashboards/lenovo/overview/templates/overview/index.html:3
+#: dashboards/lenovo/overview/templates/overview/index.html:6
+#: dashboards/lenovo/physical_servers/templates/physical_servers/detail.html:6
+msgid "Overview"
+msgstr "概况"
+
+#: dashboards/lenovo/physical_servers/panel.py:9
+#: dashboards/lenovo/physical_servers/templates/physical_servers/index.html:3
+#: dashboards/lenovo/physical_servers/templates/physical_servers/index.html:6
+msgid "Physical Servers"
+msgstr "物理服务器"
+
+#: dashboards/lenovo/physical_servers/templates/physical_servers/detail.html:84
+msgid "Event Log"
+msgstr "事件日志"
+
+#: dashboards/lenovo/physical_servers/templates/physical_servers/detail.html:161
+msgid "Power Metric"
+msgstr "功耗度量"
+
+#: dashboards/lenovo/physical_servers/templates/physical_servers/detail.html:195
+msgid "Minuts"
+msgstr "分钟"
+
+#: dashboards/lenovo/physical_servers/templates/physical_servers/detail.html:219
+msgid "Days"
+msgstr "天"
+
+#: dashboards/lenovo/physical_servers/templates/physical_servers/detail.html:270
+msgid "Power Capping"
+msgstr "功耗封顶"
+
+#: dashboards/lenovo/physical_servers/templates/physical_servers/index.html:105
+msgid "More"
+msgstr "更多"
+
+#: dashboards/lenovo/physical_servers/templates/physical_servers/index.html:175
+msgid "Alerts:"
+msgstr "告警："
+
+#: dashboards/lenovo/physical_servers/templates/physical_servers/index.html:207
+#: dashboards/lenovo/physical_servers/templates/physical_servers/index.html:215
+msgid "Unkown"
+msgstr "未知"
+
+#: dashboards/lenovo/upgrade/panel.py:9
+#: dashboards/lenovo/upgrade/templates/upgrade/index.html:3
+#: dashboards/lenovo/upgrade/templates/upgrade/index.html:6
+msgid "Upgrade"
+msgstr "系统模块升级"
+
+#: dashboards/lenovo/upgrade/templates/upgrade/index.html:53
+msgid "Patch ID"
+msgstr "升级包 ID"
+
+#: dashboards/lenovo/upgrade/templates/upgrade/index.html:54
+msgid "Upgrade Version"
+msgstr "升级后版本"
+
+#: dashboards/lenovo/upgrade/templates/upgrade/index.html:55
+msgid "Previous Version"
+msgstr "升级前版本"
+
+#: dashboards/lenovo/upgrade/templates/upgrade/index.html:57
+msgid "Result"
+msgstr "升级结果"
+
+#: dashboards/lenovo/upgrade/templates/upgrade/index.html:58
+msgid "Timestamp"
+msgstr "升级时间"
+
+#: dashboards/lenovo/upgrade/templates/upgrade/index.html:59
+msgid "Description"
+msgstr "描述"
+
+#: dashboards/lenovo/upgrade/templates/upgrade/upgrade/start.html:32
+msgid "A local package to upload."
+msgstr "上传一个本地升级包"
+
+#: dashboards/lenovo/upgrade/templates/upgrade/upgrade/start.html:44
+msgid "File is required."
+msgstr "请选择文件"
+
+#: dashboards/thinkcloud/dashboard.py:7
+msgid "ThinkCloud"
+msgstr "ThinkCloud"
+
+#: dashboards/thinkcloud/help/panel.py:9
+msgid "Help"
+msgstr "帮助"
+
+#: dashboards/thinkcloud/help/templates/help/about.html:3
+#: dashboards/thinkcloud/help/templates/help/about.html:6
+#: dashboards/thinkcloud/help/templates/help/about.html:11
+msgid "About"
+msgstr "关于"
+
+#: dashboards/thinkcloud/help/templates/help/about.html:18
+#: dashboards/thinkcloud/help/templates/help/about.html:24
+msgid "ThinkCloud OpenStack Enterprise 4.0"
+msgstr "ThinkCloud OpenStack 企业版 4.0"
+
+#: dashboards/thinkcloud/help/templates/help/about.html:21
+msgid "Version: "
+msgstr "版本："
+
+#: dashboards/thinkcloud/help/templates/help/about.html:21
+msgid "Release v4.0"
+msgstr "发行版 4.0"
+
+#: dashboards/thinkcloud/help/templates/help/about.html:25
+msgid "All rights reserved By Lenovo"
+msgstr "联想集团 版权所有"
+
+#: dashboards/thinkcloud/help/templates/help/support.html:3
+#: dashboards/thinkcloud/help/templates/help/support.html:6
+msgid "Support Services"
+msgstr "支持服务"
+
+#: dashboards/thinkcloud/help/templates/help/support.html:11
+msgid "Support Service"
+msgstr "支持服务"
+
+#: dashboards/thinkcloud/help/templates/help/support.html:16
+msgid "Product Introduction"
+msgstr "产品介绍"
+
+#: dashboards/thinkcloud/help/templates/help/support.html:19
+#, python-format
+msgid ""
+"\n"
+"                        Please refer to <a href=\"%(STATIC_URL)s"
+"%(specificationLink)s\"\n"
+"                                           target=\"_blank\">Lenovo "
+"OpenStack Specification</a>\n"
+"                        for more details of product features.\n"
+"                    "
+msgstr ""
+"\n"
+"                        请参照 <a href=\"%(STATIC_URL)s%(specificationLink)s"
+"\"\n"
+"                                           target=\"_blank"
+"\">                        联想 OpenStack 产品功能说明书</a>\n"
+"                        以了解更多产品功能信息。\n"
+"                    "
+
+#: dashboards/thinkcloud/help/templates/help/support.html:26
+msgid "Documentation"
+msgstr "文档"
+
+#: dashboards/thinkcloud/help/templates/help/support.html:29
+#, python-format
+msgid ""
+"\n"
+"                        <a href=\"%(STATIC_URL)s%(userGuideLink)s\"\n"
+"                           target=\"_blank\">Lenovo OpenStack User Guide</"
+"a>\n"
+"                        for administrators and cloud users.\n"
+"                    "
+msgstr ""
+"\n"
+"                        面向系统管理员和云用户的\n"
+"                        <a href=\"%(STATIC_URL)s%(userGuideLink)s\"\n"
+"                           target=\"_blank\">联想 OpenStack 用户手册</a>。\n"
+"                    "
+
+#: dashboards/thinkcloud/help/templates/help/support.html:36
+msgid "Contact with Us"
+msgstr "联系我们"
+
+#: dashboards/thinkcloud/help/templates/help/support.html:39
+#, python-format
+msgid ""
+"\n"
+"                        If you still have more questions or need to report "
+"a\n"
+"                        problem/suggestion, please call %(support_call)s, or "
+"email to\n"
+"                        <a href=\"mailto:%(support_email)s\">"
+"%(support_email)s</a>.\n"
+"                    "
+msgstr ""
+"\n"
+"                        如果您仍有更多的疑问或建议/问题需要提交，请拨"
+"打%(support_call)s，或者邮件联系\n"
+"                        <a href=\"mailto:%(support_email)s\">"
+"%(support_email)s</a>。\n"
+"                        <br/>\n"
+"                    "
+
+#: dashboards/thinkcloud/help/templates/help/support.html:46
+msgid ""
+"\n"
+"                        We will get back to you as soon as possible.\n"
+"                    "
+msgstr ""
+"\n"
+"                        我们会尽快给您答复。\n"
+"                    "
+
+#: templates/horizon/common/_side_launcher.html:14
+msgid "Quick start"
+msgstr "快速开始"
+
+#: templates/horizon/common/_side_launcher.html:39
+#: templates/horizon/common/_side_launcher.html:40
+msgid "Home"
+msgstr "主页"
+
+#~ msgid "Remove Host"
+#~ msgstr "移除主机"
+
+#~ msgid "ID"
+#~ msgstr "ID"
+
+#~ msgid "Upgrade Status"
+#~ msgstr "升级状态"
+
+#~ msgid "VMware Management"
+#~ msgstr "VMware管理"
+
+#~ msgid "Adapter"
+#~ msgstr "适配器"
+
+#~ msgid ""
+#~ "Are you sure you want to permanently delete these OSDs from <b>"
+#~ "%(server)s</b>?"
+#~ msgstr "确定要永久删除位于<b>%(server)s</b>的OSD吗？"
+
+#~ msgid "bandwidth"
+#~ msgstr "带宽"
+
+#~ msgid "Warning"
+#~ msgstr "警告"
+
+#~ msgid "Switch Details"
+#~ msgstr "交换机详情"
+
+msgid "Edit Interface Config"
+msgstr "编辑网卡配置"
+
+msgid "Interface Name"
+msgstr "接口名称"
+
+msgid "Network Type"
+msgstr "网络类型"
+
+msgid "VF Number"
+msgstr "VF数量"
+
+msgid "Ports"
+msgstr "网口"
+
+msgid "Provider Network(s)"
+msgstr "Provider网络"
+
+msgid "NodeName"
+msgstr "主机名"
+
+msgid "MAC Address"
+msgstr "物理地址"
+
+msgid "PCI Address"
+msgstr "PCI 地址"
+
+msgid "NUMA node"
+msgstr "NUMA节点"
+
+msgid "Auto"
+msgstr "自协商"
+
+msgid "Device Type"
+msgstr "设备类型"
+
+msgid "Interfaces config"
+msgstr "接口配置"
+
+msgid "Type"
+msgstr "类型"
+
+msgid "Attributes"
+msgstr "属性"
+
+msgid "Port(s)"
+msgstr "网口"
+
+msgid "Uses"
+msgstr "使用"
+
+msgid "Used By"
+msgstr "使用者"

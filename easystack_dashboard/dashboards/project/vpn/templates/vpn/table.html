@@ -1,0 +1,515 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% load context_selection %}
+{% block title %}{% trans "Networks" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Networks") %}
+{% endblock page_header %}
+
+{% block content_main %}"contentMain tab-main"{% endblock %}
+
+{% block main %}
+<tabset id="vpn-tab" class="def-tabs" id="factoryEmit" justified="true">
+    <tab id="tab-ikepolicy-button" heading="{% trans "IKE Policies"%}">
+      <div class="tab-pane-content">
+        <hz-magic-search-context filter-facets="filterFacets">
+        <table id="ikepolicy-list" hz-table ng-cloak hopes-table-drag
+            st-table="iikepolicies"
+            st-safe-src="ikepolicies"
+            default-sort="name"
+            default-sort-reverse="false"
+            st-magic-search
+            ng-controller="projectIkepoliciesController"
+            ng-init="userID = '{{ request.user.id }}'"
+            class="table table-bordered table-hover">
+
+            <thead>
+                <tr>
+                  <th colspan="100" class="bare">
+                      <div class="table_actions clearfix table_search_client">
+                         <action-list>
+                            <action
+                              action-classes="'btn btn-primary btn-action'"
+                              callback="actions.refresh">
+                              <i class="icon icon-refresh"></i>
+                              <span id="ikepolicy-refresh"></span>
+                            </action>
+                          </action-list>
+                        <action-list>
+                            <action
+                              action-classes="'btn btn-primary btn-action'"
+                              callback="actions.create.open" disabled= "networks.length >= networkQuota || subnetNum>=subnetQuota">
+                              <i class="icon icon-add"></i>
+                              <span id="create-ikepolicy">{% trans 'Add IKE Policy' %}
+                                <i ng-show= "networks.length >= networkQuota">{% trans '(network quota exceeded)' %}</i>
+                                <i ng-show= "subnetNum>=subnetQuota">{% trans '(subnet quota exceeded)' %}</i>
+                              </span>
+                            </action>
+                        </action-list>
+                          <action-list>
+                            <action
+                              action-classes="'btn btn-action btn-primary'"
+                              disabled="numSelected !=1 || disableikepEdit"
+                              callback="actions.edit.open" item="selectedData.aData">
+                              <i class="icon icon-edit"></i>
+                              <span id="edit-network">{% trans 'Edit' %}</span>
+                            </action>
+                        </action-list>
+                        <action-list>
+                            <action
+                              action-classes="'btn btn-action btn-danger'"
+                              disabled="numSelected === 0"
+                              callback="actions.deleted.batchDelete">
+                              <i class="icon icon-delete"></i>
+                              <span id="delete-ikepolicy">{% trans 'Delete IKE Policy' %}</span>
+                            </action>
+                        </action-list>
+                        <div class="fr search-bar">
+                          <hz-magic-search-bar id="ikepolicy-search"></hz-magic-search-bar>
+                        </div>
+                      </div>
+                  </th>
+                </tr>
+                <tr eagle-eye="table_heads">
+                    <th class="select-col" eagle-eye="select_col">
+                    <input type="checkbox"
+                      hz-select-page="ikepolicies"/>
+                    </th>
+                    <th st-sort-default="name" eagle-eye="data_col">
+                    <span st-sort="name">{$ ::context.header.name $}</span>
+                    </th>
+                    <th eagle-eye="data_col">
+                    <span st-sort="auth_algorithm">{$ ::context.header.auth_algorithm $}</span>
+                    </th>
+                    <th eagle-eye="data_col">
+                    <span st-sort="encryption_algorithm">{$ ::context.header.encryption_algorithm $}</span>
+                    </th>
+                    <th eagle-eye="data_col">
+                    <span st-sort="pfs">{$ ::context.header.pfs $}</span>
+                    </th>
+                </tr>
+
+            </thead>
+
+          <tbody>
+
+            <tr ng-if="!iikepoliciesState">
+                <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+            </tr>
+
+            <tr ng-if="!iikepolicies.length && iikepoliciesState">
+                <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+            </tr>
+
+            <tr ng-repeat="ikepolicy in iikepolicies" ng-class="{'st-selected': checked[ikepolicy.id]}">
+                <td class="select-col" eagle-eye="select_col">
+                    <input type="checkbox"
+                        hz-select="ikepolicy"
+                        ng-model="selected[ikepolicy.id].checked"
+                        hz-checkbox-group="ikepolicies"/>
+                </td>
+                <td eagle-eye="data_col"><a ng-click="actions.createikepolicyDetail.open(ikepolicy.id)" href="javascript:;" data-url="/project/vpn/ikepolicies/ikepolicy-detail/{$ ikepolicy.id $}">{$ ikepolicy.name $}</a></td>
+                <td eagle-eye="data_col">
+                {$ ikepolicy.auth_algorithm $}
+                </td>
+                <td eagle-eye="data_col">
+                {$ ikepolicy.encryption_algorithm $}
+                </td>
+                <td eagle-eye="data_col">
+                    {$ ikepolicy.pfs $}
+                </td>
+            </tr>
+          </tbody>
+          <tfoot ng-if="ikepolicies.length > 10">
+            <tr>
+              <td colspan="100" eagle-eye="data_page">
+                <table-footer></table-footer>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+        </hz-magic-search-context>
+      </div>
+    </tab>
+    <tab id="tab-ipsecpolicy-button" heading="{% trans "IPSec Policies"%}">
+      <div class="tab-pane-content">
+        <hz-magic-search-context filter-facets="filterFacets">
+        <table id="ipsecpolicy-list" hz-table ng-cloak hopes-table-drag
+            st-table="iipsecpolicies"
+            st-safe-src="ipsecpolicies"
+            default-sort="name"
+            default-sort-reverse="false"
+            st-magic-search
+            ng-controller="projectIPSecpoliciesController"
+            ng-init="userID = '{{ request.user.id }}'"
+            class="table table-bordered table-hover">
+
+            <thead>
+                <tr>
+                  <th colspan="100" class="bare">
+                      <div class="table_actions clearfix table_search_client">
+                         <action-list>
+                            <action
+                              action-classes="'btn btn-primary btn-action'"
+                              callback="actions.refresh">
+                              <i class="icon icon-refresh"></i>
+                              <span id="ipsecpolicy-refresh"></span>
+                            </action>
+                          </action-list>
+                        <action-list>
+                            <action
+                              action-classes="'btn btn-primary btn-action'"
+                              callback="actions.create.open" >
+                              <i class="icon icon-add"></i>
+                              <span id="create-ipsecpolicy">{% trans 'Add IPSec Policy' %}
+                                <i ng-show= "networks.length >= networkQuota">{% trans '(network quota exceeded)' %}</i>
+                                <i ng-show= "subnetNum>=subnetQuota">{% trans '(subnet quota exceeded)' %}</i>
+                              </span>
+                            </action>
+                        </action-list>
+                          <action-list>
+                            <action
+                              action-classes="'btn btn-action btn-primary'"
+                              disabled="numSelected !=1 || disableipsecpEdit"
+                              callback="actions.edit.open" item="selectedData.aData">
+                              <i class="icon icon-edit"></i>
+                              <span id="edit-ipsecpolicy">{% trans 'Edit' %}</span>
+                            </action>
+                        </action-list>
+                        <action-list>
+                            <action
+                              action-classes="'btn btn-action btn-danger'"
+                              disabled="numSelected === 0"
+                              callback="actions.deleted.batchDelete">
+                              <i class="icon icon-delete"></i>
+                              <span id="delete-ipsecpolicy">{% trans 'Delete IPSec Policy' %}</span>
+                            </action>
+                        </action-list>
+                        <div class="fr search-bar">
+                          <hz-magic-search-bar id="ipsecpolicy-search"></hz-magic-search-bar>
+                        </div>
+                      </div>
+                  </th>
+                </tr>
+                <tr eagle-eye="table_heads">
+                    <th class="select-col" eagle-eye="select_col">
+                    <input type="checkbox"
+                      hz-select-page="ipsecpolicies"/>
+                    </th>
+                    <th st-sort-default="name" eagle-eye="data_col">
+                    <span st-sort="name">{$ ::context.header.name $}</span>
+                    </th>
+                    <th eagle-eye="data_col">
+                    <span st-sort="auth_algorithm">{$ ::context.header.auth_algorithm $}</span>
+                    </th>
+                    <th eagle-eye="data_col">
+                    <span st-sort="encryption_algorithm">{$ ::context.header.encryption_algorithm $}</span>
+                    </th>
+                    <th eagle-eye="data_col">
+                    <span st-sort="pfs">{$ ::context.header.pfs $}</span>
+                    </th>
+                </tr>
+
+            </thead>
+
+          <tbody>
+
+            <tr ng-if="!iipsecpoliciesState">
+                <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+            </tr>
+
+            <tr ng-if="!iipsecpolicies.length && iipsecpoliciesState">
+                <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+            </tr>
+
+            <tr ng-repeat="ipsecpolicy in iipsecpolicies" ng-class="{'st-selected': checked[ipsecpolicy.id]}">
+                <td class="select-col" eagle-eye="select_col">
+                    <input type="checkbox"
+                        hz-select="ipsecpolicy"
+                        ng-model="selected[ipsecpolicy.id].checked"
+                        hz-checkbox-group="ipsecpolicies"/>
+                </td>
+                <td eagle-eye="data_col"><a ng-click="actions.createipsecpolicyDetail.open(ipsecpolicy.id)" href="javascript:;" data-url="/project/vpn/ipsecpolicies/ipsecpolicy-detail/{$ ipsecpolicy.id $}">{$ ipsecpolicy.name $}</a></td>
+                <td eagle-eye="data_col">
+                {$ ipsecpolicy.auth_algorithm $}
+                </td>
+                <td eagle-eye="data_col">
+                {$ ipsecpolicy.encryption_algorithm $}
+                </td>
+                <td eagle-eye="data_col">
+                    {$ ipsecpolicy.pfs $}
+                </td>
+            </tr>
+          </tbody>
+          <tfoot ng-if="ipsecpolicies.length > 10">
+            <tr>
+              <td colspan="100" eagle-eye="data_page">
+                <table-footer></table-footer>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+        </hz-magic-search-context>
+      </div>
+    </tab>
+    <tab id="tab-vpnservice-button" heading="{% trans "VPN Services"%}">
+      <div class="tab-pane-content">
+        <hz-magic-search-context filter-facets="filterFacets">
+        <table id="vpnservice-list" hz-table ng-cloak hopes-table-drag
+            st-table="ivpnservices"
+            st-safe-src="vpnservices"
+            default-sort="name"
+            default-sort-reverse="false"
+            st-magic-search
+            ng-controller="projectVPNServicesController"
+            ng-init="userID = '{{ request.user.id }}'"
+            class="table table-bordered table-hover">
+
+            <thead>
+                <tr>
+                  <th colspan="100" class="bare">
+                      <div class="table_actions clearfix table_search_client">
+                         <action-list>
+                            <action
+                              action-classes="'btn btn-primary btn-action'"
+                              callback="actions.refresh">
+                              <i class="icon icon-refresh"></i>
+                              <span id="vpnservice-refresh"></span>
+                            </action>
+                          </action-list>
+                        <action-list>
+                            <action
+                              action-classes="'btn btn-primary btn-action'"
+                              callback="actions.create.open" >
+                              <i class="icon icon-add"></i>
+                              <span id="create-vpnservice">{% trans 'Add VPN Service' %}
+                                <i ng-show= "networks.length >= networkQuota">{% trans '(network quota exceeded)' %}</i>
+                                <i ng-show= "subnetNum>=subnetQuota">{% trans '(subnet quota exceeded)' %}</i>
+                              </span>
+                            </action>
+                        </action-list>
+                          <action-list>
+                            <action
+                              action-classes="'btn btn-action btn-primary'"
+                              disabled="numSelected !=1 || disablevpnsEdit"
+                              callback="actions.edit.open" item="selectedData.aData">
+                              <i class="icon icon-edit"></i>
+                              <span id="edit-vpnservice">{% trans 'Edit' %}</span>
+                            </action>
+                        </action-list>
+                        <action-list>
+                            <action
+                              action-classes="'btn btn-action btn-danger'"
+                              disabled="numSelected === 0"
+                              callback="actions.deleted.batchDelete">
+                              <i class="icon icon-delete"></i>
+                              <span id="delete-vpnservice">{% trans 'Delete VPN Service' %}</span>
+                            </action>
+                        </action-list>
+                        <div class="fr search-bar">
+                          <hz-magic-search-bar id="vpnservice-search"></hz-magic-search-bar>
+                        </div>
+                      </div>
+                  </th>
+                </tr>
+                <tr eagle-eye="table_heads">
+                    <th class="select-col" eagle-eye="select_col">
+                    <input type="checkbox"
+                      hz-select-page="vpnservices"/>
+                    </th>
+                    <th st-sort-default="name" eagle-eye="data_col">
+                    <span st-sort="name">{$ ::context.header.name $}</span>
+                    </th>
+                    <th eagle-eye="data_col">
+                    <span st-sort="local_ips">{$ ::context.header.local_ips $}</span>
+                    </th>
+                    <th eagle-eye="data_col">
+                    <span st-sort="subnet_name">{$ ::context.header.subnet_name $}</span>
+                    </th>
+                    <th eagle-eye="data_col">
+                    <span st-sort="router_name">{$ ::context.header.router_name $}</span>
+                    </th>
+                    <th eagle-eye="data_col">
+                    <span st-sort="status">{$ ::context.header.status $}</span>
+                    </th>
+                </tr>
+
+            </thead>
+
+          <tbody>
+
+            <tr ng-if="!ivpnservicesState">
+                <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+            </tr>
+
+            <tr ng-if="!ivpnservices.length && ivpnservicesState">
+                <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+            </tr>
+
+            <tr ng-repeat="vpnservice in ivpnservices" ng-class="{'st-selected': checked[vpnservice.id]}">
+                <td class="select-col" eagle-eye="select_col">
+                    <input type="checkbox"
+                        hz-select="vpnservice"
+                        ng-model="selected[vpnservice.id].checked"
+                        hz-checkbox-group="vpnservices"/>
+                </td>
+                <td eagle-eye="data_col"><a ng-click="actions.createvpnServiceDetail.open(vpnservice.id)" href="javascript:;" data-url="/project/vpn/vpnservices/vpnservice-detail/{$ vpnservice.id $}">{$ vpnservice.name $}</a></td>
+                <td eagle-eye="data_col">
+                  <ul ng-if="vpnservice.external_v4_ip || vpnservice.external_v6_ip">
+                    <li>
+                      <span>{% trans "IPv4:" %}</span> {$ vpnservice.external_v4_ip $}
+                    </li>
+                  </ul>
+                </td>
+                <td eagle-eye="data_col">
+                {$ vpnservice.subnet_name $}
+                </td>
+                <td eagle-eye="data_col">
+                    {$ vpnservice.router_name $}
+                </td>
+                <td eagle-eye="data_col">
+                    {$ vpnservice.status | decode:vpnserviceStatus $}
+                </td>
+            </tr>
+          </tbody>
+          <tfoot ng-if="vpnservices.length > 10">
+            <tr>
+              <td colspan="100" eagle-eye="data_page">
+                <table-footer></table-footer>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+        </hz-magic-search-context>
+      </div>
+    </tab>
+    <tab id="tab-ipsecsiteconn-button" heading="{% trans "IPSec Site Connections"%}">
+      <div class="tab-pane-content">
+        <hz-magic-search-context filter-facets="filterFacets">
+        <table id="ipsecsiteconn-list" hz-table ng-cloak hopes-table-drag
+            st-table="iipsecsiteconns"
+            st-safe-src="ipsecsiteconns"
+            default-sort="name"
+            default-sort-reverse="false"
+            st-magic-search
+            ng-controller="projectipsecSiteconnsController"
+            ng-init="userID = '{{ request.user.id }}'"
+            class="table table-bordered table-hover">
+
+            <thead>
+                <tr>
+                  <th colspan="100" class="bare">
+                      <div class="table_actions clearfix table_search_client">
+                         <action-list>
+                            <action
+                              action-classes="'btn btn-primary btn-action'"
+                              callback="actions.refresh">
+                              <i class="icon icon-refresh"></i>
+                              <span id="ipsecsiteconn-refresh"></span>
+                            </action>
+                          </action-list>
+                        <action-list>
+                            <action
+                              action-classes="'btn btn-primary btn-action'"
+                              callback="actions.create.open" >
+                              <i class="icon icon-add"></i>
+                              <span id="create-ipsecsiteconn">{% trans 'Add IPSec Site Connection' %}
+                                <i ng-show= "networks.length >= networkQuota">{% trans '(network quota exceeded)' %}</i>
+                                <i ng-show= "subnetNum>=subnetQuota">{% trans '(subnet quota exceeded)' %}</i>
+                              </span>
+                            </action>
+                        </action-list>
+                        <action-list>
+                            <action
+                              action-classes="'btn btn-action btn-primary'"
+                              disabled="numSelected !=1 || disableipsecsitecEdit"
+                              callback="actions.edit.open" item="selectedData.aData">
+                              <i class="icon icon-edit"></i>
+                              <span id="edit-ipsecsiteconn">{% trans 'Edit' %}</span>
+                            </action>
+                        </action-list>
+                        <action-list>
+                            <action
+                              action-classes="'btn btn-action btn-danger'"
+                              disabled="numSelected === 0"
+                              callback="actions.deleted.batchDelete">
+                              <i class="icon icon-delete"></i>
+                              <span id="delete-ipsecsiteconn">{% trans 'Delete IPSec Site Connection' %}</span>
+                            </action>
+                        </action-list>
+                        <div class="fr search-bar">
+                          <hz-magic-search-bar id="ipsecsiteconn-search"></hz-magic-search-bar>
+                        </div>
+                      </div>
+                  </th>
+                </tr>
+                <tr eagle-eye="table_heads">
+                    <th class="select-col" eagle-eye="select_col">
+                    <input type="checkbox"
+                      hz-select-page="ipsecsiteconns"/>
+                    </th>
+                    <th st-sort-default="name" eagle-eye="data_col">
+                    <span st-sort="name">{$ ::context.header.name $}</span>
+                    </th>
+                    <th eagle-eye="data_col">
+                    <span st-sort="vpnservice_name">{$ ::context.header.vpnservice_name $}</span>
+                    </th>
+                    <th eagle-eye="data_col">
+                    <span st-sort="ikepolicy_name">{$ ::context.header.ikepolicy_name $}</span>
+                    </th>
+                    <th eagle-eye="data_col">
+                    <span st-sort="ipsecpolicy_name">{$ ::context.header.ipsecpolicy_name $}</span>
+                    </th>
+                    <th eagle-eye="data_col">
+                    <span st-sort="status">{$ ::context.header.status $}</span>
+                    </th>
+                </tr>
+
+            </thead>
+
+          <tbody>
+
+            <tr ng-if="!iipsecsiteconnsState">
+                <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+            </tr>
+
+            <tr ng-if="!iipsecsiteconns.length && iipsecsiteconnsState">
+                <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+            </tr>
+
+            <tr ng-repeat="ipsecsiteconn in iipsecsiteconns" ng-class="{'st-selected': checked[ipsecsiteconn.id]}">
+                <td class="select-col" eagle-eye="select_col">
+                    <input type="checkbox"
+                        hz-select="ipsecsiteconn"
+                        ng-model="selected[ipsecsiteconn.id].checked"
+                        hz-checkbox-group="ipsecsiteconns"/>
+                </td>
+                <td eagle-eye="data_col"><a ng-click="actions.createipsecSiteconnDetail.open(ipsecsiteconn.id)" href="javascript:;" data-url="/project/vpn/ipsecsiteconns/ipsecsiteconn-detail/{$ ipsecsiteconn.id $}">{$ ipsecsiteconn.name $}</a></td>
+                <td eagle-eye="data_col">
+                {$ ipsecsiteconn.vpnservice_name $}
+                </td>
+                <td eagle-eye="data_col">
+                    {$ ipsecsiteconn.ikepolicy_name $}
+                </td>
+                <td eagle-eye="data_col">
+                    {$ ipsecsiteconn.ipsecpolicy_name $}
+                </td>
+                <td eagle-eye="data_col">
+                    {$ ipsecsiteconn.status | decode:ipsecsiteconnStatus $}
+                </td>
+            </tr>
+          </tbody>
+          <tfoot ng-if="ipsecsiteconns.length > 10">
+            <tr>
+              <td colspan="100" eagle-eye="data_page">
+                <table-footer></table-footer>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+        </hz-magic-search-context>
+      </div>
+    </tab>
+</tabset>
+{% endblock %}

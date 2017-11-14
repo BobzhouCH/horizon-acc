@@ -1,0 +1,545 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Application Policy" %}{% endblock %}
+
+{% block page_header %}
+{% include "easystack_dashboard/common/_es_page_header.html" with title=_("Application Policy") %}
+{% endblock page_header %}
+
+{% block main %}
+
+<tabset id="firewall-tab" class="def-tabs" justified="true">
+
+   <tab id="tab-firewall-button" heading="{% trans "L3 Policy"%}">
+    <div class="tab-pane-content">
+      <table id="policies-list"
+        hz-table
+        ng-cloak
+        hopes-table-drag
+        st-table="iL3Policys"
+        st-safe-src="L3Policys"
+        default-sort="name"
+        default-sort-reverse="false"
+        ng-controller="projectL3PolicyCtrl"
+        class="table table-bordered table-hover">
+
+        <thead>
+          <tr>
+            <th colspan="100" class="bare">
+              <div class="table_actions clearfix">
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    callback="actions.refresh">
+                    <i class="icon icon-refresh"></i>
+                    <span id="refresh-firewall"></span>
+                  </action>
+                </action-list>
+
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    disabled="firewalls.length >= 1 "
+                    callback="actions.create.open">
+                    <i class="icon icon-add"></i>
+                    <span id="create-firewall">{% trans 'Create L3 Policy' %}</span>
+                  </action>
+                </action-list>
+
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-action btn-danger'"
+                    disabled="numSelected === 0"
+                    callback="actions.deleted.batchDelete">
+                    <i class="icon icon-delete"></i>
+                    <span id="delete-firewall">{% trans 'Delete L3 Policies' %}</span>
+                  </action>
+                </action-list>
+
+                <action-list dropdown>
+                  <button id="more-firewall" type="button" class="btn btn-primary btn-action" dropdown-toggle>
+                    <i class="icon icon-more"></i>
+                    <span>{% trans 'More' %}</span>
+                  </button>
+                  <menu>
+                    <action
+                      button-type="menu-item"
+                      disabled="numSelected != 1"
+                      callback="actions.edit.open" item="selectedData.aData">
+                      <span id="edit-firewall">{% trans 'Edit' %}</span>
+                    </action>
+                  </menu>
+                </action-list>
+
+                <div class="fr search-bar">
+                  <search-bar id="search-firewall" group-classes="" icon-classes="fa-search" placeholder="{% trans "Filter" %}"> </search-bar>
+                </div>
+              </div>
+            </th>
+          </tr>
+          <tr eagle-eye="table_heads">
+            <th class="select-col" eagle-eye="select_col">
+              <input type="checkbox" hz-select-page="L3Policys"/>
+            </th>
+            <th st-sort="name" st-sort-default="name" eagle-eye="data_col">{$::context.header.name$}</th>
+            <th eagle-eye="data_col">{$::context.header.desc$}</th>
+            <th eagle-eye="data_col">ID</th>
+            <th class="text-center" eagle-eye="data_col" style="width: 15%">{$::context.header.IPVersion$}</th>
+            <th eagle-eye="data_col">{$::context.header.IPPool$}</th>
+            <th eagle-eye="data_col">{$::context.header.SubnetPrefixLength$}</th>
+            <th class="text-center" eagle-eye="data_col" style="width: 15%">{$::context.header.ExternalSegment$}</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr ng-if="!iL3PolicyState">
+            <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+          </tr>
+
+          <tr ng-if="!iL3Policys.length && iL3PolicyState">
+            <td colspan="100">{% trans "No Data" %}</td>
+          </tr>
+
+          <tr ng-repeat="iL3Policy in iL3Policys" ng-class="{'st-selected': checked[iL3Policy.id]}">
+            <td class="select-col" eagle-eye="select_col">
+              <input type="checkbox"
+                hz-select="iL3Policy"
+                ng-model="selected[iL3Policy.id].checked"
+                hz-checkbox-group="L3Policys"/>
+            </td>
+
+            <td eagle-eye="data_col"><a href="javascript:;" ng-click="actions.detail.open(iL3Policy)">{$ iL3Policy.name $}</a></td>
+            <td eagle-eye="data_col">{$ iL3Policy.description $}</td>
+            <td eagle-eye="data_col">{$ iL3Policy.id $}</td>
+            <td class="text-center" >{$ iL3Policy.ip_version $}</td>
+            <td eagle-eye="data_col">{$ iL3Policy.ip_pool $}</td>
+            <td eagle-eye="data_col">{$ iL3Policy.subnet_prefix_length $}</td>
+            <td class="text-center" >{$ iL3Policy.external_segments $}</td>
+          </tr>
+
+        </tbody>
+
+        <tfoot>
+          <tr>
+            <td colspan="100" eagle-eye="data_page">
+              <table-footer></table-footer>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </tab>
+
+  <tab id="tab-policy-button" heading="{% trans "Service Policy"%}">
+    <div class="tab-pane-content">
+      <table id="policies-list"
+        hz-table
+        ng-cloak
+        hopes-table-drag
+        st-table="iServicePolicys"
+        st-safe-src="servicePolicys"
+        default-sort="name"
+        default-sort-reverse="false"
+        ng-controller="projectServicePolicyCtrl"
+        class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th colspan="100" class="bare">
+              <div class="table_actions clearfix">
+
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    callback="actions.refresh">
+                    <i class="icon icon-refresh"></i>
+                    <span id="refresh-policy"></span>
+                  </action>
+                </action-list>
+
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    callback="actions.create.open">
+                    <i class="icon icon-add"></i>
+                    <span id="create-policy">{% trans 'Create Service Policy' %}</span>
+                  </action>
+                </action-list>
+
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-action btn-danger'"
+                    disabled="numSelected === 0"
+                    callback="actions.deleted.batchDelete">
+                    <i class="icon icon-delete"></i>
+                    <span id="delete-policy">{% trans 'Delete Service Policy' %}</span>
+                  </action>
+                </action-list>
+
+                <action-list dropdown>
+                  <button id="more-policy" type="button" class="btn btn-primary btn-action" dropdown-toggle>
+                    <i class="icon icon-more"></i>
+                    <span>{% trans 'More' %}</span>
+                  </button>
+                  <menu>
+                    <action
+                      button-type="menu-item"
+                      disabled="numSelected != 1"
+                      callback="actions.edit.open" item="selectedData.aData">
+                      <span id="edit-policy">{% trans 'Edit' %}</span>
+                    </action>
+                  </menu>
+                </action-list>
+
+                <div class="fr search-bar">
+                  <search-bar id="search-policy" group-classes="" icon-classes="fa-search" placeholder="{% trans "Filter" %}"> </search-bar>
+                </div>
+
+              </div>
+            </th>
+          </tr>
+          <tr eagle-eye="table_heads">
+            <th class="select-col" eagle-eye="select_col">
+              <input type="checkbox" hz-select-page="servicePolicys"/>
+            </th>
+            <th st-sort="name" st-sort-default="name" eagle-eye="data_col">
+              {$ ::context.header.name $}
+            </th>
+            <th eagle-eye="data_col">{$ ::context.header.desc $}</th>
+            <th st-sort="shared" eagle-eye="data_col">{$::context.header.NetworkServiceParams$}</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+        <tr ng-if="!iServicePolicyState">
+          <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+        </tr>
+
+        <tr ng-if="!iServicePolicys.length && iServicePolicyState">
+          <td colspan="100">{% trans "No Data" %} {$ iServicePolicys.length $}</td>
+        </tr>
+
+        <tr ng-repeat="iServicePolicy in iServicePolicys"
+          ng-class="{'st-selected': checked[iServicePolicy.id]}"
+          ng-init="ipolicyIndex = $index"
+          eagle-eye= "data_row">
+          <td class="select-col" eagle-eye="select_col">
+            <input type="checkbox"
+              hz-select="iServicePolicy"
+              ng-model="selected[iServicePolicy.id].checked"
+              hz-checkbox-group="servicePolicys"/>
+          </td>
+
+          <td eagle-eye="data_col">
+            <span class="row-name">{$ iServicePolicy.name $}</span>
+          </td>
+          <td eagle-eye="data_col">{$ iServicePolicy.description $}</td>
+          <td eagle-eye="data_col">
+            {$ iServicePolicy.network_service_params $}
+          </td>
+         </tr>
+
+        <!--<tr ng-repeat-start="policy in ipolicies"
+          ng-class="{'st-selected': checked[policy.id]}"
+          ng-init="ipolicyIndex = $index"
+          eagle-eye= "data_row">
+          <td class="select-col" eagle-eye="select_col">
+            <input type="checkbox"
+              hz-select="policy"
+              ng-model="selected[policy.id].checked"
+              hz-checkbox-group="policies"/>
+          </td>
+
+          <td eagle-eye="data_col">
+            <span class="row-name">{$ policy.name $}</span>
+            <i class="chevron-right chevron-fixed fr" hz-expand-detail="chevron-right chevron-down" duration="200"></i>
+          </td>
+          <td eagle-eye="data_col">{$ policy.description $}</td>
+          <td class="text-center" eagle-eye="data_col">
+            <i ng-if="policy.shared" class="state-icon icon-true"></i>
+            <i ng-if="!policy.shared" class="state-icon icon-false"></i>
+          </td>
+         </tr>
+
+          <tr eagle-eye= "detail_row" ng-repeat-end class="detail-row js-detail-box" data-instanceId="{$ policy.id $}" data-index="{$ ipolicyIndex $}">
+            <td class="detail" colspan="100">
+                <p class="detail-row-name fl">{% trans "Firewall Rules" %}</p>
+                <div class="detail-expanded fl">
+                  <table id="rules-list" class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th>{$ ::context.ruleHeader.name $}</th>
+                        <th>{$ ::context.ruleHeader.desc $}</th>
+                        <th>{$ ::context.ruleHeader.action $}</th>
+                        <th>{$ ::context.ruleHeader.protocol $}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-if="!policy.rules.length">
+                        <td colspan="100">{% trans "No Data" %}</td>
+                      </tr>
+                      <tr ng-repeat="rule in policy.rules track by rule.position"
+                        lr-drag-data="policy.rules" lr-drag-src="reorder"
+                        lr-drop-target="reorder" lr-drop-success="updatePriority(e, item, collection)">
+                        <td>{$ rule.name $}</td>
+                        <td>{$ rule.description $}</td>
+                        <td>{$ rule.action $}</td>
+                        <td>{$ rule.protocol $}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </div>
+            </td>
+          </tr>-->
+
+        </tbody>
+
+        <tfoot>
+          <tr>
+            <td colspan="100">
+              <table-footer></table-footer>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </tab>
+
+  <tab id="tab-rule-button" heading="{% trans "External Connectivity"%}">
+    <div class="tab-pane-content">
+      <table id="rules-list"
+        hz-table
+        ng-cloak
+        hopes-table-drag
+        st-table="iExternalConnectivitys"
+        st-safe-src="externalConnectivitys"
+        default-sort="name"
+        default-sort-reverse="false"
+        ng-controller="projectExternalConnectivityCtrl"
+        class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th colspan="100" class="bare">
+              <div class="table_actions clearfix">
+
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    callback="actions.refresh">
+                    <i class="icon icon-refresh"></i>
+                    <span id="refresh-rule"></span>
+                  </action>
+                 </action-list>
+
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    callback="actions.create.open">
+                    <i class="icon icon-add"></i>
+                    <span id="create-rule">{% trans 'Create External Connectivity' %}</span>
+                  </action>
+                </action-list>
+
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-action btn-danger'"
+                    disabled="numSelected === 0"
+                    callback="actions.deleted.batchDelete">
+                    <i class="icon icon-delete"></i>
+                    <span id="delete-rule">{% trans 'Delete External Connectivity' %}</span>
+                  </action>
+                </action-list>
+
+                <action-list dropdown>
+                  <button id="more-rule" type="button" class="btn btn-primary btn-action" dropdown-toggle>
+                    <i class="icon icon-more"></i>
+                    <span>{% trans 'More' %}</span>
+                  </button>
+                  <menu>
+                    <action
+                      button-type="menu-item"
+                      disabled="numSelected != 1"
+                      callback="actions.edit.open" item="selectedData.aData">
+                      <span id="edit-rule">{% trans 'Edit' %}</span>
+                    </action>
+                  </menu>
+                </action-list>
+
+                <div class="fr search-bar">
+                  <search-bar id="search-rule" group-classes="" icon-classes="fa-search" placeholder="{% trans "Filter" %}"> </search-bar>
+                </div>
+              </div>
+            </th>
+          </tr>
+          <tr eagle-eye="table_heads">
+            <th class="select-col" eagle-eye="select_col">
+              <input type="checkbox" hz-select-page="externalConnectivitys"/>
+            </th>
+
+            <th st-sort="name" st-sort-default="name" eagle-eye="data_col">
+              {$ ::context.header.name $}
+            </th>
+            <th eagle-eye="data_col">{$ ::context.header.desc $}</th>
+            <th eagle-eye="data_col">{$::context.header.IPVersion$}</th>
+            <th eagle-eye="data_col">CIDR</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+        <tr ng-if="!iExternalConnectivityState">
+          <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif" alt="" /></td>
+        </tr>
+
+        <tr ng-if="!iExternalConnectivitys.length && iExternalConnectivityState">
+          <td colspan="100">{% trans "No Data" %}</td>
+        </tr>
+
+        <tr ng-repeat="iExternalConnectivity in iExternalConnectivitys" ng-class="{'st-selected': checked[iExternalConnectivity.id]}">
+          <td class="select-col" eagle-eye="select_col">
+            <input type="checkbox"
+              hz-select="iExternalConnectivity"
+              ng-model="selected[iExternalConnectivity.id].checked"
+              hz-checkbox-group="externalConnectivitys"/>
+          </td>
+          <td eagle-eye="data_col">{$ iExternalConnectivity.name $}</td>
+          <td eagle-eye="data_col">{$ iExternalConnectivity.description $}</td>
+          <td eagle-eye="data_col">{$ iExternalConnectivity.ip_version $}</td>
+          <td eagle-eye="data_col">{$ iExternalConnectivity.cidr $}</td>
+        </tr>
+
+        </tbody>
+
+        <tfoot>
+          <tr>
+            <td colspan="100" eagle-eye="data_page">
+              <table-footer></table-footer>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </tab>
+
+  <tab id="tab-rule-button" heading="{% trans "NAT Pool"%}">
+    <div class="tab-pane-content">
+      <table id="rules-list"
+        hz-table
+        ng-cloak
+        hopes-table-drag
+        st-table="iNatPools"
+        st-safe-src="natPools"
+        default-sort="name"
+        default-sort-reverse="false"
+        ng-controller="projectNatPoolCtrl"
+        class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th colspan="100" class="bare">
+              <div class="table_actions clearfix">
+
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    callback="actions.refresh">
+                    <i class="icon icon-refresh"></i>
+                    <span id="refresh-rule"></span>
+                  </action>
+                 </action-list>
+
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    callback="actions.create.open">
+                    <i class="icon icon-add"></i>
+                    <span id="create-rule">{% trans 'Create NAT Pool' %}</span>
+                  </action>
+                </action-list>
+
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-action btn-danger'"
+                    disabled="numSelected === 0"
+                    callback="actions.deleted.batchDelete">
+                    <i class="icon icon-delete"></i>
+                    <span id="delete-rule">{% trans 'Delete NAT Pools' %}</span>
+                  </action>
+                </action-list>
+
+                <action-list dropdown>
+                  <button id="more-rule" type="button" class="btn btn-primary btn-action" dropdown-toggle>
+                    <i class="icon icon-more"></i>
+                    <span>{% trans 'More' %}</span>
+                  </button>
+                  <menu>
+                    <action
+                      button-type="menu-item"
+                      disabled="numSelected != 1"
+                      callback="actions.edit.open" item="selectedData.aData">
+                      <span id="edit-rule">{% trans 'Edit' %}</span>
+                    </action>
+                  </menu>
+                </action-list>
+
+                <div class="fr search-bar">
+                  <search-bar id="search-rule" group-classes="" icon-classes="fa-search" placeholder="{% trans "Filter" %}"> </search-bar>
+                </div>
+              </div>
+            </th>
+          </tr>
+          <tr eagle-eye="table_heads">
+            <th class="select-col" eagle-eye="select_col">
+              <input type="checkbox" hz-select-page="natPools"/>
+            </th>
+
+            <th st-sort="name" st-sort-default="name" eagle-eye="data_col">
+              {$ ::context.header.name $}
+            </th>
+            <th eagle-eye="data_col">{$ ::context.header.desc $}</th>
+            <th eagle-eye="data_col">{$::context.header.IPVersion$}</th>
+            <th eagle-eye="data_col">{$::context.header.IPPool$}</th>
+            <th eagle-eye="data_col">{$::context.header.ExternalSegment$}</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+        <tr ng-if="!iNatPoolState">
+          <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+        </tr>
+
+        <tr ng-if="!iNatPools.length && iNatPoolState">
+          <td colspan="100">{% trans "No Data" %}</td>
+        </tr>
+
+        <tr ng-repeat="iNatPool in iNatPools" ng-class="{'st-selected': checked[iNatPool.id]}">
+          <td class="select-col" eagle-eye="select_col">
+            <input type="checkbox"
+              hz-select="iNatPool"
+              ng-model="selected[iNatPool.id].checked"
+              hz-checkbox-group="natPools"/>
+          </td>
+          <td eagle-eye="data_col">{$ iNatPool.name $}</td>
+          <td eagle-eye="data_col">{$ iNatPool.description $}</td>
+          <td eagle-eye="data_col">{$ iNatPool.ip_version $}</td>
+          <td eagle-eye="data_col">{$ iNatPool.ip_pool $}</td>
+          <td eagle-eye="data_col">{$ iNatPool.external_segment_id $}</td>
+          </tr>
+
+        </tbody>
+
+        <tfoot>
+          <tr>
+            <td colspan="100" eagle-eye="data_page">
+              <table-footer></table-footer>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </tab>
+
+</tabset>
+{% endblock %}

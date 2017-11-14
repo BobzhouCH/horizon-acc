@@ -1,0 +1,112 @@
+{% load i18n %}
+
+<div class="detail-page">
+    <div class="fl detail-left-icon" ng-click="action.cancel()"></div>
+    <div class="detail-page-con">
+
+    <tabset id="network-detail-wrap" justified="true" class="def-tabs">
+
+        <tab id="tab-network-connection" heading="{$ ::title.Subnets $}">
+          <div class="tab-pane-content">
+            <table id="network-detail-list" hz-table ng-cloak
+                   st-table="subnets"
+                   st-safe-src="safeSubnets"
+                   default-sort="name"
+                   default-sort-reverse="false"
+                   disabled="disabled"
+                   ng-controller="NetworkDetailCtrl"
+                   class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th colspan="100" class="bare table-th-unline">
+
+                        <div class="table_actions clearfix">
+
+                            <action-list class="btn-addon">
+                                <action
+                                    action-classes="'btn btn-primary btn-action'"
+                                    callback="actions.create.open" item="sunnetId">
+                                    <i class="icon icon-add"></i>
+                                    <span id="network-create">{$ :: ctrl.create $}</span>
+                                </action>
+                            </action-list>
+                            <action-list class="btn-addon">
+                                <action
+                                    action-classes="'btn btn-action btn-danger'"
+                                    disabled="numSelected === 0"
+                                    callback="actions.deleted.batchDelete">
+                                    <i class="icon icon-delete"></i>
+                                    <span id="network-delete">{$ ctrl.delete $}</span>
+                                </action>
+                            </action-list>
+
+                            <action-list dropdown>
+                                <button id="network-more" type="button" class="btn btn-primary btn-action" dropdown-toggle>
+                                  <i class="icon icon-more"></i>
+                                  <span>{% trans "More" %}</span>
+                                </button>
+                                <menu>
+                                    <action
+                                        button-type="menu-item"
+                                        disabled="disabled"
+                                        callback="actions.edit.open" item="selectedData.aData">
+                                        <span id="network-edit">{$ :: ctrl.edit $}</span>
+                                    </action>
+                                </menu>
+                            </action-list>
+
+                        </div>
+                    </th>
+                </tr>
+                <tr eagle-eye="table_heads">
+                    <th eagle-eye="select_col">
+                        <input type="checkbox"
+                           hz-select-page="safeSubnets"/>
+                    </th>
+                    <th st-sort="name" st-sort-default="name" eagle-eye="data_col">
+                        {$ ::context.header.name $}
+                    </th>
+                    <th st-sort="cidr" eagle-eye="data_col">
+                        {$ ::context.header.cidr $}
+                    </th>
+                    <th st-sort="gateway_ip" eagle-eye="data_col">
+                        {$ ::context.header.gateway_ip $}
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody>
+                  <tr ng-if="detailDataState">
+                      <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+                  </tr>
+                  <tr ng-if="!subnets.length && !detailDataState">
+                    <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+                  </tr>
+                  <tr ng-repeat="subnet in subnets" ng-class="{'st-selected': checked[subnet.id]}">
+                      <td eagle-eye="select_col">
+                          <input type="checkbox"
+                              hz-select="subnet"
+                              ng-model="selected[subnet.id].checked"
+                              hz-checkbox-group="safeSubnets"/>
+                      </td>
+
+                      <td eagle-eye="data_col">{$ subnet.name $}</td>
+                      <td eagle-eye="data_col">{$ subnet.cidr $}</td>
+                      <td eagle-eye="data_col">{$ subnet.gateway_ip $}</td>
+                  </tr>
+                </tbody>
+
+                <tfoot ng-if="safeSubnets.length > 10">
+                <tr>
+                    <td colspan="100" eagle-eye="data_page">
+                        <table-footer></table-footer>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+          </div>
+        </tab>
+
+    </tabset>
+    </div>
+</div>

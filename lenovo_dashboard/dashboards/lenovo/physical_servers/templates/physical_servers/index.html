@@ -1,0 +1,255 @@
+{% extends 'lenovo/base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Physical Servers" %}{% endblock %}
+
+{% block page_header %}
+    {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Physical Servers") %}
+{% endblock page_header %}
+
+{% block content_main %}"contentMain tab-main"{% endblock %}
+
+{% block main %}
+
+<link href="{{ STATIC_URL }}lenovo/css/physical_servers/style.css" rel="stylesheet" />
+
+<style>
+    .popover {
+        max-width: 400px;
+    }
+</style>
+
+<hz-magic-search-context filter-facets="filterFacets">
+    <table id="lenovo-physical-servers-list" hz-table ng-cloak hopes-table-drag
+           st-table="iservers"
+           st-safe-src="servers"
+           ng-controller="lenovoPhysicalServersCtrl"
+           ng-init="userID = '{{ request.user.id }}'"
+           disabled="disabled"
+           st-magic-search
+           class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th colspan="100" class="bare">
+
+                    <div class="infui-server-overview">
+                        <div class="col-sm-3" element-position="1">
+                            <div>
+                                <div class="infui-server-ov-title">{$ ::context.icon.controller $}</div>
+                                <img ng-src="{{ STATIC_URL }}lenovo/img/ge48_rackserver_24.png" alt="Controller">
+                                <span class="infui-server-ov-count">{$ stat_info.controller $}</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-3" element-position="2">
+                            <div>
+                                <div class="infui-server-ov-title">{$ ::context.icon.compute $}</div>
+                                <img ng-src="{{ STATIC_URL }}lenovo/img/ge48_fsmcomputenode_24.png" alt="Compute">
+                                <span class="infui-server-ov-count">{$ stat_info.compute $}</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-3" element-position="3">
+                            <div>
+                                <div class="infui-server-ov-title">{$ ::context.icon.storage $}</div>
+                                <img ng-src="{{ STATIC_URL }}lenovo/img/ge48_augstorage_24.png" alt="Stroage">
+                                <span class="infui-server-ov-count">{$ stat_info.storage $}</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-3" element-position="4">
+                            <div>
+                                <div class="infui-server-ov-title">{$ ::context.icon.others $}</div>
+                                <img ng-src="{{ STATIC_URL }}lenovo/img/ge48_chassis_24.png" alt="Other">
+                                <span class="infui-server-ov-count">{$ stat_info.others $}</span>
+                            </div>
+                        </div>
+                    </div>
+                </th>
+            </tr>
+            <tr>
+                <th colspan="100" class="bare" style="border:0;padding:0;">
+                    <div class="table_actions clearfix" style="margin-top:50px">
+                        <action-list class="btn-addon">
+                            <action action-classes="'btn btn-default btn-sm'"
+                                    callback="actions.refresh">
+                                <i class="icon icon-refresh"></i>
+                                <span id="refresh"></span>
+                            </action>
+                        </action-list>
+
+                        <action-list>
+                            <action action-classes="'btn btn-action btn-primary'"
+                                    disabled="numSelected !== 1 || !selectedData.aData[0].authed || selectedData.aData[0].type == 0"
+                                    callback="powerOn" item="selectedData.aData">
+                                <i class="icon icon-edit"></i>
+                                <span id="server_POS">{$ ::context.action.POS $}</span>
+                            </action>
+                        </action-list>
+                        <action-list>
+                            <action action-classes="'btn btn-action btn-primary'"
+                                    disabled="numSelected !== 1 || !selectedData.aData[0].authed || selectedData.aData[0].type == 0"
+                                    callback="powerOff" item="selectedData.aData">
+                                <i class="icon icon-edit"></i>
+                                <span id="server_PFS">{$ ::context.action.PFS $}</span>
+                            </action>
+                        </action-list>
+
+                        <action-list>
+                            <action action-classes="'btn btn-action btn-danger'"
+                                    disabled="numSelected === 0"
+                                    callback="actions.action.deleteServer" item="selectedData.aData">
+                                <i class="icon icon-delete"></i>
+                                <span id="server_delete">{$ ::context.action.delete $}</span>
+                            </action>
+                        </action-list>
+                        <action-list dropdown>
+                            <button id="more" type="button" class="btn btn-primary btn-action" ng-click="moreBtnClick()" dropdown-toggle>
+                                <i class="icon icon-more"></i>
+                                <span>{% trans 'More' %}</span>
+                              <!--<div class="bnt-piece"><span class="caret"></span></div>-->
+                            </button>
+                            <menu>
+                                <action action-classes=""
+                                    button-type="menu-item"
+                                    disabled="numSelected !== 1 || !selectedData.aData[0].authed || selectedData.aData[0].type == 0"
+                                    callback="powerReboot" item="selectedData.aData">
+                                    <!--i class="icon icon-edit"></i-->
+                                    <span id="server_restart">{$ ::context.action.restart $}</span>
+                                </action>
+                                <action action-classes=""
+                                    button-type="menu-item"
+                                    disabled="numSelected !== 1 || selectedData.aData[0].type == 0"
+                                    callback="authServer" item="selectedData.aData">
+                                    <span id="server_auth">{$ ::context.action.authenticate $}</span>
+                                </action>
+                                <action action-classes=""
+                                    button-type="menu-item"
+                                    disabled="numSelected !== 1 || selectedData.aData[0].type == 0"
+                                    callback="actions.action.launchBMC" item="selectedData.aData">
+                                    <span id="launch_BMC">{$ ::context.action.launchBMC $}</span>
+                                </action>
+                                <action action-classes=""   
+                                    button-type="menu-item"
+                                    disabled="numSelected !== 1"
+                                    callback="lock_node" item="selectedData.aData">
+                                    <span id="Lock_unlock">{$ selectedData.aData[0].Lock_status == "Locked"? "Unlock Node" : "Lock Node" $}</span>
+                                </action>
+                                <action action-classes=""
+                                    button-type="menu-item"
+                                    disabled="numSelected !== 1"
+                                    callback="actions.monitor.open" item="selectedData.aData">
+                                    <span id="monitor">{$ ::context.action.monitor $}</span>
+                                </action>
+                                <!--<action action-classes=""-->
+                                    <!--button-type="menu-item"-->
+                                    <!--disabled="!novaStatus.ksm.enable || selectedData.aData[0].type == 0 || !selectedData.aData[0].authed || selectedData.aData[0].powerraw !== 'On'"-->
+                                    <!--callback="actions.action.setKsmStatus" item="selectedData.aData">-->
+                                    <!--<span id="">{$ ::context.action.ksm $} {$ novaStatus.ksm.displayText $}</span>-->
+                                <!--</action>-->
+                                <!--<action action-classes=""-->
+                                    <!--button-type="menu-item"-->
+                                    <!--disabled="!novaStatus.zram.enable || selectedData.aData[0].type == 0 || !selectedData.aData[0].authed|| selectedData.aData[0].powerraw !== 'On'"-->
+                                    <!--callback="actions.action.setzramStatus" item="selectedData.aData">-->
+                                    <!--<span id="">{$ ::context.action.zram $} {$ novaStatus.zram.displayText $}</span>-->
+                                <!--</action>-->
+                            </menu>
+                        </action-list>
+                        <div class="fr search-bar">
+                            <hz-magic-search-bar id="search"></hz-magic-search-bar>
+                        </div>
+                    </div>
+                </th>
+            </tr>
+            
+            <tr eagle-eye="table_heads">
+                <th class="select-col" eagle-eye="select_col">
+                    <input type="checkbox" hz-select-page="servers" />
+                </th>
+                <th><span st-sort="hostname" eagle-eye="data_col">{$ ::context.header.hostname $}</span></th>
+                <th><span st-sort="role" eagle-eye="data_col">{$ ::context.header.role $}</span></th>
+                <th><span st-sort="status" eagle-eye="data_col">{$ ::context.header.status $}</span></th>
+                <th><span st-sort="power" eagle-eye="data_col">{$ ::context.header.power $}</span></th>
+
+                <!--<th><span st-sort="power" eagle-eye="data_col">{$ ::context.header.ksm $}</span></th>-->
+                <!--<th><span st-sort="power" eagle-eye="data_col">{$ ::context.header.zram $}</span></th>-->
+
+                <th><span st-sort="ip" eagle-eye="data_col">{$ ::context.header.ip $}</span></th>
+                <th><span st-sort="product" eagle-eye="data_col">{$ ::context.header.product $}</span></th>
+                <th><span st-sort="machine" eagle-eye="data_col">{$ ::context.header.machine $}</span></th>
+                <th><span st-sort="serial" eagle-eye="data_col">{$ ::context.header.serial $}</span></th>
+                <th><span st-sort="Lock_status" eagle-eye="data_col">{$ ::context.header.lock_status $}</span></th>
+                <!--th><span eagle-eye="data_col">{$ ::context.header.action $}</span></th-->
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-if="!serverState">
+                <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif" alt="" /></td>
+            </tr>
+            <tr ng-if="!iservers.length && serverState">
+                <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+            </tr>
+            <tr ng-repeat="server in iservers" ng-class="{'st-selected': checked[server.id]}">
+                <td class="select-col" eagle-eye="select_col">
+                    <input type="checkbox"
+                           hz-select="server"
+                           ng-model="selected[server.id].checked"
+                           hz-checkbox-group="servers" />
+                </td>
+                <td eagle-eye="data_col">
+                    <!--<a ng-click="actions.detail.open(server.id)" href="javascript:;" data-url="/lenovo/physical_servers/detail/{$ server.id $}">-->
+                    <a ng-click="actions.detail.open(server.id, server.hostname, server.ip, server.powerState, server.Lock_status)" href="javascript:;">
+                        {$ server.hostname $}
+                    </a>
+                </td>
+                <td eagle-eye="data_col">{$ server.role $}</td>
+                <td eagle-eye="data_col">
+                    <img class="image-icon" ng-src="{{ STATIC_URL }}{$ server.statusimg $}" width="16" height="16">
+                    <a ng-mouseenter="popoverEnter($event)" ng-mouseleave="popoverLeave($event)" data-container="body" data-toggle="popover" data-html="true" title='{% trans "Alerts:" %} {$ server.hostname $}'
+                       data-content="<div class='infui-server-status-info'><img src='/static/lenovo/img/st22_critical_24.png' alt='Critical'/><a ng-click='actions.detail.open(server.id)'>{$ server.critical $}</a><img src='/static/lenovo/img/st22_warningminor_24.png' alt='Warning'/><a>{$ server.warning $}</a><img src='/static/lenovo/img/st22_informational_24.png' alt='Info'/><a>{$ server.info $}</a></div>">
+                        {$ server.status $}
+                    </a>
+                </td>
+                <td eagle-eye="data_col">
+                    <img class="image-icon" ng-src="{{ STATIC_URL }}{$ server.powerimg $}" width="16" height="16">
+                    {$ server.power $}
+                </td>
+
+                <!--<td eagle-eye="data_col">-->
+                    <!--<img class="image-icon" ng-if="server.ksm.loadingStatus == 'success' && server.ksm.status === 'On'" ng-src="/static/lenovo/img/ac16_power_24.png" width="16" height="16">-->
+                    <!--<img class="image-icon" ng-if="server.ksm.loadingStatus == 'success' && server.ksm.status === 'Off'" ng-src="/static/lenovo/img/ac16_powerOFF_24.png" width="16" height="16">-->
+                    <!--<img class="image-icon" ng-if="server.ksm.loadingStatus == 'success' && server.ksm.status === 'NA'" ng-src="/static/lenovo/img/st16_na_24.png" width="16" height="16">-->
+                    <!--<span class="instance-state instance-state-{$ server.ksm.loadingStatus  == 'error' ? '': server.ksm.loadingStatus $}" style="margin:0;"></span>-->
+                    <!--<span ng-if="server.ksm.loadingStatus == 'success' ">{$server.ksm.status | decode: KSMStatus$}</span>-->
+                    <!--<span ng-if="server.ksm.loadingStatus == 'error' ">{% trans "Unkown" %}</span>-->
+                <!--</td>-->
+                <!--<td eagle-eye="data_col">-->
+                    <!--<img class="image-icon" ng-if="server.zram.loadingStatus == 'success' && server.zram.status === 'On'" ng-src="/static/lenovo/img/ac16_power_24.png" width="16" height="16">-->
+                    <!--<img class="image-icon" ng-if="server.zram.loadingStatus == 'success' && server.zram.status === 'Off'" ng-src="/static/lenovo/img/ac16_powerOFF_24.png" width="16" height="16">-->
+                    <!--<img class="image-icon" ng-if="server.zram.loadingStatus == 'success' && server.zram.status === 'NA'" ng-src="/static/lenovo/img/st16_na_24.png" width="16" height="16">-->
+                    <!--<span class="instance-state instance-state-{$ server.zram.loadingStatus == 'error' ? '':server.zram.loadingStatus $}" style="margin:0;"></span>-->
+                    <!--<span ng-if="server.zram.loadingStatus == 'success' ">{$server.zram.status | decode: KSMStatus$}</span>-->
+                    <!--<span ng-if="server.zram.loadingStatus == 'error' ">{% trans "Unkown" %}</span>-->
+                <!--</td>-->
+
+                <td eagle-eye="data_col">{$ server.ip $}</td>
+                <td eagle-eye="data_col">{$ server.product $}</td>
+                <td eagle-eye="data_col">{$ server.machine $}</td>
+                <td eagle-eye="data_col">{$ server.serial $}</td>
+                
+                <td eagle-eye="data_col">
+                    <span  class="server-state server-state-{$ server.Lock_status | lowercase $}"></span>
+                    {$ server.Lock_status $}
+                </td>
+
+            </tr>
+        </tbody>
+        <tfoot ng-if="servers.length > 10">
+            <tr>
+                <td colspan="100" eagle-eye="data_page">
+                    <table-footer></table-footer>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</hz-magic-search-context>
+
+{% endblock %}
+
+

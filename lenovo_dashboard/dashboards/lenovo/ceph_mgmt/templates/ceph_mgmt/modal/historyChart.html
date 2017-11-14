@@ -1,0 +1,18 @@
+{%load i18n%}
+<script type="text/ng-template" id="historyChart.html">
+    <div class="history-box" >
+        <div id="history_chart"></div>
+        <div class="time_group">
+            <span class="title">{% trans "Time Range" %}</span>
+            <div class="btn-group" >
+              <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                <label class="currentTime">{$ networkTime || time_menulist[0].text $}</label>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu pull-right" >
+                <li ng-repeat="typeitem in time_menulist"  ng-click="networkSwitchTime($event, typeitem.text, typeitem.typeIndex)"><a href="javascript:void(0)">{$ typeitem.text $}</a></li>
+              </ul>
+            </div>
+        </div>
+    </div>
+</script>

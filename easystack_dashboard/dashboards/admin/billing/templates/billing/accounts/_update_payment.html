@@ -1,0 +1,36 @@
+{% extends "easystack_dashboard/common/_es_modal_form.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block form_id %}update_user_form{% endblock %}
+{% block form_action %}{% url 'horizon:admin:billing:accounts:update_payment' account.id %}{% endblock %}
+
+{% block modal-header %}{% trans "Edit Payment" %}{% endblock %}
+
+{% block modal-body %}
+
+  <div class="left createRouters_wrap">
+    <fieldset>
+      {% include "easystack_dashboard/self_defined_templates/update_account/_update_account_form_fields.html" %}
+    </fieldset>
+  </div>
+
+<script type="text/javascript">
+  if (typeof horizon.user !== 'undefined') {
+    horizon.user.init();
+  } else {
+    addHorizonLoadEvent(function() {
+      horizon.user.init();
+    });
+  }
+</script>
+{% endblock %}
+
+{% block modal-footer %}
+  <div class="btnWarp">
+    <div class="Private_btn txt-r">
+      <input id="edit-payment" type="submit" value="{% trans "Edit Payment" %}" class="btn_3">
+      {#<a class="btn_4 cancel close" href="{% url 'horizon:admin:billing:index' %}">{% trans "Cancel" %}</a>#}
+    </div>
+  </div>
+{% endblock %}

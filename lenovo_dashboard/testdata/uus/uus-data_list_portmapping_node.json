@@ -1,0 +1,12 @@
+{
+  "return_data": {
+    "ip": "10.240.253.202",
+    "nodes": {
+      "node-1": "portchannel:1",
+      "node-2": "portchannel:2",
+      "node-3": "portchannel:3"
+    },
+    "uuid": "F85988910709BE6B288CC0C99EFA57B2"
+  },
+  "return_code": 0
+}

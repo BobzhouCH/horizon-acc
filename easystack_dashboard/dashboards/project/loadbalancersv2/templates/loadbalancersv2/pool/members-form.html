@@ -1,0 +1,230 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+    <h3 class="modal-title">{$ ::context.title $}</h3>
+    <p class="modal-colsed" ng-click="action.cancel()">
+        <i class="modal-colsed-icon"></i>
+    </p>
+</div>
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+    <div class="modal-body clearfix">
+        <div class="modal-description mt10">
+          <p>
+            {% trans "The Port Number should be in the range: 1~65535; The Weight should be in the range: 1~100." %}
+          </p>
+        </div>
+        <div class="lb-batch-content">
+
+            <div class="form-group fl"
+                 ng-class="{'has-error':form.resource-pool.$invalid && form.resource-pool.$dirty}">
+                <label for="resource-pool">
+                    *{% trans "Resouce Pool" %}
+                </label>
+                <div class="form-group-right">
+                    <input
+                            id="resource-pool"
+                            name="resource-pool"
+                            class="form-control verify-input"
+                            type="text"
+                            ng-model="pool.name"
+                            ng-disabled="context.mode === 'add' || context.mode === 'modifyWeight'"/>
+                </div>
+            </div>
+
+            <!--
+              Subnet name:
+            -->
+
+            <div class="form-group clearfix form-inline-lb"
+                 ng-class="{'has-error':form.subnet.$invalid && form.subnet.$dirty}">
+                <label for="subnet">
+                    *{% trans "Subnet" %}
+                </label>
+                <div class="form-group-right">
+                    <select
+                            id="subnet"
+                            name="subnet"
+                            class="form-control"
+                            ng-class="{strikeLoading: !vip_subnets}"
+                            ng-model="member.subnet"
+                            ng-change="changeSubnetToSelect(member.subnet)"
+                            ng-required="context.mode === 'add'"
+                            ng-disabled="context.mode === 'modifyWeight'">
+                        <option value="" disabled>
+                            {$ (vip_subnets && vip_subnets.length)? "{% trans 'Select a Subnet' %}": "{% trans 'No Subnet Available' %}" $}
+                        </option>
+                        <option
+                                ng-repeat="subnet in vip_subnets"
+                                value="{$ subnet.id $}"
+                                ng-selected="member.subnet_id === subnet.id">
+                            {$ subnet.name $}:{$ subnet.cidr $}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <transfer-table
+                    tr-model="transferTableModel"
+                    limits="tableLimits">
+                <allocated ng-model="allocatedInstancesNetIncluded.length"
+                           validate-number-min="1" name="allocated-instance">
+                    <table id="selected-instances" st-magic-search
+                           st-table="displayedAllocatedInstancesNetIncluded"
+                           st-safe-src="allocatedInstancesNetIncluded"
+                           hz-table ng-cloak class="table table-bordered table-hover table-th">
+                        <thead>
+                        <tr>
+                            <th eagle-eye="data_col" st-sort="name" class="">{$ 'Name' |trans $}</th>
+                            <th eagle-eye="data_col" st-sort="address">{$ 'IP Address' |trans $}</th>
+                            <th eagle-eye="data_col" st-sort="protocol_port">*{$ 'Port Number' |trans $}</th>
+                            <th eagle-eye="data_col" st-sort="weight">*{$ 'Weight' |trans $}</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-if="displayedAllocatedInstancesNetIncluded.length === 0">
+                            <td colspan="10">
+                                <div class="no-rows-help">
+                                    {$ ::trCtrl.helpText.noneAllocText $}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr ng-repeat="item in displayedAllocatedInstancesNetIncluded track by item.id">
+                            <td eagle-eye="data_col" class="">
+                                <span class="row-name" title="{$ ::item.name $}">{$ ::item.name $}</span>
+                            </td>
+                            <td eagle-eye="data_col" class="">
+                                <span class="row-name" title="{$ ::item.address $}">{$ ::item.address $}</span>
+                            </td>
+                            <td eagle-eye="data_col" class="">
+                                <div class="clearfix" ng-class="{'has-error': !item.protocol_port }">
+                                    <input required
+                                           name="port"
+                                           class="input-trans input-width fl"
+                                           type="number"
+                                           min="1"
+                                           max="65535"
+                                           ng-model="allocatedInstancesNetIncluded.findId(item.id).protocol_port"/>
+                                    <i class="price-icon" ng-if="!item.protocol_port"></i>
+                                </div>
+                                <!--<span class="row-name"
+                                      title="{$ ::item.protocol_port $}">{$ ::item.protocol_port $}</span>-->
+                            </td>
+                            <td eagle-eye="data_col" class="">
+                               <div class="clearfix" ng-class="{'has-error': !item.weight }">
+                                    <input required
+                                           name="weight"
+                                           class="input-width fl"
+                                           type="number"
+                                           min="1"
+                                           max="100"
+                                           ng-model="allocatedInstancesNetIncluded.findId(item.id).weight"/>
+                                    <i class="price-icon" ng-if="!item.weight"></i>
+                                </div>
+                            </td>
+                            <td eagle-eye="button_action" class="action-col">
+                                <action-list button-tooltip="item.disabledMessage"
+                                             class="instance-btn"
+                                             bt-model="tooltipModel"
+                                             bt-disabled="!isAvailableTable || item.enabled"
+                                             warning-classes="'invalid'">
+                                    <notifications>
+                                        <span class="fa fa-exclamation-triangle invalid"
+                                              ng-show=" !item.protocol_port || !item.weight " title="{$ ::context.errorMsg $}"></span>
+                                    </notifications>
+                                    <action
+                                            callback="trCtrl.deallocate"
+                                            item="item"
+                                            disabled="isAvailableTable && !item.enabled">
+                                        <span class="icon remove_to"></span>
+                                    </action>
+                                </action-list>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </allocated>
+                <available>
+                    <hz-magic-search-context filter-facets="filterFacets">
+                        <hz-magic-search-bar>
+                        </hz-magic-search-bar>
+                        <table id="instance-list" st-magic-search
+                               st-table="displayedInstancesNetIncluded"
+                               st-safe-src="instancesNetIncluded"
+                               hz-table class="table table-bordered table-hover table-th">
+                            <thead>
+                            <tr>
+                                <th eagle-eye="data_col" st-sort="name">{$ 'Name' |trans $}</th>
+                                <th eagle-eye="data_col" st-sort="address">{$ 'IP Address' |trans $}</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-if="displayedInstancesNetIncluded.length === 0">
+                                <td colspan="10">
+                                    <div class="no-rows-help">
+                                        {$ ::trCtrl.helpText.noneAvailText $}
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr ng-repeat="item in displayedInstancesNetIncluded track by item.id"
+                                ng-if="!trCtrl.allocatedIds[item.id]">
+                                <td eagle-eye="data_col" class="">
+                                    <span class="row-name" title="{$ ::item.name $}">{$ ::item.name $}</span>
+                                </td>
+                                <td eagle-eye="data_col" class="">
+                                    <span class="row-name" title="{$ ::item.address $}">{$ ::item.address $}</span>
+                                </td>
+                                <td eagle-eye="button_action" class="action-col">
+                                    <action-list button-tooltip="item.disabledMessage"
+                                                 class="instance-btn"
+                                                 bt-model="tooltipModel"
+                                                 bt-disabled="!isAvailableTable || item.enabled"
+                                                 warning-classes="'invalid'">
+                                        <notifications>
+                                            <span class="fa fa-exclamation-triangle invalid"
+                                                  ng-show="isAvailableTable && !item.enabled"></span>
+                                        </notifications>
+                                        <action
+                                                callback="trCtrl.allocate"
+                                                item="item"
+                                                disabled="isAvailableTable && !item.enabled">
+                                            <span class="icon add_to"></span>
+                                        </action>
+                                    </action-list>
+                                </td>
+                            </tr>
+                            </tbody>
+
+                            <tfoot ng-if="instancesNetIncluded.length>10">
+                            <tr>
+                                <td colspan="100">
+                                    <div st-pagination="" st-items-by-page="10" st-displayed-pages="10"></div>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </hz-magic-search-context>
+                </available>
+            </transfer-table>
+        </div>
+    </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+    <button id="submit-button-add" class="btn btn-primary" type="button"
+            ng-if="context.mode === 'add'"
+            ng-disabled="form.$invalid || memberWeightChange || volume.size < volumeDef.defVal || showBalance || quota_exceeded"
+            ng-click="action.submit(allocatedInstancesNetIncluded)">
+        {$ ::context.submit $}
+    </button>
+
+    <button id="submit-button-modify" class="btn btn-primary" type="button"
+            ng-if="context.mode === 'modifyWeight'"
+            ng-disabled="form.$invalid ||!subnetDataReady || memberWeightChange || volume.size < volume.oldSize || showBalance || quota_exceeded"
+            ng-click="action.submit()">
+        {$ ::context.submit $}
+    </button>
+</div>

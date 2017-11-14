@@ -1,0 +1,33 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+    <h3 class="modal-title">{$ label.title $}</h3>
+    <p class="modal-colsed" ng-click="action.cancel()">
+        <i class="modal-colsed-icon"></i>
+    </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+    <div class="form-group clearfix">
+        {$ label.message_selected $}{$ nodeNames $}
+    </div>
+    <div class="form-group clearfix">
+        {$ label.message_confirm $}
+    </div>
+    <div class="form-group clearfix">
+        <input type="checkbox" ng-model="isConfirmed">{$ label.confirm $}
+    </div>
+    <!-- Modal-form-right: The description text. -->
+</div>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+    <button id="submit-button" class="btn btn-danger" type="button"
+            ng-disabled="!isConfirmed"
+            ng-click="action.submit()">
+        {$ label.delete $}
+    </button>
+</div>

@@ -1,0 +1,15 @@
+{
+  "return_data": [
+    {
+      "username": "admin",
+      "uuid": "048263890DFADF2028B0ACF31E59310D",
+      "ssh_port": "830",
+      "switch_ip": "10.240.195.10",
+      "os_type": "cnos",
+      "password": "admin",
+      "protocol": "rest",
+      "rest_tcp_port": "443"
+    }
+  ],
+  "return_code": 0
+}

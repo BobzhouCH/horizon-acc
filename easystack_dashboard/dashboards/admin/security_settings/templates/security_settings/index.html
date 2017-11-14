@@ -1,0 +1,127 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Security Settings" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Security Settings") %}
+{% endblock page_header %}
+
+{% block main %}
+
+<div class="modal-header" style="background: none; color: #000; border-bottom: 1px solid #e5e5e5">
+    <h3 class="modal-title">{% trans "Security Settings" %}</h3>
+</div>
+
+<form novalidate
+  id="settingForm"
+  name="form"
+  ng-controller="adminSecuritySettingsCtrl">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+      <fieldset class="col-sm-6">
+
+        <!--
+          Observing time input (required):
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.observing_time.$invalid && form.observing_time.$dirty}">
+          <label for="observing_time" style="width: 150px;">
+            {% trans "Observing Time (s)" %}
+          </label>
+          <div class="form-group-right no-input-number">
+            <input
+              id="observing_time"
+              name="observing_time"
+              class="form-control verify-input"
+              type="number"
+              min="60"
+              ng-model="observing_time"/>
+            <p class="help-block alert alert-danger"
+              ng-show="form.observing_time.$invalid && form.observing_time.$dirty">
+              {% trans "Observing time must be set more than 60 seconds." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+          Observing time input (required):
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.locking_time.$invalid && form.locking_time.$dirty}">
+          <label for="locking_time" style="width: 150px;">
+            {% trans "Locking Time (s)" %}
+          </label>
+          <div class="form-group-right no-input-number">
+            <input
+              id="locking_time"
+              name="locking_time"
+              class="form-control verify-input"
+              type="number"
+              min="60"
+              ng-model="locking_time"/>
+            <p class="help-block alert alert-danger"
+              ng-show="form.locking_time.$invalid && form.locking_time.$dirty">
+              {% trans "Locking time must be set more than 60 seconds." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+          Observing time input (required):
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.limit_times.$invalid && form.limit_times.$dirty}">
+          <label for="limit_times" style="width: 150px;">
+            {% trans "Limit Times" %}
+          </label>
+          <div class="form-group-right no-input-number">
+            <input
+              id="limit_times"
+              name="limit_times"
+              class="form-control verify-input"
+              type="number"
+              min="1"
+              ng-model="limit_times"/>
+            <p class="help-block alert alert-danger"
+              ng-show="form.limit_times.$invalid && form.limit_times.$dirty">
+              {% trans "Limit times must be set more than 1." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+          Activate checkbox (required):
+        -->
+        <div class="form-group clearfix mt10">
+          <label for="is_activated" style="width: 150px;">
+            {% trans "Activate" %}
+          </label>
+          <div class="form-group-right">
+            <input type="checkbox"
+              id="is_activated"
+              name="is_activated"
+              ng-model="is_activated">
+          </div>
+        </div>
+
+      </fieldset>
+    <!-- Modal-form-right: The description text. -->
+        <div class="col-sm-6">
+            <h3>{% trans "Description:" %}</h3>
+            <br />
+            <p>{% trans "Prevent illegal violent crack on username and password." %}</p>
+        </div>
+
+  </div>
+  <!-- Modal-footer: User can submit or cancel form here. -->
+  <div class="modal-footer">
+      <button id="submit-button" class="btn btn-primary" type="button"
+        ng-disabled="form.$invalid"
+        ng-click="action.submit()">
+            {$ label.save $}
+      </button>
+  </div>
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,191 @@
+{% load i18n %}
+
+<div class="detail-page">
+<div class="fl detail-left-icon" ng-click="action.cancel()"></div>
+<div class="detail-page-con">
+  <tabset id="external-policy-detail-tab" justified="true" class="def-tabs">
+    <tab id="provided-policy-rule-detail" heading="{% trans 'Provided Policy Rule Set' %}">
+      <div class="tab-pane-content">
+        <table id="table-provided-policy-rule-set"
+               hz-table ng-cloak hopes-table-drag
+               st-table="iprovidedPolicyRuleSets"
+               st-safe-src="providedPolicyRuleSets"
+               default-sort="created"
+               default-sort-reverse="true"
+               class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th colspan="100" class="bare">
+                <div class="table_actions clearfix">
+                  <action-list>
+                    <action
+                      action-classes="'btn btn-primary btn-action'"
+                      callback="actions.refresh">
+                      <i class="icon icon-refresh"></i>
+                      <span id="refresh"></span>
+                    </action>
+                  </action-list>
+                  <action-list>
+                    <action
+                      action-classes="'btn btn-primary btn-action'"
+                      callback="actions.addPolicyRuleSet.open">
+                      <i class="icon icon-add"></i>
+                      <span id="add-policy-rule-set">{% trans 'Add Policy Rule Set' %}</span>
+                    </action>
+                  </action-list>
+                  <action-list>
+                    <action
+                      action-classes="'btn btn-primary btn-danger'"
+                      disabled="numSelected === 0"
+                      callback="actions.removePolicyRuleSet.open" item="selectedData.aData">
+                      <i class="icon icon-delete"></i>
+                      <span id="remove-policy-rule-set">{% trans 'Remove Policy Rule Set' %}</span>
+                    </action>
+                  </action-list>
+                </div>
+              </th>
+            </tr>
+            <tr eagle-eye="table_heads">
+              <th class="select-col" eagle-eye="select_col">
+                <input type="checkbox" hz-select-page="providedPolicyRuleSets"/>
+              </th>
+              <th st-sort="name" st-sort-default="name" eagle-eye="data_col">
+                {% trans 'Name' %}
+              </th>
+              <th st-sort="description" st-sort-default="description" eagle-eye="data_col">
+                {% trans 'Description' %}
+              </th>
+              <th st-sort="policy-rule-sets" st-sort-default="policy-rule-sets" eagle-eye="data_col">
+                {% trans 'Policy Rules' %}
+              </th>
+            </tr>
+          </thead> 
+          <tbody>
+            <tr ng-if="!providedPolicyRuleSetState">
+              <td colspan="100" class="Loading-bar">
+                <img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" />
+              </td>
+            </tr>
+
+            <tr ng-if="!iprovidedPolicyRuleSets.length && providedPolicyRuleSetState">
+              <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+            </tr>
+
+            <tr ng-if="providedPolicyRuleSetState" ng-repeat="ruleSet in iprovidedPolicyRuleSets" ng-class="{'st-selected': checked[ruleSet.id]}">
+              <td class="select-col" eagle-eye="select_col">
+                <input type="checkbox"
+                      hz-select="ruleSet"
+                      ng-model="selected[ruleSet.id].checked"
+                      hz-checkbox-group="providedPolicyRuleSets"/>
+              </td>
+              <td eagle-eye="select_col">
+                <a ng-click="actions.detail.open(group.id)"
+                  href="javascript:;">
+                    {$ ruleSet.name $}
+                </a>
+              </td>
+              <td eagle-eys="select_col">
+                {$ ruleSet.description $}
+              </td>
+              <td eagle-eys="select_col">
+                <p ng-repeat="name in ruleSet.policy_rule_names">{$ name $}</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </tab>
+    <tab id="consumed-policy-rule-detail" heading="{% trans 'Consumed Policy Rule Set' %}">
+      <div class="tab-pane-content">
+        <table id="table-consumed-policy-rule-set"
+               hz-table ng-cloak hopes-table-drag
+               st-table="iconsumedPolicyRuleSets"
+               st-safe-src="consumedPolicyRuleSets"
+               default-sort="created"
+               default-sort-reverse="true"
+               class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th colspan="100" class="bare">
+                <div class="table_actions clearfix">
+                  <action-list>
+                    <action
+                      action-classes="'btn btn-primary btn-action'"
+                      callback="actions.refresh">
+                      <i class="icon icon-refresh"></i>
+                      <span id="refresh"></span>
+                    </action>
+                  </action-list>
+                  <action-list>
+                    <action
+                      action-classes="'btn btn-primary btn-action'"
+                      callback="actions.addPolicyRuleSet.open">
+                      <i class="icon icon-add"></i>
+                      <span id="add-policy-rule-set">{% trans 'Add Policy Rule Set' %}</span>
+                    </action>
+                  </action-list>
+                  <action-list>
+                    <action
+                      action-classes="'btn btn-primary btn-danger'"
+                      disabled="numSelected === 0"
+                      callback="actions.removePolicyRuleSet.open" item="selectedData.aData">
+                      <i class="icon icon-delete"></i>
+                      <span id="remove-policy-rule-set">{% trans 'Remove Policy Rule Set' %}</span>
+                    </action>
+                  </action-list>
+                </div>
+              </th>
+            </tr>
+            <tr eagle-eye="table_heads">
+              <th class="select-col" eagle-eye="select_col">
+                <input type="checkbox" hz-select-page="consumedPolicyRuleSets"/>
+              </th>
+              <th st-sort="name" st-sort-default="name" eagle-eye="data_col">
+                {% trans 'Name' %}
+              </th>
+              <th st-sort="description" st-sort-default="description" eagle-eye="data_col">
+                {% trans 'Description' %}
+              </th>
+              <th st-sort="policy-rule-sets" st-sort-default="policy-rule-sets" eagle-eye="data_col">
+                {% trans 'Policy Rules' %}
+              </th>
+            </tr>
+          </thead> 
+          <tbody>
+            <tr ng-if="!consumedPolicyRuleSetState">
+              <td colspan="100" class="Loading-bar">
+                <img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" />
+              </td>
+            </tr>
+
+            <tr ng-if="!iconsumedPolicyRuleSets.length && consumedPolicyRuleSetState">
+              <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+            </tr>
+
+            <tr ng-if="consumedPolicyRuleSetState" ng-repeat="ruleSet in iconsumedPolicyRuleSets" ng-class="{'st-selected': checked[ruleSet.id]}">
+              <td class="select-col" eagle-eye="select_col">
+                <input type="checkbox"
+                      hz-select="ruleSet"
+                      ng-model="selected[ruleSet.id].checked"
+                      hz-checkbox-group="consumedPolicyRuleSets"/>
+              </td>
+              <td eagle-eye="select_col">
+                <a ng-click="actions.detail.open(group.id)"
+                  href="javascript:;">
+                    {$ ruleSet.name $}
+                </a>
+              </td>
+              <td eagle-eys="select_col">
+                {$ ruleSet.description $}
+              </td>
+              <td eagle-eys="select_col">
+                <p ng-repeat="name in ruleSet.policy_rule_names">{$ name $}</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </tab>
+  </tabset>
+</div>
+</div>

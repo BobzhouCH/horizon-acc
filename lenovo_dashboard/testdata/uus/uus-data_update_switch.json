@@ -1,0 +1,17 @@
+{
+  "return_data": [
+    {
+      "status": "Successful",
+      "uuid": "2f07137f-08f9-44a3-8acf-3062bb333e07",
+      "ip": "10.240.194.91",
+      "hostname": "G8272",
+      "mac": null,
+      "osVer": "10.2.0.39",
+      "serialNum": "Y052MV49Y010",
+      "memory": null,
+      "cpu": null,
+      "hw_type": "G8272"
+    }
+  ],
+  "return_code": 0
+}

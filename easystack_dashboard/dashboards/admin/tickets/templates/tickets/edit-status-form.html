@@ -1,0 +1,67 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+    <h3 class="modal-title">{$ ::context.title $}</h3>
+    <p class="modal-colsed" ng-click="action.cancel()">
+        <i class="modal-colsed-icon"></i>
+    </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+    <div class="left form-wrap">
+      <fieldset>
+        <!--
+          Instance name input (required):
+            Create-mode: show
+            Edit-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'edit'"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="status_id">
+            *{% trans "Ticket Status" %}
+          </label>
+          <div class="form-group-right">
+            <select
+              required
+              id="status_id"
+              name="status_id"
+              class="form-control verify-input"
+              ng-model="ticket.status_id">
+              <option value="" disabled>
+                {% trans 'Select a ticket status' %}
+              </option>
+              <option
+                ng-repeat="status in statuses"
+                ng-selected="status.id == ticket.status_id"
+                value="{$ status.id $}">
+                {$ status.name | transTicketStatus $}
+              </option>
+            </select>
+            <p class="help-block alert-fixed alert-danger"
+               ng-show="form.status_id.$error.required && form.status_id.$dirty">
+              {% trans "A ticket status is required." %}
+            </p>
+         </div>
+       </div>
+
+      </fieldset>
+    </div>
+
+    <!-- Modal-form-right: The description text. -->
+
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

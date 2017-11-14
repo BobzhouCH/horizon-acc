@@ -1,0 +1,63 @@
+/**
+ ** Module : detail css
+ ** Author : xinwei
+ ** Date   : 2015-12-01
+**/
+
+/* detail css */
+.detail-left-icon {
+  width: 40px;
+  height: 50px;
+  position: absolute;
+  left: -37px;
+  top: 50%;
+  margin-top: -25px;
+  cursor: pointer;
+  background: url("/static/dashboard/img/detail-lefttop-icon.png") no-repeat;
+  &:hover { background-position: 0 -60px; }
+  &:active { background-position: 0 -120px; }
+}
+.detail-page {
+  padding: 10px;
+}
+.detailContent {
+  left: initial;
+  top: 0;
+  .table-bordered { border: 0; }
+  .table-th-unline { border: none !important; }
+  .modal-dialog { width: 100%; }
+  .modal-content { border-radius: 0; }
+  .modal { overflow-y: hidden; }
+  .tab-content {
+    .tab-pane {
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+  }
+  .detail-title {
+    font-size:16px;
+  }
+
+  .table.table-unique {
+    box-shadow:0px 1px 1px 0px rgba(0,0,0,0.20);
+    thead tr th, td {
+      padding-left: 15px;
+    }
+    th {
+      color: #fff;
+      background: $brand-primary;
+    }
+    td {
+      border: none;
+    }
+    tbody {
+      tr:nth-child(odd) {
+        background: $gray-lighter;
+      }
+      tr:nth-child(even) {
+        background: #fff;
+      }
+    }
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "return_data": {
+    "Data": [
+      {
+        "Min": 0,
+        "Max": 0,
+        "PolledOn": 1490591139,
+        "PowerInput": 0,
+        "Host": "A527E7E5ACD5FB9D0020A64DB12562A6",
+        "Succeed": false
+      },
+      {
+        "Min": 0,
+        "Max": 0,
+        "PolledOn": 1490609139,
+        "PowerInput": 0,
+        "Host": "A527E7E5ACD5FB9D0020A64DB12562A6",
+        "Succeed": false
+      },
+      {
+        "Min": 0,
+        "Max": 0,
+        "PolledOn": 1490627139,
+        "PowerInput": 0,
+        "Host": "A527E7E5ACD5FB9D0020A64DB12562A6",
+        "Succeed": false
+      },
+      {
+        "Min": 0,
+        "Max": 0,
+        "PolledOn": 1490645139,
+        "PowerInput": 0,
+        "Host": "A527E7E5ACD5FB9D0020A64DB12562A6",
+        "Succeed": false
+      },
+      {
+        "Min": 0,
+        "Max": 0,
+        "PolledOn": 1490663139,
+        "PowerInput": 0,
+        "Host": "A527E7E5ACD5FB9D0020A64DB12562A6",
+        "Succeed": false
+      },
+      {
+        "Min": 0,
+        "Max": 0,
+        "PolledOn": 1490681139,
+        "PowerInput": 0,
+        "Host": "A527E7E5ACD5FB9D0020A64DB12562A6",
+        "Succeed": false
+      },
+      {
+        "Min": 289,
+        "Max": 289,
+        "PolledOn": 1490699139,
+        "PowerInput": 289,
+        "Host": "A527E7E5ACD5FB9D0020A64DB12562A6",
+        "Succeed": true
+      },
+      {
+        "Min": 0,
+        "Max": 0,
+        "PolledOn": 1490717139,
+        "PowerInput": 0,
+        "Host": "A527E7E5ACD5FB9D0020A64DB12562A6",
+        "Succeed": false
+      },
+      {
+        "Min": 0,
+        "Max": 0,
+        "PolledOn": 1490735139,
+        "PowerInput": 0,
+        "Host": "A527E7E5ACD5FB9D0020A64DB12562A6",
+        "Succeed": false
+      },
+      {
+        "Min": 0,
+        "Max": 0,
+        "PolledOn": 1490753139,
+        "PowerInput": 0,
+        "Host": "A527E7E5ACD5FB9D0020A64DB12562A6",
+        "Succeed": false
+      },
+      {
+        "Min": 0,
+        "Max": 0,
+        "PolledOn": 1490771139,
+        "PowerInput": 0,
+        "Host": "A527E7E5ACD5FB9D0020A64DB12562A6",
+        "Succeed": false
+      },
+      {
+        "Min": 0,
+        "Max": 0,
+        "PolledOn": 1490789139,
+        "PowerInput": 0,
+        "Host": "A527E7E5ACD5FB9D0020A64DB12562A6",
+        "Succeed": false
+      },
+      {
+        "Min": 0,
+        "Max": 0,
+        "PolledOn": 1490807139,
+        "PowerInput": 0,
+        "Host": "A527E7E5ACD5FB9D0020A64DB12562A6",
+        "Succeed": false
+      },
+      {
+        "Min": 0,
+        "Max": 0,
+        "PolledOn": 1490825139,
+        "PowerInput": 0,
+        "Host": "A527E7E5ACD5FB9D0020A64DB12562A6",
+        "Succeed": false
+      },
+      {
+        "Min": 0,
+        "Max": 0,
+        "PolledOn": 1490843139,
+        "PowerInput": 0,
+        "Host": "A527E7E5ACD5FB9D0020A64DB12562A6",
+        "Succeed": false
+      }
+    ]
+  },
+  "return_code": 0
+}

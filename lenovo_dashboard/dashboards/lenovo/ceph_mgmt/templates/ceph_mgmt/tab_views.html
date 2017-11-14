@@ -1,0 +1,66 @@
+{% load branding i18n %}
+{% load url from future %}
+{% load context_selection %}
+
+
+<div id="tab_views" class="container clearfix">
+{#    <ul class="nav nav-tabs myTab" id="group-host-tab" ng-click="hostBodyTab($event)">#}
+{#        <li class="active">#}
+{#            <a href="#tab_host">#}
+{#                <span class="glyphicon glyphicon-th-large"></span>{% trans "Host" %}#}
+{#            </a>#}
+{#            <span class="angle-right"></span>#}
+{#        </li>#}
+{#        <li ng-click="getGroups()">#}
+{#            <span class="angle-left"></span>#}
+{#            <a href="#tab_group">#}
+{#                <span class="glyphicon glyphicon-stop"></span>{% trans "Group" %}#}
+{#            </a>#}
+{#            <span class="angle-right"></span>#}
+{#        </li>#}
+{#        <li ng-click="getPools()">#}
+{#            <span class="angle-left"></span>#}
+{#            <a href="#tab_pool">#}
+{#                <span class="glyphicon glyphicon-stop"></span>{% trans "Pool" %}#}
+{#            </a>#}
+{#            <span class="angle-right"></span>#}
+{#        </li>#}
+{#        <li ng-click="getiSCSI()">#}
+{#            <span class="angle-left"></span>#}
+{#            <a href="#tab_iSCSI">#}
+{#                <span class="glyphicon glyphicon-stop"></span>{% trans "iSCSI" %}#}
+{#            </a>#}
+{#            <span class="angle-right"></span>#}
+{#        </li>#}
+{#        <li ng-click="getFolder()">#}
+{#            <span class="angle-left"></span>#}
+{#            <a href="#tab_ceph">#}
+{#                <span class="glyphicon glyphicon-stop"></span> {% trans "CEPH" %}#}
+{#            </a>#}
+{#            <span class="angle-right"></span>#}
+{#        </li>#}
+{#        <div class="ediGroups pull-right hide" id="ediTap" ng-show="editShow">#}
+{#            <a href="#tab_group_ediTap" ng-click="pageTo()">{% trans "Edit Groups" %}</a>#}
+{#        </div>#}
+{#    </ul>#}
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab_host">
+            {% include "lenovo/ceph_mgmt/tab_host.html" %}
+        </div>
+{#        <div class="tab-pane" id="tab_group">#}
+{#            {% include "lenovo/ceph_mgmt/tab_group.html" %}#}
+{#        </div>#}
+{#        <div class="tab-pane" id="tab_group_ediTap">#}
+{#            {% include "lenovo/ceph_mgmt/tab_group_ediTap.html" %}#}
+{#        </div>#}
+        <div class="tab-pane" id="tab_pool">
+            {% include "lenovo/ceph_mgmt/tab_pool.html" %}
+        </div>
+{#        <div class="tab-pane" id="tab_iSCSI">#}
+{#            {% include "lenovo/ceph_mgmt/tab_iSCSI.html" %}#}
+{#        </div>#}
+{#        <div class="tab-pane" id="tab_ceph">#}
+{#            {% include "lenovo/ceph_mgmt/tab_ceph.html" %}#}
+{#        </div>#}
+    </div>
+</div>

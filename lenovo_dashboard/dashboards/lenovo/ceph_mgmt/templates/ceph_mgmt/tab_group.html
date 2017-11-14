@@ -1,0 +1,60 @@
+{% load branding i18n %}
+{% load url from future %}
+{% load context_selection %}
+
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default" ng-repeat="group in groupList">
+        <div data-toggle="collapse" data-parent="#accordion" href="#collapse{$ group.id $}" aria-expanded="false" aria-controls="collapse{$ group.id $}">
+            <div class="panel-heading" role="tab" id="heading{$ group.id $}">
+                <div class="caret pull-left" id="showUngroup"></div>
+                <div class="pull-left group-title">
+                    <input type="text" class="pull-left num1" ng-model="group.name" placeholder="{$ group.name $}"/>
+                </div>
+                <div class="pull-right remove">
+                    <button type="button" class="close" ng-click="close()">&times;</button>
+                </div>
+                <div class="groupData pull-right">
+                    <div class="pull-left group-data">
+                        <span>{% trans "Hosts" %}:</span>
+                        <span>{$ group.hostactive $} / {$ group.hosttotal $}</span>
+                    </div>
+                    <div class="pull-left group-data">
+                        <span>{% trans "OSDs" %}:</span>
+                        <span>{$ group.osdactive $} / {$ group.osdtotal $}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="collapse{$ group.id $}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading{$ group.id $}">
+            <div class="panel-body">
+                <div class="col-md-12 groupBox">
+                    <div class="groupList-data">
+                        <ul class="groupUl">
+                            <li class="groupUl-li" ng-repeat="hostOsd in group.hosts">
+                                <div class="inner1">
+                                    <div class="inner2">
+                                        <p>
+                                            <span class="osd-status"></span>
+                                            <span class="host-Value">{$ hostOsd.name $} 2.1.1</span>
+                                        </p>
+                                        <p>
+											<span class="osd-value">
+												{$ hostOsd.name $}
+											 	{$ hostOsd.osdactive $} / {$ hostOsd.osdtotal $}
+											</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dragbox" style="min-height: 200px; margin-top: 40px">
+        <span>+</span>
+        <p>{% trans "Drag hosts here to create a new group." %}</p>
+    </div>
+</div>
+

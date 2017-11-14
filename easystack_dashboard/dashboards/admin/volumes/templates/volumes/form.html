@@ -1,0 +1,343 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+      <fieldset>
+        <!--
+          Volume name input (required):
+            Create-mode: show
+            Edit-mode: show
+            Extend-mode: show,disabled
+            Attach-mode: show,disabled
+            Detach-mode: show,disabled
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="name">
+            *{% trans "Volume Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              type="text"
+              ng-model="volume.name"
+              ng-maxlength="255"
+              ng-disabled="context.mode === 'extend' ||
+                           context.mode === 'attach' ||
+                           context.mode === 'detach'"
+              placeholder="{% trans 'enter a volume name' %}"/>
+                        <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength && form.name.$dirty">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "A volume name is required." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+          Description input (optional):
+            Create-mode: show
+            Edit-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' || context.mode === 'edit'">
+          <label for="description">
+            {% trans "Description" %}
+          </label>
+          <div class="form-group-right">
+            <textarea
+              id="description"
+              name="description"
+              class="form-control"
+              rows="4"
+              maxlength="256"
+              type="description"
+              ng-model="volume.description"
+              placeholder="{% trans 'enter description of the volume' %}">
+            </textarea>
+          </div>
+        </div>
+
+        <!--
+          Type selection (option):
+            Create-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create'"
+          ng-class="{'has-error':form.type.$invalid && form.type.$dirty}">
+          <label for="type">
+            {% trans "Type" %}
+          </label>
+          <div class="form-group-right">
+            <select
+              id="type"
+              name="type"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.types}"
+              ng-init="volume.volume_type=dropdown.types[0].id"
+              ng-model="volume.volume_type">
+              <option value="" disabled>
+                {$ (dropdown.types && dropdown.types.length)? "{% trans 'select a type' %}": "{% trans 'volume type will be default' %}" $}
+              </option>
+              <option
+                ng-repeat="type in dropdown.types"
+                ng-selected="type.id===volume.volume_type"
+                value="{$ type.id $}">
+                {$ type.name $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!--
+           Image Selection (option):
+            Create-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create'"
+          ng-class="{'has-error':form.image.$invalid && form.image.$dirty}">
+          <label for="name">
+            {% trans "Image" %}
+          </label>
+          <div class="form-group-right">
+            <select
+              id="image"
+              name="image"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.images}"
+              ng-init="volume.image_id = dropdown.images[0].id"
+              ng-model="volume.image_id">
+              <option value="">
+                {$ (dropdown.images && dropdown.images.length)? "{% trans 'Select Image' %}": "{% trans 'No Images Available' %}" $}
+              </option>
+              <option
+                ng-repeat="image in dropdown.images"
+                value="{$ image.id $}">
+                {$ image.name $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!--
+          Size input (required):
+            Create-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode == 'create'"
+          ng-class="{'has-error':form.size.$invalid && form.size.$dirty}">
+          <label for="size">
+            {% trans "Size" %}
+          </label>
+          <div class="form-group-right">
+            <!--<input required
+              id="size"
+              name="size"
+              class="form-control verify-input"
+              type="number"
+              min="1"
+              max="1000"
+              ng-model="volume.size"
+              ng-change="updateBandwith(volume.size)"
+              placeholder="{% trans '1~1000 G' %}"/>-->
+            <div drag-bar="volumeDef" set-value="volume.size"></div>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.size.$invalid && form.size.$dirty">
+              {% trans "Volume size must be in 1~1000 G." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+          Old Size input (required):
+            Extend-mode: show,disabled
+        -->
+        <!--<div class="form-group inline-group clearfix"
+          ng-if="context.mode == 'extend'">
+          <label class="control-label fl" for="newSize">
+            {% trans "Old Size" %}
+          </label>
+          <div class="rightCol fl">
+            <input required
+              id="oldSize"
+              name="oldSize"
+              class="form-control verify-input"
+              type="number"
+              min="1"
+              max="1000"
+              ng-model="volume.oldSize"
+              disabled/>
+          </div>
+        </div>-->
+
+        <!--
+          New Size input (required):
+            Extend-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode == 'extend'"
+          ng-class="{'has-error':form.newSize.$invalid && form.newSize.$dirty}">
+          <label for="newSize">
+            {% trans "Size" %}
+          </label>
+          <div class="form-group-right">
+            <!--<input required
+              id="newSize"
+              name="newSize"
+              class="form-control verify-input"
+              type="number"
+              min="{$ volume.oldSize $}"
+              max="1000"
+              ng-model="volume.size"
+              placeholder="{% trans '1~1000 G' %}"/>-->
+            <div drag-bar="volumeExpansion" set-value="volume.size"></div>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.newSize.$invalid && form.newSize.$dirty">
+              {% trans "Volume size must be in old size ~ 1000 G." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+          Attach instance input (required):
+            Attach-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'attach'"
+          ng-class="{'has-error':form.instance.$invalid && form.instance.$dirty}">
+          <label for="instance">
+            {% trans "Instance to Attach" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="instance"
+              name="instance"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.instances}"
+              ng-model="volume.instance">
+              <option value="" disabled>
+                {% trans 'Select a Instance' %}
+              </option>
+              <option
+                ng-repeat="instance in dropdown.instances"
+                ng-selected="instance.id===volume.instance"
+                ng-disabled="instance.id===0"
+                value="{$ instance.id $}">
+                {$ instance.name $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!--
+          Attach device input (option):
+            Attach-mode: show
+        -->
+        <!--<div class="form-group inline-group clearfix required inline-group-first"
+          ng-if="context.mode === 'attach'"
+          ng-class="{'has-error':form.device.$invalid && form.device.$dirty}">
+          <label class="control-label fl required" for="device">
+            {% trans "Device" %}
+          </label>
+          <div class="rightCol fl">
+            <input disabled
+              id="device"
+              name="device"
+              class="form-control verify-input"
+              type="text"
+              ng-model="volume.device"
+              ng-maxlength="255"
+              placeholder="{% trans 'auto' %}"/>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.device.$invalid && form.device.$dirty">
+              {% trans "A device name is required." %}
+            </p>
+          </div>
+        </div>-->
+
+        <!--
+          Detach instance input (required):
+            Detach-mode: show,disabled
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'detach'"
+          ng-class="{'has-error':form.instanced.$invalid && form.instanced.$dirty}">
+          <label for="instanced">
+            {% trans "Instance to Detach" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="instanced"
+              name="instanced"
+              class="form-control verify-input"
+              ng-class="{strikeLoading: !dropdown.instances}"
+              ng-init="volume.instance=dropdown.instances[0].id"
+              ng-model="volume.instance"
+              disabled>
+              <option value="" disabled>
+                {% trans 'No Attached Instance' %}
+              </option>
+              <option
+                ng-repeat="instance in dropdown.instances"
+                ng-selected="instance.id === volume.instance"
+                value="{$ instance.id $}">
+                {$ instance.name $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <p class="billing-info fr" ng-if="context.mode === 'create' || context.mode === 'extend'" ng-show="showBilling">
+          <span class="orange">{$ price * volume.size | price $}{% trans 'Yuan' %}</span>/{% trans 'Hour' %}
+          <span class="gray_3">({$ price * volume.size * 24 * 30 | price $}{% trans 'Yuan' %}/{% trans 'Month' %})</span>
+        </p>
+        <p class="billing-info-tips fr" ng-if="context.mode === 'create'|| context.mode === 'extend'" ng-show="noFixing">
+          <span class="gray_3">{% trans 'No Active Fixing' %}</span>
+        </p>
+        <p class="billing-info-tips fr" ng-if="context.mode === 'create'|| context.mode === 'extend'" ng-show="showBalance">
+          <span class="red">{% trans 'No Enough Balance' %}</span>
+        </p>
+      </fieldset>
+
+    <!-- Modal-form-right: The description text. -->
+
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-if="context.mode == 'create'"
+    ng-disabled="form.$invalid || volumeSizeChange || volume.size < volumeDef.defVal || showBalance"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-if="context.mode == 'extend'"
+    ng-disabled="form.$invalid || volumeSizeChange || volume.size < volume.oldSize || showBalance"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-if="!['extend', 'create'].contains(context.mode)"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

@@ -1,0 +1,258 @@
+/* This import is required for using bootstrap variables as value
+to our variables */
+@import "/custom/variables";
+
+/* When used with Horizon via Django, this value is set automatically from
+   settings.py and is added dynamically to the namespace through
+   horizon/utils/scss_filter.py */
+$static_url: "/static/" !default;
+
+/* This variable can be used to change the web root of horizon
+default value is already '/' */
+$webroot: "" !default;
+
+/* Horizon Custom Variables */
+
+$code-font-family: Arial, "Microsoft YaHei","Helvetica Neue", Helvetica, sans-serif !default;
+$body-min-width: 900px !default;
+$border-color: #111c30 !default;
+$table-bg-odd: #f9f9f9 !default;
+$content-body-padding: 15px !default;
+$default-bg-color: #2d394f;
+$text-default-color: #fff;
+$a-link-color: #3399ff;
+$a-link-hover-color: darken($a-link-color, 15%) !default;
+
+/* sidebar */
+$sidebar-logo-height: 88px;
+$siderbar-color: #fff;
+$siderbar-link-color: #7e858f;
+$siderbar-hover-color: #60c0af;
+$siderbar-active-color: #60c0af;
+$sidebar-background-color: $default-bg-color;
+$sidebar-second-level-menu-background-color: #242e40 !default;
+$sidebar-width: 220px !default;
+$sidebar-inpoint-bg: #fff;
+
+/* modal */
+$modal-footer-bg: #f5f5f7;
+
+/* Workflows */
+
+/*$workflow-color-tab-complete-bg: #007acc;
+$workflow-color-tab-incomplete-bg: #dddddd;
+$workflow-color-tab-trough-bg: #efefef;
+$workflow-color-tab-border: #ffffff;
+$workflow-color-tab-link-active: #ffffff;
+$workflow-color-tab-link-inactive: #43a4d7;
+
+$workflow-color-label-error: $brand-danger;
+
+$workflow-size-tab-border: 2px;
+$workflow-size-tab-arrow: 20px;
+$workflow-size-tab-padding: 15px;*/
+
+
+/* Resource Browser */
+
+$rbrowser-data-table-border-width: 1px;
+$rbrowser-data-table-border-color: $border-color;
+
+$rbrowser-actions-column-padding: 10px;
+
+$rbrowser-small-button-height: 28px;
+$rbrowser-td-height: $rbrowser-small-button-height;
+
+$rbrowser-table-cell-padding: 8px;
+
+$rbrowser-selected-color: #e9f5fa;
+
+$rbrowser-wrapper-width: 100%;
+$rbrowser-navigation-table-width: 40%;
+$rbrowser-content-table-width: $rbrowser-wrapper-width - $rbrowser-navigation-table-width;
+
+$rbrowser-body-background-color: $body-bg;
+$rbrowser-header-background-color: $gray-lighter;
+$rbrowser-footer-background-color: #f1f1f1;
+// Note: the content-wrapper background colors are determined by
+//       .table-striped-datatable styles.
+
+// Font-awesome path to the icon fonts
+$fa-font-path: $webroot + "/static/horizon/lib/font-awesome/fonts";
+
+/* Charts */
+
+$overview_chart_height: 81px;
+
+
+/* Accordion Navigation */
+
+$accordionBaseFontColor: #6e6e6e !default;
+$accordionBorderColor: #e5e5e5 !default;
+$accordionBoxShadowColor: #c7c7c7 !default;
+$accordionHighlightColor: #d93c27 !default;
+$accordionHeaderActiveColor: #e3e4e6 !default;
+$accordionHeaderBorderColor: #bbbbbb !default;
+$accordionItemActiveBgColor: #ffffff !default;
+$accordionItemFontColor: #6e6e6e !default;
+$accordionSubBorderColor: #c0c1c2 !default;
+$accordionSubHeaderFontColor: #6e6e6e !default;
+
+/* Help panel */
+
+// theme
+$helpPanelColor: #333 !default;
+$helpPanelBg: #fff !default;
+$helpPanelBtnBg: #eee !default;
+$helpPanelBtnIconColor: #333 !default;
+$helpPanelBtnIconBg: transparent !default;
+$helpPanelBorderColor: #888 !default;
+
+// layout
+$helpPanelWidthDefault: 300px !default;
+$helpPanelBtnSize: 40px !default;
+$helpPanelBtnIconSize: 28px !default;
+
+/* Wizard */
+
+// theme
+$WizardNavItemColor: #333 !default;
+$WizardNavItemBgColor: $btn-primary-bg !default;
+$WizardNavItemBdColor: #bbb !default;
+$WizardButtonColorHiLight: #fff !default;
+$WizardBtnTextColor: #333;
+$WizardBtnBgColor: #fff !default;
+$WizardBtnBdColor: #ccc !default;
+$WizardNextBtnBgColor: $btn-primary-bg !default;
+$WizardNextBtnBdColor: $btn-primary-bg !default;
+$WizardNextBtnDisabledBgColor: #ccc !default;
+$WizardNextBtnDisabledBdColor: #ccc !default;
+$WizardFinishBtnBgColor: #51b848 !default;
+$WizardFinishBtnBdColor: #51b848 !default;
+$WizardFinishBtnDisabledBgColor: #ccc !default;
+$WizardFinishBtnDisabledBdColor: #ccc !default;
+$WizardToolbarBgColor: #f5f5f5 !default;
+$WizardToolbarVerticalSeparatorBdColor: #e3e3e3 !default;
+$WizardValidationErrorColor: #d43f3a !default;
+
+$wizard-textarea-border-color: #eee;
+
+// layout
+$wizardTopPadding: 40px !default;
+$wizardBottomPadding: $wizardTopPadding !default;
+$wizardLeftPadding: $wizardTopPadding !default;
+$wizardRightPadding: $wizardLeftPadding !default;
+$wizardHeight: 100% !default;
+$wizardWidth: 100% !default;
+$wizardMinHeight: 460px !default;
+$wizardMinWidth: 1024px !default;
+$wizardMaxHeight: 900px !default;
+$wizardMaxWidth: 1440px !default;
+$wizardTitleBarHeight: 70px !default;
+$wizardToolBarHeight: 65px !default;
+$wizardNavWidth: 290px !default;
+$WizardNavItemHeight: 46px !default;
+$WizardNavItemWidth: 190px !default;
+$WizardSidePadding: 35px !default;
+$WizardStatusIndicatorSize: 24px !default;
+$WizardBtnGap: 5px !default;
+$WizardToolbarBtnHeight: 28px !default;
+
+/* Responsive Table */
+$batch-action-width: 10em !default;
+$batch-action-padding: $batch-action-width + 1em !default;
+$detail-row-padding: 1em !default;
+$expander-width: 1.5em !default;
+$reorder-border: 2px solid #05aca5 !default;
+$select-col-width: 2.5em !default;
+$table-col-avg-width: 150px !default;
+$table-border-color: #cccccc !default;
+$table-border: 1px solid $table-border-color !default;
+$table-gap-height: 0.5em !default;
+$table-padding: 0.5em !default;
+$table-stripe-bgcolor: #f9f9f9 !default;
+$table-thead-bg: #e9ecf1;
+$table-detail-bg: #f1f3f6;
+
+/* Tooltip */
+$tooltip-bg-color: #fefefe !default;
+$tooltip-border: solid 1px #bcbcbc !default;
+$tooltip-box-shadow: 1px 1px 8px -3px #cccccc !default;
+$tooltip-key-color: #000000 !default;
+$tooltip-value-color: inherit !default;
+$tooltip-key-padding: 0 0.2em !default;
+$tooltip-key-weight: 600 !default;
+$tooltip-padding: 0.3em 0.8em !default;
+
+/* Transfer Tables */
+$badge-info-color: #0084d1 !default;
+$invalid-color: #f0ad4e !default;
+$transfer-btn-width: 3em !default;
+$transfer-help-text-color: #999999 !default;
+$transfer-btn-border-color: #666666 !default;
+$transfer-disabled-btn-color: #cccccc !default;
+$transfer-disabled-btn-border-color: #cecece !default;
+$transfer-header-bottom-border: 1px solid #eeeeee !default;
+$placeholder-text-color: #b8b8b8 !default;
+
+/* Pie/Donut Charts */
+$chart-label-font-size: 16px !default;
+$chart-label-color: $brand-primary !default;
+$chart-legend-font-size: .9em !default;
+$chart-legend-padding: 0.2em 0.75em !default;
+$chart-quota-usage-color: $brand-primary !default;
+$chart-quota-added-color: #b0dfd7 !default;
+$chart-quota-remaining-color: #d1d3d4 !default;
+$chart-quota-danger-color: $brand-danger !default;
+$chart-slice-legend-padding: 0.2em 0 !default;
+$chart-title-font-color: #555 !default;
+$chart-title-font-size: .9em !default;
+$chart-title-font-size-large: 1.1em !default;
+$chart-title-padding: 0 0 0.5em !default;
+$chart-title-weight: 600 !default;
+
+/* Detail Pages */
+$detail-title-color: #428bca !default;
+$detail-group-color: silver !default;
+$detail-separator-color: silver !default;
+
+$detail-border-color: #ccc !default;
+
+/* Metadata Display */
+$metadata-display-selector-color: $link-color !default;
+$metadata-display-selector-hover-color: $link-hover-color !default;
+$metadata-display-selector-active-color: #666 !default;
+$metadata-display-separator-color: #ccc !default;
+
+/* Magic Search */
+$magic-search-min-width: 250px !default;
+$magic-search-border-color: #cccccc !default;
+$magic-search-margin-bottom: 0 !default;
+$magic-search-border-radius: 16px !default;
+$magic-search-margin-padding: 2px !default;
+$magic-search-margin-padding-right: 30px !default;
+$magic-search-height: 30px !default;
+$magic-search-line-height: 30px !default;
+$magic-search-button-bg: $brand-primary;
+$magic-search-button-width: 24px;
+$magic-search-button-height: 24px;
+$magic-search-button-line-height: 24px;
+$magic-search-item-border-color: #9fd8cf;
+$magic-search-item-bg-color: #eff8f7;
+$magic-search-item-text-color: #787979;
+
+$padding-base-horizontal:   120px !default;
+
+/* Tabs */
+$nav-tabs-top-border-color: $brand-primary;
+$nav-tabs-top-border-width: 5px;
+
+/* Overview */
+$overview-radius: $border-radius-small;
+$overview-action-border-color: #cfece7;
+$overview-action-box-bg-color: #f7fcfb;
+$overview-action-line-bg-color: #eff3f6;
+
+/* Security groups */
+$security-group-active-bg: $brand-primary;
+$security-group-default-bg: #ECF0F2;

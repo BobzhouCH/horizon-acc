@@ -1,0 +1,328 @@
+{
+  "return_data": {
+    "endpoints": [
+      {
+        "PhysicalMemory": [
+          {
+            "Capacity": 4294967296,
+            "BankLabel": "Bank 6",
+            "SerialNumber": "46AC705C",
+            "MemoryType": 24,
+            "Description": "DIMM 6",
+            "Model": "DDR3",
+            "IsSpeedInMhz": null,
+            "Speed": 1333,
+            "PartNumber": "HMT351R7CFR4A-H9  ",
+            "Manufacturer": "Hynix Semiconductor"
+          },
+          {
+            "Capacity": 4294967296,
+            "BankLabel": "Bank 6",
+            "SerialNumber": "46AC705C",
+            "MemoryType": 24,
+            "Description": "DIMM 6",
+            "Model": "DDR3",
+            "IsSpeedInMhz": null,
+            "Speed": 1333,
+            "PartNumber": "HMT351R7CFR4A-H9  ",
+            "Manufacturer": "Hynix Semiconductor"
+          }
+        ],
+        "IMM": [
+          {
+            "uuid": "732ebc33a87d41ccbae526ca4b8cabfc",
+            "status": "Critical",
+            "alerts": {
+              "Info": 0,
+              "Critical": 5,
+              "Warning": 3
+            },
+            "power": "on",
+            "type": 31,
+            "hostname": "node-3",
+            "productname": "ThinkServer RD640",
+            "mt": "8722AC1",
+            "roles": 1024,
+            "hostip": "192.168.0.4",
+            "bmcip": "10.240.196.75",
+            "pn": "",
+            "sn": "23D4910",
+            "imm_last_discovery_date": "2013-08-02 15:59:11.211000",
+            "partnumber": "00D1278     ",
+            "serialnumber": "23PEDK5",
+            "account_verified": "True",
+            "number_of_power_transitions": null,
+            "number_of_reboots": 7,
+            "user": "USERID",
+            "enable_power_poll": "False",
+            "model": "791699X",
+            "password": "Passw0rd",
+            "ipaddress": "9.125.90.132",
+            "id": 1,
+            "manufacturer": " IBM(CLCN)",
+            "psw_encode_type": "",
+            "supported_categories": 4227858623,
+            "desired_categories": 4227858623,
+            "authed": false,
+            "http_enabled": true,
+            "https_enabled": true
+          }
+        ],
+        "NumericSensor": [
+          {
+            "ElementName": "Inlet Temp",
+            "Description": "Temperature sensor for Temperature 1",
+            "CurrentReading": 175,
+            "Caption": "Temperature:Inlet Temp",
+            "BaseUnits": 2,
+            "CurrentState": "Normal"
+          },
+          {
+            "ElementName": "Inlet Temp",
+            "Description": "Temperature sensor for Temperature 1",
+            "CurrentReading": 175,
+            "Caption": "Temperature:Inlet Temp",
+            "BaseUnits": 2,
+            "CurrentState": "Normal"
+          },
+          {
+            "ElementName": "Inlet Temp",
+            "Description": "Temperature sensor for Temperature 1",
+            "CurrentReading": 175,
+            "Caption": "Temperature:Inlet Temp",
+            "BaseUnits": 2,
+            "CurrentState": "Normal"
+          },
+          {
+            "ElementName": "Inlet Temp",
+            "Description": "Temperature sensor for Temperature 1",
+            "CurrentReading": 175,
+            "Caption": "Temperature:Inlet Temp",
+            "BaseUnits": 2,
+            "CurrentState": "Normal"
+          },
+          {
+            "ElementName": "Inlet Temp",
+            "Description": "Temperature sensor for Temperature 1",
+            "CurrentReading": 175,
+            "Caption": "Temperature:Inlet Temp",
+            "BaseUnits": 2,
+            "CurrentState": "Normal"
+          },
+          {
+            "ElementName": "Inlet Temp",
+            "Description": "Temperature sensor for Temperature 1",
+            "CurrentReading": 175,
+            "Caption": "Temperature:Inlet Temp",
+            "BaseUnits": 2,
+            "CurrentState": "Normal"
+          }
+        ],
+        "RemoteNode": [
+          {
+            "remotenode_uuid": "Unspecified Value"
+          }
+        ],
+        "RecordLog": [
+          {
+            "vm_move_category_bit": "0;1;2;3;4;5;6;7;8;9;29;30;31",
+            "supported_categories": 0,
+            "desired_categories": 82,
+            "vm_move_category_name": "RAS event VM movement support;Processor subsystem;Memory subsystem;I/O subsystem: hub and bridge;I/O adapter, device and peripheral;CEC hardware;Power/Cooling subsystem and control;Platform firmware;Software;External environment;Info;Warning;Error",
+            "vm_move_category_type": "VMEFlag;EventCategory;EventCategory;EventCategory;EventCategory;EventCategory;EventCategory;EventCategory;EventCategory;EventCategory;Severity;Severity;Severity"
+          }
+        ],
+        "Fan": [],
+        "Location": [
+          {
+            "Slot": "2",
+            "Room": "",
+            "Location": "location",
+            "Address": "",
+            "Rack": "",
+            "Name": "Host Location"
+          }
+        ],
+        "EthernetPort": [
+          {
+            "ElementName": "ep4",
+            "Name": "host-ethernetport-2",
+            "EnableState": null,
+            "BurnedInMAC": "3440B5EFC1D4",
+            "ConfiguredLAMAC": null,
+            "OtherLinkTechnology": null
+          },
+          {
+            "ElementName": "ep4",
+            "Name": "host-ethernetport-2",
+            "EnableState": null,
+            "BurnedInMAC": "3440B5EFC1D4",
+            "ConfiguredLAMAC": null,
+            "OtherLinkTechnology": null
+          },
+          {
+            "ElementName": "ep4",
+            "Name": "host-ethernetport-2",
+            "EnableState": null,
+            "BurnedInMAC": "3440B5EFC1D4",
+            "ConfiguredLAMAC": null,
+            "OtherLinkTechnology": null
+          },
+          {
+            "ElementName": "ep4",
+            "Name": "host-ethernetport-2",
+            "EnableState": null,
+            "BurnedInMAC": "3440B5EFC1D4",
+            "ConfiguredLAMAC": null,
+            "OtherLinkTechnology": null
+          }
+        ],
+        "oshost": [],
+        "Processor": [
+          {
+            "ElementName": "processor 1",
+            "Name": "Processor 1",
+            "Family": 179,
+            "ExternalBusClockSpeed": 100,
+            "Caption": "Processor 1",
+            "MaxClockSpeed": 4000,
+            "CPUStatus": 1,
+            "NumberOfEnabledCores": 8,
+            "CurrentClockSpeed": 2300,
+            "OtherFamilyDescription": "Intel(R) Xeon(R) CPU E5-2470 0 @ 2.30GHz"
+          }
+        ],
+        "SoftwareIndentity": [
+          {
+            "MajorVersion": 9,
+            "ElementName": "DSA",
+            "Classifications": 7,
+            "Description": "DSA Diagnostic Software",
+            "Releasedate": null,
+            "IdentityInfoValue": "{DSYT,\"2,3,6\"}",
+            "VersionString": "DSYTB7I-9.40",
+            "IdentityInfoType": "{SoftwareID,SoftwareStatus}",
+            "MinorVersion": 40
+          },
+          {
+            "MajorVersion": 9,
+            "ElementName": "DSA",
+            "Classifications": 7,
+            "Description": "DSA Diagnostic Software",
+            "Releasedate": null,
+            "IdentityInfoValue": "{DSYT,\"2,3,6\"}",
+            "VersionString": "DSYTB7I-9.40",
+            "IdentityInfoType": "{SoftwareID,SoftwareStatus}",
+            "MinorVersion": 40
+          },
+          {
+            "MajorVersion": 9,
+            "ElementName": "DSA",
+            "Classifications": 7,
+            "Description": "DSA Diagnostic Software",
+            "Releasedate": null,
+            "IdentityInfoValue": "{DSYT,\"2,3,6\"}",
+            "VersionString": "DSYTB7I-9.40",
+            "IdentityInfoType": "{SoftwareID,SoftwareStatus}",
+            "MinorVersion": 40
+          },
+          {
+            "MajorVersion": 9,
+            "ElementName": "DSA",
+            "Classifications": 7,
+            "Description": "DSA Diagnostic Software",
+            "Releasedate": null,
+            "IdentityInfoValue": "{DSYT,\"2,3,6\"}",
+            "VersionString": "DSYTB7I-9.40",
+            "IdentityInfoType": "{SoftwareID,SoftwareStatus}",
+            "MinorVersion": 40
+          },
+          {
+            "MajorVersion": 9,
+            "ElementName": "DSA",
+            "Classifications": 7,
+            "Description": "DSA Diagnostic Software",
+            "Releasedate": null,
+            "IdentityInfoValue": "{DSYT,\"2,3,6\"}",
+            "VersionString": "DSYTB7I-9.40",
+            "IdentityInfoType": "{SoftwareID,SoftwareStatus}",
+            "MinorVersion": 40
+          }
+        ],
+        "RAID": [
+          {
+            "ElementName": "IBM 6Gb Perf HBA(17,0)",
+            "Model": " IBM 6Gb Perf HBA ",
+            "Manufacturer": "LSI Corp",
+            "SerialNumber": "xxxxxxx",
+            "PartNumber": "xxxxxxx",
+            "VersionString": "15.00.00.00",
+            "PhysicalDrived": [
+              {
+                "ElementName": "Disk Slot 0 Tray 14",
+                "DefaultBlockSize": "512 Bytes",
+                "MaxMediaSize": "1G"
+              }
+            ],
+            "LogicalDrive": [
+              {
+                "PoolID": "1",
+                "RAIDLevel": "R10",
+                "TotalManagedSpace": "1G",
+                "LogicalVolume": [
+                  {
+                    "VolumeID": "1",
+                    "Bootable": true,
+                    "BlockSize": "64KB",
+                    "BlockNum": 5
+                  }
+                ]
+              }
+            ],
+            "Battery": [
+              {
+                "SerialNO": "1",
+                "Chemistry": "Lead Acid",
+                "RechargeCount": 100,
+                "RemainingCap": 80,
+                "FullChargeCap": 100,
+                "DesignCap": 100
+              }
+            ]
+          }
+        ],
+        "NIC": [
+          {
+            "Type": 0,
+            "Name": "Intel Corporation I350 Gigabit Network Connection",
+            "Model": " Intel Corporation I350 ",
+            "Manufacturer": "Intel",
+            "SerialNumber": "xxxxxxx",
+            "PartNumber": "xxxxxxx",
+            "BusNumber": 32902,
+            "DeviceNumber": 15392,
+            "Slot": "Slot 3, Tag 3",
+            "VersionString": "1.0.1.0",
+            "Port": [
+              {
+                "Name": "eth0",
+                "LinkTechnology": "Ethernet",
+                "PermanentAddress": "40:F2:E9:68:43:C0",
+                "NetworkAddress": "40:F2:E9:68:43:C0",
+                "Speed": "1000 Megabits per second",
+                "NIC Type": "pNIC"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "returned_number": 1,
+    "total_number": 9,
+    "page": 1,
+    "page_size": 1,
+    "prev_page": false,
+    "next_page": true
+  },
+  "return_code": 0
+}

@@ -1,0 +1,247 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Overview" %}{% endblock %}
+
+{% block page_header %}
+    {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Overview") %}
+{% endblock page_header %}
+
+{% block content_main %}"overview-contentMain"{% endblock %}
+
+{% block main %}
+<div ng-controller="adminOverviewsCtrl">
+    <div class="row overview-info">
+        <div class="col-md-6 col">
+            <div class="resource-chart-content">
+                <h4>{% trans "Infrastructure" %}</h4>
+                <div class="chart-container">
+                    <div class="d3_doughnut_chart"
+                         data-series='{{ server_series_data }}'
+                         data-total='{{ server_total_count }}'
+                         data-total-text='{% trans "Total" %}'>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col">
+            <div class="resource-picker-content">
+                <h4>{% trans "Identity Admin" %}</h4>
+                <div class="resource-picker-group">
+                    <div class="row resource-picker project-resource-picker">
+                        <a class="resource-picker-button col-xs-2 col-md-offset-1"
+                           href="{% url 'horizon:identity:projects:index' %}">
+                            <span class="mdi mdi-clipboard-text"></span>
+                        </a>
+                        <div class="resource-picker-note col-xs-4">
+                            <div class="text-align">
+                                <p class="text-center">
+                                    <span>{$ projects.length $}</span>
+                                </p>
+                                <p class="text-center">{% trans "Projects" %}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row resource-picker user-resource-picker">
+                        <a class="resource-picker-button col-xs-2 col-md-offset-1"
+                           href="{% url 'horizon:identity:users:index' %}">
+                            <span class="mdi mdi-account"></span>
+                        </a>
+                        <div class="resource-picker-note col-xs-4">
+                            <div class="text-align">
+                                <p class="text-center">
+                                    <span>{$ users.length $}</span>
+                                </p>
+                                <p class="text-center">{% trans "Users" %}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-cloak>
+        <div class="row overview-info">
+            <div class="col-md-6 col">
+                <div class="resource-used-content">
+                    <h4>{$ ::context.leftPanel.head $}</h4>
+
+                    <div class="row">
+                        <div class="col-sm-2 col">{$ ::context.leftPanel.cpu $}</div>
+                        <div class="col-sm-9 col">
+                            <div class="bar-wrap used-bar-wrap"
+                                 get-bar
+                                 dataval="{$ HardwareUsage.vcpus_used $} / {$ HardwareUsage.vcpus < 0 ? '{% trans "Not limited" %}' : HardwareUsage.vcpus $}"
+                                 percentage="{$ HardwareUsage.vcpus_used/HardwareUsage.vcpus*100 $}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-2 col">{$ ::context.leftPanel.memory $}</div>
+                        <div class="col-sm-9 col">
+                            <div class="bar-wrap used-bar-wrap"
+                                 get-bar
+                                 dataval="{$ HardwareUsage.memory_mb_used | mb2gb $} / {$ HardwareUsage.memory_mb < 0 ? '{% trans "Not limited" %}' : (HardwareUsage.memory_mb | mb2gb) $}"
+                                 percentage="{$ HardwareUsage.memory_mb_used/HardwareUsage.memory_mb*100 $}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-2 col">{$ ::context.leftPanel.disk $}</div>
+                        <div class="col-sm-9 col">
+                            <div class="bar-wrap used-bar-wrap"
+                                 get-bar
+                                 dataval="{$ HardwareUsage.local_gb_used | gb$} / {$ HardwareUsage.local_gb < 0 ? '{% trans "Not limited" %}' : (HardwareUsage.local_gb | gb) $}"
+                                 percentage="{$ HardwareUsage.local_gb_used/HardwareUsage.local_gb*100 $}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col">
+                <div class="resource-used-content">
+                    <h4>{$ ::context.rightPanel.head $}</h4>
+
+                    <div class="row">
+                        <div class="col-sm-2 col">{$ ::context.rightPanel.instance $}</div>
+                        <div class="col-sm-9 col">
+                            <div class="bar-wrap used-bar-wrap"
+                                 get-bar
+                                 dataval="{$ VirtualUsage.totalInstancesUsed $} / {$ VirtualUsage.maxTotalInstances === 'Unlimited' ? '{% trans "Not limited" %}' : VirtualUsage.maxTotalInstances $}"
+                                 percentage="{$ VirtualUsage.totalInstancesUsed/VirtualUsage.maxTotalInstances*100 $}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-2 col">{$ ::context.rightPanel.cpu $}</div>
+                        <div class="col-sm-9 col">
+                            <div class="bar-wrap used-bar-wrap"
+                                 get-bar
+                                 dataval="{$ VirtualUsage.totalCoresUsed $} / {$ VirtualUsage.maxTotalCores === 'Unlimited' ? '{% trans "Not limited" %}' : VirtualUsage.maxTotalCores $}"
+                                 percentage="{$ VirtualUsage.totalCoresUsed/VirtualUsage.maxTotalCores*100 $}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-2 col">{$ ::context.rightPanel.ram $}</div>
+                        <div class="col-sm-9 col">
+                            <div class="bar-wrap used-bar-wrap"
+                                 get-bar
+                                 dataval="{$ VirtualUsage.totalRAMUsed | mb2gb $} / {$ VirtualUsage.maxTotalRAMSize === 'Unlimited' ? '{% trans "Not limited" %}' : (VirtualUsage.maxTotalRAMSize| mb2gb) $}"
+                                 percentage="{$ VirtualUsage.totalRAMUsed/VirtualUsage.maxTotalRAMSize*100 $}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="overview-table">
+            <hz-magic-search-context filter-facets="filterFacets">
+                <table id="nova-usage-list" hz-table ng-cloak hopes-table-drag
+                       st-table="iNovaUsage"
+                       st-safe-src="NovaUsage"
+                       default-sort="domain"
+                       default-sort-reverse="false"
+                       st-magic-search
+                       class="table table-bordered table-hover modern">
+                    <thead>
+                    <tr>
+                        <th colspan="100" class="bare">
+                            <div class="table_actions clearfix">
+                                <div class="fr search-bar">
+                                    <hz-magic-search-bar id="search"></hz-magic-search-bar>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+
+                    <tr>
+                        <th class="none"></th>
+                        <th width="22%">
+                            <span st-sort="domain" eagle-eye="data_col">{$ ::context.header.domain $}</span>
+                        </th>
+                        <th width="22%">
+                            <span st-sort="tenant_name" eagle-eye="data_col">{$ ::context.header.name $}</span>
+                        </th>
+                        <th eagle-eye="data_col">{$ ::context.header.vcpu_hours $}</th>
+                        <th eagle-eye="data_col">{$ ::context.header.ram_hours $}</th>
+                        <th eagle-eye="data_col">{$ ::context.header.volume_hours $}</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr ng-if="!NovaUsageState">
+                        <td colspan="100" class="Loading-bar"><img class="load-detail"
+                                                                   src="/static/bootstrap/img/loading.gif" alt=""/></td>
+                    </tr>
+
+                    <tr ng-if="!iNovaUsage.length && NovaUsageState">
+                        <td colspan="100">{% trans "No Data" %}</td>
+                    </tr>
+
+                    <tr ng-repeat-start="nova in iNovaUsage" ng-class="{'st-selected': checked[router.id]}">
+
+                        <td class="none"></td>
+                        <!-- Table-row-info-column -->
+                        <td eagle-eye="data_col">
+                            <span class="row-name">{$ nova.domain $}</span>
+                            <i class="chevron-right chevron-fixed fr" hz-expand-detail="chevron-right chevron-down"
+                               duration="200" eagle-eye="expand"></i>
+                        </td>
+                        <td eagle-eye="data_col">{$ nova.tenant_name $}</td>
+                        <td eagle-eye="data_col">{$ nova.total_vcpus_usage | number:2 $}</td>
+                        <td eagle-eye="data_col">{$ nova.total_memory_mb_usage | number:2 $}</td>
+                        <td eagle-eye="data_col">{$ :: nova.total_local_gb_usage| number:2 $}</td>
+                    </tr>
+                    <tr ng-repeat-end class="detail-row">
+                        <td class="detail" colspan="100" eagle-eye="data_col">
+                            <div class="fl detail-row-name">{$ context.instances $}</div>
+                            <div class="detail-expanded fl">
+                                <table id="detail-table" class="table table-bordered table-hover table-th">
+                                    <thead>
+                                    <tr>
+                                        <th eagle-eye="data_col">{% trans "Name" %}</th>
+                                        <th eagle-eye="data_col">{% trans "State" %}</th>
+                                        <th eagle-eye="data_col">{% trans "Started At" %}</th>
+                                        <th eagle-eye="data_col">{% trans "VCPUs" %}</th>
+                                        <th eagle-eye="data_col">{% trans "Memory" %}</th>
+                                        <th eagle-eye="data_col">{% trans "Local Disk(GB)" %}</th>
+                                    <tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="server in nova.server_usages">
+                                        <td eagle-eye="data_col">{$ server.name $}</td>
+                                        <td eagle-eye="data_col">
+                                            <span class="instance-state instance-state-{$ server.state | lowercase $}"></span>
+                                            {$ server.state | decode:instanceStatus $}
+                                        </td>
+                                        <td eagle-eye="data_col">{$ server.started_at | date:'short' $}</td>
+                                        <td eagle-eye="data_col">{$ server.vcpus $}</td>
+                                        <td eagle-eye="data_col">{$ server.memory_mb | mb2gb $}</td>
+                                        <td eagle-eye="data_col">{$ server.local_gb $}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                    <tfoot ng-if="NovaUsage.length > 10">
+                    <tr>
+                        <td colspan="100">
+                            <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </hz-magic-search-context>
+        </div>
+    </div>
+</div>
+{% endblock %}

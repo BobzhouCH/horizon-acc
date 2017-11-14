@@ -1,0 +1,242 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Billing" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Billing")%}
+{% endblock page_header %}
+
+{% block main %}
+
+<tabset justified="true" class="def-tabs mb10">
+    <tab heading="{% trans 'Billing Info' %}">
+        <div class="tab-pane-content">
+        <div class="js-billing-content" ng-controller="identityProjectBillingCtrl">
+            <div class="clearfix fr">
+                   <div class="has-feedback">
+                       <select ng-model="projectName" ng-init="projectName='All'"  ng-change="projectNamefn(projectName)"
+                               class="form-control billing-project" ng-show="project_filter">
+                           <option value="All" >{% trans 'All Project' %}</option>
+                           <option ng-repeat="(id, project) in projects" value="{$ id $}" ng-if="project.name !== 'All'" >{$ project.name $}</option>
+                       </select>
+                   </div>
+            </div>
+            <ul class="considering-tab mt30">
+                <li href="javascript:;" ng-click="costfilter('All')" ng-class="{'moneyactive': active}">
+                    <span class="considering-tab-title considering-tab-title-line">
+                         {% trans 'All Products' %} {$  totalCost.count $}
+                    </span>
+                    <span class="considering-tab-con"><em class="orange">{$ totalCost.sum | number:2 $}</em> {% trans 'Yuan' %}</span>
+                </li>
+                <li ng-repeat="data in costs" href="javascript:;" ng-click="costfilter(data)" ng-class="{'moneyactive': data.active}">
+                    <i class="{$ data.product $} icon"></i>
+                    <span class="considering-tab-title-line-2">
+                             {$ data.product | decode: producti18n $}: {$  data.count $}
+                    </span>
+                    <span class="considering-tab-con-2"><em class="orange">{$ data.sum | number:2 $}</em> {% trans 'Yuan' %}</span>
+                </li>
+            </ul>
+        <hz-magic-search-context filter-facets="filterFacets">
+        <table hz-table ng-cloak
+          st-table="ibproducts"
+          st-safe-src="bproducts"
+          default-sort="resource_name"
+          default-sort-reverse="true"
+          st-magic-search
+          class="table table-bordered table-hover">
+          <thead>
+            <tr id="considering-list">
+              <th colspan="100" class="bare">
+                 <div class="clearfix pull-left mt10 mb10">
+                     <a ng-href="{% url 'horizon:project:billing:products_download' %}"
+                        ng-if="ibproducts && ibproducts.length > 0">
+                        <button
+                          type="button"
+                          id="export-button"
+                          class="btn btn-primary btn-action">
+                          {% trans 'Export Bills' %}
+                        </button>
+                     </a>
+                 </div>
+                <div class="fr search-bar">
+                  <hz-magic-search-bar id="search"></hz-magic-search-bar>
+                </div>
+              </th>
+            </tr>
+
+            <tr id="billing-detail-header">
+              <th st-sort="resource_name">{$ ::context.header.resource $}</th>
+              <th st-sort="status">{$ ::context.header.Status $}</th>
+              <th class="totalPay-color" st-sort="cost">{$ ::context.header.Total $} ({% trans 'Yuan' %})</th>
+              <th st-sort="unit">{$ ::context.header.billingType $}</th>
+              <th st-sort="fee">{$ ::context.header.Pricce $}</th>
+              <th st-sort="runtime">{$ ::context.header.RunTime $}</th>
+              <th st-sort="update_at">{$ ::context.header.updateTime $}</th>
+              <th st-sort="create_at">{$ ::context.header.createTime $}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-if="!bproductState">
+            <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+          </tr>
+
+          <tr ng-if="!ibproducts.length && bproductState">
+            <td colspan="100">{% trans "No Data" %}</td>
+          </tr>
+            <tr ng-if="ibproducts" ng-repeat="bproduct in ibproducts">
+              <td><a href="javascript:;" ng-click="detail(bproduct.id)">{$ bproduct.resource_name $}</a></td>
+              <td>{$ bproduct.status | decode: productstatus$}</td>
+              <td class="totalPay-color">{$ bproduct.cost | number:6 $}</td>
+              <td>{$ bproduct.unit | decode:billingType $}</td>
+              <td>{$ bproduct.fee | number:4 $}</td>
+              <td>{$ timeFormat(bproduct.runtime) $}</td>
+              <td>{$ bproduct.update_at $}</td>
+              <td>{$ bproduct.create_at $}</td>
+            </tr>
+          </tbody>
+
+          <tfoot ng-if="bproducts.length > 10">
+            <tr>
+              <td colspan="100">
+                <table-footer></table-footer>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+        </hz-magic-search-context>
+
+        <div class="consumption">
+            <table class="table table-bordered table-hover"
+            st-table="icurrents" st-safe-src="currents">
+                <thead>
+                    <tr>
+                        <th colspan="100">{% trans 'Current Consumption' %}</th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th class="totalPay-color">{% trans 'Total' %} (Yuan)</th>
+                        <th ng-repeat="data in icurrents">{$ data.product | decode:producti18n $}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="ech-hour">
+                        <td>{% trans 'Each Hour' %}</td>
+                        <td class="totalPay-color">{$ totalPay.getHours | number:2 $}</td>
+                        <td ng-repeat="data in icurrents">{$ data.sum | number:2 $}</td>
+                    </tr>
+                    <tr id="ech-day">
+                        <td>{% trans 'Each Day' %}</td>
+                        <td class="totalPay-color">{$ totalPay.getDay | number:2 $}</td>
+                        <td ng-repeat="data in icurrents">{$ (data.sum*24) | number:2 $}</td>
+                    </tr>
+                    <tr id="ech-month">
+                        <td>{% trans 'Each Month' %}</td>
+                        <td class="totalPay-color">{$ totalPay.getMonth | number:2 $}</td>
+                        <td ng-repeat="data in icurrents">{$ (data.sum*24*30) | number:2 $}</td>
+                    </tr>
+                    <tr id="ech-year">
+                        <td>{% trans 'Each Year' %}</td>
+                        <td class="totalPay-color">{$ totalPay.getYear | number:2 $}</td>
+                        <td ng-repeat="data in icurrents">{$ (data.sum*24*365) | number:2 $}</td>
+                    </tr>
+                </tbody>
+            </table>
+         </div>
+    </div>
+    </div>
+    </tab>
+    <tab heading="{% trans 'Recharge' %}">
+      <div class="tab-pane-content">
+      <div class="js-billing-content accoun-box-conten clearfix row" ng-controller="identityProjectBillingPay">
+          <div class="accoun-box-left col-md-12 col-lg-7">
+              <div class="account-pay-box">
+                  <div class="pay-way clearfix">
+                      <label class="fl">{% trans 'Pay Method' %}:</label>
+                      <ul class="fl" id="pay-way" pay-way-toggle-radiu="payactive" invcodepay="invcodepay">
+                          <li data-value="alipay" ng-show="alipay_enable"><i></i><img src="/static/bootstrap/img/zhifubao-icon.png" /></li>
+                          <li data-value="yeepay" ng-show="yeepay_enable"><i></i><img src="/static/bootstrap/img/yeepay.png" /></li>
+                          <li data-value="invcode" class="payactive"><i></i><img src="/static/bootstrap/img/invcode.png" /></li>
+                          <!--li data-value="invcode" ng-show="invcode_enable"><i></i><img src="/static/bootstrap/img/invcode.png" /></li-->
+                      </ul>
+                  </div>
+                  <div class="pay-money clearfix" ng-show="alipay_enable">
+                      <label class="fl">{% trans 'Amount' %}:</label>
+                      <ol class="fl" id="seifAmount" pay-way-toggle-radiu="moneyactive" re-payid="pay-recharge" charge_enable="onoff">
+                          <li class="moneyactive" data-value="50">50</li>
+                          <li data-value="100">100</li>
+                          <li data-value="200">200</li>
+                          <li data-value="500">500</li>
+                          <li data-value="1000">1000</li>
+                      </ol>
+                  </div>
+
+                  <div class="pay-recharge clearfix" ng-show="!alipay_enable">
+                    <div class="form-group clearfix mt0" ng-class="{'has-error':showavailable}">
+                      <label>{% trans 'Invitation Code' %}: </label>
+                      <input type="text" id="invcode-recharge" class="form-control" name="invcode-recharge" ng-change="checkInvcode()" ng-model="invcode" style="width:200px"/>&nbsp;&nbsp;
+                      <p class="help-block alert-fixed alert-danger"
+                        ng-show="showavailable">
+                        {% trans "Not Available" %}
+                      </p>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="form-group clearfix mt0">
+                    <label>{% trans 'Code Value' %}: </label>
+                    <input type="text" id="invcode_worth" ng-disabled="true" ng-model="invcode_worth" style="width:200px"/>&nbsp;&nbsp;
+                    </div>
+                    <br>
+                  </div>
+
+                  <div class="pay-recharge clearfix" ng-show="alipay_enable">
+                      <label class="fl mt5">{% trans 'Input Amount' %}:</label>
+                      <div class="fl pay-recharge-wrap">
+                            <input type="text" id="pay-recharge" ng-keyup="inputonKeyup()" />&nbsp;&nbsp;{% trans 'Yuan' %}
+                            <div class="tooltip fade top in none js-tooltip none">
+                              <div class="tooltip-arrow"></div>
+                              <div class="tooltip-inner">{% trans "Recharge amount format error" %}</div>
+                            </div>
+                      </div>
+                  </div>
+
+                  <div class="recharge-box clearfix">
+                      <label class="fl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                      <button class="btn btn-primary" ng-disabled="onoff" ng-click="submitPay()">
+                        {% trans 'Charge' %}
+                      </button>
+                  </div>
+              </div>
+          </div>
+          <div class="accoun-box-right col-md-12 col-lg-5">
+              <div class="account-head-box clearfix">
+                  <div class="txt-c">
+                      <div class="account-information">{% trans 'Account information' %}</div>
+                      <div><label class="account-name" ng-bind="accountInfo.name"></label></div>
+                  </div>
+                  <div class="account-user-con fl">
+                      <p><label>{% trans 'Recharge Amount' %}:</label><span><strong ng-bind="accountInfo.total_pay | number:2"></strong> {% trans 'Yuan' %}</span></p>
+                      <p><label>{% trans 'Account Balance' %}:</label><span><strong class="brlance-color" ng-bind="accountInfo.balance | number:2"></strong> {% trans 'Yuan' %}</span></p>
+                  </div>
+              </div>
+              <div class="accoun-record-box">
+                  <h3>{% trans 'Recharge Records' %}</h3>
+                  <ul>
+                      <li ng-repeat="payment in paymentList" ng-if="payment.trade_success">
+                          <div class="clearfix">
+                              <span>
+                               <i class="black">{$ payment.pay_date $}</i>
+                               <i>{$ payment.pay_time $}</i>
+                              </span>
+                              <strong>{% trans 'Charge' %}: {$ payment.amount $}</strong>
+                              <strong>{$ payment.ptype $}</strong>
+                          </div>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+      </div>
+    </tab>
+  </tabset>
+
+{% endblock %}

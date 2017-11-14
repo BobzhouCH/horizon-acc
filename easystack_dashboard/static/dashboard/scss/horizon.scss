@@ -1,0 +1,465 @@
+// Custom Theme Variables
+@import "/custom/variables";
+
+// Horizon Variables
+@import "variables";
+@import "lenovo/variables";
+
+// Horizon Mixins
+@import "mixins";
+
+// Vendor Components
+@import "/bootstrap/scss/bootstrap";
+@import "/horizon/lib/font-awesome/scss/font-awesome.scss";
+//
+$mdi-font-path: $static_url + "/horizon/lib/mdi/fonts";
+@import "/horizon/lib/mdi/scss/materialdesignicons.scss";
+
+// Dashboard Components
+//@import "splash";
+//@import "components/resource_browser";
+@import "components/topbar";
+@import "components/accordion_nav";
+//@import "components/inline_edit";
+//@import "components/charts";
+//@import "components/workflow";
+@import "components/network_topology";
+@import "/framework/framework";
+//@import "/framework/widgets/table/table";
+
+//@import "/horizon/lib/magic_search/magic_search.scss";
+@import "forms";
+@import "buttons";
+
+@import "modals";
+@import "items/overview";
+@import "items/application";
+@import "items/comput";
+@import "items/sahara";
+@import "items/network";
+@import "items/storage";
+@import "items/management";
+@import "items/identity";
+@import "items/computeha";
+@import "items/ticket";
+@import "items/ironic";
+@import "items/stack";
+@import "items/vpn";
+@import "items/_container";
+@import "/framework/widgets/st-magic-search/magic-search.scss";
+
+body, div, span, object, frame, h1, h2, h3, h4, h5, h6, p,
+blockquote, a, code, em, img, q, small, strong, dd, dl, dt,
+li, ol, ul, fieldset, form, label, table, tbody, tr, th, td,
+input, menu, button {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: $a-link-color;
+
+    &:hover {
+        color: $a-link-hover-color;
+    }
+}
+
+input {
+    padding: 5px;
+    line-height: 16px;
+}
+
+ol, ul {
+    list-style-type: none;
+}
+
+input, button {
+    &:focus {
+        outline: 0 !important;
+    }
+}
+
+.fr {
+    float: right;
+}
+
+.fl {
+    float: left;
+}
+
+.cut {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.f10 {
+    font-size: 10px;
+}
+
+.f12 {
+    font-size: 12px;
+}
+
+.f14 {
+    font-size: 14px;
+}
+
+.txt-c {
+    text-align: center;
+    word-wrap: break-word;
+}
+
+.pt30 {
+    padding-top: 30px;
+}
+
+.pt20 {
+    padding-top: 20px;
+}
+
+.w100 {
+    width: 100px !important;
+}
+
+.blue {
+    color: $brand-primary;
+}
+
+.blue_1 {
+    color: $a-link-color;
+}
+
+.blue_2 {
+    color: #30b0f0;
+}
+
+.gray_1 {
+    color: #666;
+}
+
+.gray_2 {
+    color: $gray-light;
+}
+
+.gray_3 {
+    color: #999;
+}
+
+.red {
+    color: #ff0000;
+}
+
+.orange {
+    color: #ff9933;
+}
+
+.black {
+    color: #000;
+}
+
+.mt0 {
+    margin-top: 0;
+}
+
+.mt5 {
+    margin-top: 5px;
+}
+
+.mt10 {
+    margin-top: 10px;
+}
+
+.mt15 {
+    margin-top: 15px;
+}
+
+.mt20 {
+    margin-top: 20px;
+}
+
+.mt30 {
+    margin-top: 30px;
+}
+
+.mt50 {
+    margin-top: 50px;
+}
+
+.mr5 {
+    margin-right: 5px;
+}
+
+.mb10 {
+    margin-bottom: 10px;
+}
+
+.mb20 {
+    margin-bottom: 20px;
+}
+
+.mb30 {
+    margin-bottom: 30px;
+}
+
+.mb50 {
+    margin-bottom: 50px;
+}
+
+.ml5 {
+    margin-left: 5px;
+}
+
+.ml10 {
+    margin-left: 10px;
+}
+
+.ml15 {
+    margin-left: 15px;
+}
+
+.ml20 {
+    margin-left: 20px;
+}
+
+.mr10 {
+    margin-right: 10px;
+}
+
+.mr20 {
+    margin-right: 20px;
+}
+
+.a_link {
+    cursor: pointer;
+}
+
+i {
+    font-size: 100%;
+    font-weight: normal;
+    font-style: normal;
+}
+
+.smallC {
+    display: inline-block;
+    margin-left: 4px;
+    width: 6px;
+    height: 6px;
+    background-color: #6A788D;
+    border-radius: 3px;
+    vertical-align: middle;
+}
+
+.border-none {
+    border: 0 !important;
+}
+
+// Remove the input arrow
+.no-input-number input::-webkit-outer-spin-button,
+input.no-input-number::-webkit-outer-spin-button,
+.no-input-number input::-webkit-inner-spin-button,
+input.no-input-number::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+
+.no-input-number input[type="number"],
+input.no-input-number[type="number"] {
+    -moz-appearance: textfield;
+}
+
+// layout
+.main {
+    width: 100%;
+}
+
+.leftPane {
+    position: fixed;
+    top: 0;
+    width: $sidebar-width;
+    height: 100%;
+    background: $sidebar-background-color;
+    color: #fff;
+    z-index: 100;
+}
+
+.rightpaneWrap {
+    position: relative;
+    top: 68px;
+    margin-left: $sidebar-width;
+}
+
+.contentMain {
+    margin: 0 20px auto;
+    padding: 10px 20px 5px 20px;
+    background: #fff;
+    border-radius: 4px;
+}
+
+.tab-main {
+    padding: 0;
+    background: none;
+
+    .tab-pane-content {
+        margin: 10px 20px;
+    }
+}
+
+.detail_explain {
+    padding: 10px;
+    margin: 10px 2px 0 10px;
+    line-height: 150%;
+    font-size: 16px;
+    background: #fff;
+    border: 1px solid #DDDDDD;
+    border-radius: 5px;
+}
+
+.detail_explain h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #0D8EB8;
+}
+
+// tips
+.messages {
+    position: fixed;
+    right: 10px;
+    top: 50px;
+    width: 300px;
+    word-wrap: break-word;
+    z-index: 9999;
+
+    .alert {
+        padding: 10px 15px;
+        color: #336633;
+        background: #d1f0d1;
+        border: 0;
+    }
+
+    .alert-success,
+    .alert-info {
+        color: #336699;
+        background: #c1e0f0;
+    }
+
+    .alert-warning {
+        color: #cc6600;
+        background: #ffe0c1;
+    }
+
+    .alert-danger {
+        color: #cc0000;
+        background: #ffb2b2;
+    }
+
+    .close {
+        color: #fff;
+        font-size: 16px;
+        opacity: 1;
+        position: relative;
+        right: -5px;
+        top: -2px;
+    }
+}
+
+.modal-dialog, .has-error {
+    .help-block {
+        display: block;
+        margin-top: 2px;
+        margin-bottom: 0;
+        color: $state-danger-text;
+        position: absolute;
+    }
+
+    .alert {
+        padding: 0;
+    }
+
+    .alert-danger {
+        background: 0;
+        border: 0;
+    }
+
+    .alert-fixed {
+        position: absolute;
+    }
+}
+
+.has-error {
+    .ng-dirty {
+        border-color: $state-danger-text;
+
+        &:focus {
+            border-color: $state-danger-text;
+            box-shadow: none;
+        }
+    }
+}
+
+.verify-input.ng-invalid.ng-dirty {
+    border: 1px solid $state-danger-text;
+}
+
+// help icon tips
+.help-fixed {
+    position: absolute;
+    right: -18px;
+    top: 9px;
+    color: #666;
+}
+// help text
+.help-text {
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    color: #737373;
+}
+
+.popover {
+    max-width: 150px;
+    background-color: #d8f1fd;
+    border: 1px #67b9e2 solid;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+
+    &.top > .arrow:after {
+        border-top-color: #67b9e2;
+    }
+
+    &.right > .arrow:after {
+        border-right-color: #67b9e2;
+    }
+
+    .popover-inner {
+        color: #3c8cb4;
+    }
+}
+
+.write-label {
+  label {
+    text-align: left;
+  }
+  .multiSelect .checkboxLayer {
+    width:100%;
+  }
+}
+
+// Dashboard Components
+@import "lenovo/lenovo-styles";
+//@import "lenovo/ceph_mgmt/horizon_storage";
+//
+///*
+//fixed python compress doesn't support sass 3.3
+//bootstrap has new grammar such as @at-root
+//*/
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url(if($bootstrap-sass-asset-helper, twbs-font-path('#{$icon-font-path}#{$icon-font-name}.eot'), '#{$icon-font-path}#{$icon-font-name}.eot'));
+    src: url(if($bootstrap-sass-asset-helper, twbs-font-path('#{$icon-font-path}#{$icon-font-name}.eot?#iefix'), '#{$icon-font-path}#{$icon-font-name}.eot?#iefix')) format('embedded-opentype'),
+         url(if($bootstrap-sass-asset-helper, twbs-font-path('#{$icon-font-path}#{$icon-font-name}.woff2'), '#{$icon-font-path}#{$icon-font-name}.woff2')) format('woff2'),
+         url(if($bootstrap-sass-asset-helper, twbs-font-path('#{$icon-font-path}#{$icon-font-name}.woff'), '#{$icon-font-path}#{$icon-font-name}.woff')) format('woff'),
+         url(if($bootstrap-sass-asset-helper, twbs-font-path('#{$icon-font-path}#{$icon-font-name}.ttf'), '#{$icon-font-path}#{$icon-font-name}.ttf')) format('truetype'),
+         url(if($bootstrap-sass-asset-helper, twbs-font-path('#{$icon-font-path}#{$icon-font-name}.svg##{$icon-font-svg-id}'), '#{$icon-font-path}#{$icon-font-name}.svg##{$icon-font-svg-id}')) format('svg');
+  }

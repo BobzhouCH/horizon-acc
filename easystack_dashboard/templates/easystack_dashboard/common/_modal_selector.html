@@ -1,0 +1,60 @@
+{% load i18n horizon humanize %}
+{% load context_selection %}
+
+{% check_cloud_admin as is_cloudadmin %}
+
+
+<div id="mbx_wizard" style="display: none;">
+    <table id="mbx_table" ng-controller="lenovoQuickStartCtrl">
+        <tbody>
+            <tr>
+                <td id="cell_01">
+                    <a class="mdi mdi-cloud-upload m_s_center" href="javascript:void(0)" title='{% trans "Launch Instance" %}'
+                       ng-click="openLaunchInstanceWizard({successUrl: (window.WEBROOT || '/') + 'project/instances/'})"
+                       ng-controller="LaunchInstanceModalCtrl"
+                            ></a>
+                    <div class="m_s_center">{% trans "Launch Instance" %}</div>
+                </td>
+                <td id="cell_02" ng-init="userID = '{{ request.user.id }}'">
+                    <action
+                      callback="actions.volumes.open">
+                        <a class="mdi mdi-dns m_s_center {% if is_cloudadmin %}{% else %}cell02_temp_padding{% endif %}" href="javascript:void(0)" title='{% trans "Create Volume" %}'></a>
+                    </action>
+                    <div class="m_s_center">{% trans "Create Volume" %}</div>
+                </td>
+                {% if is_cloudadmin %}
+                <td id="cell_03" ng-init="userID = '{{ request.user.id }}'">
+                    <action
+                      callback="actions.images.open">
+                        <a class="mdi mdi-blur" href="javascript:void(0)" title='{% trans "Create Image" %}'></a>
+                    </action>
+                    <div>{% trans "Create Image" %}</div>
+                </td>
+                {% endif %}
+            </tr>
+            <tr>
+                {% if is_cloudadmin %}
+                <td id="cell_04" ng-init="userID = '{{ request.user.id }}'">
+                    <action
+                      callback="actions.switches.createSwitch">
+                        <a class="mdi mdi-vector-square" href="javascript:void(0)" title='{% trans "Add Switch" %}'></a>
+                    </action>
+                    <div>{% trans "Add Switch" %}</div>
+                </td>
+                {% endif %}
+                <td id="cell_05">
+                    <a></a>
+                    <div></div>
+                </td>
+                <td id="cell_06">
+                    <a></a>
+                    <div></div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <a id="modCancel">
+        <i style="background: url('{{ STATIC_URL }}dashboard/img/_cancel.png');"></i>
+    </a>
+</div>
+<div id="shadow" style="display: none;"></div>

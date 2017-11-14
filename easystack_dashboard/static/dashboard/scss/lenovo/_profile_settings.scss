@@ -1,0 +1,106 @@
+#user_settings_modal {
+
+  .modal-header {
+    background: $body-bg;
+    padding: 0 0 0 20px;
+    color: $font-base-color;
+    border-bottom: 1px solid #e5e5e5;
+    //border-top-left-radius: 4px;
+    //border-top-right-radius: 4px;
+
+    &:before {
+      content: " ";
+      display: table;
+    }
+
+    &:after {
+      clear: both;
+    }
+
+    > .modal-title {
+      display: block;
+      float: left;
+      height: inherit;
+      line-height: 46px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+  }
+
+  #user_settings_modal {
+    float: left;
+
+    > .modal-body {
+      &.clearfix {
+        &:before {
+          content: " ";
+          display: table;
+        }
+
+        &:after {
+          visibility: hidden;
+          display: block;
+          font-size: 0;
+          content: " ";
+          clear: both;
+          height: 0;
+        }
+      }
+
+      > .row {
+        > .col-sm-6 {
+          > .h3 {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: $font-base-color;
+          }
+        }
+      }
+
+      .form-group {
+        margin-top: 20px;
+        margin-bottom: 0;
+
+        &.required {
+          > label:after {
+            content: "*";
+            font-weight: bold;
+            line-height: 0;
+            padding-left: 4px;
+            color: $banner-normal-bg;
+          }
+        }
+
+        > .control-label {
+          display: table;
+          width: auto;
+          height: 30px;
+          margin-right: 18px;
+          line-height: 30px;
+          text-align: left;
+          color: $font-base-color;
+          font-size: 14px;
+          font-weight: normal;
+        }
+
+        > .form-control {
+          height: 30px;
+          display: inline-block;
+          box-shadow: none;
+          -webkit-box-shadow: none;
+          padding: 5px;
+        }
+      }
+
+    }
+
+    > .modal-footer {
+      padding: 20px;
+      text-align: right;
+      border-top: 1px solid #e5e5e5;
+      background-color: #fff;
+    }
+  }
+}

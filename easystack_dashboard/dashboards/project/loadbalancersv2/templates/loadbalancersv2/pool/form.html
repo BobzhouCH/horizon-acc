@@ -1,0 +1,479 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <div class="modal-description mt10">
+      <p>
+        {% trans "The creation of load balancer pool depends on the load balancer listener, if you don't have created a load balancer and listener, please return to create the load balancer management to create the resource." %}
+      </p>
+      <p>{% trans "Session Persistence ensures that the same user's requests are allocated to the same server. There are three different ways to perform session persistence." %}</p>
+      <p>{% trans "SOURCE IP: haproxy adds the hash of user ip to real server." %}</p>
+      <p>{% trans "HTTP COOKIE: haproxy prepends/inserts server's cookie id(defined by haproxy)to the response cookies sent from server to client." %}</p>
+      <p>{% trans "APP COOKIE: haproxy maintains a database table which stores relationship between user session and server identifier. when user request comes, the table will be checked." %}</p>
+    </div>
+    <!-- Modal-form-left: Contains the form controls -->
+      <fieldset>
+        <!--
+          Pool name input (required):
+            Create-mode: show
+            Edit-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="name">
+            *{% trans "Pool Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              type="text"
+              ng-model="pool.name"
+              ng-maxlength="255"
+              placeholder="{% trans 'enter a pool name' %}"/>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "A pool name is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength && form.name.$dirty">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+          Description input (optional):
+            Create-mode: show
+            Edit-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' || context.mode === 'edit'">
+          <label for="description">
+            {% trans "Description" %}
+          </label>
+          <div class="form-group-right"
+               ng-class="{'has-error':form.description.$invalid && form.description.$dirty}">
+            <textarea
+              id="description"
+              name="description"
+              class="form-control"
+              rows="4"
+              ng-maxlength="255"
+              type="description"
+              ng-model="pool.description"
+              placeholder="{% trans 'enter description of the pool' %}">
+            </textarea>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.description.$error.maxlength">
+              {% trans "Description length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+          Listener selection (option):
+            Create-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create'"
+          ng-class="{'has-error':form.listeners.$invalid && form.listeners.$dirty}">
+          <label for="listeners">
+            *{% trans "Listener" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="listeners"
+              name="listeners"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.listeners}"
+              ng-model="pool.listener_id">
+              <option value="" disabled>
+                {$ (dropdown.listeners && dropdown.listeners.length)? "{% trans 'select a listener' %}": "{% trans 'No Listener Available' %}" $}
+              </option>
+              <option
+                ng-repeat="listener in dropdown.listeners"
+                value="{$ listener.id $}">
+                {$ listener.name $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!--
+          Listener selection (option):
+            Create-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create'"
+          ng-class="{'has-error':form.protocol.$invalid && form.protocol.$dirty}">
+          <label for="protocol">
+            *{% trans "Protocol" %}
+          </label>
+          <div class="form-group-right">
+            <select required disabled
+              id="protocol"
+              name="protocol"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.listeners}"
+              ng-model="pool.listener_id">
+              <option
+                ng-repeat="listener in dropdown.listeners"
+                value="{$ listener.id $}">
+                {$ listener.protocol $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!--
+           Protocol Selection (option):
+            Create-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'edit'"
+          ng-class="{'has-error':form.protocol.$invalid && form.protocol.$dirty}">
+          <label for="protocol">
+            *{% trans "Protocol" %}
+          </label>
+          <div class="form-group-right">
+            <select
+              id="protocol"
+              name="protocol"
+              class="form-control"
+              ng-disabled="context.mode === 'edit'"
+              ng-model="pool.protocol">
+              <option value="" disabled>
+                {% trans 'select a protocol' %}
+              </option>
+              <option
+                ng-repeat="p in dropdown.protocols"
+                ng-selected="p.key === pool.protocol"
+                value="{$ p.key $}">
+                {$ p.value $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!--
+           Lb method Selection (option):
+            Create-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' || context.mode === 'edit'"
+          ng-class="{'has-error':form.method.$invalid && form.method.$dirty}">
+          <label for="method">
+            *{% trans "LB Method" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="method"
+              name="method"
+              class="form-control"
+              ng-model="pool.lb_algorithm">
+              <option value="" disabled>
+                {% trans 'select a method' %}
+              </option>
+              <option
+                ng-repeat="method in dropdown.methods"
+                ng-selected="method.key===pool.lb_algorithm"
+                value="{$ method.key $}">
+                {$ method.value $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!--
+           Session persistence Selection (option):
+            Create-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create'"
+          ng-class="{'has-error':form.session.$invalid && form.session.$dirty}">
+          <label for="session">
+            {% trans "Session Persistence" %}
+          </label>
+          <div class="form-group-right">
+            <div>
+              <input
+                id="session_disable"
+                name="session_radio"
+                type="radio"
+                ng-init="pool.session_enable= 0"
+                ng-model="pool.session_enable"
+                ng-value="0"/>
+                <span class="ml5 mt5">{% trans "Disable" %}</span>
+              <input
+                id="session_enable"
+                name="session_radio"
+                type="radio"
+                ng-model="pool.session_enable"
+                ng-value="1"/>
+                <span class="ml5 mt5">{% trans "Enable" %}</span>
+            </div>
+            <div>
+              <select ng-disabled="pool.session_enable === 0"
+                id="session"
+                name="session"
+                class="form-control mt5"
+                style="width: 45%"
+                ng-model="pool.session_persistence.type"
+                ng-disabled="pool.session_enable=== 0">
+                <option value="" disabled>
+                  {% trans 'select a type' %}
+                </option>
+                <option
+                  ng-repeat="session in dropdown.session_persistence"
+                  ng-selected="session.key===pool.session_persistence.type"
+                  value="{$ session.key $}">
+                  {$ session.value $}
+                </option>
+              </select>
+              <input
+                id="ip_cookie"
+                name="ip_cookie"
+                class="form-control verify-input mt5"
+                style="width: 53%"
+                type="text"
+                ng-model="pool.cookie_name"
+                ng-if="pool.session_enable === 1 && pool.session_persistence.type === 'APP_COOKIE'"
+                ng-maxlength="255"
+                placeholder="{% trans 'enter a cookie name' %}"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'edit'"
+          ng-class="{'has-error':form.session.$invalid && form.session.$dirty}">
+          <label for="session">
+            {% trans "Session Persistence" %}
+          </label>
+          <div class="form-group-right">
+            <div>
+              <input
+                id="session_disable"
+                name="session_radio"
+                type="radio"
+                ng-model="pool.session_enable"
+                ng-checked="pool.session_enable === '0'"
+                ng-value="'0'"/>
+                <span class="ml5 mt5">{% trans "Disable" %}</span>
+              <input
+                id="session_enable"
+                name="session_radio"
+                type="radio"
+                ng-model="pool.session_enable"
+                ng-checked="pool.session_enable === '1'"
+                ng-value="'1'"/>
+                <span class="ml5 mt5">{% trans "Enable" %}</span>
+            </div>
+            <div>
+              <select
+                id="session"
+                name="session"
+                class="form-control mt5"
+                style="width: 45%"
+                ng-model="pool.session_persistence.type"
+                ng-disabled="pool.session_enable === '0'">
+                <option value="" disabled>
+                  {% trans 'select a type' %}
+                </option>
+                <option
+                  ng-repeat="session in dropdown.session_persistence"
+                  ng-selected="session.key===pool.session_persistence.type"
+                  value="{$ session.key $}">
+                  {$ session.value $}
+                </option>
+              </select>
+              <input
+                id="ip_cookie"
+                name="ip_cookie"
+                class="form-control verify-input mt5"
+                style="width: 53%"
+                type="text"
+                ng-model="pool.cookie_name"
+                ng-if="pool.session_enable === '1' && pool.session_persistence.type === 'APP_COOKIE'"
+                ng-maxlength="255"
+                placeholder="{% trans 'enter a cookie name' %}"/>
+            </div>
+          </div>
+        </div>
+        <!--
+           Health Monitor Selection (option):
+            Create-mode: show
+        -->
+
+        <div class="form-group clearfix"
+          ng-if="context.mode == 'create' || context.mode == 'edit'">
+          <label for="healthmonitor">
+            {% trans "Health Monitor" %}
+          </label>
+          <div class="form-group-right">
+            <div class="clearfix subnet-rcol-check">
+              <input
+                id="healthmonitor"
+                name="healthmonitor"
+                type="checkbox"
+                ng-model="pool.healthmonitor"
+                ng-disabled="pool.healthmonitor_id">
+
+              <span class="ml5 mt5">{% trans "Enable" %}</span>
+            </div>
+          </div>
+        </div>
+
+          <!--
+             Health Monitor Tpye Selection (option):
+              Create-mode: show
+          -->
+          <div class="form-group clearfix"
+            ng-if="context.mode === 'create' || context.mode === 'edit'"
+            ng-class="{'has-error':form.type.$invalid && form.type.$dirty}">
+            <label for="type">
+              *{% trans "Type" %}
+            </label>
+            <div class="form-group-right">
+              <select ng-required="pool.healthmonitor"
+                id="type"
+                name="type"
+                class="form-control"
+                style="width: 40%"
+                ng-init="dropdown.types[0].key"
+                ng-disabled="pool.healthmonitor_id || !pool.healthmonitor"
+                ng-model="pool.hm_type">
+                <option value="" disabled>
+                  {% trans 'select a type' %}
+                </option>
+                <option
+                  ng-repeat="t in dropdown.types"
+                  ng-selected="t===pool.hm_type"
+                  value="{$ t.key $}">
+                  {$ t.value $}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <!--
+           Health Monitor Max_Retries Selection (option):
+            Create-mode: show
+          -->
+          <div class="form-group clearfix"
+            ng-if="context.mode === 'create' || context.mode === 'edit'"
+            ng-class="{'has-error':form.type.$invalid && form.type.$dirty}">
+            <label for="max_retries">
+              *{% trans "Max Retries" %}
+            </label>
+            <div class="form-group-right">
+              <input ng-required="pool.healthmonitor"
+                id="max_retries"
+                name="max_retries"
+                class="form-control verify-input"
+                style="width: 40%"
+                type="number"
+                min="1"
+                max="10"
+                ng-init="2"
+                ng-disabled="!pool.healthmonitor"
+                ng-model="pool.hm_max_retries"
+                placeholder="{% trans 'enter a retry' %}"/>
+              <span class="ml5">{% trans "Max Retries range: 1~10times" %}</span>
+              <p class="help-block alert-fixed alert-danger"
+                ng-show="form.max_retries.$error.required && form.max_retries.$dirty">
+                {% trans "A max retries number is required." %}
+              </p>
+            </div>
+          </div>
+
+          <!--
+             Health Monitor Timeout Selection (option):
+              Create-mode: show
+          -->
+          <div class="form-group clearfix"
+            ng-if="context.mode === 'create' || context.mode === 'edit'"
+            ng-class="{'has-error':form.type.$invalid && form.type.$dirty}">
+            <label for="delay">
+              *{% trans "Timeout" %}
+            </label>
+            <div class="form-group-right">
+              <input ng-required="pool.healthmonitor"
+                id="timeout"
+                name="timeout"
+                class="form-control verify-input"
+                style="width: 40%"
+                type="number"
+                min="5"
+                max="300"
+                ng-init="5"
+                ng-disabled="!pool.healthmonitor"
+                ng-model="pool.hm_timeout"
+                placeholder="{% trans 'enter a timeout' %}"/>
+              <span class="ml5">{% trans "Timeout range: 5~300s" %}</span>
+              <p class="help-block alert-fixed alert-danger"
+                ng-show="form.timeout.$error.required && form.timeout.$dirty">
+                {% trans "A timeout number is required." %}
+              </p>
+            </div>
+          </div>
+
+          <!--
+             Health Monitor Delay Selection (option):
+              Create-mode: show
+          -->
+          <div class="form-group clearfix"
+            ng-if="context.mode === 'create' || context.mode === 'edit'"
+            ng-class="{'has-error':form.type.$invalid && form.type.$dirty}">
+            <label for="delay">
+              *{% trans "Delay" %}
+            </label>
+            <div class="form-group-right">
+              <input ng-required="pool.healthmonitor"
+                id="delay"
+                name="delay"
+                class="form-control verify-input"
+                style="width: 40%"
+                type="number"
+                min="2"
+                max="60"
+                ng-init="2"
+                ng-disabled="!pool.healthmonitor"
+                ng-model="pool.hm_delay"
+                placeholder="{% trans 'enter a delay' %}"/>
+              <span class="ml5">{% trans "Delay range: 2~60s" %}</span>
+              <p class="help-block alert-fixed alert-danger"
+                ng-show="form.delay.$error.required && form.delay.$dirty">
+                {% trans "A delay number is required." %}
+              </p>
+            </div>
+          </div>
+
+{#        </div>#}
+      </fieldset>
+
+    <!-- Modal-form-right: The description text. -->
+
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-if="context.mode == 'create' || context.mode == 'edit'"
+    ng-disabled="form.$invalid || quota_exceeded"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>
+

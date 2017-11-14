@@ -1,0 +1,155 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <fieldset>
+      <div class="form-group clearfix"
+        ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+        <label>
+          *{% trans "Name" %}
+        </label>
+        <div class="form-group-right">
+          <input required
+            id="name"
+            name="name"
+            class="form-control verify-input"
+            type="text"
+            ng-model="extPolicyTargetGroup.name"
+            ng-maxlength="255"
+            placeholder="{% trans 'Enter an external group name' %}"/>
+          <p class="help-block alert-fixed alert-danger"
+            ng-show="form.name.$error.required && form.name.$dirty">
+            {% trans "An External Group name is required." %}
+          </p>
+          <p class="help-block alert-fixed alert-danger"
+            ng-show="form.name.$error.maxlength && form.name.$dirty">
+            {% trans "Name length should be less than 255 chars." %}
+          </p>
+        </div>
+      </div>
+
+      <div class="form-group clearfix">
+        <label>
+          {% trans "Description" %}
+        </label>
+        <div class="form-group-right">
+          <textarea
+            id="description"
+            name="description"
+            class="form-control"
+            rows="4"
+            ng-maxlength="255"
+            ng-model="extPolicyTargetGroup.description"
+            placeholder="{% trans 'Enter an external group description' %}">
+          </textarea>
+          <p class="help-block alert-fixed alert-danger"
+             ng-show="form.description.$error.maxlength">
+            {% trans "Description length should be less than 255 chars." %}
+          </p>
+        </div>
+      </div>
+
+      <div class="form-group clearfix policie-wrap"
+        ng-class="{'has-error':form.provide-rule-set.$invalid && form.provide-rule-set.$dirty}">
+        <label for="provide-rule-set">
+          *{% trans "Provided Policy Rule Sets" %}
+        </label>
+        <div class="form-group-right">
+          <select multiple
+            id="provide-rule-set"
+            class="form-control policie-select-size"
+            name="provide-rule-set"
+            ng-model="extPolicyTargetGroup.providePolicyRuleSet">
+            <option value="" disabled>{% trans "Select Provided Policy Rule Sets" %}</option>
+            <option ng-repeat="ruleset in rulesets" value="{$ ruleset.id $}" ng-selected = "prulesetIndex && prulesetIndex.indexOf(ruleset.id)!=-1 " >
+              {$ ruleset.name $}
+            </option>
+          </select>
+          <span
+             ng-click="action.createRuleSet.open()">
+            <i class="icon add_to add_to_mutiple"></i>
+          </span>
+        </div>
+      </div>
+      <div class="form-group clearfix policie-wrap"
+        ng-class="{'has-error':form.consume-rule-set.$invalid && form.consume-rule-set.$dirty}">
+        <label for="consume-rule-set">
+          *{% trans "Consumed Policy Rule Sets" %}
+        </label>
+        <div class="form-group-right">
+          <select multiple
+            id="consume-rule-set"
+            class="form-control policie-select-size"
+            name="consume-rule-set"
+            ng-model="extPolicyTargetGroup.consumePolicyRuleSet">
+            <option value="" disabled>{% trans "Select Consumed Policy Rule Sets" %}</option>
+            <option ng-repeat="ruleset in rulesets" value="{$ ruleset.id $}" ng-selected = "crulesetIndex && crulesetIndex.indexOf(ruleset.id)!=-1 " >
+              {$ ruleset.name $}
+            </option>
+          </select>
+          <span
+             ng-click="action.createRuleSet.open()">
+            <i class="icon add_to add_to_mutiple"></i>
+          </span>
+        </div>
+      </div>
+      <div class="form-group clearfix policie-wrap"
+        ng-class="{'has-error':form.external-connectivity.$invalid && form.external-connectivity.$dirty}">
+        <label for="external-connectivity">
+          *{% trans "External Connectivity" %}
+        </label>
+        <div class="form-group-right">
+          <select multiple
+            id="external-connectivity"
+            class="form-control policie-select-size"
+            name="external-connectivity"
+            ng-model="extPolicyTargetGroup.externalConnectivity">
+            <option value="" disabled>{% trans "Select Consumed Policy Rule Sets" %}</option>
+            <option ng-repeat="extconn in extConns" value="{$ extconn.id $}" ng-selected = "extconnIndex && extconnIndex.indexOf(extconn.id)!=-1 " >
+              {$ extconn.name $}
+            </option>
+          </select>
+          <span
+             ng-click="action.createExtConn.open()">
+            <i class="icon add_to add_to_mutiple"></i>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group clearfix mt10 fl">
+        <label for="description">
+          {% trans "Share" %}
+        </label>
+        <div class="form-group-right">
+          <input
+            id="shared"
+            name="shared"
+            type="checkbox"
+            ng-model="extPolicyTargetGroup.shared"/>
+        </div>
+      </div>
+
+    </fieldset>
+
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit(extPolicyTargetGroup)">
+    {$ ::context.submit $}
+  </button>
+</div>
+

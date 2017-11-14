@@ -1,0 +1,363 @@
+{% load i18n %}
+
+<div class="detail-page" >
+  <div class="fl detail-left-icon" ng-click="action.cancel()"></div>
+  <div class="detail-page-con">
+
+    <tabset id="routers-tab" justified="true" class="def-tabs">
+      <tab id="tab-router-connection" heading="{% trans 'Router Connection' %}">
+      <div class="tab-pane-content">
+        <table id="routers-network-list" hz-table ng-cloak
+           st-table="iroutersOverview"
+           st-safe-src="routersOverview"
+           default-sort="name"
+           default-sort-reverse="false"
+           disabled="disabled"
+           class="table table-bordered table-hover">
+          <thead>
+            <tr>
+            <th colspan="100" class="bare table-th-unline">
+              <div class="table_actions clearfix">
+                <action-list>
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    callback="actions.createConnec.open">
+                    <i class="icon icon-add"></i>
+                    <span id="connect-subnets">{% trans 'Connect Subnets' %}</span>
+                  </action>
+                </action-list>
+
+                <action-list>
+                  <action
+                    action-classes="'btn btn-action btn-danger'"
+                    disabled="numSelected === 0"
+                    callback="actions.deletedConnec.batchDisconnect"
+                    item="$table">
+                    <i class="icon icon-delete"></i>
+                    <span id="disconnect-subnets">{% trans 'Disconnect Subnets' %}</span>
+                  </action>
+                </action-list>
+
+                <div class="fr search-bar">
+                  <search-bar id="router-search" group-classes="" icon-classes="fa-search" placeholder={% trans "Filter" %}> </search-bar>
+                </div>
+             </div>
+            </th>
+            </tr>
+            <tr eagle-eye="table_heads">
+            <th class="select-col" eagle-eye="select_col">
+                <input type="checkbox" hz-select-page="iroutersOverview"/>
+            </th>
+            <th eagle-eye="data_col">
+                {$ ::context.header.networkName $}
+            </th>
+            <th eagle-eye="data_col">
+                {$ ::context.header.subnetName $}
+            </th>
+            <th eagle-eye="data_col">
+                {$ ::context.header.network_Address $}
+            </th>
+            <th eagle-eye="data_col">
+                {$ ::context.header.gateway_IP $}
+            </th>
+            <th eagle-eye="data_col">
+                {$ ::context.header.fixed_IP $}
+            </th>
+            </tr>
+           </thead>
+
+           <tbody>
+            <tr ng-if="!iroutersOverview.length">
+              <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+            </tr>
+            <tr ng-repeat="Overview in iroutersOverview" ng-class="{'st-selected': checked[Overview.id]}">
+                <td class="select-col" eagle-eye="select_col">
+                    <input type="checkbox"
+                        hz-select="Overview"
+                        ng-model="selected[Overview.id].checked"
+                        hz-checkbox-group="iroutersOverview"/>
+                </td>
+                <td eagle-eye="data_col">{$ Overview.network $}</td>
+                <td eagle-eye="data_col">{$ Overview.subnet $}</td>
+                <td eagle-eye="data_col">{$ Overview.cidr $}</td>
+                <td eagle-eye="data_col">{$ Overview.gateway $}</td>
+                <td eagle-eye="data_col">{$ Overview.fixed_ip $}</td>
+            </tr>
+           </tbody>
+
+            <tfoot ng-if="routersOverview.length > 10">
+            <tr>
+                <td colspan="100" eagle-eye="data_page">
+                    <table-footer></table-footer>
+                </td>
+            </tr>
+            </tfoot>
+          </table>
+        </div>
+      </tab>
+
+      <tab id="tab-router-port_forwarding" heading="{% trans 'Port Forwarding' %}">
+          <div class="tab-pane-content">
+              <table id="port-list" hz-table ng-cloak
+                 st-table="irouterForwarding"
+                 st-safe-src="routerForwarding"
+                 default-sort="id"
+                 default-sort-reverse="false"
+                 disabled="disabled"
+                 class="table table-bordered table-hover">
+              <thead>
+              <tr>
+                <th colspan="100" class="bare table-th-unline">
+                   <div class="table_actions clearfix">
+
+                    <action-list>
+                      <action
+                        action-classes="'btn btn-primary btn-action'"
+                        callback="actions.create.open"
+                        item="$table">
+                        <i class="icon icon-add"></i>
+                        <span id="add-rule">{% trans 'Add Rule' %}</span>
+                      </action>
+                    </action-list>
+
+                    <action-list>
+                      <action
+                        action-classes="'btn btn-action btn-danger'"
+                        disabled="numSelected === 0"
+                        callback="actions.deleted.batchDelete"
+                        item="$table">
+                        <i class="icon icon-delete"></i>
+                        <span id="delete-rule">{% trans 'Delete Rule' %}</span>
+                      </action>
+                    </action-list>
+
+                    <div class="fr search-bar">
+                      <search-bar id="port-search" group-classes="" icon-classes="fa-search" placeholder={% trans "Filter" %}> </search-bar>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+
+              <tr eagle-eye="table_heads">
+                  <th eagle-eye="select_col">
+                      <input type="checkbox"
+                          hz-select-page="routerForwarding"/>
+                  </th>
+                  <th st-sort="" st-sort-default="" eagle-eye="data_col">
+                      {$ ::context.header.Seq_Num $}
+                  </th>
+                  <th st-sort="" eagle-eye="data_col">
+                      {$ ::context.header.Outside_Port $}
+                  </th>
+                  <th st-sort="" eagle-eye="data_col">
+                      {$ ::context.header.Inside_Address $}
+                  </th>
+                  <th st-sort="" eagle-eye="data_col">
+                      {$ ::context.header.Inside_Port $}
+                  </th>
+                  <th st-sort="" eagle-eye="data_col">
+                      {$ ::context.header.Protocol $}
+                  </th>
+              </tr>
+              </thead>
+
+              <tbody>
+              <tr ng-if="!irouterForwarding.length">
+              <td colspan="100">{% trans "No Data" %}</td>
+              </tr>
+              <tr ng-repeat="Forwarding in irouterForwarding" ng-class="{'st-selected': checked[Forwarding.id]}">
+                  <td eagle-eye="select_col">
+
+                      <input type="checkbox"
+                          hz-select="Forwarding"
+                          ng-model="selected[Forwarding.id].checked"
+                          hz-checkbox-group="routerForwarding"/>
+                  </td>
+                  <td eagle-eye="data_col">{$ Forwarding.id $}</td>
+                  <td eagle-eye="data_col">{$ Forwarding.outside_port $}</td>
+                  <td eagle-eye="data_col">{$ Forwarding.inside_addr $}</td>
+                  <td eagle-eye="data_col">{$ Forwarding.inside_port $}</td>
+                  <td eagle-eye="data_col">{$ Forwarding.protocol $}</td>
+              </tr>
+              </tbody>
+
+              <tfoot ng-if="routerForwarding.length > 10">
+              <tr>
+                  <td colspan="100" eagle-eye="data_page">
+                      <table-footer></table-footer>
+                  </td>
+              </tr>
+              </tfoot>
+          </table>
+      </div>
+      </tab>
+      <tab id="firewall" heading="{% trans 'Firewall' %}">
+          <div class="tab-pane-content">
+              <table id="firewall-show" ng-cloak
+                 class="table table-bordered table-hover table-unique">
+              <thead>
+              <tr>
+                <th colspan="100" class="bare table-th-unline" style="background:white;padding-left: 0px">
+                   <div class="table_actions clearfix">
+                    <action-list>
+                      <action
+                        action-classes="'btn btn-primary btn-action'"
+                        callback="actions.associateFirewall.open"
+                        disabled="current_router.firewall_id"
+                        item="[current_router]">
+                        <i class="icon icon-add"></i>
+                        <span id="add-rule">{% trans 'Associate Firewall' %}</span>
+                      </action>
+                    </action-list>
+
+                    <action-list>
+                      <action
+                        action-classes="'btn btn-action btn-action'"
+                        disabled="!current_router.firewall_id"
+                        callback="actions.disassociateFirewall.open"
+                        item="[current_router]">
+                        <i class="icon icon-delete"></i>
+                        <span id="delete-rule">{% trans 'Disassociate Firewall' %}</span>
+                      </action>
+                    </action-list>
+
+                  </div>
+                </th>
+              </tr>
+              <tr></tr>
+              </thead>
+              <tbody ng-if="current_router.firewall_id">
+                <tr>
+                  <td eagle-eye="data_col">{$ ::context.label.firewall_name $}</td>
+                  <td id="port-id" class="color449ed2" eagle-eye="data_col">{$ firewallToShow.name $}</td>
+                </tr>
+                <tr>
+                  <td eagle-eye="data_col">{$ ::context.label.description $}</td>
+                  <td id="port-name" class="color3399cc" eagle-eye="data_col" title="{$ firewallToShow.description $}">{$ firewallToShow.description $}</td>
+                </tr>
+                <tr>
+                  <td eagle-eye="data_col">{$ ::context.label.policy_name $}</td>
+                  <td id="port-status" class="color66cc66" eagle-eye="data_col">{$ firewallToShow.policy.name $}</td>
+                </tr>
+                <tr>
+                  <td eagle-eye="data_col">{$ ::context.label.status $}</td>
+                  <td id="port-size" eagle-eye="data_col">{$ firewallStatusToString[firewallToShow.status] $}</td>
+                </tr>
+
+              </tbody>
+
+              <tfoot ng-if="routerForwarding.length > 10">
+              <tr>
+                  <td colspan="100" eagle-eye="data_page">
+                      <div st-pagination="" st-items-by-page="10" st-displayed-pages="10"></div>
+                  </td>
+              </tr>
+              </tfoot>
+          </table>
+      <hz-magic-search-context filter-facets="filterFacets">
+      <table id="rules-list" hz-table ng-cloak hopes-table-drag
+        st-table="ifirewallRuleToShow"
+        st-safe-src="firewallRuleToShow"
+        default-sort="name"
+        default-sort-reverse="false"
+        st-magic-search
+        ng-if="current_router.firewall_id"
+        class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th colspan="100" class="bare">
+              <div class="table_actions clearfix">
+
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    callback="actions.addRuleForPolicyAction.open"
+                    item="$table">
+                    <i class="icon icon-add"></i>
+                    <span id="create-rule">{% trans 'Add Firewall Rule' %}</span>
+                  </action>
+                </action-list>
+
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-action btn-danger'"
+                    disabled="numSelected === 0"
+                    callback="actions.removeFirewallRuleAction.batchDelete" item="$table">
+                    <i class="icon icon-delete"></i>
+                    <span id="delete-rule">{% trans 'Delete Firewall Rule' %}</span>
+                  </action>
+                </action-list>
+
+                <div class="fr search-bar">
+                  <hz-magic-search-bar id="search-rule"></hz-magic-search-bar>
+                </div>
+              </div>
+            </th>
+          </tr>
+          <tr eagle-eye="table_heads">
+            <th class="select-col" eagle-eye="select_col">
+              <input type="checkbox" hz-select-page="rules"/>
+            </th>
+
+            <th st-sort="name" st-sort-default="name" eagle-eye="data_col">
+              {$ ::context.header.firewall_rule_name $}
+            </th>
+            <th eagle-eye="data_col">{$ ::context.header.desc $}</th>
+            <th eagle-eye="data_col">{$ ::context.header.policy $}</th>
+            <th eagle-eye="data_col">{$ ::context.header.action $}</th>
+            <th eagle-eye="data_col">{$ ::context.header.protocol $}</th>
+            <th eagle-eye="data_col">{$ ::context.header.src_ip $}</th>
+            <th eagle-eye="data_col">{$ ::context.header.src_port $}</th>
+            <th eagle-eye="data_col">{$ ::context.header.dst_ip $}</th>
+            <th eagle-eye="data_col">{$ ::context.header.dst_port $}</th>
+            <th class="text-center" eagle-eye="data_col">{$ ::context.header.share $}</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+        <tr ng-if="!ifirewallRuleState">
+          <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+        </tr>
+
+        <tr ng-if="!ifirewallRuleToShow.length && ifirewallRuleState">
+          <td colspan="100">{% trans "No Data" %}</td>
+        </tr>
+
+        <tr ng-repeat="rule in ifirewallRuleToShow" ng-class="{'st-selected': checked[rule.id]}">
+          <td class="select-col" eagle-eye="select_col">
+            <input type="checkbox"
+              hz-select="rule"
+              ng-model="selected[rule.id].checked"
+              hz-checkbox-group="rules"/>
+          </td>
+          <td eagle-eye="data_col">{$ rule.name $}</td>
+          <td eagle-eye="data_col">{$ rule.description $}</td>
+          <td eagle-eye="data_col">{$ rule.policy.name $}</td>
+          <td eagle-eye="data_col">{$ actionString[rule.action] $}</td>
+          <td eagle-eye="data_col">{$ rule.protocol $}</td>
+          <td eagle-eye="data_col">{$ rule.source_ip_address $}</td>
+          <td eagle-eye="data_col">{$ rule.source_port $}</td>
+          <td eagle-eye="data_col">{$ rule.destination_ip_address $}</td>
+          <td eagle-eye="data_col">{$ rule.destination_port $}</td>
+          <td class="text-center" eagle-eye="data_col">
+            <i ng-if="rule.shared" class="state-icon icon-true"></i>
+            <i ng-if="!rule.shared" class="state-icon icon-false"></i>
+          </td>
+          </tr>
+        </tbody>
+
+        <tfoot ng-if="rules.length > 10">
+          <tr>
+            <td colspan="100" eagle-eye="data_page">
+              <div st-pagination="" st-items-by-page="10" st-displayed-pages="10"></div>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+      </hz-magic-search-context>
+         </div>
+      </tab>
+    </tabset>
+  </div>
+</div>

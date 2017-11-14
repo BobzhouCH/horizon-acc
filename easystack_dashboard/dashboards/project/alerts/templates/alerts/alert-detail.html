@@ -1,0 +1,60 @@
+{% load context_selection %}
+
+<div class="detail-page">
+<div class="fl detail-left-icon" ng-click="action.cancel()"></div>
+<div class="detail-page-con">
+
+  <tabset id="alerts-tab" justified="true" class="def-tabs">
+    <tab id="tab-alerts-detail" heading="{$ ::label.detail_overview $}">
+      <div class="tab-pane-content">
+
+      <table id="alerts-list" class="table table-bordered table-hover table-unique">
+        <thead>
+          <tr>
+            <th colspan="100"><span class="detail-title">{$ ::label.properties $}</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.project_id $}</td>
+            <td class="color449ed2" eagle-eye="data_col">{$ alert.project_id $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.alert_id $}</td>
+            <td class="color449ed2" eagle-eye="data_col">{$ alert.alarm_id $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.alert_name $}</td>
+            <td class="color449ed2" eagle-eye="data_col">{$ alert.name $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.resource_name $}</td>
+            <td class="color449ed2" eagle-eye="data_col">{$ alert.resource_name $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.meter_name $}</td>
+            <td class="color449ed2" eagle-eye="data_col">{$ alert.meter_name $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.severity $}</td>
+            <td class="color449ed2" eagle-eye="data_col">{$ alert.severity $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.current_state $}</td>
+            <td class="color449ed2" eagle-eye="data_col">{$ alert.state $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.description $}</td>
+            <td class="color449ed2" eagle-eye="data_col">{$ alert.description $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.timestamp $}</td>
+            <td class="color449ed2" eagle-eye="data_col">{$ alert.create_time $}</td>
+          </tr>
+        </tbody>
+      </table>
+     </div>
+    </tab>
+  </tabset>
+</div>
+</div>

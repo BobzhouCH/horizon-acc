@@ -1,0 +1,5 @@
+<div ng-controller="LaunchBareInstanceNetworkPortsHelpCtrl as networkPortsHelpCtrl">
+  <h1>{$ ::networkPortsHelpCtrl.title $}</h1>
+  <p ng-repeat="paragraph in ::networkPortsHelpCtrl.paragraphs"
+    ng-bind-html="::paragraph"></p>
+</div>

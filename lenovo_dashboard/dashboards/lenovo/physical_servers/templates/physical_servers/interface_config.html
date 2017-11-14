@@ -1,0 +1,131 @@
+﻿{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+	<h3 class="modal-title">{% trans "Edit Interface Config" %}</h3>
+    <p class="modal-colsed" ng-click="action.cancel()">
+        <i class="modal-colsed-icon"></i>
+    </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form id="createForm" novalidate name="form" ng-submit="submit(form.$valid)">
+    <!--<pre style="max-height:400px;overflow-y:scroll;">{$ form|json $}</pre>-->
+    <div class="modal-body clearfix">
+        <div class="left form-wrap">
+            <fieldset>
+                <div class="form-group clearfix"
+                     ng-class="{'has-error':form.interface_name.$invalid && form.interface_name.$dirty}">
+			<label for="interface_name">{% trans "Interface Name" %}</label>
+                    <div class="form-group-right">
+                        <input required
+                               id="interface_name"
+                               name="interface_name"
+                               class="form-control verify-input"
+                               ng-model="interface.name"
+                               ng-disabled="false">
+                    </div>
+                </div>
+                <div class="form-group clearfix">
+			<label for="interface_networkType">{% trans "Network Type" %}</label>
+                    <div class="form-group-right">
+                        <input type="radio"
+                               id="interface_networkType1"
+                               name="interface_networkType"
+                               value="none"
+                               ng-model="interface.network_type"> none
+                        <!--<input type="radio"
+                               id="interface_networkType2"
+                               name="interface_networkType"
+                               value="infra"
+                               ng-model="interface.network_type"> infra
+                        <input type="radio"
+                               id="interface_networkType3"
+                               name="interface_networkType"
+                               value="oam"
+                               ng-model="interface.network_type"> oam
+                        <input type="radio"
+                               id="interface_networkType4"
+                               name="interface_networkType"
+                               value="mgmt"
+                               ng-model="interface.network_type"> mgmt-->
+                        <input type="radio"
+                               id="interface_networkType5"
+                               name="interface_networkType"
+                               value="pci-passthrough"
+                               ng-disabled= "interface.pci_passthrough_supported != 'yes'"
+                               ng-model="interface.network_type"> pci-passthrough
+                        <!--<input type="radio"
+                               id="interface_networkType6"
+                               name="interface_networkType"
+                               value="data"
+                               ng-model="interface.network_type"> data-->
+                        <input type="radio"
+                               id="interface_networkType7"
+                               name="interface_networkType"
+                               ng-disabled="interface.pci_sriov_supported != 'yes'"
+                               value="pci-sriov"
+                               ng-model="interface.network_type"> pci-sriov
+                    </div>
+                </div>
+                <div class="form-group clearfix"
+                     ng-if="interface.network_type == 'pci-sriov'"
+                     ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+                    <label for="value">
+			    *{% trans "VF Number" %}
+                    </label>
+                    <div class="form-group-right">
+                        <input required
+                               id="vfnum"
+                               name="vfnum"
+                               class="form-control verify-input"
+                               type="number"
+                               min="1"
+                               max="{$ interface.max_vfnum $}"
+                               ng-model="interface.vfnum"
+                               ng-maxlength="255" />
+                        (Max Num: {$ interface.max_vfnum $})
+                    </div>
+                </div>
+                <div class="form-group clearfix">
+			<label for="password">* {% trans "Ports" %}</label>
+                    <div class="form-group-right">
+                        <div ng-repeat="interface_port in interface_ports">
+                            <input type="checkbox"
+                                   id="interface_port_{$ interface_port $}"
+                                   name="interface_port_{$ interface_port $}"
+                                   value="interface_port"
+                                   ng-click="interface_port_clicked(interface_port)"
+                                   ng-model="$parent.interface_ports_checked[$index]"> {$ interface_port $}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group clearfix">
+			<label for="password">*{% trans "Provider Network(s)" %}</label>
+                    <div class="form-group-right">
+                        <div ng-repeat="interface_providerNetwork in interface_providerNetworks">
+                            <input type="checkbox"
+                                   id="interface_port_{$ interface_providerNetwork $}"
+                                   name="interface_port_{$ interface_providerNetwork $}"
+                                   value="interface_providerNetwork"
+                                   ng-click="interface_providerNetwork_clicked(interface_providerNetwork)"
+                                   ng-model="$parent.interface_providerNetworks_checked[$index]"> {$ interface_providerNetwork $}
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <!-- Modal-form-right: The description text. -->
+
+    </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+    <button id="submit-button" class="btn btn-primary" type="button"
+            ng-disabled="form.$invalid || interface.ports.length == 0 || interface.provider_networks.length == 0"
+            ng-click="action.submit()">
+        Submit
+    </button>
+</div>

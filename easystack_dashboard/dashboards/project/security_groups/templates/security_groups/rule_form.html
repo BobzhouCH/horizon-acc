@@ -1,0 +1,323 @@
+{% load i18n %}
+
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div id="securityRule" class="modal-body securityRule-bg clearfix">
+    <div class="">
+      <fieldset>
+
+        <div class="form-group clearfix colSwitclable-wrap">
+
+          <div class="rightColSwitclable clearfix" ng-init="securityRule.rule_menu='tcp'" ng-model="securityRule.rule_menu"  switclable-rule="rule_menu">
+
+                <div class="leftCol-box fl">
+                    <span>{% trans "Custom Rules" %}</span>
+                    <ul class="switclable-made">
+                        <li id="custom-TCP" data-show="direction,port_or_range,port,remote" class="active" data-value="tcp">{% trans "Custom TCP" %}</li>
+                        <li id="custom-UDP" data-show="direction,port_or_range,port,remote" data-value="udp">{% trans "Custom UDP" %}</li>
+                        <li id="custom-ICMP" data-show="direction,remote" data-value="icmp">{% trans "Custom ICMP" %}</li>
+                    </ul>
+                </div>
+
+                <div class="rightCol-box fl">
+                    <span data-value="custom">{% trans "Other Protocol" %}</span>
+                    <ul class="switclable">
+                        <li id="ALL-ICMP" data-show="direction,remote,cidr" data-value="all_icmp">{% trans "ALL ICMP" %}</li>
+                        <li id="ALL-TCP" data-show="direction,remote,cidr" data-value="all_tcp">{% trans "ALL TCP" %}</li>
+                        <li id="ALL-UDP" data-show="direction,remote,cidr" data-value="all_udp">{% trans "ALL UDP" %}</li>
+                        <li id="DNS" data-show="remote,cidr,port" data-value="dns">{% trans "DNS" %}</li>
+                        <li id="HTTP" data-show="remote,cidr,port" data-value="http">{% trans "HTTP" %}</li>
+                        <li id="HTTPS" data-show="remote,cidr,port" data-value="https">{% trans "HTTPS" %}</li>
+                        <li id="IMAP" data-show="remote,cidr,port" data-value="imap">{% trans "IMAP" %}</li>
+                        <li id="IMAPS" data-show="remote,cidr,port" data-value="imaps">{% trans "IMAPS" %}</li>
+                        <li id="LDAP" data-show="remote,cidr,port" data-value="ldap">{% trans "LDAP" %}</li>
+                        <li id="MS-SQL" data-show="remote,cidr,port" data-value="ms_sql">{% trans "MS SQL" %}</li>
+                        <li id="MYSQL" data-show="remote,cidr,port" data-value="mysql">{% trans "MYSQL" %}</li>
+                        <li id="POP3" data-show="remote,cidr,port" data-value="pop3">{% trans "POP3" %}</li>
+                        <li id="POP3S" data-show="remote,cidr,port" data-value="pop3s">{% trans "POP3S" %}</li>
+                        <li id="RDP" data-show="remote,cidr,port" data-value="rdp">{% trans "RDP" %}</li>
+                        <li id="SMTP" data-show="remote,cidr,port" data-value="smtp">{% trans "SMTP" %}</li>
+                        <li id="SMTPS" data-show="remote,cidr,port" data-value="smtps">{% trans "SMTPS" %}</li>
+                        <li id="SSH" data-show="remote,cidr,port" data-value="ssh">{% trans "SSH" %}</li>
+                    </ul>
+                </div>
+          </div>
+        </div>
+
+        <div class="securityRule-bg-down">
+
+            <div id="direction-box" ng-if="GameRules.direction" class="form-group clearfix">
+                <label class="control-label fl required" for="direction">
+                    {% trans "Direction" %}
+                </label>
+                <div class="form-group-right" ng-class="{'has-error':form.direction.$invalid && form.direction.$dirty}">
+                    <select required
+                            id="direction"
+                            name="direction"
+                            class="form-control"
+                            ng-model="securityRule.direction">
+                        <option value="" disabled>
+                            {% trans 'Select a direction' %}
+                        </option>
+                        <option value="ingress">
+                            {% trans "Ingress" %}
+                        </option>
+                        <option value="egress">
+                            {% trans "Egress" %}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="icmp_type-box" ng-if="GameRules.icmp_type" class="form-group clearfix">
+                <label class="control-label fl required" for="icmp_type">
+                    {% trans "Type" %}
+                </label>
+                <div class="form-group-right" ng-class="{'has-error':form.icmp_type.$invalid && form.icmp_type.$dirty}">
+                    <input required
+                           id="icmp_type"
+                           name="icmp_type"
+                           class="form-control"
+                           type="text"
+                           ng-model="securityRule.icmp_type"
+                           ng-maxlength="255">
+                    <p class="help-block alert alert-danger"
+                       ng-show="form.icmp_type.$invalid && form.icmp_type.$dirty">
+                        {% trans "A icmp_type is required." %}
+                    </p>
+                </div>
+            </div>
+
+            <div id="icmp_code-box" ng-if="GameRules.icmp_code" class="form-group clearfix">
+                <label class="control-label fl required" for="icmp_code">
+                    {% trans "Code" %}
+                </label>
+                <div class="form-group-right" ng-class="{'has-error':form.icmp_code.$invalid && form.icmp_code.$dirty}">
+                    <input required
+                           id="icmp_code"
+                           name="icmp_code"
+                           class="form-control"
+                           type="text"
+                           ng-model="securityRule.icmp_code"
+                           ng-maxlength="255">
+                    <p class="help-block alert alert-danger"
+                       ng-show="form.icmp_code.$invalid && form.icmp_code.$dirty">
+                        {% trans "A icmp_code is required." %}
+                    </p>
+                </div>
+            </div>
+
+            <div id="ip_protocol-box" ng-if="GameRules.ip_protocol" class="form-group clearfix">
+                <label class="control-label fl required" for="icmp_code">
+                    {% trans "IP Protocol" %}
+                </label>
+                <div class="form-group-right" ng-class="{'has-error':form.ip_protocol.$invalid && form.ip_protocol.$dirty}">
+                    <input required
+                           id="ip_protocol"
+                           name="ip_protocol"
+                           class="form-control"
+                           type="text"
+                           ng-model="securityRule.ip_protocol"
+                           ng-maxlength="255">
+                    <p class="help-block alert alert-danger"
+                       ng-show="form.ip_protocol.$invalid && form.ip_protocol.$dirty">
+                        {% trans "A ip_protocol is required." %}
+                    </p>
+                </div>
+            </div>
+
+            <div id="port_or_range-box" ng-if="GameRules.port_or_range" class="form-group clearfix">
+                <label class="control-label fl required" for="port_or_range">
+                    {% trans "Access Port" %}
+                </label>
+                <div class="form-group-right" ng-class="{'has-error':form.port_or_range.$invalid && form.port_or_range.$dirty}">
+                    <select required
+                            id="port_or_range"
+                            name="port_or_range"
+                            class="form-control"
+                            ng-model="securityRule.port_or_range"
+                            ng-change="portOrRangeSwitch(securityRule.port_or_range)">
+                        <option value="" disabled>
+                            {% trans 'Select a port or range' %}
+                        </option>
+                        <option value="port">
+                            {% trans "Port" %}
+                        </option>
+                        <option value="range">
+                            {% trans "Port Range" %}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="from_port-box" ng-if="GameRules.from_port && securityRule.port_or_range === 'range'" class="form-group clearfix">
+                <label class="control-label fl required" for="from_port">
+                    {% trans "From Port" %}
+                </label>
+                <div class="form-group-right" ng-class="{'has-error':form.from_port.$invalid && form.from_port.$dirty}">
+                    <input required
+                           id="from_port"
+                           name="from_port"
+                           class="form-control"
+                           type="number"
+                           ng-model="securityRule.from_port"
+                           min="1"
+                           max="65535"
+                           placeholder="{% trans 'Enter a start port' %}">
+                    <p class="help-block alert alert-danger"
+                       ng-show="form.from_port.$invalid && form.from_port.$dirty">
+                        {% trans "Port range must be in 1~65535" %}
+                    </p>
+                </div>
+            </div>
+
+            <div id="to_port-box" ng-if="GameRules.to_port && securityRule.port_or_range === 'range'" class="form-group clearfix">
+                <label class="control-label fl required" for="from_port">
+                    {% trans "To Port" %}
+                </label>
+                <div class="form-group-right" ng-class="{'has-error':form.to_port.$invalid && form.to_port.$dirty}">
+                    <input required
+                           id="to_port"
+                           name="to_port"
+                           class="form-control"
+                           type="number"
+                           ng-model="securityRule.to_port"
+                           min="{$ minToPort $}"
+                           max="65535"
+                           placeholder="{% trans 'Enter an end port' %}">
+                    <p class="help-block alert alert-danger"
+                       ng-show="form.to_port.$invalid && form.to_port.$dirty">
+                        {$ outOfPortRangeErrMsg $}
+                    </p>
+                </div>
+            </div>
+
+            <div id="port-box" ng-if="(GameRules.port && securityRule.port_or_range === 'port')|| securityRule.port" class="form-group clearfix">
+                <label class="control-label fl required" for="port">
+                    {% trans "Port" %}
+                </label>
+                <div class="form-group-right" ng-class="{'has-error':form.port.$invalid && form.port.$dirty}">
+                    <input required
+                           id="port"
+                           name="port"
+                           class="form-control"
+                           type="number"
+                           ng-model="securityRule.port"
+                           min="1"
+                           max="65535"
+                           placeholder="{% trans 'Enter a port' %}">
+                    <p class="help-block alert alert-danger"
+                       ng-show="form.port.$invalid && form.port.$dirty">
+                        {% trans "Port range must be in 1~65535" %}
+                    </p>
+                </div>
+            </div>
+
+            <div id="remote-box" ng-if="GameRules.remote" class="form-group clearfix">
+                <label class="control-label fl required" for="remote">
+                    {% trans "Remote" %}
+                </label>
+                <div class="form-group-right" ng-class="{'has-error':form.remote.$invalid && form.remote.$dirty}">
+                    <select required
+                            id="remote"
+                            name="remote"
+                            class="form-control"
+                            ng-model="securityRule.remote"
+                            ng-change="remoteSwitch(securityRule.remote)">
+                        <option value="" disabled>
+                            {% trans 'Select a remote' %}
+                        </option>
+                        <option value="cidr">
+                            {% trans "CIDR" %}
+                        </option>
+                        <option value="sg">
+                            {% trans "Security Group" %}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="security_group-box" ng-if="GameRules.security_group && securityRule.remote === 'sg'" class="form-group clearfix">
+                <label class="control-label fl required" for="security_group">
+                     {% trans "Security Group" %}
+                </label>
+                <div class="form-group-right" ng-class="{'has-error':form.security_group.$invalid && form.security_group.$dirty}">
+                    <select required
+                            id="security_group"
+                            name="security_group"
+                            class="form-control"
+                            ng-class="{strikeLoading: !dropdown}"
+                            ng-model="securityRule.security_group">
+                        <option value="" disabled>
+                            {% trans 'Select a security group' %}
+                        </option>
+                        <option
+                          ng-repeat="group in dropdown"
+                          ng-selected="group.id===securityRule.security_group"
+                          value="{$group.id$}">
+                          {$ group.name $}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div id="ethertype-box" ng-if="GameRules.ethertype" class="form-group clearfix">
+                <label class="control-label fl required" for="ethertype">
+                     {% trans "Ethertype" %}
+                </label>
+                <div class="form-group-right" ng-class="{'has-error':form.ethertype.$invalid && form.ethertype.$dirty}">
+                    <select required
+                            id="ethertype"
+                            name="ethertype"
+                            class="form-control"
+                            ng-model="securityRule.ethertype">
+                        <option value="" disabled>
+                            {% trans 'Select an ethertype' %}
+                        </option>
+                        <option value="IPv4">{% trans "IPv4" %}</option>
+                        <option value="IPv6">{% trans "IPv6" %}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="cidr-box" ng-if="GameRules.cidr && securityRule.remote === 'cidr' " class="form-group clearfix">
+                <label class="control-label fl required" for="port">
+                    {% trans "CIDR" %}
+                </label>
+                <div class="form-group-right" ng-class="{'has-error':form.cidr.$invalid && form.cidr.$dirty}">
+                    <input required
+                           id="cidr"
+                           name="cidr"
+                           class="form-control"
+                           type="text"
+                           ng-init="securityRule.cidr = '0.0.0.0/0'"
+                           ng-model="securityRule.cidr"
+                           ng-maxlength="255"
+                           placeholder="192.168.0.0/24">
+                    <p class="help-block alert alert-danger"
+                       ng-show="form.cidr.$invalid && form.cidr.$dirty">
+                        {% trans "Cidr is required." %}
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+      </fieldset>
+    </div>
+
+  </div>
+</form>
+
+<div class="modal-footer securityRule-bg">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

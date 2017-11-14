@@ -1,0 +1,162 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+      <div class="modal-description mt10" ng-if="context.mode === 'create'">
+          <p>
+            {% trans "Firewall can be specified through the rules to filter network traffic in the current project, the firewall must be associated with a firewall policy." %}
+          </p>
+      </div>
+      <div class="modal-description mt10" ng-if="context.mode === 'associate_router'">
+          <p>
+            {% trans "A router that is already associate with a firewall will not be associated with other firewall" %}
+          </p>
+      </div>
+      <fieldset>
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}"
+          ng-if="context.mode === 'create' || context.mode === 'edit'">
+          <label for="name">
+            *{% trans "Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              type="text"
+              ng-model="firewall.name"
+              ng-maxlength="255"
+              placeholder="{% trans 'Enter a firewall name' %}"/>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "A firewall name is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength && form.name.$dirty">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+             ng-if="context.mode === 'create' || context.mode === 'edit'">
+          <label for="description">
+            {% trans "Description" %}
+          </label>
+          <div class="form-group-right">
+            <textarea
+              id="description"
+              name="description"
+              class="form-control"
+              rows="4"
+              ng-model="firewall.description"
+              ng-maxlength="255"
+              placeholder="{% trans 'Enter a firewall description' %}">
+            </textarea>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.description.$error.maxlength && form.description.$dirty">
+              {% trans "Description length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create'"
+          ng-class="{'has-error':form.policies.$invalid && form.policies.$dirty}">
+          <label for="policies">
+            *{% trans "Policy" %}
+          </label>
+          <div class="form-group-right policie-wrap">
+            <select
+              required
+              id="policies"
+              name="policies"
+              class="form-control  policie-select-size"
+              ng-model="firewall.firewall_policy_id">
+              <option value="" disabled ng-if="policies.length == 0">
+                {% trans "No policy to select" %}
+              </option>
+              <option value="" disabled ng-if="policies.length > 0">
+                {% trans 'Select a policy' %}
+              </option>
+              <option
+                ng-repeat="policy in policies"
+                value="{$ policy.id $}">
+                {$ policy.name $}
+              </option>
+            </select>
+            <span
+               ng-click="action.createPolicy.open()"
+               ng-if="policies.length == 0" >
+               <i class="icon add_to"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' || context.mode === 'associate_router'||context.mode === 'disassociate_router'"
+          ng-class="{'has-error':form.routers.$invalid && form.routers.$dirty}">
+          <label for="routers">
+            {% trans "Routers" %}
+          </label>
+          <div class="form-group-right policie-wrap">
+            <select
+              id="routers"
+              name="routers"
+              class="form-control"
+              ng-model="firewall.router_id">
+              <option value="" disabled>
+                {$ (routers.length >= 1)?
+                "{% trans 'Select A Router' %}" : "{% trans 'No Router Available' %}" $}
+              </option>
+              <option
+                ng-repeat="router in routers"
+                value="{$ router.id $}">
+                {$ router.name $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'edit'"
+          ng-class="{'has-error':form.admin.$invalid && form.IP.$dirty}">
+          <label>
+            {% trans "Policy" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="policy_name"
+              name="policy_name"
+              class="form-control verify-input"
+              type="text"
+              ng-model="firewall.policy.name"
+              ng-maxlength="255"
+              disabled/>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>
+

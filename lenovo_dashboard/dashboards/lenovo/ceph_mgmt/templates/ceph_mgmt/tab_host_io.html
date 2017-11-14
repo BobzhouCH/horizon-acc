@@ -1,0 +1,59 @@
+{% load branding i18n %}
+{% load url from future %}
+{% load context_selection %}
+
+<div class="left-option col-xs-4">
+    <h3 class="total-capacity">{% trans 'Total Capacity' %}</h3>
+    <div><span class="color-bright" title="{$ server.IO.capacityUsed | formatUnit $}/{$ server.IO.capacityTotal | formatUnit $}">{$ server.IO.capacityUsed | formatUnit $}</span>/<span class="color-bright capacity-total">{$ server.IO.capacityTotal | formatUnit $}</span></div>
+    <h3>{% trans 'Active Time' %}</h3>
+    <div class="color-bright">{$ server.IO.activeTime $}</div>
+</div>
+
+<div class="right-list col-xs-8">
+    <div class="osd-box col-xs-3" ng-repeat="osd in server.IO.osds">
+        <div class="osd osd-shadow"></div>
+        <div class="osd" hover-get-disks server="{$ server.id $}" osd="{$ osd.osdId $}">
+            <span class="osd-name">{% trans 'USED' %}</span>
+            <div class="capacity-show">
+                <div>{$ osd.capacityUsed | formatUnit $}</div>
+                <div class="capacity-show-total">/{$ osd.capacityTotal | formatUnit $}</div>
+            </div>
+            <div class="io-pop hide" >
+                <div class="{$ osd.osdStatus $}" name="{$ osd.osdName $}">
+                    <span class="osd-status"></span><span class="osd-name">{$ osd.osdName $}</span>
+                    <div class="disk-box" ng-repeat="disk in disksList">
+                        <div><span class="disk-title">{$ disk.diskName $}</span><span class="disk-capacity">{$ disk.diskUsed | formatUnit $}/{$ disk.diskTotal | formatUnit $}</span></div>
+                        <div class="progress">
+                          <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {$ disk.diskUsedCapacity $}%;">
+                          </div>
+                        </div>
+                    </div>
+                    <div class="iops-box">
+                        <div>
+                            <span class="title">IOPS</span>
+                            <div class="disk-drop-list dropdown" ng-if="disksList&&disksList.length>0">
+                                <a class="dropdown-toggle host-select" href="#">
+                                    {$ diskSelected || server.IO.diskSelected  $}
+                                  <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li ng-repeat="disk in disksList">
+                                        <p ng-click="changeDisk(server.id,'disk_io',disk.diskName,osd.osdId)">
+                                          {$ disk.diskName $}
+                                        </p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p id="iops-graph-{$ server.id $}-{$ osd.osdId $}" style="width: 285px; height: 150px"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="progress">
+          <div class="progress-bar capacity-used-normal" ng-if="(osd.capacityUsed / osd.capacityTotal)*100 <50" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {$ (osd.capacityUsed / osd.capacityTotal)*100 $}%"></div>
+          <div class="progress-bar capacity-used-warn" ng-if="(osd.capacityUsed / osd.capacityTotal)*100 >=50" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {$ (osd.capacityUsed / osd.capacityTotal)*100 $}%"></div>
+        </div>
+    </div>
+
+</div>

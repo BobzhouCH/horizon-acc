@@ -1,0 +1,80 @@
+{% load i18n %}
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<form novalidate name="form" ng-submit="submit()">
+  <fieldset ng-controller="addNoticeUserNameCtrl"
+    add-notice-username>
+  <div>
+    <div class="notice-user-wrap">
+      <div>
+        <label class="notice-list-name">*{% trans "name"%}</label>
+        <input
+          id="contact-name"
+          class="form-control input-size"
+          set-focus
+          name="name"
+          ng-disabled="contact.disab"
+          ng-model="contact.name"
+          type="text"
+          required
+          ng-maxlength="255"
+          placeholder={% trans "name"%}>
+
+        <div class="red notice-tips" ng-show="form.name.$dirty">
+          <p ng-show="form.name.$error.required">{% trans "Please input a contact list name"%}</p>
+
+          <p class="help-block alert-fixed alert-danger"
+          ng-show="form.name.$error.maxlength && form.name.$dirty">
+            {% trans "Name length should be less than 255 chars." %}
+          </p>
+        </div>
+      </div>
+      <div class="mt20"><label class="notice-list-name">{% trans "Description"%}</label> <input id="contact-description" ng-disabled="!ldap_editable" class="form-control input-size" ng-model="contact.description" type="text" placeholder={% trans "Description"%}></div>
+    </div>
+
+    <div class="clearfix notice-contact-wrap" ng-show="ldap_editable">
+      <span class="fl notice-list-name">{% trans "Email"%}</span>
+      <div class="fl">
+        <ul id="add-email-list">
+          <li ng-repeat="iemail in emails track by $index">
+            <span>{$ iemail.value $}</span>
+            <span class="ml10">{$ iemail.tag $}</span>
+            <span class="fr" ng-click="removeContact('email', iemail.value)"><i class="icon remove_to"></i></span>
+          </li>
+        </ul>
+        <a id="add-email" class="a_link" ng-show="notice.email" ng-click="showContact('email',1)">{% trans "+Email"%}</a>
+        <div ng-show="notice.emailInput" class="addContact">
+          <input id="input-email" class="device-input-size form-control" name="uEmail" ng-change="enterData()" ng-model="emailAddress" type="email" ng-pattern="/^([A-z0-9_\.-]+)@([\dA-z\.-]+)\.([A-z\.]{2,6})$/" placeholder={% trans "Email"%} required>
+          <input id="email-description" class="describe-input-size form-control" ng-model="emailRemarks" type="text" placeholder={% trans "remarks"%}>
+          <!--<span ng-click="addContactData('email')">+</span>-->
+
+          <span class="btn-add-disb" ng-show="form.uEmail.$error.required || form.uEmail.$invalid"><i class="icon add_to"></i></span>
+          <span class="btn-add-disb" id="add-contact-btn" ng-hide="form.uEmail.$error.required || form.uEmail.$invalid" ng-click="addContactData('email')"><i class="icon add_to"></i></span>
+
+          <!--<span ng-click="showContact('email',0)">-</span>-->
+          <span id="remove-contact-btn" class="btn-add-disb" ng-click="showContact('email',0)"><i class="icon remove_to"></i></span>
+
+          <div class="red" ng-show="form.uEmail.$dirty && onoff">
+            <p ng-show="form.uEmail.$invalid">{% trans "Email format is illegal"%}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <!--<button class="btn btn-primary" type="button"
+      ng-click="action.submit()">create</button>-->
+    <button id="submit-button" class="btn btn-primary" type="button"
+      ng-disabled="form.name.$error.required || !emails.length || !ldap_editable || form.name.$error.maxlength"
+      ng-click="action.submit()">
+      {$ ::context.submit $} {$ form.name.$error.maxlength $}
+    </button>
+  </div>
+  </fieldset>
+</form>

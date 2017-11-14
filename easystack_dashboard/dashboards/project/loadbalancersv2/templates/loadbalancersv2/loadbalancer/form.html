@@ -1,0 +1,298 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+      <div class="modal-description"
+      ng-if="context.mode === 'create'">
+          <p>
+            {% trans "Load balancers in the network must be able to connect to extenal networks, otherwise in the more operation associating floating ip is unable, load balancer will be randomly assiged to a network address." %}
+          </p>
+      </div>
+      <fieldset>
+        <!--
+          Loadbalancer name input (required):
+          Create-mode: create
+                       associateFloatingIp
+                       disassociateFloatingIp
+                       editSecurityGroup
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' ||
+                 context.mode === 'associateFloatingIp' ||
+                 context.mode === 'disassociateFloatingIp' ||
+                 context.mode === 'editSecurityGroup'"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="name" style="width: 110px">
+            *{% trans "Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              type="text"
+              ng-model="loadbalancer.loadbalancer.name"
+              ng-maxlength="255"
+              ng-disabled="context.mode === 'associateFloatingIp' ||
+                           context.mode === 'disassociateFloatingIp' ||
+                           context.mode === 'editSecurityGroup'"
+              placeholder="{% trans 'enter a loadbalancer name' %}"/>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "A loadbalancer name is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength && form.name.$dirty">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+          Description input (optional):
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create'">
+          <label for="description" style="width: 110px">
+            {% trans "Description" %}
+          </label>
+          <div class="form-group-right"
+               ng-class="{'has-error':form.description.$invalid && form.description.$dirty}">
+            <textarea
+              id="description"
+              name="description"
+              class="form-control"
+              rows="4"
+              ng-maxlength="255"
+              type="description"
+              ng-model="loadbalancer.loadbalancer.description"
+              placeholder="{% trans 'enter description of the loadbalancer.' %}">
+            </textarea>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.description.$error.maxlength">
+              {% trans "Description length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+          Security Group selection (optional):
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create'"
+          ng-class="{'has-error':form.type.$invalid && form.type.$dirty}">
+          <label for="security_group" style=" width: 110px">
+            *{% trans "Security Groups" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="security_group"
+              name="security_group"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.canSelectSecurityGroups}"
+              ng-model="loadbalancer.loadbalancer.security_groups">
+              <option value="" disabled>
+                {% trans 'select security gourp' %}
+              </option>
+              <option
+                ng-repeat="security_group in dropdown.canSelectSecurityGroups"
+                value="{$ security_group.id $}">
+                {$ security_group.name $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!--
+            subnet Selectiong (required):
+            Create-mode: create
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create'">
+          <label for="vip_subnet_id" style="width: 110px">
+            *{% trans "Private Network" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="vip_subnet_id"
+              name="vip_subnet_id"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.vip_subnets}"
+              ng-model="loadbalancer.loadbalancer.subnet">
+              <option value="" disabled>
+                {% trans 'select private network' %}
+              </option>
+              <option
+                ng-repeat="s in dropdown.vip_subnets"
+                value="{$ s.id $}">
+                {$ s.network_name $} : {$ s.cidr $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!--
+            Floating ip Selectiong (required):
+            Create-mode: disassociateFloatingIp
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'disassociateFloatingIp'"
+          ng-class="{'has-error':form.type.$invalid && form.type.$dirty}">
+          <label for="disassociateFloatingIp" style=" width: 110px">
+            {% trans "Floating IP" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="disassociateFloatingIp"
+              name="disassociateFloatingIp"
+              class="form-control"
+              ng-model="loadbalancer.loadbalancer.floatingip_id.id">
+              <option value="" disabled>
+                {$ (loadbalancer.loadbalancer.floating_ip.id)?
+                "{% trans 'Select Floating IP' %}" : "{% trans 'No Floating IP Available' %}" $}
+              </option>
+              <option
+                ng-if="loadbalancer.loadbalancer.floating_ip.id"
+                value="{$ loadbalancer.loadbalancer.floating_ip.id $}">
+                {$ loadbalancer.loadbalancer.floating_ip.ip $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'associateFloatingIp' &&
+                 !floatingipNotAvailable &&
+                 is_router_connected"
+          ng-class="{'has-error':form.type.$invalid && form.type.$dirty}">
+          <label for="associate_floatingip" style=" width: 110px">
+            {% trans "Floating IP" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="associate_floatingip"
+              name="associate_floatingip"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.floatingips}"
+              ng-model="loadbalancer.loadbalancer.floatingip">
+              <option value="" disabled>
+                {% trans 'Select Floating IP' %}
+              </option>
+              <option
+                ng-if="dropdown.floatingips.length >= 1"
+                ng-repeat="floatingip in dropdown.floatingips"
+                value="{$ floatingip.id $}">
+                {$ floatingip.floating_ip_address $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!--
+            Notice when associate floating ip (required):
+            Create-mode: associateFloatingIp
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'associateFloatingIp' &&
+                 floatingipNotAvailable &&
+                 is_router_connected">
+          <label for="associate_floatingip" style="width: 110px">
+            {% trans "Floating IP" %}
+          </label>
+          <div class="form-group-right"  style="margin-top:6px">
+            <span> {% trans "No Floating IP Available" %}</span>
+            <a href="javascript:;" ng-click="openAllocateDialog()">
+              {% trans "Apply floating ip" %}
+            </a>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'associateFloatingIp' &&
+                 !is_router_connected">
+          <label for="associate_floatingip" style="width: 110px">
+            {% trans "Floating IP" %}
+          </label>
+          <div class="form-group-right"  style="margin-top:6px">
+            <p>{% trans "The load balancer network should connect to external network, or it will not be able to add floating ip." %}</p>
+          </div>
+        </div>
+
+        <!--
+            Security Group Selection (required):
+            Create-mode: associateFloatingIp
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'editSecurityGroup'"
+          ng-class="{'has-error':form.type.$invalid && form.type.$dirty}">
+          <label for="edit_security_group" style=" width: 110px">
+            {% trans "Security Groups" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="edit_security_group"
+              name="edit_security_group"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.canSelectSecurityGroups}"
+              ng-model="loadbalancer.loadbalancer.security_group">
+              <option value="" disabled>
+                {$ (dropdown.canSelectSecurityGroups.length >= 1)?
+                "{% trans 'Select Security Group' %}" : "{% trans 'No Security Group Available' %}" $}
+              </option>
+              <option
+                ng-if="dropdown.canSelectSecurityGroups.length >= 1"
+                ng-repeat="security_group in dropdown.canSelectSecurityGroups"
+                ng-selected="security_group.id === loadbalancer.loadbalancer.security_groups_id"
+                value="{$ security_group.id $}">
+                {$ security_group.name $}
+              </option>
+            </select>
+          </div>
+        </div>
+      </fieldset>
+
+    <!-- Modal-form-right: The description text. -->
+
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button-create" class="btn btn-primary" type="button"
+    ng-if="context.mode == 'create'"
+    ng-disabled="form.$invalid || quota_exceeded"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+
+  <button id="submit-button-associate" class="btn btn-primary" type="button"
+    ng-if="context.mode == 'associateFloatingIp'"
+    ng-disabled="form.$invalid || quota_exceeded || floatingipNotAvailable || !is_router_connected"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+  <button id="submit-button-disassociate" class="btn btn-primary" type="button"
+    ng-if="context.mode == 'disassociateFloatingIp'"
+    ng-disabled="form.$invalid || quota_exceeded"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+
+  <button id="submit-button-editSecurityGroup" class="btn btn-primary" type="button"
+    ng-if="context.mode == 'editSecurityGroup'"
+    ng-disabled="form.$invalid || quota_exceeded"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>
+

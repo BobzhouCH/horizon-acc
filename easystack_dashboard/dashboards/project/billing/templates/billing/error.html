@@ -1,0 +1,64 @@
+{% load i18n %}
+{% load i18n branding %}
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8">
+<title>{% site_branding %}</title>
+<meta name="author" content="" />
+<meta name="Copyright" content="" />
+{% include 'favicon.html' %}
+<style>
+/* billing success start */
+*{ margin: 0; padding:0; }
+body{ overflow: hidden; }
+.billing-success-box {
+    width: 100%; height: 1000px;
+    text-align: center; background: url("/static/bootstrap/img/bil-succ-bg.jpg") no-repeat center bottom; background-size: cover;
+     color:#fff;
+}
+.billing-success-box h2{ padding-top: 156px; font-size: 36px; font-style: normal; }
+.billing-success-box img{ margin-top: 36px; margin-bottom: 60px;}
+.billing-success-box p{ font-size: 24px; line-height: 50px;}
+.billing-success-box .font-size36{font-size: 36px; }
+</style>
+</head>
+<script>
+    window.onload = function(){
+        var oBilSuccBox = document.getElementById('billing-success-box');
+        oBilSuccBox.getElementsByTagName('img')[0].onclick = function(){
+            closeWindow();
+        };
+        function closeWindow(){
+            var isIE = navigator.appName == "Microsoft Internet Explorer";
+            if(isIE){
+                window.opener = "";
+                window.open("","_self");
+                window.close();
+            }
+            else{
+                 window.open("","_self").close();
+            }
+        }
+        var timer = null;
+        var iTime = 5;
+        timer = setInterval(function(){
+            iTime--;
+            oBilSuccBox.getElementsByTagName('p')[1].innerHTML = iTime+'{% trans " Seconds will close window, you can continue to use other ESCloud function" %}';
+            if(iTime == 0){
+                clearInterval(timer);
+                closeWindow();
+            }
+        }, 1000); //bill-clo-icon
+    };
+</script>
+<body>
+<div class="billing-success-box" id="billing-success-box">
+    <h2>{% site_branding %}</h2>
+    <img src="/static/bootstrap/img/bill-clo-icon.png" />
+    <p class="font-size36">{% trans "Your payment has failed" %}</p>
+    <p>{% trans "5 Seconds will close window, you can continue to use other function" %}</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,86 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+    <h3 class="modal-title">{$ ::context.title $}</h3>
+    <p class="modal-colsed" ng-click="action.cancel()">
+        <i class="modal-colsed-icon"></i>
+    </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+    <div class="left form-wrap">
+      <fieldset>
+        <!--
+          KeyPair name input (required):
+            Create-mode: show
+            Edit-mode: show
+            Password-mode: show but disable
+        -->
+        <div class="form-group clearfix">
+          <label class="control-label fl required" for="name">
+            *{% trans "KeyPair Name" %}
+          </label>
+          <div class="form-group-right" ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+              <input required
+                id="name"
+                name="name"
+                class="form-control"
+                type="text"
+                ng-model="test.name"
+                ng-pattern="/^([a-zA-Z0-9_-]+)$/"
+                ng-maxlength="255"
+                placeholder="{% trans 'Enter keypair name' %}">
+              <p class="help-block alert alert-danger"
+                ng-show="form.name.$dirty && !form.name.$viewValue">
+                {% trans "KeyPair name is required." %}
+              </p>
+              <p class="help-block alert alert-danger"
+                ng-show="form.name.$invalid && form.name.$dirty && form.name.$error.pattern">
+                {% trans "KeyPair name may only letters, numbers, underscores and hyphens." %}
+              </p>
+              <p class="help-block alert alert-danger"
+                ng-show="form.name.$invalid && form.name.$dirty && form.name.$error.maxlength">
+                {% trans "Name length should be less than 255 chars." %}
+              </p>
+           </div>
+           </div>
+
+        <div class="form-group clearfix">
+          <label class="control-label fl required" for="public_key">
+            *{% trans "Public Key" %}
+          </label>
+          <div class="form-group-right" ng-class="{'has-error':form.public_key.$invalid && form.public_key.$dirty}">
+              <textarea required
+                id="public_key" rows="5"
+                name="public_key"
+                class="form-control"
+                ng-model="test.public_key"
+                placeholder="{% trans 'Enter public key' %}">
+                </textarea>
+              <p class="help-block alert-fixed alert-danger"
+                ng-show="form.public_key.$invalid && form.public_key.$dirty">
+                {% trans "Public Key is required." %}
+              </p>
+           </div>
+        </div>
+
+      </fieldset>
+    </div>
+
+    <!-- Modal-form-right: The description text. -->
+
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

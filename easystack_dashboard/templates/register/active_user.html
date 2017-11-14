@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+{% load i18n %}
+{% load i18n branding %}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8">
+<title>{% site_branding %}</title>
+<meta name="author" content="" />
+<meta name="Copyright" content="" />
+{% include 'favicon.html' %}
+<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}register/style/index.css">
+<script src="{{ STATIC_URL }}register/js/jquery-1.11.2.js"></script>
+<body>
+  <div class="register-logo"><img src="/static/dashboard/img/loginLogo.png"></div>
+  <div class="register-wrap other">
+    <div class="conterWrap position-size">
+      <h2>用户已激活</h2>
+      <div class="tips-icon"><span class="success-icon"></div>
+      <div class="tips-content">
+        <p><span id="time">3</span>秒后将跳转回登录页面</p>
+        <p>如果没跳转，请点击下面链接</p>
+        <p><a href="{{ WEBROOT }}">返回登录页</a></p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
+<script>
+var time = 3;
+var _clock = setInterval(function(){
+    if (time>0){
+        time--;
+    }
+    $('#time').html(time);
+    if(time === 0){
+        window.location.href ="{{ WEBROOT }}";
+        clearInterval(_clock);
+    }
+},1000);
+</script>

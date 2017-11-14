@@ -1,0 +1,469 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Overview" %}{% endblock %}
+{% load context_selection %}
+{% block page_header %}
+    {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Overview") %}
+{% endblock page_header %}
+
+{% block content_main %}"content-overview"{% endblock %}
+{% block main %}
+
+    <div ng-controller="projectOverviewCtrl" class="col-left-wrap fl" ng-style="is_public_region? { width: '100%' }:{}"
+         ng-cloak>
+        <div class="col-left">
+            <div class="row">
+                <div class="col-md-6 col" ng-class="{ 'col-md-12 only-12': !local_billing_need }">
+                    <div class="project-user-msg">
+                        <div class="overview-title title-all">{% trans "Project Information" %}</div>
+                        <p class="mt10">
+                            <span class="fl">{% trans "Current Project" %} :</span>
+                            <i id="project-name" class="gray_3 ml10 cut current-project"
+                               title="{$ users.project_name $}">{$ users.project_name $}</i>
+                        </p>
+                        <p class="mt10 fl current-user">
+                            <span class="fl">{% trans "Current User" %} :</span>
+                            <span id="user-name" class="blue cut">{$ users.username $}</span>
+                        </p>
+                        <p class="mt10">
+                            <span class="fl">{% trans "Current Role" %} :</span>
+                            <i id="current-role" class="gray_3 ml10">{$ users.current_role | decode:rolei18n $}</i>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 col project-user-msg-col" ng-show="local_billing_need">
+                    <div class="project-user-msg-t" ng-cloak>
+                        <div class="overview-title title-all">{% trans "Account Information" %}</div>
+                        <p class="mt10">
+              <span>{% trans 'Account Balance' %} :<i id="balance" class="orange ml10">{$ balance | number:2 $}</i>
+              <i class="orange ml5"> {% trans 'Yuan' %}</i></span>
+                            <a id="billing-detail" href="{{ WEBROOT }}project/billing/"
+                               class="ml20">{% trans "Details" %}</a>
+                        </p>
+                        <p class="mt10">
+                <span>{% trans 'Tenant Consumption' %} :
+                <i id="consumption-1" class="orange ml10" ng-if="consumption > 0">{$ consumption | number:2 $}</i>
+                <i id="consumption-2" class="orange ml10" ng-if="consumption == 0">{$ consumption $}</i>
+                <i class="ml5"><i class="orange">{% trans 'Yuan' %}</i> / {% trans 'Day' %}</i></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-msg clearfix">
+                <div class="overview-title title-all">{% trans "Resource Quota Usage" %}</div>
+                <div class="row">
+                    <div class="col-md-6 col">
+                        <div class="project-msg-inner">
+                            <div class="row">
+                                <div class="col-sm-12 col"><b>{% trans "Compute" %}</b></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3 col">{% trans "Instance" %}</div>
+                                <div class="col-sm-9 col">
+                                    <div class="bar-wrap used-bar-wrap"
+                                         eagle-eye="quota-instances"
+                                         get-bar
+                                         dataval="{$ iQuotaData.instances.used $} / {$ iQuotaData.instances.quota < 0 ? '{% trans "Not limited" %}' : iQuotaData.instances.quota $}"
+                                         percentage="{$ iQuotaData.instances.used/iQuotaData.instances.quota*100 $}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3 col">{% trans "VCPU" %}</div>
+                                <div class="col-sm-9 col">
+
+                                    <div class="bar-wrap used-bar-wrap"
+                                         eagle-eye="quota-cores"
+                                         get-bar
+                                         dataval="{$ iQuotaData.cores.used $} / {$ iQuotaData.cores.quota < 0 ? '{% trans "Not limited" %}' : iQuotaData.cores.quota $}"
+                                         percentage="{$ iQuotaData.cores.used/iQuotaData.cores.quota*100 $}">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3 col">{% trans "RAM" %}</div>
+                                <div class="col-sm-9 col">
+
+                                    <div class="bar-wrap used-bar-wrap"
+                                         eagle-eye="quota-ram"
+                                         get-bar
+                                         dataval="{$ iQuotaData.ram.used | mb2gb $} / {$ iQuotaData.ram.quota < 0 ? '{% trans "Not limited" %}' : iQuotaData.ram.quota | mb2gb $}"
+                                         percentage="{$ iQuotaData.ram.used/iQuotaData.ram.quota*100 $}">
+                                    </div>
+
+                                </div>
+                            </div>
+                            {% inRegionShowNode 'project-overview-keypair' %}
+                                <div class="row">
+                                    <div class="col-sm-3 col">{% trans "Keypairs" %}</div>
+                                    <div class="col-sm-9 col">
+                                        <div class="bar-wrap used-bar-wrap"
+                                             eagle-eye="quota-key_pairs"
+                                             get-bar
+                                             dataval="{$ iQuotaData.key_pairs.used $} / {$ iQuotaData.key_pairs.quota < 0 ? '{% trans "Not limited" %}' : iQuotaData.key_pairs.quota $}"
+                                             percentage="{$ iQuotaData.key_pairs.used/iQuotaData.key_pairs.quota*100 $}">
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endinRegionShowNode %}
+                        </div>
+                        {% inRegionShowNode 'project-overview-network' %}
+                            <div class="project-msg-inner">
+                            <div class="row">
+                                <div class="col-sm-12 col"><b>{% trans "Networks" %}</b></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3 col">{% trans "Networks" %}</div>
+                                <div class="col-sm-9 col">
+
+                                    <div class="bar-wrap used-bar-wrap"
+                                         eagle-eye="quota-networks"
+                                         get-bar
+                                         dataval="{$ iQuotaData.networks.used $} / {$ iQuotaData.networks.quota < 0 ? '{% trans "Not limited" %}' : iQuotaData.networks.quota $}"
+                                         percentage="{$ iQuotaData.networks.used/iQuotaData.networks.quota*100 $}">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3 col">{% trans "Floating IPs" %}</div>
+                                <div class="col-sm-9 col">
+
+                                    <div class="bar-wrap used-bar-wrap"
+                                         eagle-eye="quota-floating_ips"
+                                         get-bar
+                                         dataval="{$ iQuotaData.floating_ips.used $} / {$ iQuotaData.floating_ips.quota < 0 ? '{% trans "Not limited" %}' : iQuotaData.floating_ips.quota $}"
+                                         percentage="{$ iQuotaData.floating_ips.used/iQuotaData.floating_ips.quota*100 $}">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3 col">{% trans "Security Groups" %}</div>
+                                <div class="col-sm-9 col">
+
+                                    <div class="bar-wrap used-bar-wrap"
+                                         eagle-eye="quota-security_groups"
+                                         get-bar
+                                         dataval="{$ iQuotaData.security_groups.used $} / {$ iQuotaData.security_groups.quota < 0 ? '{% trans "Not limited" %}' : iQuotaData.security_groups.quota $}"
+                                         percentage="{$ iQuotaData.security_groups.used/iQuotaData.security_groups.quota*100 $}">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3 col">{% trans "Subnets" %}</div>
+                                <div class="col-sm-9 col">
+                                    <div class="bar-wrap used-bar-wrap"
+                                         eagle-eye="quota-subnets"
+                                         get-bar
+                                         dataval="{$ iQuotaData.subnets.used $} / {$ iQuotaData.subnets.quota < 0 ? '{% trans "Not limited" %}' : iQuotaData.subnets.quota $}"
+                                         percentage="{$ iQuotaData.subnets.used/iQuotaData.subnets.quota*100 $}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3 col">{% trans "Routers" %}</div>
+                                <div class="col-sm-9 col">
+
+                                    <div class="bar-wrap used-bar-wrap"
+                                         eagle-eye="quota-routers"
+                                         get-bar
+                                         dataval="{$ iQuotaData.routers.used $} / {$ iQuotaData.routers.quota < 0 ? '{% trans "Not limited" %}' : iQuotaData.routers.quota $}"
+                                         percentage="{$ iQuotaData.routers.used/iQuotaData.routers.quota*100 $}">
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3 col">{% trans 'Ports' context 'Neutron quota' %}</div>
+                                <div class="col-sm-9 col">
+
+                                    <div class="bar-wrap used-bar-wrap"
+                                         eagle-eye="quota-ports"
+                                         get-bar
+                                         dataval="{$ iQuotaData.ports.used $} / {$ iQuotaData.ports.quota < 0 ? '{% trans "Not limited" %}' : iQuotaData.ports.quota $}"
+                                         percentage="{$ iQuotaData.ports.used/iQuotaData.ports.quota*100 $}">
+                                    </div>
+
+                                </div>
+                            </div>
+                            {% if LOADBALANCER_ENABLE %}
+                                <div class="row">
+                                    <div class="col-sm-3 col">{% trans "Loadbalancers" %}</div>
+                                    <div class="col-sm-9 col">
+                                        <div class="bar-wrap used-bar-wrap"
+                                             eagle-eye="quota-subnets"
+                                             get-bar
+                                             dataval="{$ iQuotaData.loadbalancers.used $} / {$ iQuotaData.loadbalancers.quota < 0 ? '{% trans "Not limited" %}' : iQuotaData.loadbalancers.quota $}"
+                                             percentage="{$ iQuotaData.loadbalancers.used/iQuotaData.loadbalancers.quota*100 $}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-3 col">{% trans "Listeners" %}</div>
+                                    <div class="col-sm-9 col">
+                                        <div class="bar-wrap used-bar-wrap"
+                                             eagle-eye="quota-subnets"
+                                             get-bar
+                                             dataval="{$ iQuotaData.listeners.used $} / {$ iQuotaData.listeners.quota < 0 ? '{% trans "Not limited" %}' : iQuotaData.listeners.quota $}"
+                                             percentage="{$ iQuotaData.listeners.used/iQuotaData.listeners.quota*100 $}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-3 col">{% trans "Pools" %}</div>
+                                    <div class="col-sm-9 col">
+                                        <div class="bar-wrap used-bar-wrap"
+                                             eagle-eye="quota-subnets"
+                                             get-bar
+                                             dataval="{$ iQuotaData.pools.used $} / {$ iQuotaData.pools.quota < 0 ? '{% trans "Not limited" %}' : iQuotaData.pools.quota $}"
+                                             percentage="{$ iQuotaData.pools.used/iQuotaData.pools.quota*100 $}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-3 col">{% trans "Healthmonitors" %}</div>
+                                    <div class="col-sm-9 col">
+                                        <div class="bar-wrap used-bar-wrap"
+                                             eagle-eye="quota-subnets"
+                                             get-bar
+                                             dataval="{$ iQuotaData.healthmonitors.used $} / {$ iQuotaData.healthmonitors.quota < 0 ? '{% trans "Not limited" %}' : iQuotaData.healthmonitors.quota $}"
+                                             percentage="{$ iQuotaData.healthmonitors.used/iQuotaData.healthmonitors.quota*100 $}">
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endinRegionShowNode %}
+                        </div>
+                    </div>
+                    <div class="col-md-6 col">
+                        <div class="project-msg-inner">
+                            <div class="row">
+                                <div class="col-sm-12 col"><b>{% trans "Storage" %}</b></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3 col">{% trans "Volumes" %}</div>
+                                <div class="col-sm-9 col">
+
+                                    <div class="bar-wrap used-bar-wrap"
+                                         eagle-eye="quota-volumes"
+                                         get-bar
+                                         dataval="{$ iQuotaData.volumes.used $} / {$ iQuotaData.volumes.quota < 0 ? '{% trans "Not limited" %}' : iQuotaData.volumes.quota $}"
+                                         percentage="{$ iQuotaData.volumes.used/iQuotaData.volumes.quota*100 $}">
+                                    </div>
+
+                                </div>
+                            </div>
+                            {% inRegionShowNode 'project-overview-snapshot' %}
+                                <div class="row">
+                                    <div class="col-sm-3 col">{% trans "Snapshots" %}</div>
+                                    <div class="col-sm-9 col">
+
+                                        <div class="bar-wrap used-bar-wrap"
+                                             eagle-eye="quota-snapshots"
+                                             get-bar
+                                             dataval="{$ iQuotaData.snapshots.used $} / {$ iQuotaData.snapshots.quota < 0 ? '{% trans "Not limited" %}' : iQuotaData.snapshots.quota $}"
+                                             percentage="{$ iQuotaData.snapshots.used/iQuotaData.snapshots.quota*100 $}">
+                                        </div>
+
+                                    </div>
+                                </div>
+                            {% endinRegionShowNode %}
+                            <div class="row">
+                                <div class="col-sm-3 col">{% trans "Gigabytes" %}</div>
+                                <div class="col-sm-9 col">
+
+                                    <div class="bar-wrap used-bar-wrap"
+                                         eagle-eye="quota-gigabytes"
+                                         get-bar
+                                         dataval="{$ iQuotaData.gigabytes.used $} / {$ iQuotaData.gigabytes.quota < 0 ? '{% trans "Not limited" %}' : iQuotaData.gigabytes.quota $}"
+                                         percentage="{$ iQuotaData.gigabytes.used/iQuotaData.gigabytes.quota*100 $}">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            {% if MANILA_ENABLED %}
+                                <div class="row">
+                                    <div class="col-sm-3 col">{% trans "Shared Files" %}</div>
+                                    <div class="col-sm-9 col">
+
+                                        <div class="bar-wrap used-bar-wrap"
+                                             eagle-eye="quota-shares"
+                                             get-bar
+                                             dataval="{$ iQuotaData.shares.used $} / {$ iQuotaData.shares.quota < 0 ? '{% trans "Not limited" %}' : iQuotaData.shares.quota $}"
+                                             percentage="{$ iQuotaData.shares.used/iQuotaData.shares.quota*100 $}">
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-3 col">{% trans "Shared File Size" %}</div>
+                                    <div class="col-sm-9 col">
+
+                                        <div class="bar-wrap used-bar-wrap"
+                                             eagle-eye="quota-share_gigabytes"
+                                             get-bar
+                                             dataval="{$ iQuotaData.share_gigabytes.used $} / {$ iQuotaData.share_gigabytes.quota < 0 ? '{% trans "Not limited" %}' : iQuotaData.share_gigabytes.quota $}"
+                                             percentage="{$ iQuotaData.share_gigabytes.used/iQuotaData.share_gigabytes.quota*100 $}">
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-3 col">{% trans "Shared File Networks" %}</div>
+                                    <div class="col-sm-9 col">
+
+                                        <div class="bar-wrap used-bar-wrap"
+                                             eagle-eye="quota-share_networks"
+                                             get-bar
+                                             dataval="{$ iQuotaData.share_networks.used $} / {$ iQuotaData.share_networks.quota < 0 ? '{% trans "Not limited" %}' : iQuotaData.share_networks.quota $}"
+                                             percentage="{$ iQuotaData.share_networks.used/iQuotaData.share_networks.quota*100 $}">
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-3 col">{% trans "Shared File Snapshot" %}</div>
+                                    <div class="col-sm-9 col">
+
+                                        <div class="bar-wrap used-bar-wrap"
+                                             eagle-eye="quota-share_snapshots"
+                                             get-bar
+                                             dataval="{$ iQuotaData.share_snapshots.used $} / {$ iQuotaData.share_snapshots.quota < 0 ? '{% trans "Not limited" %}' : iQuotaData.share_snapshots.quota $}"
+                                             percentage="{$ iQuotaData.share_snapshots.used/iQuotaData.share_snapshots.quota*100 $}">
+                                        </div>
+
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% inRegionShowNode 'project-overview-volume_backups' %}
+                                <div class="row">
+                                    <div class="col-sm-3 col">{% trans "Volume Backups" %}</div>
+                                    <div class="col-sm-9 col">
+                                        <div class="bar-wrap used-bar-wrap"
+                                             eagle-eye="quota-backups"
+                                             get-bar
+                                             dataval="{$ iQuotaData.backups.used $} / {$ iQuotaData.backups.quota < 0 ? '{% trans "Not limited" %}' : iQuotaData.backups.quota $}"
+                                             percentage="{$ iQuotaData.backups.used/iQuotaData.backups.quota*100 $}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                <div class="col-sm-3 col">{% trans "Volume Backup Size(GB)" %}</div>
+                                <div class="col-sm-9 col">
+                                    <div class="bar-wrap used-bar-wrap"
+                                         eagle-eye="quota-backup_gigabytes"
+                                         get-bar
+                                         dataval="{$ iQuotaData.backup_gigabytes.used $} / {$ iQuotaData.backup_gigabytes.quota < 0 ? '{% trans "Not limited" %}' : iQuotaData.backup_gigabytes.quota $}"
+                                         percentage="{$ iQuotaData.backup_gigabytes.used/iQuotaData.backup_gigabytes.quota*100 $}">
+                                    </div>
+                                </div>
+                            {% endinRegionShowNode %}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-right-wrap fr" ng-controller="projectOverviewInstanceStatesController">
+        <div class="col-right">
+            <div class="overview-title title-action">
+                {% trans "Instance Status" %}
+            </div>
+            <div class="overview-instances">
+                <div class="row">
+                    <div class="col-xs-1 text-right status-icon">
+                        <img ng-src="{{ STATIC_URL }}dashboard/img/lenovo/st22_normalstg_24.png"/>
+                    </div>
+                    <div class="col-xs-6 status-item">
+                        <div class="status-item-value">
+                            <a href="{{ WEBROOT }}project/instances/">{$ instanceStates.ACTIVE $}</a>
+                        </div>
+                        {% trans "Running" %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-1 text-right status-icon">
+                        <img ng-src="{{ STATIC_URL }}dashboard/img/lenovo/st22_offline_24.png"/>
+                    </div>
+                    <div class="col-xs-6 status-item">
+                        <div class="status-item-value">
+                            <a href="{{ WEBROOT }}project/instances/">{$ instanceStates.Stopped $}</a>
+                        </div>
+                        {% trans "Stopped" %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-1 text-right status-icon">
+                        <img ng-src="{{ STATIC_URL }}dashboard/img/lenovo/st22_errors_24.png"/>
+                    </div>
+                    <div class="col-xs-6 status-item">
+                        <div class="status-item-value">
+                            <a href="{{ WEBROOT }}project/instances/">{$ instanceStates.ERROR $}</a>
+                        </div>
+                        {% trans "Error" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% inRegionShowNode 'project-overview-activities' %}
+        <div class="col-right-wrap fr" ng-controller="projectOverviewActivitie" ng-cloak>
+            <div class="col-right" style="box-shadow:0 0 0 0;">
+                <div class="overview-title title-action">{% trans "Recent Operation" %}
+                    <a id="view-all" class="title-more"
+                       href="{{ WEBROOT }}project/operationlogs/">{% trans "View All" %}</a>
+                </div>
+                <div class="overview-ol-con" style="max-height:585px;overflow:hidden;">
+                    <div ng-if="showLoadingActivities" class="Loading-bar"><img class="load-detail"
+                                                                                src="/static/bootstrap/img/loading.gif"
+                                                                                alt=""/></div>
+                    <div id="action-line" ng-if="Activities.length > 0" class="list-dashed"></div>
+                    <ol id="recent-list" ng-if="!showLoadingActivities">
+                        <li id="list-{$ $index $}" ng-repeat="activ in Activities" ng-init="activIndex = $index">
+                            <div class="time-wrap">
+                                <p class="f14 txt-c time-con-1">{$ splitArrStr(activ.timestamp)[0] $}</p>
+                                <p class="f12 txt-c gray_2 time-con-2">{$ splitArrStr(activ.timestamp)[1] $}</p>
+                            </div>
+                            <span ng-class="activIndex == 0 ? 'dit-icon-b' : 'dit-icon'">
+              <img ng-src="/static/dashboard/img/{$ AutomaticAllocation(activ.action) $}" width="28" height="28"/>
+          </span>
+                            <div ng-if="activ.resource && activ.resource!= 'None'">
+                                <div class="list-caret"></div>
+                                <p class="list-name">{$ activ.action | decode:operationlogi18n $}</p>
+                                <div class="action-inner">
+                                    <span>{$ activ.type | decode:operationlogi18n $} : </span>
+                                    <span class="blue_1">{$ activ.resource $}</span>
+                                </div>
+                            </div>
+                            <div ng-if="!activ.resource || activ.resource == 'None'">
+                                <div class="list-caret"></div>
+                                <p class="list-name" style="padding: 20px 10px 20px 20px;">{$ activ.action |
+                                    decode:operationlogi18n $}</p>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    {% endinRegionShowNode %}
+{% endblock %}

@@ -1,0 +1,150 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Application Policy" %}{% endblock %}
+
+{% block page_header %}
+{% include "easystack_dashboard/common/_es_page_header.html" with title=_("Application Policy") %}
+{% endblock page_header %}
+
+{% block main %}
+
+<table id="application-policy" hz-table ng-cloak hopes-table-drag
+       st-table="iApplicationPolicies"
+       st-safe-src="applicationPolicies"
+       default-sort="name"
+       default-sort-reverse="false"
+       ng-controller="projectApplicationPoliciesCtrl"
+       disabled="disabled"
+       class="table table-bordered table-hover">
+
+  <!--
+    Table-head:
+    This is where we add things like filtering and batch actions.
+    This is where we add column headers.
+  -->
+  <thead>
+
+    <!--
+      Table-batch-actions:
+      This is where batch actions like searching, creating, and deleting.
+    -->
+    <tr>
+      <th colspan="100" class="bare">
+        <div class="table_actions clearfix">
+          <action-list class="btn-addon">
+            <action action-classes="'btn btn-default btn-sm'"
+                    callback="actions.refresh">
+              <i class="icon icon-refresh"></i>
+              <span id="refresh"></span>
+            </action>
+          </action-list>
+
+          <action-list class="btn-addon">
+            <action action-classes="'btn btn-default btn-sm'"
+                    callback="actions.create.open">
+              <i class="icon icon-add"></i>
+              <span id="create-volume">{% trans 'Create Cluster' %}</span>
+            </action>
+          </action-list>
+
+          <action-list class="btn-addon">
+            <action action-classes="'btn btn-danger btn-sm'"
+                    callback="actions.delete.batchDelete"
+                    disabled="selectedData.aData.length === 0">
+              <i class="icon icon-delete"></i>
+              <span id="create-volume">{% trans 'Delete Cluster' %}</span>
+            </action>
+          </action-list>
+          <div class="fr search-bar">
+            <search-bar id="search" group-classes="" icon-classes="fa-search" placeholder={% trans "Filter" %}> </search-bar>
+          </div>
+        </div>
+      </th>
+    </tr>
+
+    <!--
+      Table-column-headers:
+      This is where we declaratively define the table column headers.
+      Include the select all checkbox if you want to enable select all
+      for performing batch actions.
+    -->
+    <tr eagle-eye="table_heads">
+      <th class="select-col" eagle-eye="select_col">
+        <input type="checkbox"
+               hz-select-page="applicationPolicies"/>
+      </th>
+      <th st-sort="name" st-sort-default="name" eagle-eye="data_col">
+        <!--{$ ::context.header.name $}-->
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <tr ng-if="!applicationPolicyState">
+      <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+    </tr>
+
+    <tr ng-if="!iapplicationPolicies.length && applicationPolicyState">
+      <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+    </tr>
+
+    <tr ng-repeat-start="applicationPolicy in iapplicationPolicies" ng-class="{'st-selected': checked[applicationPolicy.id]}">
+
+      <!--
+        Table-row-checkbox:
+        User can select and unselect this row by clicking on this checkbox.
+        Batch actions can then be perform on selected rows.
+      -->
+      <td class="select-col" eagle-eye="select_col">
+        <input type="checkbox"
+               hz-select="applicationPolicy"
+               ng-model="selected[applicationPolicy.id].checked"
+               hz-checkbox-group="bays"/>
+      </td>
+
+
+    </tr>
+    <tr eagle-eye= "detail_row" ng-repeat-end class="detail-row js-detail-box" data-instanceId="{$ bay.id $}" data-index="{$ $index $}">
+      <td class="detail" colspan="100">
+        <!--<p class="detail-row-name fl"></p>-->
+        <div class="detail-expanded fl">
+          <table id="bay-content" class="table table-bordered table-hover">
+            <tbody>
+              <tr >
+                <td style="text-align:right;min-width:50px;">{$ ::context.header.cluster_id $}</td>
+                <td style="min-width:200px">{$ bay.id $}</td>
+                <td style="text-align:right;min-width:30px;">{$ ::context.header.master_addr $}</td>
+                <td style="min-width:300px">
+                  <p ng-repeat="ip in bay.master_addr">{$ ip $}</p>
+                </td>
+                <!--
+                <td style="text-align:right;width:220px;">{$ ::context.header.api_addr $}</td>
+                <td>{$ bay.api_addr $}</td>-->
+                <td style="text-align:right;width:30px;">{$ ::context.header.slave_addr $}</td>
+                <td style="min-width:300px">
+                  <p ng-repeat="ip in bay.slave_addr">{$ ip $}</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+
+  <!--
+    Table-footer:
+    This is where we display number of items and pagination controls.
+    Ensure colspan is greater or equal to number of column-headers.
+  -->
+  <tfoot>
+    <tr>
+      <td colspan="100" eagle-eye="data_page">
+        <table-footer></table-footer>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+
+{% endblock %}

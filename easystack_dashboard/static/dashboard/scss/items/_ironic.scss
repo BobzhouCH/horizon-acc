@@ -1,0 +1,50 @@
+.ironic-enroll-form{
+.modal-dialog {
+    width: 580px;
+    .form-group>label{
+        width:170px;
+    }
+    .form-group .node-left{
+        width: 190px;
+        height: 30px;
+        float: left;
+        label {
+            width:80px;
+        }
+        input {
+            width:90px;
+        }
+        .left-input {
+            padding: 6px 12px;
+            text-align: left;
+        }
+    }
+    .form-group .node-right{
+        width: 220px;
+        display: inline;
+        label {
+            width:80px;
+        }
+        input{
+            width:90px;
+        }
+        span {
+            display: inline;
+        }
+    }
+    .line {
+        margin:0;padding:0; width:100%;height:1px;background-color:#EFEFEF;overflow:hidden;margin-top: 15px;
+    }
+    .node-below {
+        margin-left: -7px;
+    }
+    .image-list-btn{
+        padding-left: 10px;
+        padding-right:10px;
+    }
+    .dropdown-menu.image-list{
+        max-height: 300px;
+        overflow-y: auto;
+    }
+ }
+}

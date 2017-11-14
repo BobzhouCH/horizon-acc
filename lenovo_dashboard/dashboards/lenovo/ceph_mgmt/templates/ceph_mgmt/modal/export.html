@@ -1,0 +1,140 @@
+{%load branding i18n%}
+<script type="text/ng-template" id="export.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="close()">&times;</button>
+        <h4>{% trans "Export to iSCSI" %}</h4>
+    </div>
+    <div class="modal-body public-body">
+        <div class="body-left">
+            <ul class="body-left-nav">
+                <li class="li-click">
+                    <span class="li-click li-circle"></span>{% trans "General" %}
+                    <p class="li-inline"></p>
+                </li>
+                <li>
+                    <span class="li-click li-circle"></span>{% trans "Snapshot" %}
+                    <p class="li-inline"></p>
+                </li>
+                <li>
+                    <span class="li-click li-circle"></span>{% trans "Qos" %}
+                    <p class="li-inline"></p>
+                </li>
+                <li>
+                    <span class="li-click li-circle"></span>{% trans "I/O Control" %}
+                </li>
+            </ul>
+        </div>
+        <div class="body-right">
+            <div class="body-content">
+                <div class="content-box" style="display: block">
+                    <div class="list-group">
+                        <label>{% trans "Volume Name" %}</label>
+                        <input type="text" value="New Volume" >
+                    </div>
+                    <div class="list-group">
+                        <label>{% trans "Capacity" %}</label>
+                        <input type="text" value="79%" />
+                    </div>
+                    <div class="list-group">
+                        <label>{% trans "Destination" %}</label>
+                        <select class="public-current-select">
+                            <option value="Current (Pool 1)">{% trans "Current (Pool" %} 1)</option>
+                            <option value="Current (Pool 1)">{% trans "Current (Pool" %} 2)</option>
+                            <option value="Current (Pool 1)">{% trans "Current (Pool" %} 3)</option>
+                        </select>
+                    </div>
+                    <div class="list-group">
+                        <label>{% trans "Target" %}</label>
+                        <select class="public-current-select">
+                            <option value="Current (Pool 1)">{% trans "Current (Pool" %} 1)</option>
+                            <option value="Current (Pool 1)">{% trans "Current (Pool" %} 2)</option>
+                            <option value="Current (Pool 1)">{% trans "Current (Pool" %} 3)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="content-box">
+                    <div class="list-group">
+                        <label>{% trans "Frequency" %}</label>
+                        <select class="public-current-select">
+                            <option value="Frequency-1">{% trans "Frequency" %}-1</option>
+                            <option value="Frequency-2">{% trans "Frequency" %}-2</option>
+                            <option value="Frequency-3">{% trans "Frequency" %}-3</option>
+                            <option value="Frequency-4">{% trans "Frequency" %}-4</option>
+                            <option value="Frequency-5">{% trans "Frequency" %}-5</option>
+                        </select>
+                    </div>
+                    <div class="list-group">
+                        <label>{% trans "Start Date" %}</label>
+                        <input type="text" value="Default" >
+                    </div>
+                    <div class="list-group">
+                        <label>{% trans "Quantity" %}</label>
+                        <input type="text" value="{% trans 'Must Between 1 and 1000' %}" >
+                    </div>
+                </div>
+                <div class="content-box">
+                    <div class="list-group">
+                        <div class="QoS-show-notes">
+                            <label for="QoS-show-notes">{% trans "QoS Limitation" %}</label>
+                            <div class="slidebox">
+                                <input id="QoS-show-notes" type="checkbox" name="QoS-show-notes" checked="checked">
+                                <label for="QoS-show-notes"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group read-box">
+                        <span>{% trans "Read" %}</span>
+                        <p>
+                            <input type="text" value="6500" >
+                            <select class="read-select">
+                                <option value="Mbps">Mbps</option>
+                                <option value="Gbps">Gbps</option>
+                                <option>Kbps</option>
+                            </select>
+                            <input type="text" value="2500" >IOPS
+                        </p>
+                        <p>
+                            <input type="text" value="6500" >
+                            <select class="read-select">
+                                <option value="Mbps">Mbps</option>
+                                <option value="Gbps">Gbps</option>
+                                <option>Kbps</option>
+                            </select>
+                            <input type="text" value="2500" >IOPS
+                        </p>
+                    </div>
+                </div>
+                <div class="content-box">
+                    <div class="list-group addInitiators">
+                        <span>{% trans "Permitted Initiators" %}</span>
+                        <span><button>{% trans "Add" %}</button></span>
+                    </div>
+                    <div class="list-group Initiators_list">
+                        <div class="list-item">
+                            <input type="text" value="">
+                            <select class="current-select">
+                                <option value="Read Only-1">{% trans "Read Only" %}-1</option>
+                                <option value="Read Only-2">{% trans "Read Only" %}-2</option>
+                                <option value="Read Only-3">{% trans "Read Only" %}-3</option>
+                            </select>
+                        </div>
+                        <div class="list-item">
+                            <input type="text" value="">
+                            <select class="current-select">
+                                <option value="Read Only-1">{% trans "Read Only" %}-1</option>
+                                <option value="Read Only-2">{% trans "Read Only" %}-2</option>
+                                <option value="Read Only-3">{% trans "Read Only" %}-3</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-list">
+                <button class="prev" ng-show="!is_show" ng-click="prev()">{% trans "Prev" %}</button>
+                <button class="next" ng-show="is_show" ng-click="next()">{% trans "Next" %}</button>
+                <button class="cancel" ng-click="cancel()">{% trans "Cancel" %}</button>
+                <button class="btn-ok" ng-show="!is_show" ng-click="rbdExportAction($event)">{% trans "OK" %}</button>
+            </div>
+        </div>
+    </div>
+</script>

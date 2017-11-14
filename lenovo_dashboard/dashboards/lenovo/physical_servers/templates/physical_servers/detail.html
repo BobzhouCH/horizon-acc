@@ -1,0 +1,450 @@
+﻿{% load i18n %}
+<div id="host_detail_page" class="detail-page">
+    <div class="fl detail-left-icon" ng-click="action.cancel()"></div>
+    <div class="detail-page-con">
+        <tabset justified="true" class="def-tabs">
+            <table class="table table-bordered table-hover table-unique" style="margin-top:50px;margin-bottom:10px;">
+                <thead>
+                    <tr>
+                        <th colspan="100"><span class="detail-title">{% trans "NodeName" %}: {$ serverName $}</span></th>
+                    </tr>
+                </thead>
+            </table>
+            <tab id="tab-subnet-overview" heading="{% trans 'Overview' %}">
+                <div class="tab-pane-content">
+                    <table class="table table-bordered table-hover table-unique">
+                        <thead>
+                            <tr>
+                                <th colspan="100"><span class="detail-title">{$ header.system_info $}</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{$ header.hostname $}</td>
+                                <td>{$ serverData.hostname $}</td>
+                            </tr>
+                            <tr>
+                                <td>{$ header.power $}</td>
+                                <td>{$ serverData.power $}</td>
+                            </tr>
+                            <tr>
+                                <td>{$ header.role $}</td>
+                                <td>{$ serverData.role $}</td>
+                            </tr>
+                            <tr>
+                                <td>{$ header.ip $}</td>
+                                <td>{$ serverData.hostip $}</td>
+                            </tr>
+                            <tr>
+                                <td>{$ mm_type $} {$ header.ip $}</td>
+                                <td>{$ serverData.bmcip $}</td>
+                            </tr>
+                            <tr>
+                                <td>{$ header.product $}</td>
+                                <td>{$ serverData.product $}</td>
+                            </tr>
+                            <tr>
+                                <td>{$ header.machine $}</td>
+                                <td>{$ serverData.type $}</td>
+                            </tr>
+                            <tr>
+                                <td>{$ header.serial $}</td>
+                                <td>{$ serverData.serial $}</td>
+                            </tr>
+                            <tr>
+                                <td>{$ header.UUID $}</td>
+                                <td>{$ serverData.uuid $}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-bordered table-hover table-unique">
+                        <thead>
+                            <tr>
+                                <th colspan="100"><span class="detail-title">{$ header.system_component $}</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{$ header.cpu $}</td>
+                                <td>
+                                    <ul ng-repeat="i in serverData.cpu">
+                                        <li>{$ i $}</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{$ header.memory $}</td>
+                                <td>
+                                    <ul ng-repeat="i in serverData.memory">
+                                        <li>{$ i $}</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{$ header.nic $}</td>
+                                <td>
+                                    <ul ng-repeat="i in serverData.nic">
+                                        <li>{$ i $}</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{$ header.identity $}</td>
+                                <td>
+                                    <ul ng-repeat="i in serverData.identity">
+                                        <li title="{$ i $}">{$ i $}</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{$ header.raid $}</td>
+                                <td>{$ serverData.raid $}</td>
+                            </tr>
+                            <tr>
+                                <td>{$ header.driver $}</td>
+                                <td>{$ serverData.driver $}</td>
+                            </tr>
+                            <tr>
+                                <td>{$ header.ext_card $}</td>
+                                <td>{$ serverData.extcard $}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </tab>
+            <tab heading="{% trans 'Event Log' %}">
+                <div class="tab-content" style="border:0;">
+                    <div class="tab-pane-content">
+                        <hz-magic-search-context id="givemefive" filter-facets="filterFacets">
+                            <table id="serverlist" hz-table ng-cloak hopes-table-drag st-table="iserverLog" st-safe-src="serverLog" disabled="disabled"
+                                st-magic-search class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th colspan="100" class="bare">
+                                            <div class="table_actions clearfix">
+                                                <action-list class="btn-addon">
+                                                    <action action-classes="'btn btn-default btn-sm'" callback="refreshHostEvent">
+                                                        <i class="icon icon-refresh"></i>
+                                                        <span id="refresh"></span>
+                                                    </action>
+                                                </action-list>
+
+                                                <div class="fr search-bar">
+                                                    <hz-magic-search-bar id="search"></hz-magic-search-bar>
+                                                </div>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    <tr eagle-eye="table_heads">
+                                        <th><span st-sort="id" eagle-eye="data_col">{$ header.ID $}</span></th>
+                                        <th><span st-sort="severity" eagle-eye="data_col">{$ header.severity $}</span></th>
+                                        <th><span st-sort="source" eagle-eye="data_col">{$ header.source $}</span></th>
+                                        <th><span st-sort="date" eagle-eye="data_col">{$ header.date $}</span></th>
+                                        <th><span st-sort="message" eagle-eye="data_col">{$ header.message $}</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="log in iserverLog">
+                                        <td eagle-eye="data_col">{$ log.id $}</td>
+                                        <td eagle-eye="data_col">{$ log.severity $}</td>
+                                        <td eagle-eye="data_col">{$ log.source $}</td>
+                                        <td eagle-eye="data_col">{$ log.date $}</td>
+                                        <td eagle-eye="data_col">{$ log.message $}</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot ng-if="serverLog.length > 10">
+                                    <tr>
+                                        <td colspan="100" eagle-eye="data_page">
+                                            <table-footer></table-footer>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </hz-magic-search-context>
+                    </div>
+                </div>
+            </tab>
+            <tab heading={% trans "Ports" %} ng-if="showPortsAndInterfacesTab">
+                <div class="tab-content" style="border:0;">
+                    <div class="tab-pane-content">
+                        <hz-magic-search-context filter-facets="filterFacets">
+                            <table id="portlist" hz-table ng-cloak hopes-table-drag st-table="iports" st-safe-src="ports" disabled="disabled" st-magic-search
+                                class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th colspan="100" class="bare">
+                                            <!--<div class="table_actions clearfix">
+                                                <action-list class="btn-addon">
+                                                    <action action-classes="'btn btn-default btn-sm'"
+                                                            callback="refresh">
+                                                        <i class="icon icon-refresh"></i>
+                                                        <span id="refresh"></span>
+                                                    </action>
+                                                </action-list>
+                                                <div class="fr search-bar">
+                                                    <hz-magic-search-bar id="search"></hz-magic-search-bar>
+                                                </div>
+                                            </div>-->
+                                        </th>
+                                    </tr>
+                                    <tr eagle-eye="table_heads">
+                                        <th><span eagle-eye="data_col">{% trans "Name" %}</span></th>
+                                        <th><span eagle-eye="data_col">{% trans "MAC Address" %}</span></th>
+                                        <th><span eagle-eye="data_col">{% trans "PCI Address" %}</span></th>
+                                        <th><span eagle-eye="data_col">{% trans "NUMA node" %}</span></th>
+                                        <th><span eagle-eye="data_col">{% trans "Auto" %}</span></th>
+                                        <th style="min-width:350px;"><span eagle-eye="data_col">{% trans "Device Type" %}</span></th>
+                                    </tr>
+
+
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="port in iports">
+                                        <td eagle-eye="data_col">{$ port.name $}</td>
+                                        <td eagle-eye="data_col">{$ port.mac $}</td>
+                                        <td eagle-eye="data_col">{$ port.pci $}</td>
+                                        <td eagle-eye="data_col">{$ port.processor $}</td>
+                                        <td eagle-eye="data_col">{$ port.auto | decode:port_auto_decode $}</td>
+                                        <td eagle-eye="data_col">{$ port.device $}</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot ng-if="ports.length > 10">
+                                    <tr>
+                                        <td colspan="100" eagle-eye="data_page">
+                                            <table-footer></table-footer>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </hz-magic-search-context>
+                    </div>
+                </div>
+            </tab>
+            <tab heading={% trans "Interfaces config" %} ng-if="showPortsAndInterfacesTab">
+                <div class="tab-content" style="border:0;">
+                    <div class="tab-pane-content">
+                        <hz-magic-search-context filter-facets="filterFacets">
+                            <table id="interfacelist" hz-table ng-cloak hopes-table-drag st-table="iinterfaces" st-safe-src="interfaces" disabled="disabled"
+                                st-magic-search class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th colspan="100" class="bare">
+                                            <!--<div class="table_actions clearfix">
+                                        <action-list class="btn-addon">
+                                            <action action-classes="'btn btn-default btn-sm'"
+                                                    callback="refresh">
+                                                <i class="icon icon-refresh"></i>
+                                                <span id="refresh"></span>
+                                            </action>
+                                        </action-list>
+
+                                        <div class="fr search-bar">
+                                            <hz-magic-search-bar id="search"></hz-magic-search-bar>
+                                        </div>
+                                    </div>-->
+                                        </th>
+                                    </tr>
+                                    <tr eagle-eye="table_heads">
+                                        <th><span eagle-eye="data_col">{% trans "Name" %}</span></th>
+                                        <th style="min-width:300px;"><span eagle-eye="data_col">{% trans "Network Type" %}</span></th>
+                                        <th><span eagle-eye="data_col">{% trans "Type" %}</span></th>
+                                        <th><span eagle-eye="data_col">{% trans "Vlan ID" %}</span></th>
+                                        <th><span eagle-eye="data_col">{% trans "Port(s)" %}</span></th>
+                                        <th><span eagle-eye="data_col">{% trans "Uses" %}</span></th>
+                                        <th><span eagle-eye="data_col">{% trans "Used By" %}</span></th>
+                                        <th><span eagle-eye="data_col">{% trans "Provider Network(s)" %}</span></th>
+                                        <th style="min-width:200px;"><span eagle-eye="data_col">{% trans "Attributes" %}</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="interface in iinterfaces">
+                                        <td eagle-eye="data_col">
+                                            <a ng-if="interface.support_config == 'yes'" ng-click="actions.modal.editInterfaceConfig(interface.name, interface.pci_passthrough_supported, interface.pci_sriov_supported)"
+                                                href="javascript:;">
+                                                {$ interface.name $}
+                                            </a>
+                                            <span ng-if="interface.support_config != 'yes'">{$ interface.name $}</span>
+                                        </td>
+                                        <td eagle-eye="data_col">{$ interface.network_type $}</td>
+                                        <td eagle-eye="data_col" title="{$ interface.type $}">{$ interface.type $}</td>
+                                        <td eagle-eye="data_col">{$ interface.vlan_id $}</td>
+                                        <td eagle-eye="data_col" title="{$ interface.ports $}">{$ interface.ports $}</td>
+                                        <td eagle-eye="data_col">{$ interface.uses $}</td>
+                                        <td eagle-eye="data_col">{$ interface.used_by $}</td>
+                                        <td eagle-eye="data_col" title="{$ interface.provider_networks $}">{$ interface.provider_networks $}</td>
+                                        <td eagle-eye="data_col" title="{$ interface.attributes $}">{$ interface.attributes $}</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot ng-if="ports.length > 10">
+                                    <tr>
+                                        <td colspan="100" eagle-eye="data_page">
+                                            <table-footer></table-footer>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </hz-magic-search-context>
+                    </div>
+                </div>
+            </tab>
+
+
+            <!--tab heading="POC">
+                <div class="tab-content" style="border:0;">
+                    <div class="tab-pane-content">
+                        <input id="interface_type" placeholder="interface_type" ng-model="poc.interface_type" />
+                        <input id="physnet_name" placeholder="physnet_name" ng-model="poc.physnet_name" />
+                        <input id="computeip" placeholder="computeip" ng-model="poc.computeip" />
+                        <input id="eth" placeholder="eth" ng-model="poc.eth" />
+                        <button type="button" ng-click="pocSubmit()">Submit</button>
+                    </div>
+                </div>
+            </tab>-->
+            <tab heading="{% trans 'Power Metric' %}" ng-show="serverData.authed">
+                <div class="tab-content" style="border:0;">
+                    <div class="tab-pane-content">
+                        <div id="powerChart" style="width:595px;height:300px;margin-top:-45px;margin-bottom:-35px;" hidden></div>
+                        <hz-magic-search-context filter-facets="powerFilterFacets">
+                            <table id="powerlisttable" hz-table ng-cloak hopes-table-drag st-table="ipowerData" st-safe-src="powerData" disabled="disabled"
+                                st-magic-search class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th colspan="100" class="bare">
+                                            <div class="table_actions clearfix">
+                                                <action-list class="btn-addon">
+                                                    <action action-classes="'btn btn-default btn-sm'" callback="refreshPowerHistory">
+                                                        <i class="icon icon-refresh"></i>
+                                                        <span id="refresh"></span>
+                                                    </action>
+                                                </action-list>
+
+                                                <div class="fr search-bar">
+                                                    <hz-magic-search-bar id="search"></hz-magic-search-bar>
+                                                </div>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="100" class="bare form-inline">
+                                            <!--<div class="form-group">-->
+                                            <div style="display:inline-block;">
+                                                <label for="interval">{$ powerHeader.interval $}({% trans 'Minuts' %}) :</label>
+                                                <!--<input required
+                                                       id="interval"
+                                                       name="interval"
+                                                       class="form-control"
+                                                       ng-model-options="{debounce: 800}"
+                                                       ng-change="refreshPowerHistory()"
+                                                       ng-maxlength="255"
+                                                       ng-model="powerParam.powerInterval"
+                                                       style="border:0;height:26px;margin:2px;max-width:75px;position:absolute;padding-left:8px;"
+                                                       ng-disabled="false">-->
+                                                <!-- style="border:0;height:26px;margin:2px;max-width:75px;position:absolute;padding-left:8px;" -->
+                                                <select class="form-control" id="interval" name="interval" ng-required ng-model="powerParam.powerIntervalOption" ng-change="changePowerIntervalOption()"
+                                                    style="min-width:150px;" ng-options="powerInterval for powerInterval in powerIntervals"></select>
+                                                <!--<input type="text" id="interval" name="interval" ng-model="powerParam.powerInterval" ng-model-options="{debounce: 800}" ng-change="refreshPowerHistory()" />-->
+                                                <!--{$ powerParam.powerInterval $}-->
+                                            </div>
+                                            <!--<div class="form-group">-->
+                                            <div style="display:inline-block;" class="pull-right">
+                                                <label for="duration">{$ powerHeader.duration $}({% trans 'Days' %}) :</label>
+                                                <!--<input required
+                                                       id="duration"
+                                                       name="duration"
+                                                       class="form-control"
+                                                       ng-model-options="{debounce: 800}"
+                                                       ng-change="refreshPowerHistory()"
+                                                       ng-maxlength="255"
+                                                       ng-model="powerParam.powerDuration"
+                                                       style="border:0;height:26px;margin:2px;max-width:75px;position:absolute;padding-left:8px;"
+                                                       ng-disabled="false">-->
+                                                <!-- style="border:0;height:26px;margin:2px;max-width:300px;position:absolute;padding-left:8px;" -->
+                                                <select class="form-control" id="duration" name="duration" ng-required ng-model="powerParam.powerDurationOption" ng-change="changePowerDurationOption()"
+                                                    style="min-width:150px;" ng-options="powerDuration for powerDuration in powerDurations"></select>
+                                                <!--<input type="text" id="duration" name="duration" ng-model="powerParam.powerDuration" ng-model-options="{debounce: 800}" ng-change="refreshPowerHistory()" />-->
+                                                <!--{$ powerParam.powerDuration $}-->
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    <tr eagle-eye="table_heads">
+                                        <th><span st-sort="PolledOn" eagle-eye="data_col">{$ powerHeader.time $}</span></th>
+                                        <th><span st-sort="PowerInput" eagle-eye="data_col">{$ powerHeader.power $}</span></th>
+                                        <th><span st-sort="Min" eagle-eye="data_col">{$ powerHeader.min $}</span></th>
+                                        <th><span st-sort="Max" eagle-eye="data_col">{$ powerHeader.max $}</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="data in ipowerData">
+                                        <td eagle-eye="data_col">{$ data.time $}</td>
+                                        <td eagle-eye="data_col">{$ data.PowerInput $}</td>
+                                        <td eagle-eye="data_col">{$ data.Min $}</td>
+                                        <td eagle-eye="data_col">{$ data.Max $}</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot ng-if="needShowPowerDataPagination">
+                                    <tr>
+                                        <td colspan="100" eagle-eye="data_page">
+                                            <table-footer></table-footer>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </hz-magic-search-context>
+                    </div>
+                </div>
+            </tab>
+            <tab id="tab-capping" heading="{% trans 'Power Capping' %}" ng-show="serverData.authed">
+                <div class="tab-pane-content">
+                    <table class="table table-bordered table-hover table-unique">
+                        <thead>
+                            <tr>
+                                <th colspan="100"><span class="detail-title">{$ cappingHeader.infoHeader $}</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{$ cappingHeader.cap $}</td>
+                                <td>{$ cappingData.Cap $}</td>
+                            </tr>
+                            <tr>
+                                <td>{$ cappingHeader.min $}</td>
+                                <td>{$ cappingData.Min $}</td>
+                            </tr>
+                            <tr>
+                                <td>{$ cappingHeader.max $}</td>
+                                <td>{$ cappingData.Max $}</td>
+                            </tr>
+                            <tr>
+                                <td>{$ cappingHeader.isCapable $}</td>
+                                <td>{$ cappingData.IsCapable|decode:boolToYN $}</td>
+                            </tr>
+                            <tr>
+                                <td>{$ cappingHeader.isEnable $}</td>
+                                <td>{$ cappingData.IsEnable|decode:boolToYN $}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-bordered table-hover table-unique">
+                        <thead>
+                            <tr>
+                                <th colspan="100"><span class="detail-title">{$ cappingHeader.settingHeader $}</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="form-group">
+                                <td for="capping">{$ cappingHeader.cap $}</td>
+                                <td>
+                                    <input required id="capping" name="capping" class="form-control" ng-maxlength="255" type="number" min="1" max="100000" ng-model="capping.value"
+                                        ng-disabled="false" />
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary btn-action pull-right" ng-click="updateCapping()">{$ cappingHeader.update $}</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </tab>
+        </tabset>
+    </div>
+</div>

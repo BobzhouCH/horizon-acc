@@ -1,0 +1,99 @@
+{% extends 'lenovo/base.html' %}
+{% load i18n %}
+{% block title %}{% trans "HA Management" %}{% endblock %}
+
+{% block page_header %}
+    {% include "easystack_dashboard/common/_es_page_header.html" with title=_("HA Management") %}
+{% endblock page_header %}
+
+{% block content_main %}"contentMain tab-main"{% endblock %}
+
+{% block main %}
+
+<div ng-controller="lenovoHAManagementCtrl">
+<hz-magic-search-context filter-facets="filterFacets"  >
+    <table id="lenovo-physical-servers-list" hz-table ng-cloak hopes-table-drag
+           st-table="iservers"
+           st-safe-src="servers"
+           ng-init="userID = '{{ request.user.id }}'"
+           disabled="disabled"
+           st-magic-search
+           class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th colspan="100" class="bare" style="border:0;padding:0;">
+                    <div class="table_actions clearfix" style="margin-top:10px">
+                        <action-list class="btn-addon">
+                            <action action-classes="'btn btn-default btn-sm'"
+                                    callback="actions.refresh">
+                                <i class="icon icon-refresh"></i>
+                                <span id="refresh"></span>
+                            </action>
+                        </action-list>
+                        <action-list class="btn-addon" >
+                            <action action-classes="'btn btn-action btn-primary'"
+                                   callback="actions.operate.open" item="servers">
+                                <i class="icon icon-edit"></i>
+                                <span id="disable">{$ ::context.action.config $}</span>
+                            </action>
+                        </action-list>
+                        <div class="fr search-bar">
+                            <hz-magic-search-bar id="search"></hz-magic-search-bar>
+                        </div>
+                    </div>
+                </th>
+            </tr>
+
+            <tr eagle-eye="table_heads">
+                <th><span st-sort="hostname" eagle-eye="data_col">{$ ::context.header.hostname $}</span></th>
+                <th><span st-sort="role" eagle-eye="data_col">{$ ::context.header.role $}</span></th>
+                <th><span st-sort="hastatus" eagle-eye="data_col">{$ ::context.header.HAStatus $}</span></th>
+                <th><span st-sort="hastatus" eagle-eye="data_col">{$ ::context.header.auth $}</span></th>
+                <th><span st-sort="ip" eagle-eye="data_col">{$ ::context.header.ip $}</span></th>
+                <th><span st-sort="product" eagle-eye="data_col">{$ ::context.header.product $}</span></th>
+                <th><span st-sort="machine" eagle-eye="data_col">{$ ::context.header.machine $}</span></th>
+                <th><span st-sort="serial" eagle-eye="data_col">{$ ::context.header.serial $}</span></th>
+                <!--th><span eagle-eye="data_col">{$ ::context.header.action $}</span></th-->
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-if="!serverState">
+                <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif" alt="" /></td>
+            </tr>
+            <tr ng-if="!iservers.length && serverState">
+                <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+            </tr>
+            <tr ng-repeat="server in iservers" ng-class="{'st-selected': checked[server.id]}">
+                <td eagle-eye="data_col">
+                        {$ server.hostname $}
+                </td>
+                <td eagle-eye="data_col">{$ server.role $}</td>
+                <td eagle-eye="data_col">
+                    <img class="image-icon" ng-src="{{ STATIC_URL }}{$ server.hastatusimg $}" width="16" height="16">
+                    {$ server.hastatus | decode:hastatus $}
+                </td>
+                <td eagle-eye="data_col">
+                     {$ server.authed | decode:authDecode $}
+                </td>
+                <td eagle-eye="data_col">{$ server.ip $}</td>
+                <td eagle-eye="data_col">{$ server.product $}</td>
+                <td eagle-eye="data_col">{$ server.machine $}</td>
+                <td eagle-eye="data_col">{$ server.serial $}</td>
+
+            </tr>
+        </tbody>
+        <tfoot ng-if="servers.length > 10">
+            <tr>
+                <td colspan="100" eagle-eye="data_page">
+                    <table-footer></table-footer>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</hz-magic-search-context>
+    <span style="font-weight: bold">{$ ::context.header.HAService $}</span>
+    <span ng-if="!serverState" class="instance-state instance-state-pending $}"></span>
+    <span ng-if="serverState"><img class="image-icon" style="margin-left:10px" ng-src="{{ STATIC_URL }}{$ haServiceStatusImgMapping[haServiceStatus] $}" width="16" height="16">
+    {$ haServiceStatus | decode:haServiceStatusMapping $}</span>
+</div>
+{% endblock %}

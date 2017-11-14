@@ -1,0 +1,37 @@
+{% load i18n %}
+  <div id="ticket-dropdown" class=" dropdown ticket fr " ng-controller="ticketTopBarController">
+    <button class="btn dropdown-toggle" ng-click="showTickets()">
+          <span class="ticket-icon fl"></span>
+          <span class="ticket-text fl" title="{% trans "Ticket" %}">{% trans "Tickets" %}</span>
+          <span class="caret"></span>
+    </button>
+    <div class="dropdown-menu topbar-dropdown-menu">
+      <ul class="context-wrapper">
+        <li class="ticket-btn">
+          <ul class="clearfix">
+            <li class="fl"><a>
+              <button type="button" class="btn btn-primary"
+                  ng-click="actions.create.open()">{% trans "Create Ticket" %}</button></a>
+              <li class="fr"><a class="btn btn-link" href="{% url 'horizon:project:tickets:index' %}">{%trans "Show all tickets"%}</a></li>
+          </ul>
+        </li>
+        <li class="ticket-content">
+          <a class="ticket-wrapper">
+            <div class="loading-bar" ng-if="!ticketState">
+              <img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" />
+            </div>
+            <div ng-if="ticketState">
+              <div class="tips" ng-bind-html="ticketTips"></div>
+              <div class="ticket-list">
+                <ul class="ticket-item" ng-repeat="ticket in tickets">
+                  <li class="title" title="{$ ticket.title $}"><span>{$ ticket.title $}</span></li>
+                  <li class="content"><p>{$ ticket.description $}</p></li>
+                  <li class="create-time">{$ ticket.create_at | date:'{% trans "yyyy-MM-dd" %}' $}</li>
+                </ul>
+              </div>
+            </div>
+           </a>
+        </li>
+      </ul>
+    </div>
+  </div>

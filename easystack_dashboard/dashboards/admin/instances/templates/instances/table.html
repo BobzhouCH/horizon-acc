@@ -1,0 +1,228 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Instances" %}{% endblock %}
+
+{% block page_header %}
+    {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Instances") %}
+{% endblock page_header %}
+
+{% block main %}
+
+    <hz-magic-search-context filter-facets="filterFacets">
+        <table id="instances-list" hz-table ng-cloak hopes-table-drag
+               st-table="iinstances"
+               st-safe-src="instances"
+               default-sort="created"
+               default-sort-reverse="true"
+               ng-init="userID = '{{ request.user.id }}'"
+               st-magic-search
+               ng-controller="adminInstancesCtrl"
+               disabled="disabled"
+               class="table table-bordered table-hover">
+
+            <!--
+              Table-head:
+              This is where we add things like filtering and batch actions.
+              This is where we add column headers.
+            -->
+            <thead>
+
+            <!--
+              Table-batch-actions:
+              This is where batch actions like searching, creating, and deleting.
+            -->
+            <tr>
+                <th colspan="100" class="bare">
+                    <div class="table_actions clearfix">
+                        <action-list class="btn-addon">
+                            <action
+                                    action-classes="'btn btn-default btn-sm'"
+                                    callback="actions.refresh">
+                                <i class="icon icon-refresh"></i>
+                                <span id="refresh"></span>
+                            </action>
+                        </action-list>
+
+                        <action-list>
+                            <action
+                                    action-classes="'btn btn-primary btn-action'"
+                                    disabled="numSelected === 0 || starttag"
+                                    callback="actions.startInstanceAction.batchStart" item="selectedData.aData">
+                                <i class="icon icon-play"></i>
+                                <span id="start">{% trans 'Start' %}</span>
+                            </action>
+                        </action-list>
+                        <action-list>
+                            <action
+                                    action-classes="'btn btn-primary btn-action'"
+                                    disabled="numSelected === 0 || shutofftag"
+                                    callback="actions.shutoffInstanceAction.batchShutoff" item="selectedData.aData">
+                                <i class="icon icon-onoff"></i>
+                                <span id="Shutoff">{% trans 'Shutoff' %}</span>
+                            </action>
+                        </action-list>
+                        <action-list>
+                            <action
+                                    action-classes="'btn btn-action btn-danger'"
+                                    disabled="numSelected === 0 || deletetag"
+                                    callback="actions.deleteInstanceAction.batchDelete" item="selectedData.aData">
+                                <i class="icon icon-delete"></i>
+                                <span id="delete-instance">{% trans 'Delete Instances' %}</span>
+                            </action>
+                        </action-list>
+                        <action-list dropdown>
+                            <button id="more" type="button" class="btn btn-primary btn-action" dropdown-toggle>
+                                <i class="icon icon-more"></i>
+                                <span>{% trans 'More' %}</span>
+                            </button>
+                            <menu>
+                                <action
+                                        button-type="menu-item"
+                                        disabled="numSelected !== 1 || editInstanceTag"
+                                        callback="actions.editInstanceAction.open" item="selectedData.aData">
+                                    <span id="instance-edit">{% trans 'Edit' %}</span>
+                                </action>
+                                <action
+                                        button-type="menu-item"
+                                        disabled="(!rootblock.active_fixing && rootblock.billing_need) || disabled || disableSnapshot"
+                                        callback="actions.createsnapshot.open"
+                                        item="selectedData.aData">
+                                    <span id="create-snapshot">{% trans 'Create Snapshot' %}</span>
+                                </action>
+                                <action
+                                        button-type="menu-item"
+                                        disabled="disabled || disableColdMigrate"
+                                        callback="actions.coldMigrate.open"
+                                        item="selectedData.aData">
+                                    <span id="cold-migrate-instance">{% trans 'Cold Migrate' %}</span>
+                                </action>
+                                <action
+                                        button-type="menu-item"
+                                        disabled="disabled || disableLiveMigrate"
+                                        callback="actions.liveMigrate.open" item="selectedData.aData">
+                                    <span id="live-migrate-instance">{% trans 'Live Migrate' %}</span>
+                                </action>
+                            </menu>
+                        </action-list>
+                        <div class="fr search-bar">
+                            <hz-magic-search-bar id="search"></hz-magic-search-bar>
+                        </div>
+                    </div>
+                </th>
+            </tr>
+
+            <!--
+              Table-column-headers:
+              This is where we declaratively define the table column headers.
+              Include the select all checkbox if you want to enable select all
+              for performing batch actions.
+            -->
+            <tr>
+                <th class="select-col">
+                    <input type="checkbox"
+                           hz-select-page="instances"/>
+                </th>
+                <th width="10%"><span st-sort="name">{$ ::context.header.name $}</span></th>
+                <th style="min-width:60px;"><span st-sort="domain">{$ ::context.header.domain $}</span></th>
+                <th width="10%"><span st-sort="tenant_name">{$ ::context.header.project $}</span></th>
+                <th width="10%">{$ ::context.header.host $}</th>
+                <th width="10%"><span st-sort="image_display_name">{$ ::context.header.image $}</span></th>
+                <th style="min-width:90px">{$ ::context.header.publicAddresses $}</th>
+                <th width="10%">{$ ::context.header.addresses $}</th>
+                <th width="10%"><span st-sort="flavor">{$ ::context.header.flavor $}</span></th>
+                <th width="14%"><span eagle-eye="data_col">{$ ::context.header.actualTotalMemory $}</span></th>
+                <th style="max-width:80px"><span st-sort="status">{$ ::context.header.status $}</span></th>
+                <th style="white-space: nowrap">
+                    <span st-sort="created" st-sort-default="created">{$ ::context.header.created $}</span>
+                </th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr ng-if="!iinstancesState">
+                <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"
+                                                           alt=""/></td>
+            </tr>
+
+            <tr ng-if="!iinstances.length && iinstancesState">
+                <td colspan="100">{% trans "No Data" %}</td>
+            </tr>
+
+            <tr ng-repeat="instance in iinstances" ng-class="{'st-selected': checked[instance.id]}">
+
+                <!--
+                  Table-row-checkbox:
+                  User can select and unselect this row by clicking on this checkbox.
+                  Batch actions can then be perform on selected rows.
+                -->
+                <td class="select-col">
+                    <input type="checkbox"
+                           hz-select="instance"
+                           ng-model="selected[instance.id].checked"
+                           hz-checkbox-group="instances"/>
+                </td>
+
+                <!-- Table-row-info-column -->
+                <td eagle-eye="data_col"><span title="{$ instance.name $}">{$ instance.name $}</span></td>
+                <td eagle-eye="data_col"><span title="{$ instance.domain $}">{$ instance.domain $}</span></td>
+                <td eagle-eye="data_col"><span title="{$ instance.tenant_name $}">{$ instance.tenant_name $}</span></td>
+                <td eagle-eye="data_col"><span title="{$ instance.hostname $}">{$ instance.hostname $}</span></td>
+                <td eagle-eye="data_col"><span title="{$ instance.image_display_name $}">{$ instance.image_display_name $}</span>
+                </td>
+                <td eagle-eye="data_col">
+                    <span title="{$ instance.floating_ips  $}">{$ instance.floating_ips $}</span>
+                </td>
+                <td eagle-eye="data_col">
+                    <span title="{$ instance.non_floating_ips  $}">{$ instance.non_floating_ips $}</span>
+                </td>
+                <td eagle-eye="data_col">
+                    <span>{% trans "CPU" %}</span> {$ instance.flavor.vcpus $}{% trans "C" %} /
+                    <span>{% trans "RAM" %}</span> {$ instance.flavor.ram | mb2gb $} /
+                    <span>{% trans "Disk" %}</span> {$ instance.flavor.disk $}{% trans "GB" %}
+                </td>
+                <td eagle-eye="data_col">
+                    <span class="instance-state instance-state-{$ instance.totalMemory.status == 'error' ? '': instance.totalMemory.status $}"></span>
+                    <span ng-if="instance.totalMemory.status == 'success' ">{$instance.totalMemory.size$}</span>
+                    <span ng-if="instance.totalMemory.status == 'error' ">{% trans "NA" %}</span>
+                </td>
+                <td class="no-max-width" eagle-eye="data_col">
+                    <div ng-if="instance.status=='VERIFY_RESIZE'">
+                        <!-- Hejing7: Fix Bug 90078 To keep the same term with project/instance, show resize here-->
+                        <span class="mr10">{$ "Resize"|trans $}</span>
+                        <a class="btn btn-confirm" ng-click="actions.coldMigrate.confirm(instance)" href="javascript:;">
+                            <span class="btn-icon btn-icon-confirm"></span>
+                            {$ "Confirm"|trans $}
+                        </a>
+                        <span>|</span>
+                        <a class="btn btn-cancel" ng-click="actions.coldMigrate.revert(instance)" href="javascript:;">
+                            <span class="btn-icon btn-icon-cancel"></span>
+                            {$ "Revert"|trans $}
+                        </a>
+                    </div>
+                    <div ng-if="instance.status!='VERIFY_RESIZE'">
+                        <span class="instance-state instance-state-{$ instance.status | lowercase $}"></span>
+                        {$ instance.status | decode:instanceStatus $}
+                    </div>
+                </td>
+                <td eagle-eye="data_col">{$ instance.created $}</td>
+            </tr>
+
+            </tbody>
+
+            <!--
+              Table-footer:
+              This is where we display number of items and pagination controls.
+              Ensure colspan is greater or equal to number of column-headers.
+            -->
+            <tfoot ng-if="instances.length > 10">
+            <tr>
+                <td colspan="100" eagle-eye="data_page">
+                    <table-footer></table-footer>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </hz-magic-search-context>
+
+{% endblock %}

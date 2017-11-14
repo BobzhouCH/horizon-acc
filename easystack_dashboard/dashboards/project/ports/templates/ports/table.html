@@ -1,0 +1,192 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% load context_selection %}
+{% block title %}{% trans "Ports" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Ports") %}
+{% endblock page_header %}
+
+{% block main %}
+
+<hz-magic-search-context filter-facets="filterFacets">
+<table id="ports-table" hz-table ng-cloak hopes-table-drag
+  st-table="iports"
+  st-safe-src="ports"
+  default-sort="name"
+  default-sort-reverse="true"
+  st-magic-search
+  ng-controller="projectPortsCtrl"
+  ng-init="userID = '{{ request.user.id }}'"
+  disabled="disabled"
+  class="table table-bordered table-hover">
+
+  <!--
+    Table-head:
+    This is where we add things like filtering and batch actions.
+    This is where we add column headers.
+  -->
+  <thead>
+
+    <!--
+      Table-batch-actions:
+      This is where batch actions like searching, creating, and deleting.
+    -->
+    <tr>
+      <th colspan="100" class="bare">
+        <div class="table_actions clearfix">
+
+          <action-list>
+            <action
+              action-classes="'btn btn-primary btn-action'"
+              callback="actions.refresh">
+              <i class="icon icon-refresh"></i>
+              <span id="refresh"></span>
+            </action>
+          </action-list>
+
+          <action-list>
+            <action
+              action-classes="'btn btn-primary btn-action'"
+              disabled=""
+              callback="actions.create.open">
+              <i class="icon icon-add"></i>
+              <span id="create-ports">{% trans 'Create Interfaces' %}</span>
+            </action>
+          </action-list>
+
+          <action-list>
+            <action
+              action-classes="'btn btn-primary btn-action'"
+              disabled="disabled || attachTag"
+              callback="actions.attach.open" item="selectedData.aData">
+              <i class="icon icon-mount"></i>
+              <span id="attach-instance">{% trans 'Attach to Instance' %}</span>
+            </action>
+          </action-list>
+
+          <action-list>
+            <action
+              action-classes="'btn btn-primary btn-action'"
+              disabled="disabled || detachTag"
+              callback="actions.detach.open" item="selectedData.aData">
+              <i class="icon icon-uninstall"></i>
+              <span id="detach-from-instance">{% trans 'Detach from Instance' %}</span>
+            </action>
+          </action-list>
+
+          <action-list>
+            <action
+              action-classes="'btn btn-action btn-danger'"
+              disabled="numSelected === 0 "
+              callback="actions.deleted.batchDelete">
+              <i class="icon icon-delete"></i>
+              <span id="delete-port">{% trans 'Delete Interfaces' %}</span>
+            </action>
+          </action-list>
+
+          <action-list dropdown>
+            <button id="more" type="button" class="btn btn-primary btn-action" dropdown-toggle>
+              <i class="icon icon-more"></i>
+              <span>{% trans 'More' %}</span>
+            </button>
+            <menu>
+              <action
+                button-type="menu-item"
+                disabled="disabled"
+                callback="actions.edit.open"
+                item="selectedData.aData">
+                <span id="edit">{% trans 'Edit' %}</span>
+              </action>
+              <action
+                button-type="menu-item"
+                disabled="disabled"
+                callback="actions.editSecurityGroups.open"
+                item="selectedData.aData">
+                <span id="edit-security-groups">{% trans 'Edit Security Groups' %}</span>
+              </action>
+            </menu>
+          </action-list>
+
+          <div class="fr search-bar">
+            <hz-magic-search-bar id="search"></hz-magic-search-bar>
+          </div>
+        </div>
+      </th>
+    </tr>
+    <!--
+      Table-column-headers:
+      This is where we declaratively define the table column headers.
+      Include the select all checkbox if you want to enable select all
+      for performing batch actions.
+    -->
+    <tr eagle-eye="table_heads">
+      <th class="select-col" eagle-eye="select_col">
+        <input type="checkbox"
+          hz-select-page="ports"/>
+      </th>
+      <th eagle-eye="data_col"><span st-sort="name">{$ ::context.header.name $}</span></th>
+      <th eagle-eye="data_col"><span st-sort="ip_address">{$ ::context.header.ip_address $}</span></th>
+      <th eagle-eye="data_col"><span st-sort="subnet_name">{$ ::context.header.subnet $}</span></th>
+      <th eagle-eye="data_col"><span st-sort="floatingip">{$ ::context.header.floating_ips $}</span></th>
+      <th eagle-eye="data_col"><span st-sort="instance_name">{$ ::context.header.attached_instance $}</span></th>
+      <th eagle-eye="data_col"><span st-sort="status">{$ ::context.header.status $}</span></th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <tr ng-if="!iportstate">
+      <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+    </tr>
+
+    <tr ng-if="!iports.length && iportstate">
+      <td colspan="100" eagle-eye="empty_table">{% trans "No data" %}</td>
+    </tr>
+
+    <tr ng-repeat="port in iports" ng-class="{'st-selected': checked[port.id]}">
+
+      <!--
+        Table-row-checkbox:
+        User can select and unselect this row by clicking on this checkbox.
+        Batch actions can then be perform on selected rows.
+      -->
+      <td class="select-col" eagle-eye="select_col">
+        <input type="checkbox"
+          hz-select="port"
+          ng-model="selected[port.id].checked"
+          hz-checkbox-group="ports"/>
+      </td>
+
+      <!-- Table-row-info-column -->
+      <td class="rsp-p1" eagle-eye="data_col">
+         <a ng-click="actions.detail.open(port)" href="javascript:;"
+          data-url="/project/ports/detail/{$ port.id $}">
+          {$ port.name $}
+        </a>
+      </td>
+      <td eagle-eye="data_col" title="{$ port.ip_address $}">{$ port.ip_address $}</td>
+      <td eagle-eye="data_col">{$ port.subnet_name $}</td>
+      <td eagle-eye="data_col">{$ port.floatingip $}</td>
+      <td eagle-eye="data_col">{$ port.instance_name $}</td>
+      <td eagle-eye="data_col">{$ port.status | decode:operationStatus $} </td>
+    </tr>
+  </tbody>
+
+  <!--
+    Table-footer:
+    This is where we display number of items and pagination controls.
+    Ensure colspan is greater or equal to number of column-headers.
+  -->
+
+  <tfoot ng-if="ports.length > 10">
+    <tr>
+      <td colspan="100" eagle-eye="data_page">
+        <table-footer></table-footer>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+</hz-magic-search-context>
+
+{% endblock %}

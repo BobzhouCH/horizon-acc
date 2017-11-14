@@ -1,0 +1,148 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+      <fieldset>
+        <!-- Domain name input (required): -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':(form.name.$invalid && form.name.$dirty) || hasName}">
+          <label for="name">
+            *{% trans "Domain Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              class="form-control"
+              type="text"
+              ng-model="domain.name"
+              ng-maxlength="64"
+              ng-change="checkName()"
+              placeholder="{% trans 'Enter a domain name' %}">
+              <p class="help-block alert-fixed alert-danger"
+                 ng-show="hasName">
+                {% trans "A domain name is used." %}
+              </p>
+              <p class="help-block alert-fixed alert-danger"
+                 ng-show="forbid_name">
+                {% trans "Domain name Default is reserved for system." %}
+              </p>
+              <p class="help-block alert-fixed alert-danger"
+                 ng-show="form.name.$error.required && form.name.$dirty">
+                {% trans "A domain name is required." %}
+              </p>
+              <p class="help-block alert-fixed alert-danger"
+                 ng-show="form.name.$error.maxlength">
+                {% trans "Name length should be less than 64 chars." %}
+              </p>
+         </div>
+        </div>
+
+        <!-- Domain id input (not required): -->
+        <div class="form-group clearfix" ng-show="ldap_enable">
+          <label for="id">
+            {% trans "Domain Id" %}
+          </label>
+          <div class="form-group-right">
+            <input
+              id="id"
+              name="id"
+              class="form-control"
+              type="text"
+              ng-model="domain.id"
+              ng-maxlength="50"
+              placeholder="{% trans 'Enter a domain id' %}">
+              <p class="help-bloc alert alert-danger"
+                 ng-show="form.name.$error.$maxlength">
+                {% trans "Domain id max length is 50 characters." %}
+              </p>
+         </div>
+        </div>
+
+        <!-- description input (optional): -->
+        <div class="form-group clearfix">
+          <label for="description">
+            {% trans "Description" %}
+          </label>
+          <div class="form-group-right">
+            <textarea
+              id="description"
+              name="description"
+              class="form-control"
+              rows="4"
+              type="text"
+              ng-model="domain.description"
+              ng-maxlength="255"
+              placeholder="{% trans 'Enter a description' %}">
+            </textarea>
+              <p class="help-block alert alert-danger"
+              ng-show="form.description.$invalid&&!form.description.$invalid-maxlength">
+              {% trans "Please enter a valid description." %}
+              </p>
+              <p class="help-bloc alert alert-danger"
+                 ng-show="form.description.$invalid-maxlength">
+                {% trans "Domain description max length is 255 characters." %}
+              </p>
+            </div>
+          </div>
+
+
+          <div class="form-group clearfix"
+            ng-class="{'has-error':form.domain.$invalid && form.domain.$dirty}"
+            ng-if="showDomainSelect()">
+          <label>
+            {% trans "Domain" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+                id="domain"
+                name="domain"
+                class="form-control"
+                type="text"
+                ng-model="domain.domain">
+                <option value="" disabled>
+                    {% trans 'Select a domain' %}
+                </option>
+                <option ng-repeat="domain in domains" value="{$ domain.id $}">
+                    {$ domain.name $}
+                </option>
+            </select>
+          </div>
+        </div>
+        <!-- Project enabled input (optional) -->
+            <div class="form-group clearfix mt10" ng-if="context.mode !== 'edit'">
+              <label for="enabled">
+                {% trans "Enabled" %}
+              </label>
+
+              <div class="form-group-right">
+                <input type="checkbox"
+                       id="enabled"
+                       name="enabled"
+                       class="checkbox"
+                       ng-model="domain.enabled">
+              </div>
+            </div>
+      </fieldset>
+    <!-- Modal-form-right: The description text. -->
+  </div>
+</form>
+
+<!-- Modal-footer: Project can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid || hasName || forbid_name"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

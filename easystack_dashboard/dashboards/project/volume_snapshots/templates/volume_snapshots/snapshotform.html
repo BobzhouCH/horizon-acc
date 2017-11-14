@@ -1,0 +1,80 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+    <!--<div class="left form-wrap">-->
+      <fieldset>
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.type.$invalid && form.type.$dirty}">
+          <label class="control-label fl required" for="name">
+            <p>*{% trans "Snapshot Name" %}</p>
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              type="text"
+              class="form-control verify-input"
+              ng-maxlength="255"
+              ng-model="volume.name"
+              placeholder="{% trans 'Enter a snapshot name' %}">
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "A snapshot name is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength && form.name.$dirty">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+          description input (optional):
+        -->
+        <div class="form-group clearfix">
+          <label class="control-label fl" for="description">
+            {% trans "Description" %}
+          </label>
+          <div class="form-group-right">
+            <textarea
+              id="description"
+              name="description"
+              class="form-control"
+              rows="4"
+              type="text"
+              ng-maxlength="255"
+              ng-model="volume.description"
+              placeholder="{% trans 'Enter a description' %}">
+            </textarea>
+            <p class="help-block alert alert-danger"
+              ng-show="form.description.$invalid">
+              {% trans "Please enter a valid description." %}
+            </p>
+          </div>
+        </div>
+
+    </fieldset>
+    <!-- Modal-form-right: The description text. -->
+  </div>
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

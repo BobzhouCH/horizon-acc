@@ -1,0 +1,36 @@
+{% extends "easystack_dashboard/common/_es_modal_form.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block form_id %}create_price_item_form{% endblock %}
+{% block form_action %}{% url 'horizon:admin:billing:accounts:create_price_item' account_id%}{% endblock %}
+
+{% block modal-header %}{% trans "Create PriceItem" %}{% endblock %}
+
+{% block modal-body %}
+
+  <div id="js-createBillingWrap" class="left createBilling_wrap">
+      <fieldset>
+      {% include "easystack_dashboard/self_defined_templates/create_billing/create_billing_form_fields.html" %}
+      </fieldset>
+  </div>
+
+  <script type="text/javascript">
+    if (typeof horizon.user !== 'undefined') {
+      horizon.user.init();
+    } else {
+      addHorizonLoadEvent(function() {
+        horizon.user.init();
+      });
+    }
+  </script>
+
+{% endblock %}
+
+<div class="btnWarp">
+  {% block modal-footer %}
+    <div class="Private_btn txt-r">
+    <input id="create-priceItem" class="btn_3" type="submit" value="{% trans "Create PriceItem" %}" />
+  </div>
+  {% endblock %}
+</div>

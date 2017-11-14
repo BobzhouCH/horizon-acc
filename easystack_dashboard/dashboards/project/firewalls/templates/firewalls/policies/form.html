@@ -1,0 +1,139 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+      <div class="modal-description mt10" ng-if="context.mode === 'create'">
+          <p class="control-label">
+            {% trans "The combination of firewall policy is a set of firewall rules, you can create a firewall in firewall details add firewall rules and adjust their order." %}
+          </p>
+      </div>
+      <fieldset>
+        <div class="form-group clearfix"
+          ng-if="context.mode !== 'add-rule'"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="name">
+            *{% trans "Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              ng-pattern="/^(?!!).*/"
+              class="form-control verify-input"
+              type="text"
+              ng-model="policy.name"
+              ng-maxlength="255"
+              placeholder="{% trans 'Enter a policy name' %}"/>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "A policy name is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength && form.name.$dirty">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode !== 'add-rule'">
+          <label for="description">
+            {% trans "Description" %}
+          </label>
+          <div class="form-group-right">
+            <textarea
+              id="description"
+              name="description"
+              class="form-control"
+              rows="4"
+              ng-model="policy.description"
+              ng-maxlength="255"
+              placeholder="{% trans 'Enter a policy description' %}">
+            </textarea>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.description.$error.maxlength && form.description.$dirty">
+              {% trans "Description length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <div class="form-group clearfix mt10"
+          ng-if="context.mode !== 'add-rule'">
+          <label for="shared">
+            {% trans "Share" %}
+          </label>
+          <div class="form-group-right">
+            <input
+              id="shared"
+              name="shared"
+              type="checkbox"
+              ng-model="policy.shared"/>
+          </div>
+        </div>
+
+        <div class="form-group clearfix mt0"
+          ng-if="context.mode !== 'add-rule'">
+          <label for="audited">
+            {% trans "Audited" %}
+          </label>
+          <div class="form-group-right">
+            <input
+              id="audited"
+              name="audited"
+              type="checkbox"
+              ng-model="policy.audited"/>
+          </div>
+        </div>
+
+        <div class="form-group clearfix policie-wrap"
+          ng-if="context.mode === 'add-rule'"
+          ng-class="{'has-error':form.add-rule.$invalid && form.add-rule.$dirty}">
+          <label for="add-rule">
+            *{% trans "Rule" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="add-rule"
+              class="form-control"
+              name="add-rule"
+              type="checkbox"
+              ng-class="{strikeLoading: !rules}"
+              ng-model="policy.add_rule">
+              <option value="" disabled ng-if="rules.length == 0">{% trans "No rule to select" %}</option>
+              <option value="" disabled ng-if="rules.length > 0">{% trans "Select a rule" %}</option>
+              <option ng-repeat="rule in rules" value="{$ rule.id $}">
+                {$ rule.name $}
+              </option>
+            </select>
+            <span
+               class="rule-button-add"
+               ng-click="action.createRule.open()"
+               ng-if="rules.length == 0" >
+              <i class="icon add_to"></i>
+            </span>
+          </div>
+        </div>
+
+      </fieldset>
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>
+

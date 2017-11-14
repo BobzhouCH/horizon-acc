@@ -1,0 +1,26 @@
+{%load i18n%}
+<script type="text/ng-template" id="poolDelete.html">
+    <form name="form" ng-submit="save()" novalidate="novalidate">
+        <div class="modal-header">
+            <div class="sing-log">
+                <span class="glyphicon glyphicon-exclamation-sign"></span>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="list-group">
+                <p>{% trans "Are you sure to remover" %} <b>{$ removePoolName $}</b>?</p>
+            </div>
+            <div class="list-group">
+                <p>{% trans "This action cannot be undone." %}</p>
+            </div>
+            <div class="list-group">
+                <input type="text" name="yes" ng-model="user.yes" placeholder="{$ yes $}" required="" />
+                <p class="error" ng-show="form.$dirty && form.yes.$invalid">{% trans "Input error please re-enter!" %}{$ test $}</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="cancel" ng-click="cancel()">{% trans "Cancel" %}</button>
+            <button class="btn-ok" type="submit" ng-click="removePoolOk($event)">{% trans "Ok" %}</button>
+        </div>
+    </form>
+</script>

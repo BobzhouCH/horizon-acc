@@ -1,0 +1,87 @@
+{%load i18n%}
+<script type="text/ng-template" id="poolConfig.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="close()">&times;</button>
+        <h4>{% trans "Pool Config" %}</h4>
+    </div>
+    <div class="modal-body public-body">
+        <div class="body-left public-body-left">
+            <ul class="body-left-nav public-config-nav">
+                <li class="li-border">{% trans "General" %}</li>
+                <li>Qos</li>
+            </ul>
+        </div>
+        <div class="body-right">
+            <div class="body-content">
+                <div class="content-box" style="display: block">
+                    <div class="list-group">
+                        <label>{% trans "Pool Name" %}</label>
+                        <input type="text" ng-model="poolName" placeholder="{$ poolName $}" />
+                    </div>
+                    <div class="list-group">
+                        <label>{% trans "PG Num" %}</label>
+                        <input type="text" ng-model="poolPgNum" placeholder="{$ poolPgNum $}" oninput="if(value.length>0)value=value.slice(0,3)"  required="" />
+                    </div>
+                    <div class="list-group">
+                        <label>{% trans "Dup Size" %}</label>
+                        <input type="text" ng-model="poolDedupSize" placeholder="{$ poolDedupSize $}" oninput="if(value.length>0)value=value.slice(0,1)" required=""/>
+                    </div>
+                    <div class="list-group dup-box">
+                        <div class="dup-show-notes">
+                            <label for="dup-show-notes">{% trans "Deduplication" %}</label>
+                            <div class="slidebox">
+                                <input id="dup-show-notes" type="checkbox" name="dup-show-notes" ng-click="dup()"  ng-checked="{$ duplicationStatus $}" />
+                                <label for="dup-show-notes"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group compression">
+                        <div class="compression-show-notes">
+                            <label for="compression-show-notes">{% trans "Compression" %}</label>
+                            <div class="slidebox">
+                                <input id="compression-show-notes" type="checkbox" name="compression-show-notes" ng-checked="{$ duplicationStatus $}" />
+                                <label for="compression-show-notes"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-box">
+                    <div class="list-group">
+                        <div class="QoS-show-notes">
+                            <label for="QoS-show-notes">{% trans "QoS Limitation" %}</label>
+                            <div class="slidebox">
+                                <input id="QoS-show-notes" type="checkbox" name="QoS-show-notes" />
+                                <label for="QoS-show-notes"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group read-box">
+                        <span>{% trans "Read" %}</span>
+                        <p>
+                            <input type="text" value="6500" >
+                            <select class="read-select">
+                                <option value="Mbps">Mbps</option>
+                                <option value="Gbps">Gbps</option>
+                                <option>Kbps</option>
+                            </select>
+                            <input type="text" value="2500" >IOPS
+                        </p>
+                        <p>
+                            <input type="text" value="6500" >
+                            <select class="read-select">
+                                <option value="Mbps">Mbps</option>
+                                <option value="Gbps">Gbps</option>
+                                <option>Kbps</option>
+                            </select>
+                            <input type="text" value="2500" >IOPS
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-list">
+                <button class="cancel" ng-click="cancel()">{% trans "Cancel" %}</button>
+                <button class="btn-ok" ng-show="!is_show" ng-click="editPoolOk(poolName,poolPgNum,poolDedupSize,duplicationStatus)">{% trans "OK" %}</button>
+            </div>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,44 @@
+{% load context_selection %}
+
+<div class="detail-page">
+<div class="fl detail-left-icon" ng-click="action.cancel()"></div>
+<div class="detail-page-con">
+
+  <tabset id="sg-tab" justified="true" class="def-tabs">
+    <tab id="tab-sg-detail" heading="{$ ::label.detail_overview $}">
+      <div class="tab-pane-content">
+
+      <table id="sg-list" class="table table-bordered table-hover table-unique">
+        <thead>
+          <tr>
+            <th colspan="100"><span class="detail-title">{$ ::label.properties $}</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.id $}</td>
+            <td id="sg-id" class="color449ed2" eagle-eye="data_col">{$ sg.id $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.name $}</td>
+            <td id="sg-name" class="color3399cc" eagle-eye="data_col">{$ sg.name $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.policies $}</td>
+            <td id="sg-policies" class="color66cc66" eagle-eye="data_col">{$ sg.policies $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.members $}</td>
+            <td id="sg-members" eagle-eye="data_col">{$ sg.members $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.metadata $}</td>
+            <td id="sg-metadata" eagle-eye="data_col">{$ sg.metadata $}</td>
+          </tr>
+        </tbody>
+      </table>
+     </div>
+    </tab>
+  </tabset>
+</div>
+</div>

@@ -1,0 +1,12 @@
+{% load branding horizon i18n %}
+{% load url from future %}
+{% load navigation %}
+
+{% is_nav_collapsed as nav_collapsed %}
+
+<div id="js-leftPane" class="leftPane {% if nav_collapsed %} sidebar-collapsed {% else %} sidebar-expanded {% endif %}">
+    <div id="sidebar" class="leftPane {% if nav_collapsed %} sidebar-collapsed {% else %} sidebar-expanded {% endif %}">
+        {% horizon_side_launcher %}
+    </div>
+</div>
+

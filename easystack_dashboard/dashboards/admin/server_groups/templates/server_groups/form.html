@@ -1,0 +1,85 @@
+{% load i18n %}
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<!-- Modal-form: The body of this pane. -->
+<form class="ml20 mr20" novalidate name="form" ng-submit="submit(form.$valid)">
+		<fieldset>
+        <!--
+          Image name input (required):
+            Create-mode: show
+            Edit-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="name">
+            *{% trans "Server Group Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              type="text"
+              ng-model="serverGroup.name"
+              ng-maxlength="255"
+              ng-disabled=""
+              placeholder="{% trans 'Enter a Server Group name' %}"/>
+            <p class="help-block alert alert-danger"
+               ng-show="form.name.$error.maxlength">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+            <p class="help-block alert alert-danger"
+               ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "Name is required." %}
+            </p>
+         </div>
+         
+        </div>
+
+        <!--
+          Image Source Type selection (required):
+            Create-mode: show
+            Edit-mode: hide
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create'">
+          <label for="policy">
+            {% trans "Policy" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="policy"
+              name="policy"
+              class="form-control"
+              ng-init="serverGroup.policy='affinity'"
+              ng-model="serverGroup.policy">
+              <option
+                ng-selected="true"
+                value="affinity">
+                {% trans "Affinity" %}
+              </option>
+              <option
+                value="anti-affinity">
+                {% trans "Anti-Affinity" %}
+              </option>
+            </select>
+          </div>
+        </div>
+      </fieldset>
+</form>
+
+<!-- Modal-footer: Project can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

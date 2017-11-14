@@ -1,0 +1,17 @@
+/**
+ ** Author : liuxiaoyong
+ ** Module : stack module css
+ ** Data   : 2016-07-01
+**/
+
+.form-group {
+  .form-group-right-input{
+    padding-left: 118px;
+  }
+  .form-group-right-control{
+    width:240px;
+  }
+  .has-error {
+    border-color: $state-danger-text;
+  }
+}

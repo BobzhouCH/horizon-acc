@@ -1,0 +1,244 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+    <div class="left form-wrap">
+      <fieldset>
+        <!--
+          Image name input (required):
+            Create-mode: show
+            Edit-mode: show
+        -->
+        <div class="form-group inline-group clearfix required inline-group-first"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label class="control-label fl required" for="name">
+            *{% trans "Image Name" %}
+          </label>
+          <div class="rightCol fl">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              type="text"
+              ng-model="image.name"
+              ng-maxlength="255"
+              ng-disabled=""
+              placeholder="{% trans 'Enter a image name' %}">
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$invalid && form.name.$dirty">
+              {% trans "A image name is required." %}
+            </p>
+         </div>
+        </div>
+
+        <!--
+          Description input (optional):
+            Create-mode: show
+            Edit-mode: show
+        -->
+        <div class="form-group inline-group clearfix"
+          ng-if="context.mode == 'create'"
+          ng-class="{'has-error':form.name.$invalid && form.description.$dirty}">
+          <label class="control-label fl" for="description">
+            {% trans "Description" %}
+          </label>
+          <div class="rightCol fl">
+            <input
+              id="description"
+              name="description"
+              class="form-control"
+              type="description"
+              ng-maxlength="1024"
+              ng-model="image.description"
+              placeholder="{% trans 'Enter description' %}">
+          </div>
+        </div>
+
+        <!--
+          Image Source Type selection (required):
+            Create-mode: show
+            Edit-mode: hide
+        -->
+        <div class="form-group required inline-group clearfix"
+          ng-if="context.mode === 'create'"
+          ng-class="{'has-error':form.srcType.$invalid && form.srcType.$dirty}">
+          <label class="control-label fl required" for="srcType">
+            {% trans "Image Source Type" %}
+          </label>
+          <div class="rightCol fl">
+            <select
+              id="srcType"
+              name="srcType"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.srcTypes}"
+              ng-model="image.src_type">
+              <option
+                ng-repeat="srcType in dropdown.srcTypes"
+                ng-selected="srcType===image.src_type"
+                value="{$srcType$}">
+                {$ srcType $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!--
+          Image Source input (required):
+            Create-mode: show
+        -->
+        <div class="form-group inline-group clearfix"
+          ng-if="context.mode === 'create'"
+          ng-class="{'has-error':form.format.$invalid && form.source.$dirty}">
+          <label class="control-label fl" for="source">
+            {% trans "Image Source" %}
+          </label>
+          <div class="rightCol fl">
+            <input
+              id="source"
+              name="source"
+              class="form-control verify-input"
+              type="source"
+              ng-model="image.image_file"
+              placeholder="{% trans 'Image Source' %}">
+          </div>
+        </div>
+
+        <!--
+          Image Format selection (required):
+            Create-mode: show
+            Edit-mode: hide
+        -->
+        <div class="form-group required inline-group clearfix"
+          ng-if="context.mode === 'create'"
+          ng-class="{'has-error':form.format.$invalid && form.format.$dirty}">
+          <label class="control-label fl required" for="format">
+            {% trans "Format" %}
+          </label>
+          <div class="rightCol fl">
+            <select
+              id="format"
+              name="format"
+              class="form-control verify-input"
+              ng-class="{strikeLoading: !dropdown.formats}"
+              ng-model="image.disk_format">
+              <option value="" disabled>
+                {% trans 'Select a format' %}
+              </option>
+              <option
+                ng-repeat="format in dropdown.formats"
+                ng-selected="format.name===image.disk_format"
+                value="{$format.name$}">
+                {$ format.description $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!--
+          Minimum Disk (GB) Size input (required):
+            Create-mode: show
+        -->
+        <div class="form-group inline-group clearfix"
+          ng-if="context.mode == 'create'"
+          ng-class="{'has-error':form.format.$invalid && form.minDiskSize.$dirty}">
+          <label class="control-label fl" for="minDiskSize">
+            {% trans "Minimum Disk (GB)" %}
+          </label>
+          <div class="rightCol fl">
+            <input
+              id="minDiskSize"
+              name="minDiskSize"
+              class="form-control verify-input"
+              type="number"
+              min="0"
+              max="1000"
+              ng-model="image.min_disk"
+              placeholder="0">
+          </div>
+        </div>
+
+        <!--
+         Minimum Ram (MB) Size input (required):
+            Create-mode: show
+        -->
+        <div class="form-group inline-group clearfix"
+          ng-if="context.mode == 'create'"
+          ng-class="{'has-error':form.format.$invalid && form.minRamSize.$dirty}">
+          <label class="control-label fl" for="minRamSize">
+            {% trans "Minimum Ram (MB)" %}
+          </label>
+          <div class="rightCol fl">
+            <input
+              id="minRamSize"
+              name="minRamSize"
+              class="form-control verify-input"
+              type="number"
+              min="0"
+              max="1000"
+              ng-model="image.min_ram"
+              placeholder="0">
+          </div>
+        </div>
+
+        <!--
+          Public checkbox (required):
+            Create-mode: show
+        -->
+        <div class="form-group inline-group clearfix">
+          <label class="control-label fl" for="public">
+            {% trans "Public" %}
+          </label>
+          <div class="rightCol fl">
+            <input type="checkbox"
+              id="public"
+              name="public"
+              class="form-control"
+              ng-model="image.visibility">
+          </div>
+        </div>
+
+        <!--
+          Protected checkbox (required):
+            Create-mode: show
+        -->
+        <div class="form-group inline-group clearfix"
+          ng-if="context.mode == 'create'">
+          <label class="control-label fl" for="protected">
+            {% trans "Protected" %}
+          </label>
+          <div class="rightCol fl">
+            <input type="checkbox"
+              id="protected"
+              name="protected"
+              class="form-control"
+              type="boolean"
+              ng-model="image.protected">
+          </div>
+        </div>
+
+      </fieldset>
+    </div>
+
+    <!-- Modal-form-right: The description text. -->
+
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

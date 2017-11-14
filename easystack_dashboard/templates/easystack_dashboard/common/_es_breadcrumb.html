@@ -1,0 +1,13 @@
+{% load url from future %}
+{% load i18n %}
+{% with subfolders=breadcrumb.get_subfolders %}
+  <ol class="breadcrumb">
+    {% for subfolder, path in subfolders %}
+      {% if not forloop.last %}
+        <li><a href="{{ path }}">{{ subfolder }}</a></li>
+      {% else %}
+        <li class="active">{{ subfolder }}</li>
+      {% endif %}
+    {% endfor %}
+  </ol>
+{% endwith %}

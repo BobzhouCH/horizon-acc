@@ -1,0 +1,160 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+<h3 class="modal-title">{$ ::context.title $}</h3>
+<p class="modal-colsed" ng-click="action.cancel()">
+<i class="modal-colsed-icon"></i>
+</p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+    <fieldset>
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.router_name.$invalid && form.router_name.$dirty}">
+         <label for="name">
+            {% trans "Router Name" %}
+          </label>
+          <div class="form-group-right">
+              <input required
+                id="router_name"
+                name="router_name"
+                class="form-control verify-input"
+                type="text"
+                ng-model="rule.router_name"
+                ng-maxlength="255"
+                ng-disabled="true">
+           </div>
+        </div>
+
+       <div class="form-group clearfix"
+          ng-class="{'has-error':form.router_gateway.$invalid && form.router_gateway.$dirty}">
+         <label for="ip">
+            {% trans "Outside Address" %}
+          </label>
+          <div class="form-group-right">
+              <input required
+                id="router_gateway"
+                name="router_gateway"
+                class="form-control verify-input"
+                type="text"
+                ng-model="rule.router_gateway"
+                ng-maxlength="255"
+                ng-disabled="true">
+         </div>
+      </div>
+
+      <div class="form-group clearfix"
+          ng-class="{'has-error':form.outside_port.$invalid && form.outside_port.$dirty}">
+         <label for="port">
+            {% trans "Outside Port" %} *
+          </label>
+          <div class="form-group-right">
+              <input required
+                id="outside_port"
+                name="outside_port"
+                class="form-control verify-input"
+                type="number"
+                min="1"
+                max="65535"
+                ng-model="rule.outside_port"
+                ng-maxlength="255"
+                ng-disabled="">
+              <p class="help-block alert-fixed alert-danger"
+                ng-show="form.outside_port.$invalid && form.outside_port.$dirty">
+                {% trans "Port range must be in 1~65535" %}
+              </p>
+          </div>
+      </div>
+
+      <!--
+        Role selection (required):
+          Create-mode: show
+          Edit-mode: hide
+          Password-mode: hide
+      -->
+      <div class="form-group clearfix"
+        ng-class="{'has-error':form.inside_addr.$invalid && form.inside_addr.$dirty}">
+        <label for="ip">
+          {% trans "Inside Address" %} *
+        </label>
+        <div class="form-group-right">
+        <select required
+          id="inside_addr"
+          name="inside_addr"
+          class="form-control"
+          ng-model="rule.inside_addr">
+          <option value="" disabled ng-selected="true">
+            {% trans 'Select an IP Address' %}
+          </option>
+          <option
+            ng-repeat="ip in available_addresses"
+            value="{$ ip.ip_address $}">
+                {$ ip.ip_address $}: {$ instanceNames[ip.device_id] $}
+          </option>
+        </select>
+        </div>
+      </div>
+
+      <div class="form-group clearfix"
+          ng-class="{'has-error':form.inside_port.$invalid && form.inside_port.$dirty}">
+         <label for="port">
+            {% trans "Inside Port" %} *
+          </label>
+          <div class="form-group-right">
+              <input required
+                id="inside_port"
+                name="inside_port"
+                class="form-control verify-input"
+                type="number"
+                min="1"
+                max="65535"
+                ng-model="rule.inside_port"
+                ng-maxlength="255"
+                ng-disabled="">
+              <p class="help-block alert-fixed alert-danger"
+                ng-show="form.inside_port.$invalid && form.inside_port.$dirty">
+                {% trans "Port range must be in 1~65535" %}
+              </p>
+           </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.protocol.$invalid && form.protocol.$dirty}">
+         <label for="protocol">
+            {% trans "Protocol" %} *
+          </label>
+          <div class="form-group-right">
+              <select required
+                id="protocol"
+                name="protocol"
+                class="form-control verify-input"
+                ng-model="rule.protocol"
+                ng-maxlength="255"
+                ng-disabled="">
+                  <option value="" disabled ng-selected="true">
+                {% trans 'Select a Protocol' %}
+              </option>
+                  <option value="TCP">{% trans "TCP" %}</option>
+                  <option value="UDP">{% trans "UDP" %}</option>
+              </select>
+          </div>
+        </div>
+    </fieldset>
+    <!-- Modal-form-right: The description text. -->
+
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

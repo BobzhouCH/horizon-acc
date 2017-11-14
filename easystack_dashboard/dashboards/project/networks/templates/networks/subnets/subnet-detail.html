@@ -1,0 +1,64 @@
+<div class="detail-page" >
+    <div class="fl detail-left-icon" ng-click="action.cancel()"></div>
+    <div class="detail-page-con">
+    <tabset justified="true" class="def-tabs">
+
+        <tab id="tab-subnet-overview" heading="{$ ::title.Overview $}">
+
+          <div class="tab-pane-content">
+            <table id="subnet-detail-table" class="table table-bordered table-hover table-unique">
+              <thead>
+                <tr>
+                  <th colspan="100"><span class="detail-title">{$ title.Subnet $}</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{$ ::label.ID $}</td>
+                  <td class="color449ed2" id="subnet-id">{$ subnet.id $}</td>
+                </tr>
+                <tr>
+                  <td>{$ ::label.Name $}</td>
+                  <td class="color3399cc" id="subnet-name">{$ subnet.name $}</td>
+                </tr>
+                <tr>
+                  <td>{$ ::label.Network $}</td>
+                  <td class="color66cc66" id="subnet-network-name"><a ng-click="showNetwork(subnet.network_id)" href="javascript:;" data-url="/project/networks/detail/{$ subnet.network_id $}">{$ subnet.network.name $}</a></td>
+                </tr>
+                <tr>
+                  <td>{$ ::label.CIDR $}</td>
+                  <td id="subnet-cidr">{$ subnet.cidr $}</td>
+                </tr>
+                <tr>
+                  <td>{$ ::label.IP_Pool $}</td>
+                  <td>
+                  <p ng-repeat="pool in subnet.allocation_pools">{$ pool.start $} - {$ pool.end $}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>{$ ::label.DHCP_Enable $}</td>
+                  <td id="subnet-enable-dhcp">{$ subnet.enable_dhcp  $}</td>
+                </tr>
+                <tr>
+                  <td>{$ ::label.Gateway_IP $}</td>
+                  <td id="subnet-gateway-ip">{$ subnet.gateway_ip  $}</td>
+                </tr>
+                <tr>
+                  <td>{$ ::label.Host_Routes $}</td>
+                  <td>
+                  <p ng-repeat="route in subnet.host_routes">{$ route.destination $} --> {$ route.nexthop $}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>{$ ::label.DNS_Servers $}</td>
+                  <td>
+                  <p ng-repeat="dns in subnet.dns_nameservers">{$ dns $}</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </tab>
+    </tabset>
+    </div>
+</div>

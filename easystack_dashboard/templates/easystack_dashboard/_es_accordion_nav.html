@@ -1,0 +1,158 @@
+{% load horizon i18n %}
+{% load url from future %}
+
+{% if mana_enable and not cloud_admin %}
+<div class="clearfix" style="border-bottom: 1px #111c30 solid;">
+  <a class = 'fl nav_switch btn {% if not in_mana %}btn-nav-selected{% endif %}'{% if in_mana %} href="{% url 'horizon:project:easystack_overview:switch_public' %}"{% endif %}>
+    <i class="list_img listImg_warp public_clound"></i>
+    <span>{% trans "Public" %}</span>
+  </a>
+  <a  class = 'fl nav_switch btn {% if in_mana %}btn-nav-selected{% endif %}' {% if not in_mana %}href="{% url 'horizon:mana:index:switch_dedicated' dedicated_id %}"{% endif %} >
+    <i class="list_img listImg_warp dedicated_clound"></i>
+    <span>{% trans "Dedicated" %}</span>
+  </a>
+</div>
+{% endif %}
+
+{% if in_mana and dedicated_resource %}
+    <dl class="nav_accordion">
+    {% for dashboard, panel_info in mana_components %}
+      {% if user|has_permissions:dashboard %}
+        {% if 'mana' == dashboard.slug %}
+        <dt style="display:none;">
+        {% else %}
+        <dt id="{{ dashboard.slug }}" {% if current.slug == dashboard.slug %}class="active"{% endif %}>
+        {% endif %}
+          {{ dashboard.name }}
+          <div class="smallT pull-right"></div>
+        </dt>
+
+        <dd class="Keep">
+        {% for heading, panels in panel_info.iteritems %}
+          {% with panels|has_permissions_on_list:user as filtered_panels %}
+          {% if filtered_panels %}
+            {% for panel in filtered_panels%}
+              {% if panel.slug == 'mana_overview' and dashboard.slug == 'mana' %}
+                <h4 class="overview-nav-name">
+                  <a href="{{ panel.get_absolute_url }}" {% if current.slug == dashboard.slug and current_panel == panel.slug %}class="active"{% endif %} tabindex="{{ forloop.counter }}" >
+                    <i class="list_img listImg_warp {{ panel.slug }}"></i><span class="ml5">{{ panel.name }}</span>
+                  </a>
+                </h4>
+              {% endif %}
+            {% endfor %}
+            {% if heading.name and heading.name != current_panel_group and 'mana' != dashboard.slug%}
+            <ul class="hidden">
+            {%else%}
+                 {%if heading.name and heading.name != current_panel_group and 'mana' == dashboard.slug%}
+                    <ul class="hidden">
+                 {%elif heading.name and heading.name == current_panel_group and 'mana' == dashboard.slug%}
+                    <ul>
+                 {%elif heading.name and heading.name == current_panel_group and 'mana' != dashboard.slug%}
+                    <ul>
+                 {%else%}
+                    <ul>
+                 {%endif%}
+            {% endif %}
+            {% for panel in filtered_panels%}
+              {% if panel.slug != 'mana_overview' or dashboard.slug != 'mana' %}
+              <li><a href="{{ panel.get_absolute_url }}" {% if current.slug == dashboard.slug and current_panel == panel.slug %}class="active"{% endif %} tabindex="{{ forloop.counter }}" ><i class="list_img listImg_warp {{ panel.slug }}"></i>{{ panel.name }}</a></li>
+              {% endif %}
+            {% endfor %}
+            </ul>
+            {% if heading.name %}
+              </div>
+            {% endif %}
+          {% endif %}
+          {% endwith %}
+        {% endfor %}
+        </dd>
+      {% endif %}
+    {% endfor %}
+    </dl>
+{% endif %}
+
+{%if not in_mana or dedicated_resource %}
+<dl class="nav_accordion">
+{% for dashboard, panel_info in components %}
+  {% if user|has_permissions:dashboard %}
+
+    {% if 'project' == dashboard.slug %}
+    <dt style="display:none;">
+    {% else %}
+    <dt {% if current.slug == dashboard.slug %}class="active"{% endif %}>
+    {% endif %}
+
+       <h4 id="{{ dashboard.slug }}">
+         <i class="list_img listImg_warp {{ dashboard.slug }}"></i>
+         <span class="ml5">{{ dashboard.name }}</span>
+         <div class="smallT pull-right"></div>
+       </h4>
+    </dt>
+
+    {% if 'project' != dashboard.slug and current.slug != dashboard.slug%}
+    <dd style="display:none;">
+    {% else %}
+        {% if current.slug == dashboard.slug and 'project' == dashboard.slug%}
+        <dd class="Keep">
+        {% elif current.slug != dashboard.slug and 'project' == dashboard.slug%}
+        <dd class="Keep">
+        {% elif current.slug == dashboard.slug and 'project' != dashboard.slug%}
+        <dd>
+        {% endif %}
+    {% endif %}
+    {% for heading, panels in panel_info.iteritems %}
+      {% with panels|has_permissions_on_list:user as filtered_panels %}
+        {% if filtered_panels %}
+            {% if heading.name %}
+                <div>
+                    {% if heading.slug != 'PROJECTOVERVIEW' and heading.slug != 'MAGNUMOVERVIEW' %}
+                    <h4 id="{{ heading.slug }}">
+                        <i class="list_img listImg_warp {{ heading.slug }}"></i>
+                        <span class="ml5">{{ heading.name }}</span>
+                        <div class="smallT pull-right"></div>
+                    </h4>
+                    {% else %}
+                        {% for panel in filtered_panels%}
+                         {% if panel.slug == 'easystack_overview' or panel.slug == 'magnum_overview' and dashboard.slug == 'project' %}
+                            <h4 class="overview-nav-name">
+                              <a href="{{ panel.get_absolute_url }}" {% if current.slug == dashboard.slug and current_panel == panel.slug %}class="active"{% endif %} tabindex="{{ forloop.counter }}" >
+                                <i class="list_img listImg_warp {{ panel.slug }}"></i>
+                                <span class="ml5">{{ panel.name }}</span>
+                              </a>
+                            </h4>
+                         {% endif %}
+                        {% endfor %}
+                    {% endif %}
+            {% endif %}
+            {% if heading.name and heading.name != current_panel_group and 'project' != dashboard.slug%}
+                <ul class="hidden">
+            {%else%}
+                {%if heading.name and heading.name != current_panel_group and 'project' == dashboard.slug%}
+                <ul class="hidden">
+                {%elif heading.name and heading.name == current_panel_group and 'project' == dashboard.slug%}
+                <ul>
+                {%else%}
+                <ul>
+                {%endif%}
+            {% endif %}
+            {% for panel in filtered_panels%}
+                {% if panel.slug != 'easystack_overview' and panel.slug != 'magnum_overview' or dashboard.slug != 'project' %}
+                <li>
+                  <a href="{{ panel.get_absolute_url }}" {% if current.slug == dashboard.slug and current_panel == panel.slug %}class="active"{% endif %} tabindex="{{ forloop.counter }}" >
+                    <div class="fa smallC"></div>{{ panel.name }}
+                  </a>
+                </li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+            {% if heading.name %}
+            </div>
+        {% endif %}
+      {% endif %}
+      {% endwith %}
+    {% endfor %}
+    </dd>
+  {% endif %}
+{% endfor %}
+</dl>
+{% endif %}

@@ -1,0 +1,110 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Billing" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Bill")%}
+{% endblock page_header %}
+
+{% block main %}
+
+<hz-magic-search-context filter-facets="filterFacets">
+<table hz-table ng-cloak
+  st-table="ibproducts"
+  st-safe-src="bproducts"
+  default-sort="create_at"
+  default-sort-reverse="true"
+  ng-controller="adminBillCtrl"
+  st-magic-search
+  class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th colspan="100" class="bare">
+        <div class="table_actions clearfix pull-left">
+          <action-list class="btn-addon">
+            <action action-classes="'btn btn-default btn-sm'"
+                    disabled="!bproductState"
+                    callback="actions.refresh">
+              <i class="icon icon-refresh"></i>
+              <span id="refresh"></span>
+            </action>
+          </action-list>
+         <a ng-href="{$ dUrl $}">
+            <button
+              type="button"
+              id="export-button"
+              ng-disabled="!bproductState || !ibproducts.length"
+              class="btn btn-primary btn-action">
+              <i class="icon icon-add ng-scope"></i>
+              {% trans 'Export Bill' %}
+            </button>
+         </a>
+        </div>
+        <div class="table_actions display-group clearfix pull-right">
+          <div class="form-group fr">
+            <label for="domain_id">
+              {% trans 'Domains' %}
+            </label>
+            <div class="form-group-right">
+              <select
+                id="domain_id"
+                name="domain_id"
+                class="form-control type-id"
+                ng-change="switchDomain()"
+                ng-options="domain.id as domain.name for domain in domains"
+                ng-model="currentDomainId">
+                <option value="">
+                  {% trans 'All Domains' %}
+                </option>
+               </select>
+            </div>
+            <div class="fr search-bar">
+              <hz-magic-search-bar id="search"></hz-magic-search-bar>
+            </div>
+          </div>
+        </div>
+      </th>
+    </tr>
+
+    <tr id="billing-detail-header">
+      <th st-sort="resource_name">{$ ::context.header.resource $}</th>
+      <th st-sort="project_name">{$ ::context.header.project $}</th>
+      <th class="totalPay-color" st-sort="cost">{$ ::context.header.Total $} ({% trans 'Yuan' %})</th>
+      <th st-sort="unit">{$ ::context.header.billingType $}</th>
+      <th st-sort="fee">{$ ::context.header.Pricce $}</th>
+      <th st-sort="runtime">{$ ::context.header.RunTime $}</th>
+      <th st-sort="update_at">{$ ::context.header.updateTime $}</th>
+      <th st-sort="create_at">{$ ::context.header.createTime $}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-if="!bproductState">
+    <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+  </tr>
+
+  <tr ng-if="!ibproducts.length && bproductState">
+    <td colspan="100">{% trans "No Data" %}</td>
+  </tr>
+    <tr ng-if="ibproducts.length && bproductState" ng-repeat="bproduct in ibproducts">
+      <td>{$ bproduct.resource_name $}</td>
+      <td>{$ bproduct.project_name $}</td>
+      <td class="totalPay-color">{$ bproduct.cost | number:6 $}</td>
+      <td>{$ bproduct.unit | decode:billingType $}</td>
+      <td>{$ bproduct.fee | number:4 $}</td>
+      <td>{$ timeFormat(bproduct.runtime) $}</td>
+      <td>{$ bproduct.update_at $}</td>
+      <td>{$ bproduct.create_at $}</td>
+    </tr>
+  </tbody>
+
+  <tfoot ng-if="bproducts.length > 10 && bproductState">
+    <tr>
+      <td colspan="100">
+        <table-footer></table-footer>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+</hz-magic-search-context>
+
+{% endblock %}

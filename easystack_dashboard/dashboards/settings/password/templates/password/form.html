@@ -1,0 +1,140 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+<h3 class="modal-title">{$ ::context.title $}</h3>
+<p class="modal-colsed" ng-click="action.cancel()">
+<i class="modal-colsed-icon"></i>
+</p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+      <fieldset>
+        <!--
+          User name input (required):
+            Create-mode: show
+            Edit-mode: show
+            Password-mode: show but disable
+        -->
+        <div class="form-group clearfix">
+          <label for="name">
+            {$ ::context.old_password $}
+          </label>
+          <div class="form-group-right" ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+            <div class="has-feedback" ng-init="show2=false">
+          <input required
+            id="old_assword"
+            name="name"
+            class="form-control"
+            type="{$show2?'text':'password'$}"
+            ng-model="pwd.oldPassword"
+            ng-maxlength="255"
+            ng-disabled="context.mode==='password'"
+            placeholder="{% trans 'Enter a password' %}">
+              <span ng-click="show2=!show2"
+                class="form-control-feedback glyphicon glyphicon-eye-{$show2?'open':'close'$}" style="pointer-events: auto">
+              </span>
+            </div>
+          <p class="help-block alert alert-danger"
+            ng-show="form.name.$invalid && form.name.$dirty">
+            {% trans "Please enter your Password." %}
+          </p>
+       </div>
+        </div>
+
+        <!--
+          Password input (required):
+          User can toggle password visibility by clicking on icon.
+          There is no restriction on the password.
+            Create-mode: show
+            Edit-mode: hide
+            Password-mode: show
+        -->
+        <div class="form-group clearfix">
+          <label for="password">
+            {$ ::context.new_password $}
+          </label>
+          <div class="form-group-right" ng-class="{'has-error':form.password.$invalid && form.password.$dirty}">
+          <div class="has-feedback" ng-init="show=false">
+            <input required
+              id="password"
+              name="password"
+              class="form-control"
+              type="{$show?'text':'password'$}"
+              ng-model="pwd.password"
+                  ng-pattern="/(?!^(\d+|[a-zA-Z]+|[~!@#$%^&*?]+)$)^[\w~!@#$%\^&*?]+$/"
+              placeholder="{% trans 'Enter a password' %}" autocomplete="off">
+            <span ng-click="show=!show"
+              class="form-control-feedback glyphicon glyphicon-eye-{$show?'open':'close'$}" style="pointer-events: auto">
+            </span>
+          </div>
+          <p class="help-block alert alert-danger"
+            ng-show="form.password.$error.required && form.password.$dirty">
+            {% trans "A password is required." %}
+          </p>
+              <p class="help-block alert alert-danger"
+              ng-show="form.password.$invalid && form.password.$dirty && form.password.$viewValue.length>=8">
+              {% trans "Password must contains two kind of types (eg. Numbers, Characters or symbol) and 8 length." %}
+              </p>
+              <p class="help-block alert alert-danger"
+              ng-show="form.password.$viewValue && form.password.$viewValue == form.name.$viewValue">
+              {% trans "New Password and Old Password must be different" %}
+              </p>
+            <p class="help-block alert alert-danger"
+              ng-show="form.password.$dirty && form.password.$viewValue.length<8 && form.password.$viewValue.length>0">
+              {% trans "Please enter at least 8 charactors." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+          Confirmation password input (required):
+          User can toggle password visibility by clicking on icon.
+          An error message is shown When confirmation password does not match.
+            Create-mode: show
+            Edit-mode: hide
+            Password-mode: show
+        -->
+        <div class="form-group clearfix">
+          <label for="cpassword">
+            {$ ::context.confirm_password $}
+          </label>
+          <div class="form-group-right" ng-class="{'has-error':form.cpassword.$error.match && form.cpassword.$dirty}">
+          <div class="has-feedback" ng-init="cshow=false">
+            <input required
+              id="cpassword"
+              name="cpassword"
+              class="form-control"
+              type="{$cshow?'text':'password'$}"
+              ng-model="cpassword"
+              hz-password-match="form.password"
+              placeholder="{% trans 'Confirm the password' %}">
+            <span ng-click="cshow=!cshow"
+              class="form-control-feedback glyphicon glyphicon-eye-{$cshow?'open':'close'$}" style="pointer-events: auto">
+            </span>
+          </div>
+          <p class="help-block alert alert-danger"
+            ng-show="form.cpassword.$error.match && form.cpassword.$dirty">
+            {% trans "A matching confirmation password is required." %}
+          </p>
+          </div>
+        </div>
+
+      </fieldset>
+
+    <!-- Modal-form-right: The description text. -->
+
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid || form.password.$viewValue.length<8 || form.password.$viewValue==form.name.$viewValue"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

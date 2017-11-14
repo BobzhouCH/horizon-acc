@@ -1,0 +1,113 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Alarms" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Alarms") %}
+{% endblock page_header %}
+
+{% block main %}
+
+<hz-magic-search-context filter-facets="filterFacets">
+<table id="alarms-list" hz-table hopes-table-drag
+ng-controller="alarmsListController" 
+st-table="ialarms"
+st-safe-src="alarms"
+disabled="disabled"
+st-magic-search
+class="table table-bordered table-hover">
+
+<thead>
+  <tr>
+    <th colspan="100" class="bare">
+      <div class="table_actions clearfix">
+         <action-list>
+            <action
+              action-classes="'btn btn-primary btn-action'"
+              callback="actions.refresh">
+              <i class="icon icon-refresh"></i>
+              <span id="refresh"></span>
+            </action>
+          </action-list>
+        <action-list>
+          <action
+            action-classes="'btn btn-primary btn-action'"
+            callback="actions.create.open">
+            <i class="icon icon-add"></i>
+            <span id="create-alarm">{% trans 'Create Alarm' %}</span>
+          </action>
+        </action-list>
+         <action-list>
+          <action
+            action-classes="'btn btn-primary btn-action'"
+            disabled="disabled"
+            callback="actions.edit.open" item="selectedData.aData">
+            <i class="icon icon-edit"></i>
+            <span id="edit-alarm">{% trans 'Edit' %}</span>
+          </action>
+        </action-list>
+        <action-list>
+          <action
+            action-classes="'btn btn-action btn-danger'"
+            disabled="numSelected === 0"
+            callback="actions.deleted.batchDelete">
+            <i class="icon icon-delete"></i>
+            <span id="delete-alarm">{% trans 'Delete Alarm' %}</span>
+          </action>
+        </action-list>
+        <div class="fr search-bar">
+          <hz-magic-search-bar id="search"></hz-magic-search-bar>
+        </div>
+      </div>
+    </th>
+  </tr>
+  <tr eagle-eye="table_heads">
+    <th class="select-col" eagle-eye="select_col">
+      <input type="checkbox"
+        hz-select-page="alarms"/>
+    </th>
+    <th ng-cloak><span eagle-eye="data_col" st-sort="name" st-sort-default="name">{$ ::context.header.name $}</span></th>
+    <th ng-cloak><span eagle-eye="data_col" st-sort="state">{$ ::context.header.state $}</span></th>
+    <th width="20%" ng-cloak><span eagle-eye="data_col" st-sort="resource_name">{$ ::context.header.resource_name $}</span></th>
+    <th width="10%" ng-cloak><span eagle-eye="data_col" st-sort="enabled">{$ ::context.header.enabled $}</span></th>
+    <th width="10%" ng-cloak><span eagle-eye="data_col" st-sort="timestamp" st-sort-default="reverse">{$ ::context.header.timestamp $}</span></th>
+  </tr>
+</thead>
+
+<tbody>
+  <tr ng-if="!alarmState">
+    <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+  </tr>
+
+  <tr ng-if="!ialarms.length && alarmState">
+    <td colspan="100" eagle-eye="empty_table">{% trans "No data" %}</td>
+  </tr>
+
+  <tr ng-repeat="alarm in ialarms" ng-class="{'st-selected': checked[alarm.alarm_id]}">
+    <td class="select-col" eagle-eye="select_col">
+    <input type="checkbox"
+      hz-select="alarm"
+      ng-model="selected[alarm.alarm_id].checked"
+      hz-checkbox-group="alarms"/>
+    </td>
+    <td ng-cloak eagle-eye="data_col"><a href="javascript:;" ng-click="actions.createDetail.open(alarm.alarm_id)" data-url="/project/alerts/detail/{$ alarm.alarm_id $}">{$ alarm.name $}</td>
+    <td ng-cloak eagle-eye="data_col">{$ alarm.state | decode:alarmstatei18n $}</td>
+    <td ng-cloak eagle-eye="data_col">{$ alarm.resource_name $}</td>
+    <td eagle-eye="data_col">
+    <span class="state-icon icon-true" ng-if="alarm.enabled"></span>
+    <span class="state-icon icon-false" ng-if="!alarm.enabled"></span>
+    </td>
+    <td ng-cloak eagle-eye="data_col">{$ alarm.create_time $}</td>
+  </tr>
+</tbody>
+
+<tfoot ng-if="alarms.length > 10">
+    <tr>
+      <td colspan="100" eagle-eye="data_page">
+        <table-footer></table-footer>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+</hz-magic-search-context>
+{% endblock %}

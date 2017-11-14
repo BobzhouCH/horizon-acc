@@ -1,0 +1,28 @@
+{% extends "easystack_dashboard/client_side/es_template.html" %}
+{% load horizon %}
+
+{% block id %}modal_template{% endblock %}
+
+{% block template %}{% spaceless %}{% jstemplate %}
+	<div class="windPane modal hide">
+		<div class="wind_top">
+	    	<h4>
+	        	<span class="f16">[[title]]</span>
+	        	<a data-dismiss="modal" href="#" class="closed">&times;</a>
+	        </h4>
+	   </div>
+	   
+	  <div class="windMain">
+	  	<div class="windContent p10">
+	  		<div class="f14"style="width:280px; padding-right:30px;padding-left:30px;margin:15px 0;" >[[body]]</div>
+	  	</div>
+	  </div>
+	    
+	  <div class="btnWarp">
+		<div class="Private_btn txt-r">			
+			<a href='javascript:;' class='btn_3 btn-primary'>[[confirm]]</a>
+			{#<a class="btn_4 cancel close" href="javascript:;">[[cancel]]</a>#}
+		</div>
+	  </div> 
+	</div>
+{% endjstemplate %}{% endspaceless %}{% endblock %}

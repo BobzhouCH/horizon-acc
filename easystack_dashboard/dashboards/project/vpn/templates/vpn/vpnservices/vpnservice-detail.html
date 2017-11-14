@@ -1,0 +1,58 @@
+{% load context_selection %}
+
+<div class="detail-page">
+<div class="fl detail-left-icon" ng-click="action.cancel()"></div>
+<div class="detail-page-con">
+
+  <tabset id="images-tab" justified="true" class="def-tabs">
+    <tab id="tab-images-detail" heading="{$ ::label.detail_overview $}">
+      <div class="tab-pane-content">
+
+      <table id="ipsecpolicy-list" class="table table-bordered table-hover table-unique">
+        <thead>
+          <tr>
+            <th colspan="100"><span class="detail-title">{$ ::label.properties $}</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.id $}</td>
+            <td id="ipsecpolicy-id" class="color449ed2" eagle-eye="data_col">{$ vpnservice.id $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.description $}</td>
+            <td id="ipsecpolicy-description" class="color3399cc" eagle-eye="data_col">{$ vpnservice.description $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.router_name $}</td>
+            <td id="ipsecpolicy-ike_version" class="color66cc66" eagle-eye="data_col">{$ vpnservice.router.name $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.subnet_name $}</td>
+            <td id="ipsecpolicy-lifetime_units" eagle-eye="data_col">{$ vpnservice.subnet.cidr $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.local_ips $}</td>
+            <td id="ipsecpolicy-lifetime_value" eagle-eye="data_col">
+              <ul ng-if="vpnservice.external_v4_ip || vpnservice.external_v6_ip">
+                <li>
+                  <span>{$ ::label.external_v4_ip  $}</span> {$ vpnservice.external_v4_ip $}
+                </li>
+              </ul>
+             </td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.status $}</td>
+            <td id="ipsecpolicy-phase1_negotiation_mode" eagle-eye="data_col">{$ vpnservice.status | decode:vpnserviceStatus$}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.admin_state_up $}</td>
+            <td id="ipsecpolicy-phase1_negotiation_mode" eagle-eye="data_col">{$ vpnservice.admin_state_up | decode:admin_states $}</td>
+          </tr>
+        </tbody>
+      </table>
+     </div>
+    </tab>
+  </tabset>
+</div>
+</div>

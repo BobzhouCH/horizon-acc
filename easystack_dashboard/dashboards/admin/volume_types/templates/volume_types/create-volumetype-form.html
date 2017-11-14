@@ -1,0 +1,105 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+      <div class="modal-description mt10">
+          <p>
+            {% trans "Volume type is a type or label that can be selected at volume creation time in OpenStack. It usually maps to a set of capabilities of the storage back-end driver to be used for this volume. Examples: 'Performance', 'SSD', 'Backup', etc. This is equivalent to the 'cinder type-create' command. Once the volume type gets created,click the 'Add Extra Specs' button to set up extra specs key-value pair(s) for that volume type." %}
+          </p>
+      </div>
+      <fieldset>
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.type.$invalid && form.type.$dirty}">
+          <label for="name">
+            {% trans "Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              ng-disabled="volumetype.is_sharable"
+              id="name"
+              name="name"
+              type="text"
+              class="form-control verify-input"
+              ng-maxlength="255"
+              ng-model="volumetype.name"
+              placeholder="{% trans 'Enter a volume type name' %}">
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "A volume type name is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength && form.name.$dirty">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+       <div class="form-group clearfix">
+        <label>
+          {% trans "Description" %}
+        </label>
+        <div class="form-group-right">
+          <textarea
+            id="description"
+            name="description"
+            class="form-control"
+            rows="4"
+            ng-maxlength="255"
+            ng-model="volumetype.description"
+            placeholder="{% trans 'Enter a volume type description' %}">
+          </textarea>
+          <p class="help-block alert-fixed alert-danger"
+             ng-show="form.description.$error.maxlength">
+            {% trans "Description length should be less than 255 chars." %}
+          </p>
+        </div>
+      </div>
+      <div class="form-group clearfix mt10 fl">
+        <label for="description">
+          {% trans "Public" %}
+        </label>
+        <div class="form-group-right">
+          <input
+            id="shared"
+            name="shared"
+            type="checkbox"
+            ng-model="volumetype.is_public"/>
+        </div>
+      </div>
+      <div class="form-group clearfix mt10 fl">
+        <label for="description">
+          {% trans "Sharable" %}
+        </label>
+        <div class="form-group-right">
+          <input
+            id="sharable"
+            name="sharable"
+            type="checkbox"
+            ng-model="volumetype.is_sharable"
+            ng-click="volumetype.name = volumetype.is_sharable? 'sharable':''"/>
+        </div>
+      </div>
+
+    </fieldset>
+    <!-- Modal-form-right: The description text. -->
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

@@ -1,0 +1,26 @@
+<div class="modal-header clearfix">
+  <h3 class="modal-title">
+    <span ng-if="modal.resourceType==='aggregate'">{$ modal.context.header.aggregate_title $}</span>
+    <span ng-if="modal.resourceType==='flavor'">{$ modal.context.header.flavor_title $}</span>
+    <span ng-if="modal.resourceType==='image'">{$ modal.context.header.image_title $}</span>
+    <span ng-if="modal.resourceType==='instance'">{$ modal.context.header.instance_title $}</span>
+  </h3>
+  <p class="modal-colsed" ng-click="modal.cancel()">
+      <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+<div class="modal-body">
+  <metadata-tree model="modal.tree" form="form"></metadata-tree>
+</div>
+<div class="modal-footer">
+  <!--<button class="btn btn-default cancel" ng-click="modal.cancel()">-->
+    <!--<span class="fa fa-close"></span>-->
+    <!--<span translate>Cancel</span>-->
+  <!--</button>-->
+  <button class="btn btn-primary"
+          ng-click="modal.save()"
+          ng-disabled="form.$invalid">
+    <span class="fa" ng-class="modal.saving ? 'fa-spinner fa-spin' : ''"></span>
+    <span>{$ modal.context.header.update $}</span>
+  </button>
+</div>

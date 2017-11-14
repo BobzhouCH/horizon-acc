@@ -1,0 +1,130 @@
+{
+  "return_data": {
+    "endpoints": [
+      {
+        "status": "Healthy",
+        "alerts": {
+          "Info": 0,
+          "Critical": 0,
+          "Warning": 0
+        },
+        "uuid": "6165663CE25F8288D7A5878806F35B2F",
+        "power": "on",
+        "type": 2,
+        "hostname": "node-1",
+        "productname": "System x3650 M5",
+        "mt": "8722AC1",
+        "roles": 256,
+        "hostip": "192.168.0.3",
+        "bmcip": "10.240.196.74",
+        "pn": "",
+        "sn": "23D4910",
+        "supported_categories": 4227858623,
+        "desired_categories": 4227858623,
+        "authed": true,
+        "http_enabled": true,
+        "https_enabled": true
+      },
+      {
+        "status": "NA",
+        "alerts": {
+          "Info": 0,
+          "Critical": 0,
+          "Warning": 0
+        },
+        "uuid": "66E16C8DA6A80E7C9D10996B54CFFF30",
+        "power": "on",
+        "type": 0,
+        "hostname": "node-2",
+        "productname": "",
+        "power": "on",
+        "mt": "",
+        "roles": 512,
+        "hostip": "192.168.0.4",
+        "bmcip": "",
+        "pn": "",
+        "sn": "",
+        "hostip": "192.168.0.5",
+        "https_enabled": false,
+        "supported_categories": 0,
+        "desired_categories": 0,
+        "authed": false,
+        "http_enabled": true,
+        "https_enabled": false
+      },
+      {
+        "status": "Critical",
+        "alerts": {
+          "Info": 0,
+          "Critical": 5,
+          "Warning": 3
+        },
+        "uuid": "732ebc33a87d41ccbae526ca4b8cabfc",
+        "power": "on",
+        "type": 31,
+        "hostname": "node-3",
+        "productname": "ThinkServer RD640",
+        "mt": "8722AC1",
+        "roles": 1024,
+        "hostip": "192.168.0.4",
+        "bmcip": "10.240.196.75",
+        "pn": "",
+        "sn": "23D4910",
+        "supported_categories": 0,
+        "desired_categories": 0,
+        "authed": true,
+        "http_enabled": true,
+        "https_enabled": false
+      },
+      {
+        "status": "Warning",
+        "alerts": {
+          "Info": 0,
+          "Critical": 0,
+          "Warning": 2
+        },
+        "uuid": "aef7d574daeb40f58eafe15abe367979",
+        "power": "pending",
+        "type": 2,
+        "hostname": "node-4",
+        "productname": "System x3850 X6",
+        "mt": "8722AC1",
+        "roles": 512,
+        "hostip": "192.168.0.5",
+        "bmcip": "10.240.196.76",
+        "pn": "",
+        "sn": "23D4910",
+        "supported_categories": 4227858623,
+        "desired_categories": 0,
+        "authed": true,
+        "http_enabled": true,
+        "https_enabled": true
+      },
+      {
+        "status": "UnAuth",
+        "alerts": {
+          "Info": 0,
+          "Critical": 0,
+          "Warning": 0
+        },
+        "uuid": "962d6397cc784dd9b3de9c86a3a00e2d",
+        "power": "off",
+        "type": 2,
+        "hostname": "node-5",
+        "productname": "System x3500 M4",
+        "mt": "8722AC1",
+        "roles": 768,
+        "hostip": "192.168.0.6",
+        "bmcip": "10.240.196.77",
+        "pn": "",
+        "sn": "23D4910",
+        "supported_categories": 0,
+        "desired_categories": 0,
+        "authed": false,
+        "http_enabled": false,
+        "https_enabled": true
+      }
+    ]
+  },
+  "return_code": 0
+}

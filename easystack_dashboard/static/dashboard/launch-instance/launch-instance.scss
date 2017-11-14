@@ -1,0 +1,34 @@
+@import "source/source";
+@import "flavor/flavor";
+@import "network/network";
+@import "keypair/keypair";
+@import "security-groups/security-groups";
+
+.ng-wizard > .nav {
+    height: 100%;
+    position: relative;
+}
+
+.feeWrap {
+    width: 260px;
+    position: static;
+    bottom: 192px;
+    margin-left: 10px;
+    margin-top: 15px;
+}
+
+p.feeWrap {
+    width: 260px;
+    position: static;
+    bottom: 192px;
+    margin-left: 10px;
+    margin-top: 15px;
+}
+
+.table-th {
+    thead tr:first-child {
+        th {
+            padding-left: 8px;
+        }
+    }
+}

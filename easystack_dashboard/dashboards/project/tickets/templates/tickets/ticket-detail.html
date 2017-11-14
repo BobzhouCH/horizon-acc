@@ -1,0 +1,66 @@
+{% load i18n %}
+<div class="detail-page">
+  <div class="fl detail-left-icon" ng-click="action.cancel()"></div>
+  <div class="detail-page-con">
+  <tabset id="ticket-detail-wrap" justified="true" class="def-tabs">
+    <tab id="tab-network-connection" heading="{$ ::title.Detail $}">
+    <div  class="ticket-reply-tab">
+      <div class="reply-title reply-row clear">
+        <div class="col-md-9 ticket-title"><h1 title="{$ ticket.title $}">{$ ticket.title $}</h1></div>
+        <div class="col-md-3 title-btn">
+          <button ng-if="ticket.status_name === 'Open' || ticket.status_name === 'In Process'" type="button" class="btn btn-primary btn-action" ng-click="actions.status.update('Solved')">{% trans "Solve Ticket" %}</button>
+          <button ng-if="ticket.status_name === 'Solved'" type="button" class="btn btn-primary btn-action" ng-click="actions.status.update('In Process')">{% trans "Activate Ticket" %}</button>
+          <button ng-if="ticket.status_name === 'Closed'" type="button" disabled="disabled" class="btn btn-primary btn-action">{% trans "Ticket Sloved" %}</button>
+        </div>
+      </div>
+
+      <div class="reply-desc reply-row">
+        <p class="heading">{% trans "Description" %}</p>
+        <p class="content">{$ ticket.description $}</p>
+      </div>
+      <div class="ticket-date reply-row">
+        <p class="heading">{% trans "Created Time" %}:{$ ticket.create_at $}</p>
+      </div>
+      <div class="reply-row"><hr></div>
+      <div class="reply-list reply-row">
+        <div class="loading-bar" ng-if="!replyState">
+          <img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" />
+        </div>
+        <div class="tips" ng-if="replyState && !replies.length">
+            <span>{% trans "No Data" %}</span>
+        </div>
+        <div ng-if="replyState && replies.length">
+          <div class="replies-box" ng-repeat="reply in replies">
+            <ul class="reply-item"
+                ng-class="{left:ticket.requester_id==reply.author_id, right:ticket.requester_id!=reply.author_id}">
+              <li class="replies-title">
+                <span>{$ reply.author_name$}</span>
+              </li>
+              <li class="content"><p>{$ reply.content $}</p></li>
+              <li class="text-right f10 replies-time"><span>{$reply.created_at$}</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="reply-row"><hr></div>
+      <div class="reply-row replay-form">
+        <form novalidate name="form" ng-submit="actions.submitReply(form, formData.replyContent)">
+          <textarea required
+                rows="8"
+                name="ticket_reply"
+                class="form-control verify-input"
+                placeholder="{% trans 'Enter a reply content' %}"
+                ng-model="formData.replyContent">
+          </textarea>
+          <button type="button"
+                  class="btn btn-primary reply-btn"
+                  ng-click="actions.submitReply(form, formData.replyContent)"
+                  ng-disabled="form.$invalid"> {% trans 'Reply'%}</button>
+        </form>
+      </div>
+    </div>
+    </tab>
+  </tabset>
+
+  </div>
+</div>

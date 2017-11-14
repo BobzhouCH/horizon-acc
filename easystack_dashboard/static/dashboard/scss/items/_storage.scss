@@ -1,0 +1,404 @@
+/**
+ ** Author : xinwei
+ ** Module : volumes module css
+ ** Data   : 2016-02-16
+**/
+/** volume **/
+.volumesListContent {
+  .modal-dialog {
+    width: 462px;
+  }
+  .form-group .form-group-right {
+    width: 282px;
+  }
+}
+/* admin volume types */
+.extraspec-input {
+  vertical-align: text-bottom;
+}
+
+/**
+ ** Author : zhouqi
+ ** Module : volume backup module css
+ ** Data   : 2016-09-12
+**/
+/** volume **/
+.volumesBackupContent {
+  .modal-dialog {
+    width: 500px;
+  }
+  .form-group .form-group-right {
+    width: 330px;
+  }
+}
+
+
+/**  container breadcrums
+ **  Author : braveliuchina
+ **  Date : 2016-04-26
+ **/
+
+/* Container nav list */
+.container {
+  overflow-y: auto;
+  padding-left: 0px;
+  padding-right: 0px;
+  .row {
+    margin-left: 0px;
+    margin-right: 10px;
+    .col-xs-12 {
+      padding-left:0px;
+      padding-right:0px;
+    }
+  }
+  .hz-container-actions {
+     .col-lg-6 {
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+    .col-lg-5 {
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+    .col-lg-1 {
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+  }
+  .btn-add {
+    float:left;
+  }
+  .input-search {
+    margin-left: 222px;
+  }
+  .panel-group {
+    margin-top: 10px;
+    .panel {
+      margin-top: 5px;
+      .panel-body {
+        padding-left: 0px;
+        padding-right: 0px;
+      }
+    }
+    .panel-primary {
+      border: none;
+      .panel-heading {
+        border-radius: $border-radius-base;
+        background-color: $btn-primary-bg;
+      }
+      .accordion-toggle:hover {
+        color: #fff;
+      }
+    }
+    .hz-object-detail {
+      .themable-checkbox input {
+        position: relative;
+        top: 2px;
+      }
+    }
+  }
+  .panel-heading {
+    padding: 0;
+    background: #fff;
+    box-shadow: 0 1px 0 0 rgba(0,0,0,0.03);
+    .panel-title > a > div {
+      height: 34px;
+      line-height: 34px;
+      padding: 0 10px 0 20px;
+    }
+    .accordion-toggle {
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+  .panel-heading a:hover {
+    text-decoration:none;
+    cursor: pointer;
+  }
+  .panel-heading:hover {
+    color: #fff;
+    cursor: pointer;
+    background-color: $btn-primary-bg;
+    box-shadow:0px 1px 0px 0px rgba(0,0,0,0.05);
+  }
+  .fa-trash {
+    float:right;
+    position: relative;
+    top: 7px;
+    padding: 3px 5px;
+    background: #fff;
+    border-radius: $border-radius-base;
+  }
+  .fa-trash:before {
+    color: #c9302c;
+  }
+  .hz-container-title {
+    width: 90%;
+  }
+  & + .col-md-9 {
+    padding-left:10px;
+    padding-right:0px;
+  }
+  .hz-object-link {
+    margin-top: 10px;
+    input {
+      margin: 0;
+      position: relative;
+      top: 2px;
+    }
+    .hz-object-val {
+      position: relative;
+      top: 1px;
+    }
+  }
+}
+
+/* Container table */
+.object {
+  padding: 20px;
+  background: white;
+  border-radius: 4px;
+  .object-no-data {
+    line-height: 200px;
+    text-align: center;
+  }
+  .table {
+    margin-bottom: 0;
+  }
+  .table_caption {
+    th {
+      border: 0;
+      padding: 0;
+    }
+  }
+}
+
+.breadcrumbs {
+  li {
+    display: inline-block;
+    height: 20px;
+    line-height: 20px;
+    margin-right: 20px;
+    a{
+      color: $brand-primary;
+    }
+    .breadcrumbs-container-name {
+      max-width: 200px;
+    }
+  }
+  .arrow-icon {
+    position: relative;
+    &:after,
+    &:before {
+      border: 7px solid transparent;
+      border-left: 8px solid #fff;
+      width: 0;
+      height: 0;
+      position: absolute;
+      top: -3px;
+      right: -20px;
+      content: ' '
+    }
+    &:before {
+      border-left-color: #cecece;
+      right: -23px;
+    }
+    .breadcrumbs-container-name {
+      color: $gray-dark;
+    }
+  }
+}
+/*
+.breadcrumbs {
+   list-style: none;
+   overflow: hidden;
+	 li {
+       float: left;
+	   border: 1px solid #d6d6d6;
+       border-radius: 4px;
+	     a {
+	       text-decoration: none;
+           padding: 5px 0 5px 40px;
+           background: #f8f8f8;
+           position: relative;
+           display: block;
+           float: left;
+           text-align: center;
+	     }
+	     a:after {
+           content: " ";
+           display: block;
+           width: 0;
+           height: 0;
+
+           border-top: 14px solid transparent;
+           border-bottom: 14px solid transparent;
+           border-left: 19px solid #f8f8f8;
+           position: absolute;
+           top: 60%;
+           margin-top: -17px;
+
+           left: 100%;
+           z-index: 2;
+         }
+         a:before {
+           content: " ";
+           display: block;
+           width: 0;
+           height: 0;
+
+           border-top: 15px solid transparent;
+           border-bottom: 15px solid transparent;
+           border-left: 19px solid #d6d6d6;
+           position: absolute;
+           top: 60%;
+           margin-top: -18px;
+
+           margin-left: 1px;
+           left: 100%;
+           z-index: 1;
+         }
+         a:hover { background: #efefef; }
+         a:hover:after { border-left-color: #efefef; !important; }
+         span {
+           display:block;
+           border: 1px solid #d6d6d6;
+           border-top: 0px;
+           margin-left: -1px;
+         }
+         .breadcrumbs-container-name {
+           max-width: 200px;
+           height: 16px;
+           line-height: 16px;
+         }
+	 }
+
+	 li:first-child a {
+	   padding-left: 10px;
+     }
+
+     li:nth-child(2) a       { background:        #f8f8f8; }
+     li:nth-child(2) a:after { border-left-color: #f8f8f8; }
+     li:nth-child(3) a       { background:        #f8f8f8; }
+     li:nth-child(3) a:after { border-left-color: #f8f8f8; }
+     li:nth-child(4) a       { background:        #f8f8f8; }
+     li:nth-child(4) a:after { border-left-color: #f8f8f8; }
+     li:nth-child(5) a       { background:        #f8f8f8; }
+     li:nth-child(5) a:after { border-left-color: #f8f8f8; }
+
+     li:last-child a {
+       background: #e6e6e6 ;
+       color: black;
+       pointer-events: none;
+       cursor: default;
+     }
+     li:last-child a:after{
+       border-left: 19px solid #e6e6e6;
+     }
+}*/
+.search-bar-short {
+  min-width: 75px;
+  .form-control {
+    padding-right:0px;
+  }
+}
+input.radio-select-input {
+    width: 5%;
+    vertical-align: middle;
+    margin-bottom: 4px;
+    margin-top:3px;
+}
+/* volume time-line */
+.volume-detail-backup-row-bottom {
+    min-width: 280px;
+    max-width: 831px;
+    min-height: 450px;
+    background: #F1F3F6 100%;
+    margin: 10px auto;
+    border-radius: 4px;
+    padding: 5px;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height:0px;
+
+    .action-cursor {
+        &:hover {
+            cursor:pointer;
+        }
+    }
+    ol li {
+        width: 85%;
+        margin-left: 201px;
+        position: relative;
+        top: 68px;
+        border-radius: 2px;
+
+        .time-wrap {
+            width: 90px;
+            position: absolute;
+            padding-top: 10px;
+            left: -110px;
+        }
+        .dit-icon {
+            display: inline-block;
+            position: absolute;
+            left: -17px;
+            top: 10px;
+        }
+        .dit-icon-b {
+            display: inline-block;
+            position: absolute;
+            left: -17px;
+            top: 10px;
+        }
+        .line-wrap {
+            position: absolute;
+            left: 0px;
+            width: 20px;
+            height: 2px;
+            top: 18px;
+            background: #61BFAF;
+        }
+        .list-name {
+            color: #333;
+            font-size: 14px;
+            padding: 10px 10px 5px 30px;
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+        .action-inner {
+            padding: 5px 5px 10px 30px;
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+    }
+    .overview-ol-con {
+        min-width: 280px;
+        max-width: 831px;
+        min-height: 460px;
+        position: relative;
+        .loading-bar{
+            min-height: 460px;
+            padding: 150px;
+        }
+        .list-dashed{
+            position: absolute;
+            left: 190px;
+            width: 3px;
+            height: 100%;
+            top: 57px;
+            background: #61BFAF;
+        }
+        .list-add {
+            position: absolute;
+            left: 178px;
+            top: 45px;
+            top: 30px;
+            background: url('/static/dashboard/img/volume-backup-timeline-add.png') no-repeat;
+            width:27px;
+            height:27px;
+        }
+    }
+}

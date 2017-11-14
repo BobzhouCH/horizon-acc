@@ -1,0 +1,70 @@
+[ng-controller="LaunchBareInstanceSourceController as ctrl"] {
+
+  .table-bordered {
+    border: 1px solid #e1e5e8;
+  }
+
+  .hz-magic-search-bar .magic-search-bar {
+    margin-bottom: 10px;
+  }
+
+  th.number,
+  td.number {
+    padding-right: 30px;
+  }
+
+  .selected-source {
+    .row {
+       margin-left: 0;
+       .col-sm-12,.col-sm-8 { padding-left: 0; }
+    }
+    .chart {
+      display: inline;
+      width: 99%;
+      margin-bottom: 0;
+      padding: 0 10px 10px 10px;
+
+      @media (min-width: 768px) {
+        padding-left: 20px;
+      }
+    }
+  }
+
+  .instance-source {
+    .form-horizontal {
+       .row {
+         margin-left: 0;
+         .col-sm-12,.col-sm-3 { padding-left: 0; }
+       }
+    }
+    .image select {
+      width: 99%;
+    }
+
+    .volume-size input[type="number"]{
+      width: 90%;
+    }
+  }
+
+  .instance-btn { margin-right: 0; }
+
+  .image-icon { vertical-align: middle; }
+  .image-name { width: 220px; }
+
+  .form-field {
+      position: relative;
+      width: 126px;
+      margin-bottom: 10px;
+      .on-top { text-align: left; }
+   }
+}
+
+.instance-wrap .instance_count { width: 100px; }
+.instance-wrap .instance_count input { padding: 5px; }
+.transfer-available, .transfer-allocated { margin-bottom: 0 !important; }
+.content.instance-content {
+  padding-bottom: 0 !important; top:20px !important;
+}
+
+.instance-wrap .fa { position: absolute; right: -20px; top: 28px; }
+.instance-wrap .has-warning .form-control { border-color: #a94442; }

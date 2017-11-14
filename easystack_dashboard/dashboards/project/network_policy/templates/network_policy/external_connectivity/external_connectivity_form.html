@@ -1,0 +1,205 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+      <fieldset>
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' || context.mode === 'edit'"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="name">
+            *{% trans "Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              type="text"
+              ng-model="external.name"
+              ng-maxlength="255"/>
+
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "A external connectivity name is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength && form.name.$dirty">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' || context.mode === 'edit'">
+          <label for="description">
+            {% trans "Description" %}
+          </label>
+          <div class="form-group-right">
+            <textarea
+              id="description"
+              name="description"
+              class="form-control"
+              rows="3"
+              ng-model="external.description">
+            </textarea>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create'"
+          ng-class="{'has-error':form.policies.$invalid && form.policies.$dirty}">
+          <label for="policies">
+            *{% trans "IP Version" %}
+          </label>
+          <div class="form-group-right policie-wrap">
+
+            <select id="ip-version" class="form-control"
+              ng-init="external.ip_version = ip_version_seleted"
+              ng-model="external.ip_version"
+              ng-options="ip.name for ip in ip_versions track by ip.value">
+            </select>
+
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create'"
+          ng-class="{'has-error':form.admin.$invalid && form.IP.$dirty}">
+          <label>
+            {% trans "CIDR" %}
+          </label>
+          <div class="form-group-right">
+            <input
+              id="cidr"
+              name="cidr"
+              class="form-control verify-input"
+              type="text"
+              ng-model="external.cidr"/>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create'">
+          <label for="description">
+            <p>{% trans "External Routes" %}</p>
+          </label>
+          <div class="form-group-right">
+            <select
+              style="width: 335px;"
+              multiple="multiple"
+              id="external-routes"
+              name="external_routes"
+              class="form-control"
+              ng-model="external.external_routes"
+              ng-options="('destination:' + ext.destination + ',nexthop:' + ext.nexthop)
+                for ext in external_routes track by ('destination:' + ext.destination + ',nexthop:' + ext.nexthop)">
+            </select>
+
+            <span class="add-mutiple-btn-fixed"
+               ng-click="action.add_route_parameter.open()">
+               <i class="icon add_to"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create'"
+          ng-class="{'has-error':form.policies.$invalid && form.policies.$dirty}">
+          <label for="policies">
+            *{% trans "Subnet ID" %}
+          </label>
+          <div class="form-group-right policie-wrap" ng-if="listSubnetSeleted">
+
+            <select
+              id="subnet-id"
+              class="form-control"
+              name="subnet_id"
+              ng-init="external.subnet_id = listSubnetSeleted" 
+              ng-model="external.subnet_id"
+              ng-options="list.name for list in listSubnets track by list.id">
+            </select>
+
+          </div>
+        </div>
+
+        <div style="margin-top:5px" class="form-group clearfix"
+          ng-if="context.mode === 'create'">
+          <label></label>
+          <div class="form-group-right">
+            <input name="port_address_translation" ng-model="external.port_address_translation" type="checkbox"/> Port Address Translation
+          </div>
+        </div>
+
+        <div style="margin-top:5px" class="form-group clearfix"
+          ng-if="context.mode === 'create' || context.mode === 'edit'">
+          <label></label>
+          <div class="form-group-right">
+            <input name="shared" ng-model="external.shared" type="checkbox"/> Shared
+          </div>
+        </div>
+
+
+
+        <!--
+         *
+         * Add external route parameter
+         *
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'add'"
+          ng-class="{'has-error':form.admin.$invalid && form.IP.$dirty}">
+          <label>
+            *{% trans "Destination" %}
+          </label>
+          <div class="form-group-right">
+            <input
+              required
+              id="destination"
+              name="destination"
+              class="form-control verify-input"
+              type="text"
+              ng-model="external.destination"/>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'add'"
+          ng-class="{'has-error':form.admin.$invalid && form.IP.$dirty}">
+          <label>
+            *{% trans "Next hop" %}
+          </label>
+          <div class="form-group-right">
+            <input
+              required
+              id="next_hop"
+              name="next_hop"
+              class="form-control verify-input"
+              type="text"
+              ng-model="external.next_hop"/>
+          </div>
+        </div>
+
+      </fieldset>
+    </div>
+
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>
+

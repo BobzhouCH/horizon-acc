@@ -1,0 +1,69 @@
+{% load i18n %}
+
+<div class="modal-body clearfix">
+<fieldset ng-disabled="isQuotaLoading">
+    <div class="form-group clearfix" domain-quota-item id="ram" name="ram" label="{% trans 'RAM (MB)' %}"  quota="domainQuota.novaquota.ram"></div>
+    <div class="form-group clearfix" domain-quota-item id="cores" name="cores" label="{% trans 'Cores' %}"  quota="domainQuota.novaquota.cores"></div>
+    <div class="form-group clearfix" domain-quota-item id="instances" name="instances" label="{% trans 'Instances' %}"  quota="domainQuota.novaquota.instances"></div>
+    <div class="form-group clearfix" domain-quota-item id="key_pairs" name="key_pairs" label="{% trans 'Keypairs' %}"  quota="domainQuota.novaquota.key_pairs"></div>
+    <div class="form-group clearfix" domain-quota-item id="volumes" name="volumes" label="{% trans 'Volumes' %}"  quota="domainQuota.cinderquota.volumes"></div>
+    <div class="form-group clearfix" domain-quota-item id="volume_snapshots" name="volume_snapshots" label="{% trans 'Volume Snapshots' %}"  quota="domainQuota.cinderquota.volume_snapshots"></div>
+    <div class="form-group clearfix" domain-quota-item id="volume_gigabytes" name="volume_gigabytes" label="{% trans 'Volume TotalSize(GB)' %}"  quota="domainQuota.cinderquota.volume_gigabytes"></div>
+    <div class="form-group clearfix" domain-quota-item id="backups" name="backups" label="{% trans 'Volume Backups' %}"  quota="domainQuota.cinderquota.backups"></div>
+    <div class="form-group clearfix" domain-quota-item id="backup_gigabytes" name="backup_gigabytes" label="{% trans 'Volume Backup Size(GB)' %}"  quota="domainQuota.cinderquota.backup_gigabytes"></div>
+    <div class="form-group clearfix" domain-quota-item id="floatingip" name="floatingip" label="{% trans 'Floating IPs' %}"  quota="domainQuota.neutronquota.floatingip"></div>
+    <div class="form-group clearfix" domain-quota-item id="network" name="network" label="{% trans 'Networks' %}"  quota="domainQuota.neutronquota.network"></div>
+    <div class="form-group clearfix" domain-quota-item id="subnet" name="subnet" label="{% trans 'Subnets' %}"  quota="domainQuota.neutronquota.subnet"></div>
+    <div class="form-group clearfix" domain-quota-item id="router" name="router" label="{% trans 'Routers' %}"  quota="domainQuota.neutronquota.router"></div>
+    <div class="form-group clearfix" domain-quota-item id="security_group" name="security_group" label="{% trans 'Security Groups' %}"  quota="domainQuota.neutronquota.security_group"></div>
+    <div class="form-group clearfix" domain-quota-item id="port" name="port" label="{% trans 'Ports' context 'Neutron quota' %}"  quota="domainQuota.neutronquota.port"></div>
+    {% if LOADBALANCER_ENABLE %}
+    <div class="form-group clearfix" domain-quota-item id="healthmonitor" name="healthmonitor" label="{% trans 'Healthmonitor' %}"  quota="domainQuota.neutronquota.healthmonitor"></div>
+    <div class="form-group clearfix" domain-quota-item id="listener" name="listener" label="{% trans 'Listener' %}"  quota="domainQuota.neutronquota.listener"></div>
+    <div class="form-group clearfix" domain-quota-item id="loadbalancer" name="loadbalancer" label="{% trans 'Loadbalancer' %}"  quota="domainQuota.neutronquota.loadbalancer"></div>
+    <div class="form-group clearfix" domain-quota-item id="pool" name="pool" label="{% trans 'Pool' %}"  quota="domainQuota.neutronquota.pool"></div>
+    {% endif %}
+    {% if MANILA_ENABLED %}
+    <div class="form-group clearfix" domain-quota-item id="shared_files" name="shared_files" label="{% trans 'Shared Files' %}"  quota="domainQuota.manilaquota.shares"></div>
+    <div class="form-group clearfix" domain-quota-item id="shared_file_gigabytes" name="shared_file_gigabytes" label="{% trans 'Shared File Size' %}"  quota="domainQuota.manilaquota.share_gigabytes"></div>
+    <div class="form-group clearfix" domain-quota-item id="shared_file_snapshots" name="shared_file_snapshots" label="{% trans 'Shared File Snapshots' %}"  quota="domainQuota.manilaquota.share_snapshots"></div>
+    <div class="form-group clearfix" domain-quota-item id="shared_networks" name="shared_networks" label="{% trans 'Shared File Networks' %}"  quota="domainQuota.manilaquota.share_networks"></div>
+    {% endif %}
+</fieldset>
+</div>
+
+
+<script type="text/ng-template" id="domain_quota/domain_quota_item.html">
+<label for="{$id$}-input"> {$label$} </label>
+<div class="form-group-right" ng-class="{'has-error' : quotaField.$invalid && quotaField.$dirty}">
+  <input type="text"
+         id="{$id$}-input"
+         name="{$name$}"
+         class="check-form-control"
+         quota="quota"
+         ng-model="quota.value"
+         ng-hide="quota.checked"
+         domain-quota-validate
+         required>
+  <input type="text" disabled value="{% trans 'No Limit' %}" class="check-form-control" ng-show="quota.checked">
+  <input type="checkbox"
+         ng-if="!quota.unlimit"
+         class="form-group-check"
+         ng-model="quota.checked"
+         ng-click="toggleCheckState()">
+  <input type="checkbox"
+         tooltip="{% trans 'Please limit the quota of the project first' %}"
+         tooltip-placement="left"
+         tooltip-trigger="mouseenter"
+         ng-if="quota.unlimit"
+         ng-model="quota.checked"
+         class="form-group-check"
+         ng-click="toggleCheckState()">
+  <span class="form-group-check">{% trans "No Limit" %}</span>
+  <div class="help-block alert-fixed alert-danger" ng-show="quotaField.$dirty && quotaField.$invalid">
+    <p ng-show="quotaField.$error.required || quotaField.$error.pattern">{% trans "Quota is null or pattern is error" %}</p>
+    <p ng-show="quotaField.$error.min"> {% trans "Quota should be more than or equal to " %}{$ quota.min $} </p>
+    <p ng-show="quotaField.$error.max"> {% trans "Please limit the quota of the project first" %} </p>
+  </div>
+</div>
+</script>

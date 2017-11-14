@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+{% load i18n %}
+{% load i18n branding %}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8">
+<title>{% site_branding %}</title>
+<meta name="author" content="" />
+<meta name="Copyright" content="" />
+{% include 'favicon.html' %}
+<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}register/style/index.css">
+<script src="{{ STATIC_URL }}register/js/jquery-1.11.2.js"></script>
+<body>
+    <div class="register-logo"><img src="/static/dashboard/img/loginLogo.png"></div>
+    <div class="register-wrap other">
+
+      <div class="conterWrap position-size">
+
+        <h2>激活失败</h2>
+        <div class="tips-icon"><span class="fail-icon"></span></div>
+        <div class="tips-content">
+          <p>激活过程中出现错误</p>
+          <p><a href="#">联系管理员</a></p>
+        </div>
+      </div>
+
+    </div>
+</body>
+</html>

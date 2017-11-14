@@ -1,0 +1,182 @@
+<div ng-controller="LaunchInstanceKeypairCtrl as ctrl">
+
+  <div class="content">
+    <!--div class="subtitle">
+      {$ ::ctrl.label.adminPasswordSubTitle $}
+    </div-->
+<div>
+      {$ ::ctrl.label.subtitle $}
+    </div>
+  <div class="admin-password">
+
+    <div class="clearfix" ng-form="adminPasswordForm">
+      <div class="form-group fl">
+      <div class="form-field clearfix">
+        <label class="fl">{$ ::ctrl.label.password $}</label>
+        <input class="form-control fl"
+           id="adminPassword"
+           name="adminPassword"
+           ng-required="ctrl.tableData.allocated.length<=0"
+           ng-model="model.newInstanceSpec.admin_pass"
+           type='password'>
+    </div>
+      </div>
+
+      <div class="form-group fl">
+        <div class="form-field clearfix"
+             ng-class="{ 'has-warning':
+                       adminPasswordForm['confirmPassword'].$invalid }">
+          <label class="on-top fl">{$ ::ctrl.label.confirmPassword $}</label>
+          <input
+             id="confirm-password"
+             name="confirmPassword"
+             class="form-control fl"
+             hz-password-match="adminPasswordForm.adminPassword"
+             ng-model="ctrl.confirmedAdminPassword"
+             type='password'>
+          <span class="fa fa-exclamation-triangle invalid"
+            ng-show="adminPasswordForm['confirmPassword'].$invalid"
+            popover="{$ ::ctrl.label.confirmPasswordError $}"
+            popover-placement="top"
+            popover-append-to-body="true"
+            popover-trigger="hover"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div ng-if="ctrl.isKeypairCreated" class="alert alert-info" style="padding: 18px;" role="alert">
+      <p>{$ ctrl.label.keypairTitle $}  {$ctrl.createdKeypair.name$} {$ ctrl.label.keypairTitleBody $} </p>
+      <a class="btn btn-default" role="button" href="{$ ctrl.createdKeypair.regenerateUrl $}">
+        <span class="fa fa-download"></span>
+        {$ctrl.createdKeypair.name$}
+      </a>
+      <p>
+        {$ ctrl.label.keypairNote $}
+      </p>
+    </div>
+    <div class="row form-group">
+      <div class="col-sm-12 mb10">
+        <button id="create-key-pair" type="button" class="btn btn-action mr5 btn-primary"
+                ng-click="ctrl.createKeyPair()">
+          <span class="fa fa-fw fa-plus"></span>
+          {$ ::ctrl.label.createKeyPair $}
+        </button>
+        <button id="import-key-pair" type="button" class="btn btn-action btn-primary"
+                ng-click="ctrl.importKeyPair()">
+          <span class="fa fa-fw fa-upload"></span>
+          {$ ::ctrl.label.importKeyPair $}
+        </button>
+      </div>
+    </div>
+
+    <transfer-table tr-model="ctrl.tableData"
+                    help-text="ctrl.tableHelp"
+                    limits="ctrl.tableLimits">
+
+      <!-- Key Pairs Allocated-->
+      <allocated>
+        <table id="selected-key-pair" st-table="ctrl.tableData.displayedAllocated"
+               st-safe-src="ctrl.tableData.allocated" hz-table
+               class="table table-bordered table-hover table-th">
+          <thead>
+            <tr>
+              <th eagle-eye="data_col">{$ ::ctrl.label.name $}</th>
+              <th eagle-eye="data_col">{$ ::ctrl.tableLabels.fingerprint $}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr ng-if="ctrl.tableData.allocated.length === 0">
+            <td colspan="8">
+              <div class="no-rows-help">
+                {$ ::trCtrl.helpText.noneAllocText $}
+              </div>
+            </td>
+          </tr>
+          <tr ng-repeat-start="row in ctrl.tableData.displayedAllocated track by row.id">
+            <td eagle-eye="data_col" class="expander" width="22%">
+             <span class="row-name"> {$ row.name $} </span>
+             <span class="chevron-right chevron-fixed fr" hz-expand-detail="chevron-right chevron-down" title="{$ ::trCtrl.helpText.expandDetailsText $}">
+             </span>
+            </td>
+            <td eagle-eye="data_col">{$ row.fingerprint $}</td>
+            <td eagle-eye="button_action" class="action-col">
+              <action-list class="instance-btn">
+                <action
+                        callback="trCtrl.deallocate" item="row">
+                  <span class="icon remove_to"></span>
+                </action>
+              </action-list>
+            </td>
+          </tr>
+          <tr ng-repeat-end class="detail-row">
+            <td eagle-eye="data_col" class="detail" colspan="3">
+              <dl class="dl-horizontal" ng-include="ctrl.tableDetails">
+              </dl>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </allocated>
+
+      <!-- Key Pairs Available -->
+      <available>
+        <table id="key-pair-list" st-table="ctrl.tableData.displayedAvailable"
+               st-safe-src="ctrl.tableData.available"
+               hz-table class="table table-bordered table-hover table-th">
+          <thead>
+<!--            <tr>
+              <th class="search-header" colspan="7">
+                <hz-search-bar group-classes="input-group-sm" icon-classes="fa-search">
+                </hz-search-bar>
+              </th>
+            </tr>-->
+            <tr>
+              <th eagle-eye="data_col" st-sort="name" st-sort-default class="rsp-p1">{$ ::ctrl.label.name $}</th>
+              <th eagle-eye="data_col" st-sort="fingerprint" class="rsp-p1">{$ ::ctrl.tableLabels.fingerprint $}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-if="trCtrl.numDisplayedAvailable() === 0">
+              <td colspan="8">
+                <div class="no-rows-help">
+                  {$ ::trCtrl.helpText.noneAvailText $}
+                </div>
+              </td>
+            </tr>
+            <tr ng-repeat-start="row in ctrl.tableData.displayedAvailable track by row.id"
+                ng-if="!trCtrl.allocatedIds[row.id]">
+              <td eagle-eye="data_col" class="expander" width="22%">
+              	<span class="row-name"> {$ row.name $} </span>
+               <span class="chevron-right chevron-fixed fr" hz-expand-detail="chevron-right chevron-down" title="{$ ::trCtrl.helpText.expandDetailsText $}">
+               </span>
+              </td>
+              <td eagle-eye="data_col">{$ row.fingerprint $}</td>
+              <td eagle-eye="button_action" class="action-col">
+                <action-list class="instance-btn">
+                  <action
+                          callback="trCtrl.allocate" item="row">
+                    <span class="icon add_to"></span>
+                  </action>
+                </action-list>
+              </td>
+            </tr>
+            <tr ng-repeat-end class="detail-row" ng-if="!trCtrl.allocatedIds[row.id]">
+              <td eagle-eye="data_col" class="detail" colspan="4" ng-include="ctrl.tableDetails">
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+    <tr>
+      <td eagle-eye="data_page" colspan="100">
+        <div st-pagination="" st-items-by-page="5" st-displayed-pages="100"></div>
+      </td>
+    </tr>
+  </tfoot>
+        </table>
+      </available>
+    </transfer-table> <!-- End Key Pairs Table -->
+
+  </div> <!-- End Content -->
+</div> <!-- End Controller -->

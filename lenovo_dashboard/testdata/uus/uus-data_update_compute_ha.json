@@ -1,0 +1,18 @@
+{
+    "return_code": 0,
+    "return_data":
+        {
+            "status": 0,
+            "enabled_list": {
+                "cluster": [
+                    "node-1.domain.tld",
+                    "node-5.domain.tld",
+                    "node-6.domain.tld"
+                ],
+                "cluster1": [
+                    "node-1.domain.tld",
+                    "node-5.domain.tld"
+                ]
+            }
+        }
+}

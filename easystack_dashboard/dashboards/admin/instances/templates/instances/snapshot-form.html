@@ -1,0 +1,120 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+    <h3 class="modal-title">{$ ::context.title $}</h3>
+    <p class="modal-colsed" ng-click="action.cancel()">
+        <i class="modal-colsed-icon"></i>
+    </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+    <div class="left form-wrap">
+      <fieldset>
+        <!--
+          Snapshot name input (required):
+            Create-mode: show
+            Edit-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'createsnapshot'">
+          <label class="control-label fl required" for="name">
+            *{% trans "Snapshot Name" %}
+          </label>
+          <div class="form-group-right" ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              type="text"
+              ng-maxlength="80"
+              ng-model="instance.snapshotname"
+              ng-disabled=""
+              placeholder="{% trans 'Enter a snapshot name' %}">
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "A snapshot name is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength">
+              {% trans "Name length should be less than 80 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'createsnapshot'"
+          ng-class="{'has-error':form.description.$invalid && form.discription.$dirty}">
+          <label class="control-label fl required" for="description">
+            {% trans "Description" %}
+          </label>
+          <div class="form-group-right" ng-class="{'has-error':form.description.$invalid && form.description.$dirty}">
+            <textarea
+              id="description"
+              name="description"
+              class="form-control"
+              rows="4"
+              type="text"
+              ng-maxlength="255"
+              ng-model="instance.description"
+              placeholder="{% trans 'Enter a description' %}">
+            </textarea>
+            <p class="help-block alert alert-danger"
+              ng-show="form.description.$error.maxlength">
+              {% trans "Description length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <div ng-show="showBilling && !noFixing" ng-if="preBilling" class="form-group clearfix">
+          <label for="btype">
+            {% trans "Billing Type" %}
+          </label>
+          <div class="form-group-right" style="width: 40%;">
+            <select required
+              id="unit"
+              name="unit"
+              class="form-control"
+              style="width: 80%;"
+              ng-change="changePayment(unitSelect)"
+              ng-model="unitSelect"
+              ng-options="payment as payment.unitLabel for payment in payment_type">
+            </select>
+          </div>
+          <div ng-if="unitSelect.unit=='H'" style="padding-top:10px;">
+            <span class="orange">{$ price | price $}{% trans 'Yuan' %}</span>/{% trans 'Hour' %}
+          </div>
+          <div ng-if="unitSelect.unit=='M'" style="padding-top:10px;">
+            <span class="orange">{$ price | price $}{% trans 'Yuan' %}</span>/{% trans 'Month' %}
+          </div>
+          <div ng-if="unitSelect.unit=='Y'" style="padding-top:10px;">
+            <span class="orange">{$ price | price $}{% trans 'Yuan' %}</span>/{% trans 'Year' %}
+          </div>
+        </div>
+        <div ng-if="!preBilling">
+          <p class="billing-info text-right" ng-show="showBilling">
+            <span class="orange">{$ price | price $}{% trans 'Yuan' %}</span>/{% trans 'Hour' %}
+            <span class="gray_3">({$ monthPrice | price $}{% trans 'Yuan' %}/{% trans 'Month' %})</span>
+          </p>
+        </div>
+        <p class="billing-info-tips text-right" ng-show="noFixing"><span class="gray_3">{% trans 'No Active Fixing' %}</span></p>
+        <p class="billing-info-tips text-right" ng-show="showBalance"><span class="red">{% trans 'No Enough Balance' %}</span></p>
+      </fieldset>
+    </div>
+
+    <!-- Modal-form-right: The description text. -->
+
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid || showBalance"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

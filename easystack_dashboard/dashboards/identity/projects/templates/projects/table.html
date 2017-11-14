@@ -1,0 +1,161 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Projects" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Projects") %}
+{% endblock page_header %}
+
+{% block main %}
+
+<hz-magic-search-context filter-facets="filterFacets">
+  <table id="projects-list" hz-table ng-cloak hopes-table-drag
+    st-table="iprojects"
+    st-safe-src="projects"
+    default-sort="name"
+    default-sort-reverse="false"
+    ng-controller="identityProjectsCtrl"
+    ng-init="projectID = '{{ request.project.id }}'"
+    disabled="disabled"
+    st-magic-search
+    class="table table-bordered table-hover">
+
+    <thead>
+      <tr>
+        <th colspan="100" class="bare">
+          <div class="table_actions clearfix">
+            <div class="fl">
+              <action-list>
+              <action
+                action-classes="'btn btn-primary btn-action'"
+                callback="actions.refresh">
+                <i class="icon icon-refresh"></i>
+                <span id="refresh"></span>
+              </action>
+            </action-list>
+              <action-list ng-if="isCloudAdmin || isDomainAdmin">
+                <action
+                  action-classes="'btn btn-primary btn-action'"
+                  callback="actions.create.open">
+                  <i class="icon icon-add"></i>
+                  <span id="create-project">{% trans 'Create Project' %}</span>
+                </action>
+              </action-list>
+              <action-list ng-if="isCloudAdmin || isDomainAdmin">
+                <action
+                  action-classes="'btn btn-primary btn-action'"
+                  disabled="disabled"
+                  callback="actions.edit.open" item="selectedData.aData">
+                  <i class="icon icon-edit"></i>
+                  <span id="edit">{% trans 'Edit' %}</span>
+                </action>
+              </action-list>
+              <action-list ng-if="isCloudAdmin || isDomainAdmin">
+                  <action
+                    action-classes="'btn btn-action btn-danger'"
+                    disabled="numSelected === 0"
+                    callback="actions.deleted.batchDelete">
+                    <i class="icon icon-delete"></i>
+                    <span id="delete-projects">{% trans 'Delete Projects' %}</span>
+                  </action>
+              </action-list>
+              <action-list dropdown ng-if="isAdmin || isProjectAdmin">
+                  <button id="more" type="button" class="btn btn-primary btn-action" dropdown-toggle>
+                    <i class="icon icon-more"></i>
+                    <span>{% trans 'More' %}</span>
+                  </button>
+                  <menu>
+                    <action
+                      button-type="menu-item"
+                      disabled="disabled || !isProjectAdmin"
+                      callback="actions.editquota.open" item="selectedData.aData">
+                      <span id="edit-quotas">{% trans 'Edit Quotas' %}</span>
+                    </action>
+                    <action
+                      ng-if="isCloudAdmin || isDomainAdmin"
+                      button-type="menu-item"
+                      disabled="disabled"
+                      callback="actions.editUsers.open" item="selectedData.aData">
+                      <span id="edit-users">{% trans 'Edit Users' %}</span>
+                    </action>
+                    <action
+                      ng-if="isCloudAdmin || isDomainAdmin"
+                      button-type="menu-item"
+                      disabled="disabled || !selectedData.aData[0].enabled || selectedData.aData[0].name === 'admin' ||
+                      isCurrentProject(selectedData.aData[0].id) || selectedData.aData[0].name === 'Default'"
+                      callback="actions.enable.toggle" item="selectedData.aData">
+                      <span id="disable">{% trans "Disable" %}</span>
+                    </action>
+                    <action
+                      ng-if="isCloudAdmin || isDomainAdmin"
+                      button-type="menu-item"
+                      disabled="disabled || selectedData.aData[0].enabled"
+                      callback="actions.enable.toggle" item="selectedData.aData">
+                      <span id="enable">{% trans "Enable" %}</span>
+                    </action>
+                  </menu>
+               </action-list>
+            </div>
+            <div class="fr search-bar">
+              <hz-magic-search-bar id="search"></hz-magic-search-bar>
+            </div>
+          </div>
+        </th>
+      </tr>
+
+      <tr eagle-eye="table_heads">
+        <th class="select-col" eagle-eye="select_col">
+          <input type="checkbox"
+            hz-select-page="projects"/>
+        </th>
+        <th>
+          <span st-sort="name" st-sort-default="name" eagle-eye="data_col">{$ ::context.header.name $}</span>
+        </th>
+        <th><span st-sort="description" eagle-eye="data_col">{$ ::context.header.description $}</span></th>
+        <th><span st-sort="description" eagle-eye="data_col">{$ ::context.header.id $}</span></th>
+        <th ng-if="isCloudAdmin">
+          <span st-sort="domain_name" eagle-eye="data_col">{$ ::context.header.domain $}</span>
+        </th>
+        <th text-center><span st-sort="enabled" eagle-eye="data_col">{$ ::context.header.enabled $}</span></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr ng-if="!iprojectsState">
+        <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+      </tr>
+
+      <tr ng-if="!iprojects.length && iprojectsState">
+        <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+      </tr>
+
+      <tr eagle-eye= "data_row" ng-repeat="project in iprojects" ng-class="{'st-selected': checked[project.id]}">
+        <td class="select-col" eagle-eye="select_col">
+          <input type="checkbox"
+            hz-select="project"
+            ng-model="selected[project.id].checked"
+            hz-checkbox-group="projects"
+            ng-if="project.name!=='admin'"/>
+        </td>
+
+        <td eagle-eye="data_col">{$ project.name $}</td>
+        <td eagle-eye="data_col">{$ project.description $}</td>
+        <td eagle-eye="data_col">{$ project.id $}</td>
+        <td eagle-eye="data_col" ng-if="isCloudAdmin">{$ (project.domain && project.domain.name)? project.domain.name : (project.domain_name ? project.domain_name : project.domain_id) $}</td>
+        <td text-center user-state eagle-eye="data_col">
+          <i ng-if="project.enabled" class="state-icon icon-true" eagle-eye="green"></i>
+          <i ng-if="!project.enabled" class="state-icon icon-false" eagle-eye="red"></i>
+        </td>
+      </tr>
+    </tbody>
+
+    <tfoot ng-if="projects.length > 10">
+      <tr>
+        <td colspan="100" eagle-eye="data_page">
+          <table-footer></table-footer>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</hz-magic-search-context>
+{% endblock %}

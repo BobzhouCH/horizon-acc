@@ -1,0 +1,102 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+<h3 class="modal-title">{$ ::context.title $}</h3>
+<p class="modal-colsed" ng-click="action.cancel()">
+<i class="modal-colsed-icon"></i>
+</p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+    <div class="left form-wrap">
+      <fieldset>
+
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="name">
+            {% trans "Router Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              type="text"
+              ng-model="router.name"
+              ng-maxlength="255"
+              ng-disabled="true">
+           </div>
+        </div>
+
+        <!--
+          Role selection (required):
+            Create-mode: show
+            Edit-mode: hide
+            Password-mode: hide
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.subnet.$invalid && form.subnet.$dirty}">
+          <label for="subnet">
+            {% trans "Subnet" %}*
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="subnet"
+              name="subnet"
+              class="form-control verify-input"
+              ng-class="{strikeLoading: loadingSubnets}"
+              ng-model="router.subnet">
+              <option value="" disabled ng-selected="true">
+                {% trans 'Select Subnet' %}
+              </option>
+              <option ng-repeat="subnet in available_subnets" value="{$ subnet $}">
+                {$ subnet.subnet_name $}: {$ subnet.cidr $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.ip.$invalid && form.ip.$dirty}"
+          ng-if="false">
+         <label for="ip">
+            {% trans "IP Address (optional)" %}
+          </label>
+          <div class="form-group-right">
+            <input
+              id="ip"
+              name="ip"
+              class="form-control verify-input"
+              type="text"
+              ng-model="router.ip"
+              ng-maxlength="255"
+              ng-disabled="">
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$invalid && form.name.$dirty">
+              {% trans "Specify an IP address for the interface created (e.g. 192.168.0.254)." %}
+            </p>
+          </div>
+        </div>
+
+      </fieldset>
+    </div>
+
+    <!-- Modal-form-right: The description text. -->
+
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>
+

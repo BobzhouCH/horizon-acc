@@ -1,0 +1,193 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <div class="modal-description mt10" ng-if="context.mode === 'setGateway'">
+            <p>
+              {% trans "If there is no floatingIP, please apply for a floatingip." %}
+            </p>
+    </div>
+    <!-- Modal-form-left: Contains the form controls -->
+      <fieldset>
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}"
+          ng-if="context.mode === 'createRouter' || context.mode ==='edit'">
+          <label for="name">
+            *{% trans "Router Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              type="text"
+              ng-model="router.name"
+              ng-maxlength="255"
+              ng-disabled="context.mode === 'setGateway'"
+              placeholder="{% trans 'Enter a router name' %}"/>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "A router name is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength && form.name.$dirty">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'setGateway' && dropdown.IPs"
+          ng-class="{'has-error':form.IP.$invalid && form.IP.$dirty}">
+          <label for="ip_address">
+            {% trans "Floating IP" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="ip_address"
+              name="ip_address"
+              class="form-control"
+              ng-class="{strikeLoading: !floatingIPState}"
+              ng-model="router.items">
+              <option value="" disabled>
+                {% trans 'Select a Floating IP' %}
+              </option>
+              <option
+                ng-repeat="IP in dropdown.IPs"
+                value="{$IP$}">
+                {$ IP.floating_ip_address $} ({% trans 'Bandwidth' %}: {$ IP.bandwidth $} Mbps)
+              </option>
+            </select>
+          </div>
+        </div>
+       <div class="form-group clearfix"
+          ng-if="context.mode === 'associate_firewall' ||context.mode === 'disassociate_firewall'"
+          ng-class="{'has-error':form.firewall.$invalid && form.firewall.$dirty}">
+          <label for="firewall">
+            {% trans "Firewall" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="firewall"
+              name="firewall"
+              class="form-control"
+              ng-class="{strikeLoading: !firewallstate}"
+              ng-disabled="context.mode === 'disassociate_firewall'"
+              ng-model="router.firewall_id">
+              <option value="" disabled>
+                {$ (dropdown.firewalls.length >= 1)?
+                   "{% trans 'Select A Firewalls'%}": "{% trans 'No Firewall Available'%}" $}
+              </option>
+              <option
+                ng-repeat="fwaas in dropdown.firewalls"
+                value="{$ fwaas.id $}">
+                {$ fwaas.name $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+       <div class="form-group clearfix policie-wrap"
+          ng-if="context.mode === 'add-rule'"
+          ng-class="{'has-error':form.add-rule.$invalid && form.add-rule.$dirty}">
+          <label for="add-rule">
+            *{% trans "Rule" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="add_rule"
+              class="form-control"
+              name="add_rule"
+              type="checkbox"
+              ng-class="{strikeLoading: !rules}"
+              ng-model="router.add_rule">
+              <option value="" disabled>
+                {$ (rules.length >= 1)?
+                "{% trans 'Select a rule' %}" : "{% trans 'No rule to select' %}" $}
+              </option>
+              <option ng-repeat="rule in rules" value="{$ rule.id $}">
+                {$ rule.name $}
+              </option>
+            </select>
+            <span
+               class="rule-button-add"
+               ng-click="action.createRule.open()"
+               ng-if="rules.length == 0" >
+              <i class="icon add_to"></i>
+            </span>
+          </div>
+        </div>
+
+        <div ng-show="showBilling && !noFixing" ng-if="preBilling && context.mode === 'createRouter'" class="form-group clearfix">
+          <label for="btype">
+            {% trans "Billing Type" %}
+          </label>
+          <div class="form-group-right" style="width: 40%;">
+            <select required
+              id="unit"
+              name="unit"
+              class="form-control"
+              style="width: 80%;"
+              ng-change="changePayment(unitSelect)"
+              ng-model="unitSelect"
+              ng-options="payment as payment.unitLabel for payment in payment_type">
+            </select>
+          </div>
+          <div ng-if="unitSelect.unit=='H'" style="padding-top:10px;">
+            <span class="orange">{$ price  | price $}{% trans 'Yuan' %}</span>/{% trans 'Hour' %}
+          </div>
+          <div ng-if="unitSelect.unit=='M'" style="padding-top:10px;">
+            <span class="orange">{$ price  | price $}{% trans 'Yuan' %}</span>/{% trans 'Month' %}
+          </div>
+          <div ng-if="unitSelect.unit=='Y'" style="padding-top:10px;">
+            <span class="orange">{$ price  | price $}{% trans 'Yuan' %}</span>/{% trans 'Year' %}
+          </div>
+        </div>
+        <div ng-if="!preBilling && context.mode === 'createRouter' ">
+        <p class="billing-info text-right" ng-if="context.mode === 'createRouter'" ng-show="showBilling && !noFixing">
+          <span id="unit-price-hour" class="orange">{$ price | price $}{% trans 'Yuan' %}</span>/{% trans 'Hour' %}
+          <span id="unit-price-month" class="gray_3">({$ price * 24 * 30 | price $}{% trans 'Yuan' %}/{% trans 'Month' %})</span>
+        </p>
+        </div>
+          <p class="billing-info-tips text-right" ng-if="context.mode === 'createRouter'" ng-show="noFixing">
+          <span class="gray_3">{% trans 'No Active Fixing' %}</span>
+          </p>
+          <p class="billing-info-tips text-right" ng-if="context.mode === 'createRouter'" ng-show="showBalance">
+          <span class="red">{% trans 'No Enough Balance' %}</span>
+          </p>
+      </fieldset>
+    <!-- Modal-form-right: The description text. -->
+  </div>
+</form>
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid || showBalance || noFixing"
+    ng-if="context.mode === 'setGateway'||
+           context.mode === 'createRouter'||
+           context.mode ==='edit'"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.firewall.$invalid"
+    ng-if="context.mode === 'associate_firewall'||
+           context.mode === 'disassociate_firewall'"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+    <button id="submit-button" class="btn btn-primary" type="button"
+      ng-disabled="form.add_rule.$invalid"
+      ng-if="context.mode === 'add-rule'"
+      ng-click="action.submit()">
+      {$ ::context.submit $}
+    </button>
+</div>
+

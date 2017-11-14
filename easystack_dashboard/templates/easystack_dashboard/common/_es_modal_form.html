@@ -1,0 +1,42 @@
+<div id="{% block modal_id %}{% endblock %}" class="windPane {% block modal_class %}
+{% if hide %}modal hides{% else %}static_page{% endif %}{% endblock %}">
+
+ {% block modal_top %} 
+  <div class="wind_top">
+    	<h4>
+        	<span class="f16">{% block modal-header %}{% endblock %}</span>
+        	{% if hide %}<a class="closed" href="#" data-dismiss="modal">&times;</a>{% endif %}
+        </h4>
+  </div>
+ {% endblock %}
+  
+  {% block _div_table %}
+	  {% if table %}
+	  	{{ table.render }}
+	  	<hr />
+	  {% endif %}
+  {% endblock %}
+  
+  <form id="{% block form_id %}{% endblock %}"
+   autocomplete="{% block autocomplete %}{% if form.no_autocomplete %}off{% endif %}{% endblock %}" 
+   class="{% block form_class %}{% endblock %}"
+   action="{% block form_action %}{% endblock %}"
+   method="{% block form-method %}POST{% endblock %}"
+   {% if add_to_field %}data-add-to-field="{{ add_to_field }}"{% endif %}
+   {% block form_attrs %}{% endblock %}
+   ng-controller="{% block ng_controller %}{% endblock %}"
+   name="{% block form_name %}{% endblock %}"
+   {% block form_validation %}{% endblock %}>
+   {% csrf_token %}
+    <div class="windMain clearfix">   	
+	    {% block modal-body %}
+	        <fieldset>
+	        {% include "easystack_dashboard/common/_es_form_fields.html" %}
+	        </fieldset>
+	    {% endblock %}	    
+    </div>
+    <div class="btnWarp">{% block modal-footer %}{% endblock %}</div>
+  </form> 
+</div>
+{% block modal-js %}
+{% endblock %}

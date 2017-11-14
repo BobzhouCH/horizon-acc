@@ -1,0 +1,169 @@
+{% load i18n %}
+
+<hz-magic-search-context filter-facets="filterFacets">
+<table id="aggregates-list" hz-table ng-cloak hopes-table-drag
+  st-table="iaggregates"
+  st-safe-src="aggregates"
+  default-sort="created"
+  default-sort-reverse="true"
+  ng-controller="hz.dashboard.admin.aggregates.AggregatesCtrl"
+  ng-init="userID = '{{ request.user.id }}'"
+  st-magic-search
+  class="table table-bordered table-hover">
+
+  <!--
+    Table-head:
+    This is where we add things like filtering and batch actions.
+    This is where we add column headers.
+  -->
+  <thead>
+
+    <!--
+      Table-batch-actions:
+      This is where batch actions like searching, creating, and deleting.
+    -->
+    <tr>
+      <th colspan="100" class="bare">
+        <div class="table_actions clearfix">
+          <action-list>
+            <action
+              action-classes="'btn btn-primary btn-action'"
+              callback="actions.refresh">
+              <i class="icon icon-refresh"></i>
+              <span id="refresh"></span>
+            </action>
+          </action-list>
+
+          <action-list>
+            <action
+              action-classes="'btn btn-primary btn-action'"
+              callback="actions.create.open"
+              item="selectedData.aData">
+              <i class="icon icon-add"></i>
+              <span id="create-aggregate">{% trans 'Create Aggregate' %}</span>
+            </action>
+          </action-list>
+
+          <action-list>
+            <action
+              action-classes="'btn btn-primary btn-action'"
+              disabled="disabled || disableEditHosts"
+              callback="actions.editHost.open"
+              item="selectedData.aData">
+              <i class="icon icon-add"></i>
+              <span id="create-aggregate">{% trans 'Edit Hosts' %}</span>
+            </action>
+          </action-list>
+
+          <action-list>
+            <action
+              action-classes="'btn btn-action btn-danger'"
+              disabled="numSelected === 0"
+              callback="actions.delete.batchDelete"
+              item="selectedData.aData">
+              <i class="icon icon-delete"></i>
+              <span id="delete-aggregate">{% trans 'Delete Aggregate' %}</span>
+            </action>
+          </action-list>
+
+          <action-list dropdown>
+            <button id="more" type="button" class="btn btn-primary btn-action" dropdown-toggle>
+              <i class="icon icon-more"></i>
+              <span>{% trans 'More' %}</span>
+            </button>
+            <menu>
+              <action
+                button-type="menu-item"
+                disabled="disabled"
+                callback="actions.edit.open"
+                item="selectedData.aData">
+                <i class="fa"></i>
+                <span id="edit-aggregate">{% trans 'Edit Aggregate' %}</span>
+              </action>
+            </menu>
+          </action-list>
+
+          <div class="fr search-bar">
+            <hz-magic-search-bar id="aggregates-search"></hz-magic-search-bar>
+          </div>
+        </div>
+      </th>
+    </tr>
+
+    <!--
+      Table-column-headers:
+      This is where we declaratively define the table column headers.
+      Include the select all checkbox if you want to enable select all
+      for performing batch actions.
+    -->
+    <tr>
+      <th eagle-eye="select_col" class="select-col">
+        <input type="checkbox"
+          hz-select-page="aggregates-group"
+          ng-model="selectedAllAggregates"/>
+      </th>
+      <th>
+        <span eagle-eye="data_col" st-sort="name" st-sort-default="name">{$ ::context.header.name $}</span>
+      </th>
+      <th><span eagle-eye="data_col" st-sort="zone">{$ ::context.header.zone $}</span></th>
+      <th><span eagle-eye="data_col" st-sort="hosts">{$ ::context.header.hosts $}</span></th>
+      <!-- <th class="rsp-p1" st-sort="metadata">{$ ::context.header.metadata $}</th> -->
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <tr ng-if="!iaggregatesState">
+      <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+    </tr>
+
+    <tr ng-if="!iaggregates.length && iaggregatesState">
+      <td colspan="100">{% trans "No Data" %}</td>
+    </tr>
+
+    <tr ng-repeat="aggregate in iaggregates" ng-class="{'st-selected': checked[aggregate.id]}">
+
+      <!--
+        Table-row-checkbox:
+        User can select and unselect this row by clicking on this checkbox.
+        Batch actions can then be perform on selected rows.
+      -->
+      <td eagle-eye="select_col" class="select-col">
+        <input type="checkbox"
+          hz-select="aggregate"
+          ng-model="selected[aggregate.id].checked"
+          hz-checkbox-group="aggregates-group"/>
+      </td>
+
+      <!--
+        Table-row-expander:
+        User can toggle visbility of the Detail-row by clicking on this icon.
+        Duration attribute determines the animation time.
+      -->
+      <!--<td class="expander">
+        <i class="fa fa-chevron-right" hz-expand-detail duration="200"></i>
+      </td>-->
+
+      <!-- Table-row-info-column -->
+      <td eagle-eye="data_col">{$ aggregate.name $}</td>
+      <td eagle-eye="data_col">{$ aggregate.availability_zone $}</td>
+      <td eagle-eye="data_col">{$ aggregate.hosts|list:', ' $}</td>
+      <!-- <td class="rsp-p1">{$ aggregate.metadata $}</td> -->
+    </tr>
+
+  </tbody>
+
+  <!--
+    Table-footer:
+    This is where we display number of items and pagination controls.
+    Ensure colspan is greater or equal to number of column-headers.
+  -->
+  <tfoot ng-if="aggregates.length > 10">
+    <tr>
+      <td colspan="100">
+        <div st-pagination="" st-items-by-page="8" st-displayed-pages="10"></div>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+</hz-magic-search-context>

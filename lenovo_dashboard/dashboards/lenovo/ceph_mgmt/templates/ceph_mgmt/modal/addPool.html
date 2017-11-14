@@ -1,0 +1,97 @@
+{%load i18n%}
+<script type="text/ng-template" id="addPool.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="close()">&times;</button>
+        <h4>{% trans "New Pool" %}</h4>
+    </div>
+    <div class="modal-body public-body">
+        <div class="body-left">
+            <ul class="body-left-nav">
+                <li class="li-click">
+                    <span class="li-click li-circle"></span>{% trans "General" %}
+                    <p class="li-inline"></p>
+                </li>
+                <li><span class="li-circle"></span>{% trans "Qos" %}</li>
+            </ul>
+        </div>
+        <div class="body-right">
+            <div class="body-content">
+                <div class="content-box" style="display: block">
+                    <form role="form" name="myForm" class="form-horizontal" novalidate="">
+                        <div class="list-group form-group has-feedback">
+                            <label for="name">{% trans "Pool Name" %}</label>
+                            <input type="text" class="form-control" id="name" name="name" ng-model='newPool.name' placeholder="Please Enter a name"  required="" />
+                            <span class="glyphicon glyphicon-ok form-control-feedback" ng-show="myForm.name.$dirty && myForm.name.$valid"></span>
+                        </div>
+                        <div class="list-group form-group has-feedback">
+                            <label for="pattern">{% trans "PG Num" %}</label>
+                            <input type="text" class="form-control" id="pattern" name="pattern" ng-model="newPool.pg_num" ng-pattern="/^[1-9][0-9]*$/" placeholder="Please Enter a number" required="" oninput="if(value.length>0)value=value.slice(0,3)" />
+                            <span class="glyphicon glyphicon-ok form-control-feedback" ng-show="myForm.pattern.$dirty && myForm.pattern.$valid"></span>
+                        </div>
+                        <div class="list-group form-group has-feedback">
+                            <label for="age">Dup Size</label>
+                            <input type="number" class="form-control" id="age" name="age" ng-model="newPool.size"  placeholder="Enter a 1<=10 number" min="1" max="10" required="" oninput="if(value.length>0)value=value.slice(0,1)" />
+                            <span class="glyphicon glyphicon-ok form-control-feedback" ng-show="myForm.age.$dirty && myForm.age.$valid"></span>
+                        </div>
+                    </form>
+                    <div class="list-group dup-box">
+                        <div class="dup-show-notes">
+                            <label for="dup-show-notes">{% trans "Deduplication" %}</label>
+                            <div class="slidebox">
+                                <input id="dup-show-notes" type="checkbox" name="dup-show-notes" checked="checked">
+                                <label for="dup-show-notes"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group compression">
+                        <div class="compression-show-notes">
+                            <label for="compression-show-notes">{% trans "Compression" %}</label>
+                            <div class="slidebox">
+                                <input id="compression-show-notes" type="checkbox" name="compression-show-notes" checked="checked">
+                                <label for="compression-show-notes"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-box">
+                    <div class="list-group">
+                        <div class="QoS-show-notes">
+                            <label for="QoS-show-notes">{% trans "QoS Limitation" %}</label>
+                            <div class="slidebox">
+                                <input id="QoS-show-notes" type="checkbox" name="QoS-show-notes" checked="checked">
+                                <label for="QoS-show-notes"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group read-box">
+                        <span>{% trans "Read" %}</span>
+                        <p>
+                            <input type="text" value="6500" >
+                            <select class="read-select">
+                                <option value="Mbps">Mbps</option>
+                                <option value="Gbps">Gbps</option>
+                                <option>Kbps</option>
+                            </select>
+                            <input type="text" value="2500" >IOPS
+                        </p>
+                        <p>
+                            <input type="text" value="6500" >
+                            <select class="read-select">
+                                <option value="Mbps">Mbps</option>
+                                <option value="Gbps">Gbps</option>
+                                <option>Kbps</option>
+                            </select>
+                            <input type="text" value="2500" >IOPS
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-list">
+                <button class="prev" ng-show="!is_show" ng-click="prev()">{% trans "Prev" %}</button>
+                <button class="next" ng-show="is_show" ng-click="next()">{% trans "Next" %}</button>
+                <button class="cancel" ng-click="cancel()">{% trans "Cancel" %}</button>
+                <button class="btn-ok" ng-show="!is_show" ng-click="AddPoolAction()" >{% trans "OK" %}</button>
+            </div>
+        </div>
+    </div>
+</script>

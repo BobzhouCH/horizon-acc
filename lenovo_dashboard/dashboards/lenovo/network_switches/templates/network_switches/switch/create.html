@@ -1,0 +1,173 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+    <h3 class="modal-title">{$ label.title $}</h3>
+    <p class="modal-colsed" ng-click="action.cancel()">
+        <i class="modal-colsed-icon"></i>
+    </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form id="createForm" novalidate name="form" ng-submit="submit(form.$valid)">
+    <!--<pre style="max-height:400px;overflow-y:scroll;">{$ form|json $}</pre>-->
+    <div class="modal-body clearfix">
+        <!-- Modal-form-left: Contains the form controls -->
+        <div class="left form-wrap">
+            <fieldset>
+                <div class="form-group clearfix"
+                     ng-class="{'has-error':form.switch_ip.$invalid && form.switch_ip.$dirty}">
+                    <label for="switch_ip">{$ label.switch_ip $}</label>
+                    <div class="form-group-right">
+                        <input required
+                               id="switch_ip"
+                               name="switch_ip"
+                               class="form-control verify-input"
+                               ng-maxlength="255"
+                               ng-model="switch.switch_ip"
+                               ng-pattern="/^([0-9]|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.([0-9]|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.([0-9]|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.([0-9]|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])$/"
+                               placeholder='{% trans "eg: 0.0.0.0 ~ 255.255.255.255" %}'
+                               ng-disabled="false">
+
+                        <p class="help-block alert-fixed alert-danger"
+                           ng-show="form.switch_ip.$error.required && form.switch_ip.$dirty">
+                            {% trans "Please input an ip address" %}
+                        </p>
+
+                        <p class="help-block alert-fixed alert-danger"
+                           ng-show="form.switch_ip.$error.pattern && form.switch_ip.$dirty">
+                            {% trans "Please input an valid ip address" %}
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group clearfix"
+                     ng-class="{'has-error':form.username.$invalid && form.username.$dirty}">
+                    <label for="username">{$ label.username $}</label>
+                    <div class="form-group-right">
+                        <input required
+                               id="username"
+                               name="username"
+                               class="form-control verify-input"
+                               ng-maxlength="255"
+                               ng-model="switch.username"
+                               ng-disabled="false">
+
+                        <p class="help-block alert-fixed alert-danger"
+                           ng-show="form.username.$error.required && form.username.$dirty">
+                            {% trans "Please input username" %}
+                        </p>
+
+                        <p class="help-block alert-fixed alert-danger"
+                           ng-show="form.username.$error.maxlength && form.username.$dirty">
+                            {% trans "Username should be less than 255 characters" %}
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group clearfix"
+                     ng-class="{'has-error':form.password.$invalid && form.password.$dirty}">
+                    <label for="password">{$ label.password $}</label>
+                    <div class="form-group-right">
+                        <input required
+                               id="password"
+                               name="password"
+                               type="password"
+                               class="form-control verify-input"
+                               ng-maxlength="255"
+                               ng-model="switch.password"
+                               ng-disabled="false">
+
+                        <p class="help-block alert-fixed alert-danger"
+                           ng-show="form.password.$error.required && form.password.$dirty">
+                            {% trans "Please input password" %}
+                        </p>
+
+                        <p class="help-block alert-fixed alert-danger"
+                           ng-show="form.password.$error.maxlength && form.password.$dirty">
+                            {% trans "Password should be less than 255 characters" %}
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group clearfix" ng-if="switch.os_type.toLowerCase() != 'cnos'"
+                     ng-class="{'has-error':form.ssh_port.$invalid && form.ssh_port.$dirty}">
+                    <label for="ssh_port">{$ label.ssh_port $}</label>
+                    <div class="form-group-right">
+                        <input required
+                               id="ssh_port"
+                               name="ssh_port"
+                               class="form-control verify-input"
+                               ng-maxlength="255"
+                               ng-model="switch.ssh_port"
+                               placeholder='{% trans "eg: 1 ~ 65536" %}'
+                               ng-disabled="false">
+                        <p class="help-block alert-fixed alert-danger"
+                           ng-show="form.ssh_port.$error.required && form.ssh_port.$dirty">
+                            {% trans "Please input SSH Port" %}
+                        </p>
+                        <p class="help-block alert-fixed alert-danger"
+                           ng-show="form.ssh_port.$error.maxlength && form.ssh_port.$dirty">
+                            {% trans "SSH Port should be less than 255 characters" %}
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group clearfix"
+                     ng-class="{'has-error':form.os_type.$invalid && form.os_type.$dirty}">
+                    <label for="os_type">{$ label.os_type $}</label>
+                    <div class="form-group-right">
+                        <select class="form-control"
+                                id="os_type"
+                                name="os_type"
+                                required ng-model="switch.os_type"
+                                ng-options="os_type for os_type in os_types"></select>
+                    </div>
+                </div>
+                <div class="form-group clearfix"
+                     ng-class="{'has-error':form.protocol.$invalid && form.protocol.$dirty}">
+                    <label for="protocol">{$ label.protocol $}</label>
+                    <div class="form-group-right">
+                        <select class="form-control"
+                                id="protocol"
+                                name="protocol"
+                                required ng-model="switch.protocol"
+                                ng-options="protocol for protocol in protocols"></select>
+                    </div>
+                </div>
+                <div class="form-group clearfix" ng-if="false"
+                     ng-class="{'has-error':form.rest_tcp_port.$invalid && form.rest_tcp_port.$dirty}">
+                    <label for="rest_tcp_port">{$ label.rest_tcp_port $}</label>
+                    <div class="form-group-right">
+                        <input required
+                               id="rest_tcp_port"
+                               name="rest_tcp_port"
+                               class="form-control verify-input"
+                               ng-maxlength="255"
+                               ng-model="switch.rest_tcp_port"
+                               placeholder='{% trans "Default is 443" %}'
+                               ng-disabled="false">
+
+                        <p class="help-block alert-fixed alert-danger"
+                           ng-show="form.rest_tcp_port.$error.required && form.rest_tcp_port.$dirty">
+                            {% trans "Please input an REST port" %}
+                        </p>
+
+                        <p class="help-block alert-fixed alert-danger"
+                           ng-show="form.rest_tcp_port.$error.maxlength && form.rest_tcp_port.$dirty">
+                            {% trans "REST Port should be less than 255 characters" %}
+                        </p>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <!-- Modal-form-right: The description text. -->
+
+    </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+    <button id="submit-button" class="btn btn-primary" type="button"
+            ng-disabled="form.$invalid"
+            ng-click="action.submit()">
+        {$ label.add $}
+    </button>
+</div>

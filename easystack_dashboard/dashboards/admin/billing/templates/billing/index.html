@@ -1,0 +1,15 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Billing Accounts" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_domain_page_header.html" with title=_("Billing Accounts") %} 
+{% endblock page_header %}
+
+{% block main %}
+ <div class="snapshot-fluid">
+
+    {{ tab_group.render }}
+
+ </div>
+{% endblock %}

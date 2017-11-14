@@ -1,0 +1,231 @@
+<div ng-controller="LaunchBareInstanceFlavorController as selectFlavorCtrl">
+  <div class="content">
+    <transfer-table
+      tr-model="selectFlavorCtrl.transferTableModel"
+      limits="selectFlavorCtrl.allocationLimits">
+      <allocated ng-model="selectFlavorCtrl.allocatedFlavorFacades.length"
+        validate-number-min="1" name="allocated-flavor">
+        <table id="selected-falvors" st-magic-search st-table="selectFlavorCtrl.displayedAllocatedFlavorFacades"
+          st-safe-src="selectFlavorCtrl.allocatedFlavorFacades"
+          hz-table ng-cloak class="table table-bordered table-hover table-th">
+          <thead>
+            <tr>
+              <th eagle-eye="data_col" st-sort="name" class="instances-flavo-name">{$ 'Name' |trans $}</th>
+              <th eagle-eye="data_col" st-sort="vcpus" >{$ 'VCPUS' |trans $}</th>
+              <!-- Only show the default RAM sort on the available table -->
+              <th eagle-eye="data_col" ng-if="isAvailableTable" st-sort-default st-sort="ram" >{$ 'RAM'| trans $}</th>
+              <th eagle-eye="data_col" ng-if="!isAvailableTable" st-sort="ram">{$ 'RAM' | trans $}</th>
+              <th eagle-eye="data_col" st-sort="totalDisk" >{$ 'Total Disk' | trans $}</th>
+              <th eagle-eye="data_col" st-sort="isPublic" >{$ 'Public'| trans $}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-if="selectFlavorCtrl.displayedAllocatedFlavorFacades.length === 0">
+              <td colspan="10">
+                <div class="no-rows-help">
+                  {$ ::trCtrl.helpText.noneAllocText $}
+                </div>
+              </td>
+            </tr>
+            <tr ng-repeat-start="item in selectFlavorCtrl.displayedAllocatedFlavorFacades track by item.id">
+              <td eagle-eye="data_col" class="instances-flavo-name">
+                <span class="row-name" title="{$ ::item.name $}">{$ ::item.name $}</span>
+                <i class="chevron-right chevron-fixed fr" hz-expand-detail="chevron-right chevron-down" title="{$ ::expandDetailsText $}"></i>
+              </td>
+              <td eagle-eye="data_col" class="rsp-p1">
+                <span class="invalid fa fa-exclamation-triangle"
+                  ng-show="item.errors.vcpus"
+                  popover="{$ item.errors.vcpus $}"
+                  popover-placement="top" popover-append-to-body="true"
+                  popover-trigger="mouseenter mouseleave"></span>
+                  {$ ::item.vcpus $}
+              </td>
+              <td eagle-eye="data_col" class="rsp-p1">
+                <span class="invalid fa fa-exclamation-triangle"
+                  ng-show="item.errors.ram"
+                  popover="{$ item.errors.ram $}"
+                  popover-placement="top" popover-append-to-body="true"
+                  popover-trigger="mouseenter mouseleave"></span>
+                  {$ ::item.ram | mb2gb $}
+              </td>
+              <td eagle-eye="data_col" class="rsp-p1">{$ ::item.rootDisk | gb $}</td>
+              <td eagle-eye="data_col" class="rsp-p1">{$ ::item.isPublic | yesno $}</td>
+              <td eagle-eye="button_action" class="action-col">
+                <action-list button-tooltip="item.disabledMessage"
+                  class="instance-btn"
+                  bt-model="tooltipModel"
+                  bt-disabled="!isAvailableTable || item.enabled"
+                  warning-classes="'invalid'">
+                  <notifications>
+                    <span class="fa fa-exclamation-triangle invalid"
+                      ng-show="isAvailableTable && !item.enabled"></span>
+                  </notifications>
+                  <action
+                    callback="trCtrl.deallocate"
+                    item="item"
+                    disabled="isAvailableTable && !item.enabled">
+                    <span class="icon remove_to"></span>
+                  </action>
+                </action-list>
+              </td>
+            </tr>
+            <tr ng-repeat-end class="detail-row">
+              <td colspan="9" class="detail">
+                <span class="h5">{$ 'Impact on your quota' | trans $}</span>
+                <div class="row">
+                  <div class="col-xs-4">
+                    <pie-chart chart-data="item.instancesChartData"
+                      chart-settings="chartSettings"></pie-chart>
+                  </div>
+                  <div class="col-xs-4">
+                    <pie-chart chart-data="item.vcpusChartData"
+                      chart-settings="chartSettings"></pie-chart>
+                  </div>
+                  <div class="col-xs-4">
+                    <pie-chart chart-data="item.ramChartData"
+                      chart-settings="chartSettings"></pie-chart>
+                  </div>
+                </div>
+                <div ng-if="selectFlavorCtrl.metadataDefs.flavor">
+                  <div class="row" ng-if="item.extras">
+                    <div class="col-sm-12">
+                      <metadata-display
+                        available="::selectFlavorCtrl.metadataDefs.flavor"
+                        existing="::item.extras">
+                      </metadata-display>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </allocated>
+      <available>
+        <hz-magic-search-context filter-facets="selectFlavorCtrl.filterFacets">
+        <hz-magic-search-bar>
+        </hz-magic-search-bar>
+        <table id="flavor-list" st-magic-search st-table="selectFlavorCtrl.displayedAvailableFlavorFacades"
+          st-safe-src="selectFlavorCtrl.availableFlavorFacades"
+          hz-table  class="table table-bordered table-hover table-th">
+          <thead>
+<!--            <tr>
+              <th class="search-header" colspan="9">
+                &lt;!&ndash;<div class="fr search-bar">
+                  <search-bar id="flavor-search" group-classes="" icon-classes="fa-search">
+                  </search-bar>
+                </div>&ndash;&gt;
+                <div class="fr">
+                  <div class="search-bar has-feedback">
+                    <input id="resources-search" class="form-control" type="text" ng-model="search.text" ng-init="search.text=''" placeholder="{$ 'Filter'|trans $}" ng-keyup="searchFlavor(search.text)" value="" name="instances__filter__q">
+                    <span class="fa fa-search search-icon form-control-feedback"></span>
+                  </div>
+                </div>
+              </th>
+            </tr>-->
+            <tr>
+              <th eagle-eye="data_col" st-sort="name" >{$ 'Name' |trans $}</th>
+              <th eagle-eye="data_col" st-sort="vcpus" >{$ 'VCPUS' |trans $}</th>
+              <!-- Only show the default RAM sort on the available table -->
+              <th eagle-eye="data_col" ng-if="isAvailableTable" st-sort-default st-sort="ram" >{$ 'RAM'| trans $}</th>
+              <th eagle-eye="data_col" ng-if="!isAvailableTable" st-sort="ram">{$ 'RAM' | trans $}</th>
+              <th eagle-eye="data_col" st-sort="totalDisk" >{$ 'Total Disk' | trans $}</th>
+              <th eagle-eye="data_col" st-sort="isPublic" >{$ 'Public'| trans $}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-if="selectFlavorCtrl.displayedAvailableFlavorFacades.length === 0">
+              <td colspan="10">
+                <div class="no-rows-help">
+                  {$ ::trCtrl.helpText.noneAvailText $}
+                </div>
+              </td>
+            </tr>
+            <tr ng-repeat-start="item in selectFlavorCtrl.displayedAvailableFlavorFacades track by item.id" ng-if="!trCtrl.allocatedIds[item.id]">
+              <td eagle-eye="data_col" class="instances-flavo-name">
+                <span class="row-name" title="{$ ::item.name $}">{$ ::item.name $}</span>
+                <i class="chevron-right chevron-fixed fr" hz-expand-detail="chevron-right chevron-down" title="{$ ::expandDetailsText $}"></i>
+              </td>
+              <td eagle-eye="data_col" class="rsp-p1">
+                <span class="invalid fa fa-exclamation-triangle"
+                  ng-show="item.errors.vcpus"
+                  popover="{$ item.errors.vcpus $}"
+                  popover-placement="top" popover-append-to-body="true"
+                  popover-trigger="mouseenter mouseleave"></span>
+                  {$ ::item.vcpus $}
+              </td>
+              <td eagle-eye="data_col" class="rsp-p1">
+                <span class="invalid fa fa-exclamation-triangle"
+                  ng-show="item.errors.ram"
+                  popover="{$ item.errors.ram $}"
+                  popover-placement="top" popover-append-to-body="true"
+                  popover-trigger="mouseenter mouseleave"></span>
+                  {$ ::item.ram | mb2gb $}
+              </td>
+              <td eagle-eye="data_col" class="rsp-p1">{$ ::item.rootDisk | gb $}</td>
+              <td eagle-eye="data_col" class="rsp-p1">{$ ::item.isPublic | yesno $}</td>
+              <td eagle-eye="button_action" class="action-col">
+                <action-list button-tooltip="item.disabledMessage"
+                  class="instance-btn"
+                  bt-model="tooltipModel"
+                  bt-disabled="!isAvailableTable || item.enabled"
+                  warning-classes="'invalid'">
+                  <notifications>
+                    <span class="fa fa-exclamation-triangle invalid"
+                      ng-show="isAvailableTable && !item.enabled"></span>
+                  </notifications>
+                  <action
+                    callback="trCtrl.allocate"
+                    item="item"
+                    disabled="isAvailableTable && !item.enabled">
+                    <span class="icon add_to"></span>
+                  </action>
+                </action-list>
+              </td>
+            </tr>
+            <tr ng-repeat-end class="detail-row">
+              <td colspan="9" class="detail">
+                <span class="h5">{$ 'Impact on your quota'| trans $}</span>
+                <div class="row">
+                  <div class="col-xs-4">
+                    <pie-chart chart-data="item.instancesChartData"
+                      chart-settings="chartSettings"></pie-chart>
+                  </div>
+                  <div class="col-xs-4">
+                    <pie-chart chart-data="item.vcpusChartData"
+                      chart-settings="chartSettings"></pie-chart>
+                  </div>
+                  <div class="col-xs-4">
+                    <pie-chart chart-data="item.ramChartData"
+                      chart-settings="chartSettings"></pie-chart>
+                  </div>
+                </div>
+                <div ng-if="selectFlavorCtrl.metadataDefs.flavor">
+                  <div class="row" ng-if="item.extras">
+                    <div class="col-sm-12">
+                      <metadata-display
+                        available="::selectFlavorCtrl.metadataDefs.flavor"
+                        existing="::item.extras">
+                      </metadata-display>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+
+          <tfoot ng-if="ctrl.tableData.available.length > 5">
+            <tr>
+              <td colspan="100">
+                <div st-pagination="" st-items-by-page="10" st-displayed-pages="10"></div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+        </hz-magic-search-context>
+      </available>
+    </transfer-table>
+  </div>
+</div>

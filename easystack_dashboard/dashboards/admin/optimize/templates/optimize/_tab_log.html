@@ -1,0 +1,106 @@
+{% load i18n %}
+
+<hz-magic-search-context filter-facets="filterFacets">
+<table id="logs-list" hz-table ng-cloak hopes-table-drag
+  st-table="ilogList"
+  st-safe-src="logList"
+  default-sort="start_at"
+  default-sort-reverse="true"
+  ng-controller="hz.dashboard.admin.optimize.LogsCtrl"
+  ng-init="userID = '{{ request.user.id }}'"
+  st-magic-search
+  class="table table-bordered table-hover">
+
+  <!--
+    Table-head:
+    This is where we add things like filtering and batch actions.
+    This is where we add column headers.
+  -->
+  <thead>
+
+    <!--
+      Table-batch-actions:
+      This is where batch actions like searching, creating, and deleting.
+    -->
+    <tr>
+      <th colspan="100" class="bare">
+        <div class="table_actions clearfix">
+          <action-list>
+            <action
+              action-classes="'btn btn-primary btn-action'"
+              callback="actions.refresh">
+              <i class="icon icon-refresh"></i>
+              <span id="refresh"></span>
+            </action>
+          </action-list>
+          <div class="fr search-bar">
+            <hz-magic-search-bar id="logList-search"></hz-magic-search-bar>
+          </div>
+        </div>
+      </th>
+    </tr>
+
+    <tr>
+      <th eagle-eye="select_col" class="select-col">
+        <input type="checkbox"
+          hz-select-page="log-group"
+          ng-model="selectedAllLog"/>
+      </th>
+      <th><span eagle-eye="data_col" st-sort="id" >{$ ::context.header.id $}</span></th>
+      <th><span eagle-eye="data_col" st-sort="state">{$ ::context.header.state $}</span></th>
+      <th><span eagle-eye="data_col" st-sort="operator">{$ ::context.header.operate $}</span></th>
+      <th><span eagle-eye="data_col" st-sort="start_at">{$ ::context.header.created $}</span></th>
+      <th><span eagle-eye="data_col" st-sort="end_at" st-sort-default="end_at">{$ ::context.header.end $}</span></th>
+      <th><span eagle-eye="data_col" st-sort="algorithm_id">{$ ::context.header.scheme $}</span></th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <tr ng-if="!ilogListState">
+      <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+    </tr>
+
+    <tr ng-if="!ilogList.length && ilogListState">
+      <td colspan="100">{% trans "No Data" %}</td>
+    </tr>
+
+    <tr ng-repeat="log in ilogList" ng-class="{'st-selected': checked[log.id]}">
+
+      <!--
+        Table-row-checkbox:
+        User can select and unselect this row by clicking on this checkbox.
+        Batch actions can then be perform on selected rows.
+      -->
+      <td eagle-eye="select_col" class="select-col">
+        <input type="checkbox"
+          hz-select="log"
+          ng-model="selected[log.id].checked"
+          hz-checkbox-group="log-group"/>
+      </td>
+
+      <!-- Table-row-info-column -->
+      <td eagle-eye="data_col"><a ng-click="detailOpen(log.id,log.algorithm_id)" href="javascript:;" data-url="/admin/optimize/detail/{$ log.id $}">{$ log.id $}</a></td>
+      <td eagle-eye="data_col">{$ log.state | logStateFilter $}</td>
+      <td eagle-eye="data_col">{$ log.operator $}</td>
+      <td eagle-eye="data_col">{$ log.start_at $}</td>
+      <td eagle-eye="data_col">{$ log.end_at $}</td>
+      <td eagle-eye="data_col">{$ log.algorithm_id $}</td>
+    </tr>
+
+  </tbody>
+
+  <!--
+    Table-footer:
+    This is where we display number of items and pagination controls.
+    Ensure colspan is greater or equal to number of column-headers.
+  -->
+  <tfoot ng-if="logList.length > 10">
+    <tr>
+      <td colspan="100">
+        <div st-pagination="" st-items-by-page="10" st-displayed-pages="10"></div>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+</hz-magic-search-context>

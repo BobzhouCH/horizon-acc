@@ -1,0 +1,196 @@
+<!doctype html>
+<html>
+<head>
+{% load i18n %}
+{% load i18n branding %}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8">
+<title>{% site_branding %}</title>
+<meta name="author" content="" />
+<meta name="Copyright" content="" />
+{% include 'favicon.html' %}
+<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}register/style/index.css">
+<script type="text/javascript">
+  var STATIC_URL = "{{ STATIC_URL }}";
+  var WEBROOT = "{{ WEBROOT }}";
+  var INVCODE_NEED = "{{ INVCODE_NEED }}";
+  var CAPTCHA_ENABLE = "{{ CAPTCHA_ENABLE }}";
+</script>
+<script src="{{ STATIC_URL }}register/js/jquery-1.11.2.js"></script>
+<script src="{{ STATIC_URL }}register/js/angular.min.js"></script>
+<script src="{{ STATIC_URL }}register/js/ng_register.js"></script>
+<style type="text/css" >
+.tips {
+  background: #ffb2b2;
+  color: red;
+  height: 40px;
+  line-height: 40px;
+  margin: 0 auto;
+  padding: 10px;
+  text-align: center;
+  width: 400px;
+  display: none;
+  position: absolute;
+  bottom: -70px;
+  border-radius: 4px;
+}
+.tips-closed {
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  font-size: 20px;
+  height: 20px;
+  line-height: 20px;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  width: 20px;
+}
+.tips-text {
+  height: 40px;
+  line-height: 40px;
+}
+</style>
+
+<script>
+$(document).ready(function(){
+
+  var height = 0;
+  height = $(window).height() >= 1300 ? 1300 : $(window).height();
+  $("#js-easy-advert").css({"height": height});
+
+  $(window).resize(function() {
+    height = $(window).height() >= 1300 ? 1300 : $(window).height();
+      $("#js-easy-advert").css({"height": height});
+      resizeWidth();
+  });
+
+  resizeWidth();
+  function resizeWidth(){
+
+    var navigationWidth = $(window).width();
+    if(navigationWidth >= 1100){
+      $('.js-easy-navigation div').css('width', 1080);
+    }else {
+      if(navigationWidth <= 530){
+        $('.js-easy-navigation div').css('width', 530);
+      }
+      else{
+        $('.js-easy-navigation div').css('width', navigationWidth);
+      }
+    }
+  }
+    setTimeout(function(){
+      $('.js-easy-advert-content').fadeOut(800);
+  },1000);
+
+  setTimeout(function(){
+      var ele = '<a href="/funding_news" target="_blank" class="easy-advert-ad1600-index"><span></span></a>';
+        $('.js-easy-advert-wrap').prepend(ele);
+        var speed = 0;
+        var top = 0;
+        var timer = null;
+        timer = setInterval(function(){
+            speed+=(58-top)/4;
+            speed*=0.8;
+            top+=speed;
+            $('.easy-advert-ad1600-index').css('top', top);
+            if(parseInt(top) == 58){
+                clearInterval(timer);
+            }
+        }, 30);
+
+        $('.easy-advert-ad1600-index span').on('click', function(){
+            $(this).parent().animate({
+                opacity : 'hide'
+            }, 400, function(){
+                $('.js-easy-advert-content').fadeIn(1500);
+            });
+            return false;
+        });
+  }, 2000);
+});
+</script>
+</head>
+<body ng-app="registermod" id="register">
+  <div class="register-logo"><img src="/static/dashboard/img/_logo.png" width="185px"></div>
+  <div class="register-wrap" ng-controller="registerctrl">
+      <div class="register-plain">
+          <h2 class="register-plain-title">注册</h2>
+          <p class="register-signin">已有账户？<a href="{{ WEBROOT }}">马上登录</a></p>
+          <form novalidate id="plainForm" name="plainForm" ng-submit="">
+              <div class="regi-puble-input">
+                  <label style="display: none;">邮件</label>
+                  <input id="mail" class="mail" type="email" name="esEmail" ng-model="regiEmail" placeholder="请输入邮件" required ng-pattern="/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/" attrtips="plainForm.esEmail.$error" public-jiaoyan="verify_email" />
+                  <p class="p-errshow ch-err">邮箱格式有误</p>
+              </div>
+              <div class="regi-puble-input">
+                    <label style="display: none;">密码</label>
+                    <input id="esPassWord" class="pass" name="esPass" ng-model="regiPass" type="password" placeholder="请输入密码" required  ng-pattern="/(?!^(\d+|[a-zA-Z]+|[~!@#$%^&*?]+)$)^[\w~!@#$%\^&*?]+$/" ng-minlength="8" attrtips="plainForm.esPass.$error" public-jiaoyan="new-password" />
+                    <p class="p-errshow">请输入至少8位密码</p>
+                </div>
+                <div class="regi-puble-input">
+                    <label style="display: none;">确认密码</label>
+                    <input id="password-yes" class="is-pass" type="password" name="esPassYes" ng-model="regiPassYes" placeholder="确认密码" required pw-id="esPassWord" pw-str="plainForm.esPass" attrtips="plainForm.esPassYes.$error" pw-jiaoyan />
+                    <p class="p-errshow">两次输入密码不一致</p>
+                </div>
+
+                <div class="regi-puble-input">
+                    <label style="display: none;">手机</label>
+                    <input type="text" id="esShouji" class="mobile" name="esShouji" ng-model="regiShowji" placeholder="请输入手机号" required ng-pattern="/^1[3|4|5|6|7|8][0-9]\d{8}$/" attrtips="plainForm.esShouji.$error" public-jiaoyan />
+                    <p class="p-errshow">手机号码格式有误</p>
+                </div>
+                <div class="regi-puble-input" ng-show="invcode_enable">
+                    <label style="display: none;">邀请码</label>
+                    <input id="invcode" class="invcode" type="text" name="esVerify" ng-model="regiVerify" placeholder="请输入邀请码" ng-required="invcode_enable" attrtips="plainForm.esVerify.$error" invcode-check />
+                    <p class="p-errshow ch-err">邀请码有误</p>
+                </div>
+
+                <div class="regi-puble-input identifying-code regi-margin32" ng-show="captcha_enable">
+                    <label style="display: none;">验证码</label>
+                    <input id="verify-code" class="verify-icon" type="text" name="esYanzm" ng-model="regiYanzm" placeholder="请输入验证码" ng-required="captcha_enable" attrtips="plainForm.esYanzm.$error" yanzm-jiaoyan />
+
+                    <p class="p-errshow">请输入右图中验证码</p>
+                    <p class="captcha-img">
+                      <i><img id="captcha" onclick="imgFn()" src="{{ WEBROOT }}captcha/" alt="Captcha"/></i>
+                      <span onclick="imgFn();" style="cursor: pointer;">看不清</span>
+                    </p>
+                </div>
+
+                <p class="regi-accrd">
+                    <input id="is-agree" type="checkbox" ng-model="esAgree" name="qyAgree" required/>
+                    我已经阅读并同意<a href="{{ WEBROOT }}agreement/" target="_blank">《{% site_branding %}用户注册协议》</a>
+                </p>
+
+                <div class="regi-submit-botton">
+                    <button id="submit-button" submit-id="plainForm" plain-form-submit type="button" ng-class="{nosubmit:plainForm.$invalid}" ng-disabled="plainForm.$invalid">立即注册</button>
+                </div>
+
+                <div class="tips">
+                  <span class="tips-closed">x</span>
+                  <div class="tips-text"></div>
+                </div>
+
+          </form>
+      </div>
+
+  </div>
+
+</body>
+<script type="text/javascript" >
+ function errorFn(data){
+  $('.tips-text').html(data);
+  $('.tips').fadeIn(1000) ;
+
+  $('.tips-closed').bind('click',function(){
+    $('.tips').animate({
+      opacity: 'hide'
+    }, 600);
+  });
+ };
+
+ function imgFn(){
+    $('#captcha').attr('src','{{ WEBROOT }}captcha/?nocache='+Math.random());
+ }
+</script>
+</html>

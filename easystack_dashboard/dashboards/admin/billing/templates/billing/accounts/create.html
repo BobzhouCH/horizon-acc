@@ -1,0 +1,12 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Create Account" %}{% endblock %}
+
+{% block page_header %}
+  {# to make searchable false, just remove it from the include statement #}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Create User") %}
+{% endblock page_header %}
+
+{% block main %}
+    {% include 'admin/billing/accounts/_create.html' %}
+{% endblock %}

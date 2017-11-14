@@ -1,0 +1,422 @@
+/**
+ ** Author : limeili
+ ** Module : security-groups module css
+ ** Data   : 2015-12-3
+**/
+
+/* security-groups add rule starts */
+.SecurityRuleContent {
+  .modal-dialog { width: 732px; }
+  .modal-body { padding: 0px; }
+}
+
+.switclable {
+  overflow: hidden;
+  li{
+      display: inline;
+      float: left;
+      margin-left: 15px;
+      margin-bottom: 10px;
+      height: 36px;
+      line-height: 36px;
+      width: 118px;
+      text-align: center;
+      cursor: pointer;
+      background: #ECF0F2;
+      &.active {
+        background: $security-group-active-bg;
+        color: #fff;
+      }
+  }
+}
+
+.securityRule-bg {
+  -moz-transition: all 0.5s ease-in;
+  -webkit-transition: all 0.5s ease-in;
+  -o-transition: all 0.5s ease-in;
+  transition: all 0.5s ease-in;
+  background: #eceff1!important;
+  margin-top: 0px;
+  .colSwitclable-wrap { width: 732px; }
+  .rightCol-box { width: 535px; }
+  .rightCol { width: 518px; margin-left: 20px; }
+}
+
+.securityRule-bg-down {
+  padding-bottom: 20px;
+  .form-group-right {
+    width: 544px;
+    margin-left: 20px;
+  }
+}
+
+.switclable-made {
+  li {
+     margin-right: 10px;
+     margin-bottom: 10px;
+     height: 36px;
+     line-height: 36px;
+     width: 118px;
+     text-align: center;
+     cursor: pointer;
+     background: $security-group-default-bg;
+     &.active {
+       background: $security-group-active-bg;
+       color: #fff;
+     }
+  }
+}
+
+.delect-iconbt {
+   display: inline-block;
+   width: 14px;
+   height: 18px;
+   vertical-align: middle;
+   cursor: pointer;
+   background: url("/static/bootstrap/img/delete_icon.png") no-repeat center;
+}
+
+.rightColSwitclable div span { height: 36px; line-height: 36px; }
+.leftCol-box { min-width: 120px; }
+.colSwitclable-wrap { background: #fff; padding: 20px 20px 0; }
+/* security-groups add rule end */
+
+/* Edit Security Groups starts */
+.security-group-left, .security-group-right {
+   width: 50%;
+   padding-top: 10px;
+   .table-bordered {
+      border: 0;
+      margin-bottom: 0;
+      thead tr:first-child {
+        th { border: 0; padding: 0; }
+      }
+     .table_actions { padding: 10px 0px; }
+   }
+  .security-group-name { width: 280px; margin-top: 8px; }
+}
+.security-group-left {
+  float: left;
+  padding-right: 5px;
+}
+.security-group-right {
+  float: right;
+  padding-left: 5px;
+}
+/* Edit Security Groups end */
+
+
+/**
+ ** Author : limeili
+ ** Module : instances module css
+ ** Data   : 2015-12-3
+**/
+
+/*monitor module starts*/
+.editSecurityGroupsContent .modal-dialog { width:850px; }
+.monitorFormCtrl {
+   .modal-dialog { width: 1000px; }
+   .modal-body { padding: 0px; }
+}
+.timeList {
+   margin-top: 5px;
+   ul {
+      position: relative;
+      li {
+         float: left;
+         height: 28px;
+         line-height: 28px;
+         margin: 0 5px;
+         padding: 0 10px;
+      }
+   }
+}
+.unitBtn {
+   height:26px;
+   a {
+      padding: 0 5px;
+      display: block;
+      min-width: 60px;
+      line-height: 26px;
+      margin: 4px 4px 0 0;
+      text-align: center;
+      border: 1px #bddbf5 solid;
+      background: #cae1f6;
+      color: #666;
+      &:hover { border: 1px #86bff2 solid; background: #cae1f6; text-decoration: none; }
+      &.active { border: 1px #86bff2 solid; background: #aaceee; }
+   }
+}
+.detailNav { height: 40px; line-height: 40px; margin: 18px 18px 18px 10px; }
+.detailNav p { color: #333333; font-size: 16px; }
+.detailResourceTitle p { padding-left: 10px; }
+.chartWrap { margin: 0; }
+.chartTable { width: 965px; /*height: 180px;*/ padding-bottom: 4px; border:1px solid #edecec; margin-bottom: 10px; margin-left: 14px; font-size: 12px; }
+.chartTableMsg { width: 100%; height: 36px; line-height: 32px; background: #e9f3fc; }
+.chartTableContent { padding-bottom: 8px; position: relative; width: 100%; height: 130px; margin-top: 5px; background: #fff; }
+.chart_dit { position: relative; top: 1px; margin-left: 20px; font-size: 20px; }
+.unitTxt { padding-left: 10px; }
+.col30b0f0 { color: #30b0f0; }
+.none { display: none; }
+
+.svg { width: 100%; height: 340px; margin-top: 10px; background: #fff; }
+.axis text { font-family: sans-serif; font-size: 12px; fill:#717171; }
+.line { fill: none; stroke: #5ab0ee; stroke-width:1.5px; }
+.tick line { fill: none; stroke: #ecedef; stroke-width:1px; shape-rendering: crispEdges; }
+.domain {fill: none;}
+.linecircle { fill: #fff; stroke: #5ab0ee; stroke-width:1.5px; }
+.chartTips { width:200px; height:50px; background:#fff; border:1px #ccc solid; border-radius:5px; position:absolute; top:0; left:0; display:none; cursor:progress; }
+.chartTips p { padding:2px 0 0 5px; }
+.chartTips { pointer-events: none; }
+.loadingPic { position:absolute; display: block; width:16px; height:16px; background:url(/static/bootstrap/img/loading.gif) no-repeat; }
+.chart_dit { position: relative; top: 1px; margin-left:20px; font-size:20px; }
+/*monitor module ends*/
+
+/*instances detail starts*/
+.log-top {
+  height: 32px; line-height: 32px; margin-bottom: 10px; font-size: 14px; width:840px;
+  h3 { line-height: inherit; font-weight: bold; }
+  .log-num { width: 60px; height: 32px; text-align: center; margin-left: 10px; position: relative; top: 2px; }
+}
+
+#instance-detail #fault .fault-detail{
+    white-space: normal;
+    p {  margin-top: 10px;
+        margin-bottom: 10px;
+      }
+}
+
+/*instances detail end*/
+
+/*instances resize starts*/
+.flavorsListContent .modal-dialog { width: 800px; }
+.resize-wrap {
+  label {
+    width:60px;
+  }
+  .form-group {
+    margin-bottom:0!important;
+  }
+  .form-group-right { width: 660px; }
+}
+.resize-content { width:630px!important; }
+.resize-list {
+  li {
+    display:inline-block; width:80px; line-height:32px; margin-bottom: 10px; text-align:center; border:1px #ccc solid; border-radius: 1px; font-weight: bold; color:#ccc;
+    margin-right:6px; position:relative; cursor: default;
+    &.active {
+      display:inline-block;
+      border:2px #66cc66 solid;
+      color:#66cc66;
+    }
+    &.instance-yes {
+      color:#ccc; border:1px #ccc solid; cursor: pointer;
+      & i{
+        display: none;
+      }
+      &:hover {
+        border:1px #66cc66 solid;
+        color:#66cc66;
+      }
+    }
+    &.instance-wrong { border:1px #ffcc00 solid; cursor: default; }
+    &.instance-selected { color:#66cc66; border:1px #66cc66 solid; }
+    &.instance-wrong i, &.instance-selected i, & i {
+      width:18px;
+      height:23px;
+      position:absolute;
+      bottom:0;
+      right:0;
+    }
+    &.instance-wrong {
+      i { background:url(/static/dashboard/img/instance-wrong.png) no-repeat; }
+    }
+    &.instance-selected {
+      i { background:url(/static/dashboard/img/instance-selected.png) no-repeat; }
+    }
+    & i { background:url(/static/dashboard/img/instance-no.png) no-repeat; }
+  }
+}
+.resize-price {
+  text-align:left;
+  float:left;
+  margin-left:50px;
+}
+/*instances-resize end*/
+
+/*instances state icon starts*/
+.instance-state {
+  margin-right: 5px;
+}
+.instance-state-active,
+.instance-state-paused,
+.instance-state-suspended,
+.instance-state-shutoff,.hz-magic-search-bar .magic-search-bar
+.instance-state-error,
+.instance-state-deleted,
+.instance-state-soft_deleted {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  vertical-align: middle;
+  background:url(/static/dashboard/img/state-icon.png) no-repeat;
+}
+.instance-state-active ,.instance-state-deleted,.instance-state-soft_deleted { background-position: 0 -45px; }
+.instance-state-paused { background-position: 0 -60px; }
+.instance-state-suspended { background-position: 0 -75px; }
+.instance-state-shutoff { background-position: 0 -90px; }
+.instance-state-error { background-position: 0 -104px; }
+.instance-state-build,.instance-state-reboot,.instance-state-rebuild,.instance-state-resize ,.instance-state-pending,.instance-state-stopping,
+.instance-state-hard_reboot ,.instance-state-password ,.instance-state-migrating,.instance-state-rescue,.instance-state-suspending,
+.instance-state-powering-off ,.instance-state-powering-on{
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  vertical-align: middle;
+  background:url(/static/dashboard/img/instance-state-loading.gif) no-repeat;
+}
+/*instances state icon end*/
+
+/*instances flavor starts*/
+.flavorContent {
+  .modal-dialog {
+    width: auto;
+  }
+  .flavors-input-wrap {
+    button {
+      padding: 0 10px;
+    }
+  }
+  .table-bordered tbody tr td {
+    width: 238px;
+  }
+  .flavor-pane-base {
+    min-width: 450px;
+  }
+  .flavors-pane-content {
+    min-width: 690px;
+    min-height: 190px;
+    margin: 0px 10px 10px 10px;
+  }
+  .flavor-projects-th {
+    width: 220px;
+  }
+  .flavor-projects-selected {
+    padding-left: 10px;
+  }
+}
+/*instances flavor end*/
+
+
+/**
+ ** Author : limeili
+ ** Module : create keypair module css
+ ** Data   : 2015-12-29
+**/
+
+/*created keypair starts*/
+.newKeyPair .modal-dialog { width:510px; }
+.created-keypair { overflow-y:auto; height:150px; }
+/*created keypair ends*/
+
+
+/**
+ ** Author : xinwei
+ ** Module : images module css
+ ** Data   : 2016-02-16
+**/
+
+/* Create volumes from image */
+.imagesListContent {
+  .modal-dialog {
+    width: 462px;
+   }
+  .form-group .form-group-right {
+    width: 282px;
+  }
+}
+
+
+/**
+ ** Author : xinwei
+ ** Module : aggregates module css
+ ** Data   : 2016-08-15
+**/
+
+/* Edit host */
+.EditHostContent {
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .modal-dialog {
+    width: 730px;
+  }
+  .edit-host-left, .edit-host-right {
+    margin-top: 20px;
+    .search-bar {
+      min-width: inherit;
+    }
+  }
+  .edit-host-left {
+    padding-right: 0;
+  }
+  .table-bordered {
+    tbody tr td {
+      max-width: 20px;
+    }
+    tbody tr td:first-child {
+      max-width: 300px;
+    }
+    .table_actions {
+      line-height: 30px;
+    }
+  }
+  .hz-magic-search-bar .magic-search-bar {
+    height: 30px;
+    .input-group {
+      position: relative;
+      top: -4px;
+    }
+  }
+}
+
+/*physical server state icon starts*/
+
+.server-state {
+
+  margin-right: 5px;
+
+}
+
+.server-state-unlocked, .server-state-locked, .server-state-locking,.server-state-unlocking {
+
+  display: inline-block;
+
+  width: 14px;
+
+  height: 14px;
+
+  vertical-align: middle;
+
+  background:url(/static/dashboard/img/state-icon.png) no-repeat;
+
+}
+
+.server-state-unlocked { background-position: 0 -45px; }
+
+.server-state-locked { background-position: 0 -90px; }
+
+.server-state-locking {
+
+  background:url(/static/dashboard/img/instance-state-loading.gif) no-repeat;
+
+}
+
+.server-state-unlocking {
+
+  background:url(/static/dashboard/img/instance-state-loading.gif) no-repeat;
+
+}
+
+/*physical server state icon end*/

@@ -1,0 +1,30 @@
+{% load horizon i18n %}
+{% load url from future %}
+{% load navigation %}
+
+
+<div class="dropdown-menu">
+    <ul class="mega-menu clearfix">
+        {% for col_groups in column_components %}
+        <li class="mega-menu-column">
+            <ul>
+                {% for group in col_groups %}
+                <li class="mega-menu-header">{{ group.title }}</li>
+                {% for panel in group.panels %}
+                <li>
+                    <a href="{{ panel.get_absolute_url }}">
+                        <span class="nav-icon {% panel_icon_class group.dash panel %}"
+                              aria-hidden="true"></span>
+                        <span>{{ panel.name }}</span>
+                    </a>
+                </li>
+                {% endfor %}
+                {% if not forloop.last %}
+                <li class="divider"></li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+</div>

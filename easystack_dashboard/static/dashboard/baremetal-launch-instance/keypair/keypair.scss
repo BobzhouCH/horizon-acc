@@ -1,0 +1,67 @@
+[ng-controller="LaunchBareInstanceKeypairCtrl as ctrl"] {
+
+  dl.key-pair-details {
+
+    dt {
+      width: 15%;
+    }
+    dd {
+      margin-left: 15%;
+      padding-right: 25px;
+
+      pre {
+        background: none;
+      }
+    }
+  }
+
+  textarea {
+    font-family: $code-font-family;
+  }
+
+  .form-field {
+    margin-bottom: 1em;
+    height: 30px;
+    line-height: 30px;
+  }
+
+  input[type="password"] {
+    width: 190px;
+  }
+
+  .admin-password {
+    .has-warning {
+      position: relative;
+    }
+    .form-group {
+      width: auto;
+      position: relative;
+      margin-right: 20px;
+      label { width: auto; text-align: left; }
+    }
+    .fa {
+      position: absolute;
+      top: 6px;
+      right: -18px;
+    }
+  }
+}
+.no-navigation {
+
+  .step {
+    left: 25px;
+  }
+
+  .form-field {
+    margin-bottom: 1em;
+  }
+  .keypair-input { width: 800px; }
+  .dl-horizontal {
+    dt { line-height: 34px; }
+    dd pre {
+      color: $kbd-color;
+      border: 0;
+      background-color: $kbd-bg;
+    }
+  }
+}

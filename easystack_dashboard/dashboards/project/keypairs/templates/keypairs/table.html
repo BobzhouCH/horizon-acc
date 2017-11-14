@@ -1,0 +1,132 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Keypairs" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Keypairs") %}
+{% endblock page_header %}
+
+{% block main %}
+<hz-magic-search-context filter-facets="filterFacets">
+  <table id="keypairs-list" hz-table ng-cloak hopes-table-drag
+    st-table="ikeypairs"
+    st-safe-src="keypairs"
+    default-sort="name"
+    default-sort-reverse="false"
+    ng-controller="projectKeypairsController"
+    disabled="disabled"
+    st-magic-search
+    class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th colspan="100" class="bare">
+          <div class="table_actions clearfix">
+          <action-list>
+             <action
+             action-classes="'btn btn-primary btn-action'"
+            callback="actions.refresh">
+             <i class="icon icon-refresh"></i>
+             <span id="refresh"></span>
+             </action>
+          </action-list>
+          <action-list>
+            <action
+              action-classes="'btn btn-primary btn-action'"
+              callback="actions.create.open" disabled= "keypairs.length >= quota">
+              <i class="icon icon-add"></i>
+              <span id="create-keyPair">{% trans 'Create KeyPair' %}
+                <i ng-show= "keypairs.length >= quota">{% trans '(quota exceeded)' %}</i>
+              </span>
+            </action>
+          </action-list>
+          <action-list>
+            <action
+              action-classes="'btn btn-default btn-sm'"
+              callback="actions.import.open">
+              <i class="icon icon-upload"></i>
+              <span id="import-keyPair">{% trans 'Import KeyPair' %}</span>
+            </action>
+          </action-list>
+          <action-list>
+            <action
+              action-classes="'btn btn-action btn-danger'"
+              disabled="numSelected === 0"
+              callback="actions.deleted.batchDelete">
+              <i class="icon icon-delete"></i>
+              <span id="delete-keyPairs">{% trans 'Delete KeyPairs' %}</span>
+            </action>
+          </action-list>
+           <div class="fr search-bar">
+            <hz-magic-search-bar id="search"></hz-magic-search-bar>
+           </div>
+          </div>
+        </th>
+      </tr>
+
+        <tr eagle-eye="table_heads">
+          <th class="select-col" eagle-eye="select_col">
+          <input type="checkbox"
+            hz-select-page="keypairs"/>
+          </th>
+          <th width="30%">
+            <span st-sort="name" st-sort-default="name" eagle-eye="data_col">{$ ::context.header.name $}</span>
+          </th>
+          <th>
+            <span st-sort="fingerprint" st-sort-default="fingerprint" eagle-eye="data_col">{$ ::context.header.fingerprint $}</span>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr ng-if="!ikeypairsState">
+          <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+        </tr>
+
+        <tr ng-if="!ikeypairs.length && ikeypairsState" eagle-eye="empty_table">
+          <td colspan="100">{% trans "No Data" %}</td>
+        </tr>
+        <tr eagle-eye= "data_row" ng-repeat-start="keypair in ikeypairs" ng-class="{'st-selected': checked[keypair.id]}">
+          <td class="select-col" eagle-eye="select_col">
+              <input type="checkbox"
+                  hz-select="keypair"
+                  ng-model="selected[keypair.id].checked"
+                  hz-checkbox-group="keypairs"/>
+          </td>
+          <!--
+            Table-row-expander:
+            User can toggle visbility of the Detail-row by clicking on this icon.
+            Duration attribute determines the animation time.
+          -->
+          <td eagle-eye="data_col">
+            <span class="row-name">{$ keypair.name $}</span>
+            <i class="chevron-right chevron-fixed fr" hz-expand-detail="chevron-right chevron-down" duration="200" eagle-eye="expand"></i>
+          </td>
+          <td eagle-eye="data_col">{$ keypair.fingerprint $}</td>
+        </tr>
+        <!--
+          Detail-row:
+          Contains detailed information on this item.
+          Can be toggled using the chevron button.
+          Ensure colspan is greater or equal to number of column-headers.
+        -->
+        <tr ng-repeat-end class="detail-row" eagle-eye= "detail_row">
+          <td class="detail detail-extend" colspan="100">
+            <dl class="dl-horizontal">
+              <dt ng-if="keypair.public_key">{$ ::context.header.public_key $}</dt>
+              <dd ng-if="keypair.public_key" eagle-eye="data_col"><pre><code>{$ keypair.public_key $}</code></pre></dd>
+            </dl>
+          </td>
+        </tr>
+      </tbody>
+
+      <tfoot ng-if="keypairs.length > 10">
+      <tr>
+        <td colspan="100" eagle-eye="data_page">
+          <table-footer></table-footer>
+        </td>
+      </tr>
+    </tfoot>
+
+  </table>
+</hz-magic-search-context>
+{% endblock %}

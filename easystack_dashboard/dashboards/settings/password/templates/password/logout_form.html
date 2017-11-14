@@ -1,0 +1,33 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+<h3 class="modal-title">{$ ::context.title $}</h3>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+      <fieldset>
+        <!--
+          User name input (required):
+            Create-mode: show
+            Edit-mode: show
+            Password-mode: show but disable
+        -->
+        <div class="form-group clearfix">
+          <p>{$ ::context.success $}</p>
+        </div>
+      </fieldset>
+
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

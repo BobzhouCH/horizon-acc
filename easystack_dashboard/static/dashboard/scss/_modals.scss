@@ -1,0 +1,226 @@
+/**
+ ** Module : pop windows css
+ ** Author : xinwei
+ ** Date   : 2015-12-01
+**/
+
+// Author : xinwei
+// Module : operation windows css
+// Date   : 2015-12-01
+
+.modal-dialog {
+  position: absolute;
+  margin: 0;
+  left: 50%;
+  top: 50%;
+  transition: opacity 0.7s ease 0s !important;
+  transform: translate(-50%, -50%, 0) !important;
+  -ms-transform: translate(-50%, -50%) !important;
+  -moz-transform: translate(-50%, -50%) !important;
+  -webkit-transform: translate(-50%, -50%) !important;
+  -o-transform: translate(-50%, -50%) !important;
+}
+.lg-window {
+  .modal-dialog {
+    top: 0;
+    transform: translate(-50%, 0, 0) !important;
+    -ms-transform: translate(-50%, 0) !important;
+    -moz-transform: translate(-50%, 0) !important;
+    -webkit-transform: translate(-50%, 0) !important;
+    -o-transform: translate(-50%, 0) !important;
+  }
+}
+
+/* Modal header */
+.modal-header {
+  background: $default-bg-color;
+  padding: 0 0 0 20px;
+  color: $modal-header-border-color;
+  border: 0;
+  border-top-left-radius: $border-radius-small;
+  border-top-right-radius: $border-radius-small;
+}
+
+/* Title text within header */
+.modal-title {
+  display: block;
+  height: inherit;
+  line-height: $modal-title-height;
+  float: left;
+}
+
+/* Closed */
+.modal-colsed {
+  cursor: pointer;
+  float: right;
+  //height: 45px;
+  width: 45px;
+  line-height: 40px;
+  text-align: center;
+  .modal-colsed-icon:before {
+    content: url(/static/dashboard/img/closed_icon.png);
+  }
+  .modal-colsed-icon {
+    position: relative;
+    top: 2px;
+    left: 1px;
+  }
+}
+
+/* Actual modal */
+.modal-content {
+  //position: relative;
+  //background-color: $modal-content-bg;
+  border: 0;
+  border-radius: $border-radius-small;
+  @include box-shadow(0 0 0 rgba(0,0,0,0));
+  //background-clip: padding-box;
+  //outline: 0;
+}
+
+/* Modal body
+   Where all modal content resides (sibling of .modal-header and .modal-footer)*/
+.modal-body {
+  padding: $modal-inner-padding;
+  padding-bottom: 0;
+}
+.modal-description {
+  padding: 8px 10px;
+  line-height: 18px;
+  margin: auto 10px 0 10px;
+  border-radius: $border-radius-base;
+  background: $brand-info;
+  color: $state-info-text;
+}
+.modal-description.warning {
+  background-color: #fdf3d9;
+  color: #f1b105;
+  font-size: 12px;
+  border: 1px #f1b105 solid;
+}
+
+/* Footer (for actions) */
+.modal-footer {
+  border-top: 0;
+  padding: 10px 50px 10px 0;
+  margin-top: 20px;
+  border-bottom-left-radius: $border-radius-small;
+  border-bottom-right-radius: $border-radius-small;
+  background: $modal-footer-bg;
+}
+
+/* Delete Modal body */
+.delete-body { padding-top: 30px; }
+
+// Module : tab and detail tab css
+// Author : xinwei
+// Date   : 2015-12-01
+
+/* tab css */
+.def-tabs > ul.nav-tabs > li {
+  display: inline-block;
+  width: auto;
+  margin-right: 2px;
+  margin-bottom: 0;
+  position: relative;
+  top: 1px;
+  a {
+      padding: 0 20px;
+      height: 42px;
+      line-height: 42px;
+      font-size: 14px;
+      background: #e9ebed;
+      color: $gray-dark;
+      border: 1px #ccc solid;
+      border-top-width: $nav-tabs-top-border-width;
+      border-radius: 4px 4px 0 0;
+      cursor: pointer;
+      &:hover {
+        border-top-color: $nav-tabs-top-border-color;
+      }
+    }
+}
+
+.def-tabs > ul.nav-tabs > li.active {
+  a {
+      border: 1px $detail-border-color solid;
+      border-top-width: $nav-tabs-top-border-width;
+      border-top-color: $nav-tabs-top-border-color;
+      border-bottom: 0;
+      background: #fff;
+      color: $gray-darker;
+
+      &:hover {
+        border: 1px $detail-border-color solid;
+        border-top-width: $nav-tabs-top-border-width;
+        border-top-color: $nav-tabs-top-border-color;
+        border-bottom: 0;
+        color: $gray-darker;
+      }
+  }
+}
+.tab-content {
+  border: 1px $detail-border-color solid;
+  background:#fff;
+  .tab-pane-content {
+    margin: 10px;
+  }
+}
+
+// Author : zhaoyongsheng
+// Module : delete form css
+// Date   : 2016-01-06
+
+/* additional div css */
+.delete-form {
+  p:first-child {
+    margin-top: 50px;
+    margin-bottom: 30px;
+    font-size: 18px;
+  }
+  p:last-child {
+    margin-bottom: 10px;
+  }
+}
+.delete-ins-one,.delete-ins-more {
+  width: 100%;
+  padding: 0 50px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  ul {
+    border: 1px solid #ccc;
+    width: 100%;
+    padding: 0;
+    overflow-y: auto;
+    max-height: 120px;
+    li {
+      padding: 0 0 0 10px;
+      height: 40px;
+      line-height: 40px;
+      overflow: hidden;
+       span.img {
+        padding: 0;
+        text-align: center;
+        margin-top: -2px;
+        }
+        span.text {
+          padding: 0 5px;
+          text-align: left;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+    }
+  }
+  .border-bottom-even {
+    li:nth-child(odd){ border-bottom: 1px solid #ccc; border-right: 1px solid #ccc;}
+    li:nth-child(even){ border-bottom: 1px solid #ccc; }
+    li:nth-last-child(1){ border-bottom:none; }
+    li:nth-last-child(2){ border-bottom:none; }
+  }
+  .border-bottom-odd {
+    li:nth-child(odd){ border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; }
+    li:nth-child(even){ border-bottom: 1px solid #ccc;}
+    li:nth-last-child(1){ border-bottom:none;}
+  }
+}

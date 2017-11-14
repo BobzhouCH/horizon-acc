@@ -1,0 +1,20 @@
+<table st-table="row.security_group_rules" class="table table-condensed table-rsp security-group-details">
+  <thead>
+    <tr>
+      <th eagle-eye="data_col" st-sort="direction" st-sort-default>{$ ctrl.tableLabels.direction $}</th>
+      <th eagle-eye="data_col" st-sort="ethertype">{$ ctrl.tableLabels.ethertype $}</th>
+      <th eagle-eye="data_col" st-sort="protocol">{$ ctrl.tableLabels.protocol $}</th>
+      <th eagle-eye="data_col" st-sort="port_range_min">{$ ctrl.tableLabels.port_range_min $}</th>
+      <th eagle-eye="data_col" st-sort="port_range_max">{$ ctrl.tableLabels.port_range_max $}</th>
+      <th eagle-eye="data_col" st-sort="remote_ip_prefix">{$ ctrl.tableLabels.remote_ip_prefix $}</th>
+    </tr>
+  </thead>
+  <tr ng-repeat="d in row.security_group_rules">
+    <td eagle-eye="data_col">{$ d.direction || '-' $}</td>
+    <td eagle-eye="data_col">{$ d.ethertype || '-' $}</td>
+    <td eagle-eye="data_col">{$ d.protocol || '-' $}</td>
+    <td eagle-eye="data_col">{$ d.port_range_min || '-' $}</td>
+    <td eagle-eye="data_col">{$ d.port_range_max || '-' $}</td>
+    <td eagle-eye="data_col">{$ d.remote_ip_prefix || '-' $}</td>
+  </tr>
+</table>

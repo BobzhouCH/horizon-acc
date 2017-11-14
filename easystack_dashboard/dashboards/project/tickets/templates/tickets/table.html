@@ -1,0 +1,129 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Tickets" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Tickets") %}
+{% endblock page_header %}
+
+{% block main %}
+
+<hz-magic-search-context filter-facets="filterFacets">
+  <table id="ticket-list" hz-table ng-cloak hopes-table-drag
+    st-table="itickets"
+    st-safe-src="tickets"
+    default-sort="no"
+    default-sort-reverse="true"
+    ng-controller="ticketsCtrl"
+    disabled="disabled"
+    st-magic-search
+    class="table table-bordered table-hover">
+
+    <!--
+      Table-head:
+      This is where we add things like filtering and batch actions.
+      This is where we add column headers.
+    -->
+    <thead>
+      <!--
+        Table-batch-actions:
+        This is where batch actions like searching, creating, and deleting.
+      -->
+      <tr>
+        <th colspan="100" class="bare">
+          <div class="table_actions clearfix">
+          <action-list class="btn-addon">
+                <action
+                  action-classes="'btn btn-primary btn-action'"
+                  disabled="!iticketState"
+                  callback="actions.refresh">
+                  <i class="icon icon-refresh"></i>
+                  <span id="refresh"></span>
+                </action>
+             </action-list>
+            <action-list>
+              <action
+                action-classes="'btn btn-primary btn-action'"
+                callback="actions.create.open">
+                <i class="icon icon-add"></i>
+                <span id="create-ticket">{% trans 'Create Ticket' %}</span>
+              </action>
+            </action-list>
+            <div class="fr search-bar">
+              <hz-magic-search-bar id="search"></hz-magic-search-bar>
+            </div>
+          </div>
+        </th>
+      </tr>
+
+      <!--
+        Table-column-headers:
+        This is where we declaratively define the table column headers.
+        Include the select all checkbox if you want to enable select all
+        for performing batch actions.
+      -->
+      <tr>
+        <th eagle-eye="select_col" class="select-col">
+          <input type="checkbox"
+            hz-select-page="tickets"/>
+        </th>
+        <th><span eagle-eye="data_col" st-sort="no">{$ ::context.header.ticket_no $}</span></th>
+        <th><span eagle-eye="data_col" st-sort="title">{$ ::context.header.title $}</span></th>
+        <th><span eagle-eye="data_col" st-sort="user_name">{$ ::context.header.user $}</span></th>
+        <th><span eagle-eye="data_col" st-sort="type_name">{$ ::context.header.ticket_type $}</span></th>
+        <th><span eagle-eye="data_col" st-sort="status_name">{$ ::context.header.status $}</span></th>
+        <th><span eagle-eye="data_col" st-sort="update_at">{$ ::context.header.update_time $}</span></th>
+        <th><span eagle-eye="data_col" st-sort="create_at">{$ ::context.header.create_time $}</span></th>
+
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr ng-if="!iticketState">
+        <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+      </tr>
+
+      <tr ng-if="!itickets.length && iticketState">
+        <td colspan="100">{% trans "No Data" %}</td>
+      </tr>
+      <tr ng-if="iticketState" ng-repeat="ticket in itickets" ng-class="{'st-selected': checked[ticket.id]}">
+
+        <!--
+          Table-row-checkbox:
+          User can select and unselect this row by clicking on this checkbox.
+          Batch actions can then be perform on selected rows.
+        -->
+        <td eagle-eye="select_col" class="select-col">
+          <input type="checkbox"
+            hz-select="ticket"
+            ng-model="selected[ticket.id].checked"
+            hz-checkbox-group="tickets"/>
+        </td>
+
+        <!-- Table-row-info-column -->
+        <td eagle-eye="data_col"><a href="javascript:;" ng-click="actions.detail.open(ticket)">{$ ticket.no $}</a></td>
+        <td eagle-eye="data_col" title="{$ ticket.title $}">{$ ticket.title $}</td>
+        <td eagle-eye="data_col">{$ ticket.user_name $}</td>
+        <td eagle-eye="data_col">{$ ticket.type_name | transTicketType $}</td>
+        <td eagle-eye="data_col">{$ ticket.status_name | transTicketStatus $}</td>
+        <td eagle-eye="data_col">{$ ticket.update_at $}</td>
+        <td eagle-eye="data_col">{$ ticket.create_at $}</td>
+      </tr>
+
+    </tbody>
+
+    <!--
+      Table-footer:
+      This is where we display number of items and pagination controls.
+      Ensure colspan is greater or equal to number of column-headers.
+    -->
+    <tfoot ng-if="tickets.length > 10">
+      <tr>
+        <td colspan="100">
+          <table-footer></table-footer>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</hz-magic-search-context>
+{% endblock %}

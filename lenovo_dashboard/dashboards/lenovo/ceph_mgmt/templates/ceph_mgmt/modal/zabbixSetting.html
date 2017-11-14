@@ -1,0 +1,131 @@
+{%load i18n%}
+<script type="text/ng-template" id="zabbixSetting.html">
+    <div class="modal-header clearfix">
+        <p class="modal-colsed" ng-click="close()">
+            <i class = "modal-colsed-icon"></i>
+        </p>
+        <h4 class="modal-title">{% trans "Settings Cluster" %}</h4>
+    </div>
+    <div class="modal-body public-body modal-zabbix">
+{#        <div class="body-left public-body-left">#}
+{#            <ul class="modal-left-nav public-config-nav">#}
+{#                <p class="li-border">General</p>#}
+{#                <li>{% trans "Crush Rules" %}</li>#}
+{#            </ul>#}
+{#        </div>#}
+
+            <div class="body-content">
+                <div class="content-box zabbix_server" style="display: block">
+                    <form novalidate name="form">
+
+
+
+                    <div class="list-group">
+                        <label class="labfont" for="zabbix_server_ip">{% trans "Zabbix Monitor IP" %}</label>
+                        <input required type="text" class="labinput"  name="zabbix_server_ip" ng-model="zabbix.zabbix_server_ip"  placeholder="Zabbix Monitor IP" />
+                    </div>
+                    <div class="list-group">
+                         <label class="labfont" for="zabbix_user">{% trans "Zabbix User" %}</label>
+                        <input required type="text" class="labinput" name="zabbix_user" ng-model="zabbix.zabbix_user" ng-maxlength="32" placeholder="Zabbix User" />
+                    </div>
+                    <div class="list-group">
+                         <label class="labfont" for="zabbix_password">{% trans "Zabbix Password" %}</label>
+                        <input required type="password" class="labinput"  name="zabbix_password" ng-model="zabbix.zabbix_password" ng-maxlength="32" placeholder="Zabbix Password" />
+                    </div>
+
+
+
+{#                    <div class="list-group">#}
+{#                         <label class="labfont" for="ntp_server_ip">{% trans "NTP Service IP" %}</label>#}
+{#                        <input type="text" class="labinput"  name="ntp_server_ip" ng-model="zabbix.ntp_server_ip" placeholder="NTP Service IP" />#}
+{#                    </div>#}
+{#                    <div class="list-group">#}
+{#                        <label  class="labfont" for="ntp_server_ip">{% trans "Max MDS Allowed" %}</label>#}
+{#                        <input  class="labinput" type="text" min="1" class="form-control"  name="max_mdx_count" ng-model="zabbix.max_mdx_count" placeholder="Max MDX Allowed"  />#}
+{#                    </div>#}
+{##}
+{##}
+{#                    <div class="list-group">#}
+{#                        <label  class="labfont" for="max_mon_count">{% trans "Max Monitors Allowed" %}</label>#}
+{#                        <input type="number" min="1"  class="labinput" name="max_mon_count" ng-model="zabbix.max_mon_count" placeholder="Max Monitors Allowed" />#}
+{#                    </div>#}
+                 </div>
+{#                <div class="content-box">#}
+{#                    <div class="list-group addInitiators">#}
+{#                        <span class="text-Profiles">{% trans "Profiles" %}</span>#}
+{#                        <span>#}
+{#			                <button  class="add-profiles" ng-click="AddProfiles()">+ {% trans "Add Profiles" %}</button>#}
+{#                        </span>#}
+{#                    </div>#}
+{#                    <div class="list-group read-box">#}
+{#                            <table class="table">#}
+{#                                <!--ng-repeat="x in configList"-->#}
+{#                                <tr ng-repeat="profiles in configList">#}
+{#                                    <td>#}
+{#                                        <span  class="glyphicon glyphicon-ok-circle  circle_btn" ></span>#}
+{#                                        <span  class="table-list-time  Add-profiles" ng-bind="profiles"></span>#}
+{#                                    </td>#}
+{#                                    <td>#}
+{#                                        <button class="border-none"  class="border-none"  ng-click="editFile()">#}
+{#                                            <b class="glyphicon glyphicon-edit  edit_btn"></b>#}
+{#                                        </button>#}
+{#                                    </td>#}
+{#                                    <td>#}
+{#                                        <button class="border-none" ng-click="deleteFile()">#}
+{#                                            <b class="glyphicon glyphicon-trash trash_btn"></b>#}
+{#                                        </button>#}
+{#                                    </td>#}
+{#                                </tr>#}
+{#                            </table>#}
+{#                    </div>#}
+{#                 </div>#}
+
+          </div>
+        </form>
+
+        <div>
+
+             <p class=" alert-danger"
+                       ng-show="form.zabbix_server_ip.$error.required && form.zabbix_server_ip.$dirty">
+                        {% trans "Zabbix Server IP is required." %}
+                    </p>
+
+                    <p class=" alert-danger"
+                       ng-show="form.zabbix_user.$error.required && form.zabbix_user.$dirty">
+                        {% trans "Zabbix User is required." %}
+                    </p>
+
+                        <p class=" alert-danger"
+                       ng-show="form.zabbix_password.$error.required && form.zabbix_password.$dirty">
+                        {% trans "Zabbix Password is required." %}
+                    </p>
+
+                    <p class=" alert-danger"
+                       ng-show="form.zabbix_user.$error.maxlength && form.zabbix_user.$dirty">
+                        {% trans "Zabbix User should be less than 32 chars." %}
+                    </p>
+
+                    <p class=" alert-danger"
+                       ng-show="form.zabbix_password.$error.maxlength && form.zabbix_password.$dirty">
+                        {% trans "Zabbix Password should be less than 32 chars." %}
+                    </p>
+        </div>
+            <div class="modal-footer">
+
+                <button class="btn btn-primary"  ng-disabled="form.$invalid" ng-show="!is_show" ng-click="upDateClusterConf()">{% trans "OK" %}</button>
+                <button class="btn btn-primary" ng-click="close()">{% trans "Cancel" %}</button>
+            </div>
+
+
+        {% include "lenovo/ceph_mgmt/modal/delconfig.html"  %}
+
+        {% include "lenovo/ceph_mgmt/modal/AddProfile.html"  %}
+
+        {% include "lenovo/ceph_mgmt/modal/modifyconfig.html"  %}
+
+   </div>
+</script>
+
+
+
+

@@ -1,0 +1,103 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+    <h3 class="modal-title">{$ ::context.title $}</h3>
+    <p class="modal-colsed" ng-click="action.cancel()">
+        <i class="modal-colsed-icon"></i>
+    </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+    <div class="modal-body clearfix">
+        <!-- Modal-form-left: Contains the form controls -->
+        <!--<div class="left form-wrap">-->
+        <fieldset>
+             <div class="form-group clearfix">
+                <label class="control-label fl required" for="volume">
+                    <p>{% trans "Restoration Type" %}</p>
+                </label>
+                <div class="form-group-right">
+                   <input
+                      id="create_new_volume"
+                      name="create_new_volume"
+                      class="form-control radio-select-input"
+                      type="radio"
+                      checked
+                      ng-init="backup.create_new_volume = '1'"
+                      ng-model="backup.create_new_volume"
+                      value="1"/>
+                     <span>{% trans "Create a new volume" %}</span>
+                   <input
+                     id="policy_disable"
+                     name="policy_radio"
+                     class="form-control radio-select-input"
+                     type="radio"
+                     ng-model="backup.create_new_volume"
+                     value="0"/>
+                     <span>{% trans "Select a existing volume" %}</span>
+               </div>
+             </div>
+             <div class="form-group clearfix" ng-if="backup.create_new_volume == '0'">
+                <label ng-if="backup.create_new_volume == '0'"
+                       class="control-label fl required" for="volume">
+                    *{% trans "Target Volume" %}
+                </label>
+                <!--<label ng-if="backup.create_new_volume == '1'"
+                      class="control-label fl required" for="volume">
+                    *{% trans "Volume Name" %}
+                </label>-->
+                <div class="form-group-right">
+                 <div ng-if="backup.create_new_volume == '0'"
+                     ng-class="{'has-error':form.volume.$invalid && form.volume.$dirty}">
+                    <select required
+                            id="volume"
+                            name="volume"
+                            class="form-control"
+                            ng-change="changeVolume(backup.volume)"
+                            ng-model="backup.volume"
+                            ng-options="volume as volume.name for volume in volumes">
+                        <option value="" ng-if="!volumes.length">{% trans "No Optional Volume" %}</option>
+                    </select>
+                 </div>
+                 <!--<div ng-if="backup.create_new_volume == '1'"
+                     ng-class="{'has-error':form.new_volume_name.$invalid && form.new_volume_name.$dirty}">
+                     <input required
+                           id="new_volume_name"
+                           name="new_volume_name"
+                           type="text"
+                           class="form-control verify-input"
+                           ng-maxlength="255"
+                           ng-model="backup.new_volume_name">
+                 </div>-->
+               </div>
+             </div>
+            <div class="form-group clearfix"
+                 ng-class="{'has-error':form.type.$invalid && form.type.$dirty}">
+                <label class="control-label fl required" for="name">
+                    <p>{% trans "Backup Volume Name" %}</p>
+                </label>
+                <div class="form-group-right">
+                    <input disabled
+                           id="name"
+                           name="name"
+                           type="text"
+                           class="form-control verify-input"
+                           ng-maxlength="255"
+                           ng-model="backup.name">
+                </div>
+            </div>
+        </fieldset>
+        <!-- Modal-form-right: The description text. -->
+    </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+    <button id="submit-button" class="btn btn-primary" type="button"
+            ng-disabled="form.$invalid"
+            ng-click="action.submit()">
+        {$ ::context.submit $}
+    </button>
+</div>

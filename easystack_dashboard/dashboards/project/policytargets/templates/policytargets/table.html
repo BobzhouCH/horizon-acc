@@ -1,0 +1,384 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Group" %}{% endblock %}
+
+{% block page_header %}
+{% include "easystack_dashboard/common/_es_page_header.html" with title=_("Group") %}
+{% endblock page_header %}
+
+{% block main %}
+
+<tabset id="policy-group-tabset" class="def-tabs" justified="true">
+  <tab id="internal-tab" heading="{% trans "Internal"%}">
+    <div class="tab-pane-content">
+      <table id="policy-group-internal" hz-table ng-cloak hopes-table-drag
+            st-table="igroups"
+            st-safe-src="groups"
+            default-sort="name"
+            default-sort-reverse="false"
+            ng-controller="projectPolicyGroupInternalCtrl"
+            disabled="disabled"
+            class="table table-bordered table-hover">
+
+        <!--
+          Table-head:
+          This is where we add things like filtering and batch actions.
+          This is where we add column headers.
+        -->
+        <thead>
+
+          <!--
+            Table-batch-actions:
+            This is where batch actions like searching, creating, and deleting.
+          -->
+          <tr>
+            <th colspan="100" class="bare">
+              <div class="table_actions clearfix">
+                <action-list class="btn-addon">
+                  <action action-classes="'btn btn-default btn-sm'"
+                          callback="actions.refresh">
+                    <i class="icon icon-refresh"></i>
+                    <span id="internal-group-refresh"></span>
+                  </action>
+                </action-list>
+
+                <action-list class="btn-addon">
+                  <action action-classes="'btn btn-default btn-sm'"
+                          callback="actions.createAction.open">
+                    <i class="icon icon-add"></i>
+                    <span id="create-internal-group">{% trans 'Create Group' %}</span>
+                  </action>
+                </action-list>
+
+                <action-list>
+                  <action
+                    action-classes="'btn btn-action btn-primary'"
+                    disabled="numSelected !== 1"
+                    callback="actions.editAction.open" item="selectedData.aData">
+                    <i class="icon icon-edit"></i>
+                    <span id="edit-internal-group">{% trans 'Edit' %}</span>
+                  </action>
+                </action-list>
+                        
+                <action-list class="btn-addon">
+                  <action action-classes="'btn btn-danger btn-sm'"
+                          callback="actions.deleteAction.batchDelete"
+                          disabled="numSelected === 0">
+                    <i class="icon icon-delete"></i>
+                    <span id="delete-internal-group">{% trans 'Delete Group' %}</span>
+                  </action>
+                </action-list>
+                <div class="fr search-bar">
+                  <search-bar id="search" group-classes="" icon-classes="fa-search" placeholder={% trans "Filter" %}> </search-bar>
+                </div>
+              </div>
+            </th>
+          </tr>
+
+          <!--
+            Table-column-headers:
+            This is where we declaratively define the table column headers.
+            Include the select all checkbox if you want to enable select all
+            for performing batch actions.
+          -->
+          <tr eagle-eye="table_heads">
+            <th class="select-col" eagle-eye="select_col">
+              <input type="checkbox" hz-select-page="groups"/>
+            </th>
+            <th st-sort="name" st-sort-default="name" eagle-eye="data_col">
+              {$ ::context.header.name $}
+            </th>
+            <th st-sort="description" st-sort-default="description" eagle-eye="data_col">
+              {$ ::context.header.description $}
+            </th>
+            <th st-sort="provided-rule-sets" st-sort-default="provided-rule-sets" eagle-eye="data_col">
+              {$ ::context.header.providedRuleSets $}
+            </th>
+            <th st-sort="consumed-rule-sets" st-sort-default="consumed-rule-sets" eagle-eye="data_col">
+              {$ ::context.header.consumedRuleSets $}
+            </th>
+            <th st-sort="l2-policy" st-sort-default="l2-policy" eagle-eye="data_col">
+              {$ ::context.header.l2Policy $}
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr ng-if="!groupState">
+            <td colspan="100" class="Loading-bar">
+              <img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" />
+            </td>
+          </tr>
+
+          <tr ng-if="!igroups.length && groupState">
+            <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+          </tr>
+
+          <tr ng-if="groupState" ng-repeat-start="group in igroups" ng-class="{'st-selected': checked[group.id]}">
+
+            <!--
+              Table-row-checkbox:
+              User can select and unselect this row by clicking on this checkbox.
+              Batch actions can then be perform on selected rows.
+            -->
+            <td class="select-col" eagle-eye="select_col">
+              <input type="checkbox"
+                    hz-select="group"
+                    ng-model="selected[group.id].checked"
+                    hz-checkbox-group="groups"/>
+            </td>
+            <td eagle-eye="select_col">
+              <a ng-click="actions.detail.open(group.id)"
+                 href="javascript:;">
+                  {$ group.name $}
+              </a>
+            </td>
+            <td eagle-eye="select_col">
+              {$ group.description $}
+            </td>
+            <td eagle-eye="select_col">
+              <p ng-repeat="name in group.provided_policy_rule_set_names">{$ name $}</p>
+            </td>
+            <td eagle-eye="select_col">
+              <p ng-repeat="name in group.consumed_policy_rule_set_names">{$ name $}</p>
+            </td>
+            <td eagle-eye="select_col">
+              {$ group.l2_policy_name $}
+            </td>
+
+          </tr>
+          <tr eagle-eye= "detail_row"
+              ng-repeat-end
+              class="detail-row js-detail-box"
+              data-instanceId="{$ group.id $}"
+              data-index="{$ $index $}">
+            <td class="detail" colspan="100">
+              <!--<p class="detail-row-name fl"></p>-->
+              <div class="detail-expanded fl">
+                <table id="group-content" class="table table-bordered table-hover">
+                  <tbody>
+                    <tr >
+                      <td style="text-align:right;min-width:50px;">{$ ::context.header.cluster_id $}</td>
+                      <td style="min-width:200px">{$ group.id $}</td>
+                      <td style="text-align:right;min-width:30px;">{$ ::context.header.master_addr $}</td>
+                      <td style="min-width:300px">
+                        <p ng-repeat="ip in group.master_addr">{$ ip $}</p>
+                      </td>
+                      <td style="text-align:right;width:30px;">{$ ::context.header.slave_addr $}</td>
+                      <td style="min-width:300px">
+                        
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+
+        <!--
+          Table-footer:
+          This is where we display number of items and pagination controls.
+          Ensure colspan is greater or equal to number of column-headers.
+        -->
+        <tfoot>
+          <tr>
+            <td colspan="100" eagle-eye="data_page">
+              <table-footer></table-footer>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </tab>
+  <tab id="external-tab" heading="{% trans "External"%}">
+    <div class="tab-pane-content">
+      <table id="policy-group-ext" hz-table ng-cloak hopes-table-drag
+            st-table="iextGroups"
+            st-safe-src="extGroups"
+            default-sort="name"
+            default-sort-reverse="false"
+            ng-controller="projectPolicyGroupExternalCtrl"
+            disabled="disabled"
+            class="table table-bordered table-hover">
+
+        <!--
+          Table-head:
+          This is where we add things like filtering and batch actions.
+          This is where we add column headers.
+        -->
+        <thead>
+
+          <!--
+            Table-batch-actions:
+            This is where batch actions like searching, creating, and deleting.
+          -->
+          <tr>
+            <th colspan="100" class="bare">
+              <div class="table_actions clearfix">
+                <action-list class="btn-addon">
+                  <action action-classes="'btn btn-default btn-sm'"
+                          callback="actions.refresh">
+                    <i class="icon icon-refresh"></i>
+                    <span id="refresh"></span>
+                  </action>
+                </action-list>
+
+                <action-list class="btn-addon">
+                  <action action-classes="'btn btn-default btn-sm'"
+                          callback="actions.createAction.open"
+                          disabled="iextGroups.length == 1">
+                    <i class="icon icon-add"></i>
+                    <span id="create-external-group">{% trans 'Create External Group' %}</span>
+                  </action>
+                </action-list>
+
+                <action-list>
+                  <action
+                    action-classes="'btn btn-action btn-primary'"
+                    disabled="numSelected !== 1"
+                    callback="actions.editAction.open" item="selectedData.aData">
+                    <i class="icon icon-edit"></i>
+                    <span id="edit-external-group">{% trans 'Edit' %}</span>
+                  </action>
+                </action-list>
+                        
+                <action-list class="btn-addon">
+                  <action action-classes="'btn btn-danger btn-sm'"
+                          callback="actions.deleteAction.batchDelete"
+                          disabled="selectedData.aData.length === 0">
+                    <i class="icon icon-delete"></i>
+                    <span id="delete-external-group">{% trans 'Delete External Group' %}</span>
+                  </action>
+                </action-list>
+                <div class="fr search-bar">
+                  <search-bar id="search" group-classes="" icon-classes="fa-search" placeholder={% trans "Filter" %}> </search-bar>
+                </div>
+              </div>
+            </th>
+          </tr>
+
+          <!--
+            Table-column-headers:
+            This is where we declaratively define the table column headers.
+            Include the select all checkbox if you want to enable select all
+            for performing batch actions.
+          -->
+          <tr eagle-eye="table_heads">
+            <th class="select-col" eagle-eye="select_col">
+              <input type="checkbox" hz-select-page="extGroups"/>
+            </th>
+            <th st-sort="name" st-sort-default="name" eagle-eye="data_col">
+              {$ ::context.header.name $}
+            </th>
+            <th st-sort="description" st-sort-default="description" eagle-eye="data_col">
+              {$ ::context.header.description $}
+            </th>
+            <th st-sort="provided-rule-sets" st-sort-default="provided-rule-sets" eagle-eye="data_col">
+              {$ ::context.header.providedRuleSets $}
+            </th>
+            <th st-sort="consumed-rule-sets" st-sort-default="consumed-rule-sets" eagle-eye="data_col">
+              {$ ::context.header.consumedRuleSets $}
+            </th>
+            <th st-sort="external-connectivity"
+                st-sort-default="external-connectivity"
+                eagle-eye="data_col">
+              {$ ::context.header.externalConnectivity $}
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr ng-if="!extGroupState">
+            <td colspan="100" class="Loading-bar">
+              <img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" />
+            </td>
+          </tr>
+
+          <tr ng-if="!iextGroups.length && extGroupState">
+            <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+          </tr>
+
+          <tr ng-if="extGroupState" ng-repeat-start="group in iextGroups" ng-class="{'st-selected': checked[group.id]}">
+
+            <!--
+              Table-row-checkbox:
+              User can select and unselect this row by clicking on this checkbox.
+              Batch actions can then be perform on selected rows.
+            -->
+            <td class="select-col" eagle-eye="select_col">
+              <input type="checkbox"
+                    hz-select="group"
+                    ng-model="selected[group.id].checked"
+                    hz-checkbox-group="extGroups"/>
+            </td>
+            <td eagle-eye="select_col">
+                  {$ group.name $}
+            </td>
+            <td eagle-eye="select_col">
+              {$ group.description $}
+            </td>
+            <td eagle-eye="select_col">
+              <p ng-repeat="name in group.provided_policy_rule_set_names">{$ name $}</p>
+            </td>
+            <td eagle-eye="select_col">
+              <p ng-repeat="name in group.consumed_policy_rule_set_names">{$ name $}</p>
+            </td>
+            <td eagle-eye="select_col">
+              <p ng-repeat="name in group.external_segment_names">{$ name $}</p>
+            </td>
+
+
+          </tr>
+          <tr eagle-eye= "detail_row"
+              ng-repeat-end
+              class="detail-row js-detail-box"
+              data-instanceId="{$ group.id $}"
+              data-index="{$ $index $}">
+            <td class="detail" colspan="100">
+              <!--<p class="detail-row-name fl"></p>-->
+              <div class="detail-expanded fl">
+                <table id="ext-group-content" class="table table-bordered table-hover">
+                  <tbody>
+                    <tr >
+                      <td style="text-align:right;min-width:50px;">{$ ::context.header.cluster_id $}</td>
+                      <td style="min-width:200px">{$ bay.id $}</td>
+                      <td style="text-align:right;min-width:30px;">{$ ::context.header.master_addr $}</td>
+                      <td style="min-width:300px">
+                        <p ng-repeat="ip in bay.master_addr">{$ ip $}</p>
+                      </td>
+                      <!--
+                      <td style="text-align:right;width:220px;">{$ ::context.header.api_addr $}</td>
+                      <td>{$ bay.api_addr $}</td>-->
+                      <td style="text-align:right;width:30px;">{$ ::context.header.slave_addr $}</td>
+                      <td style="min-width:300px">
+                        <p ng-repeat="ip in bay.slave_addr">{$ ip $}</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+
+        <!--
+          Table-footer:
+          This is where we display number of items and pagination controls.
+          Ensure colspan is greater or equal to number of column-headers.
+        -->
+        <tfoot>
+          <tr>
+            <td colspan="100" eagle-eye="data_page">
+              <table-footer></table-footer>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </tab>
+</tabset>
+
+{% endblock %}

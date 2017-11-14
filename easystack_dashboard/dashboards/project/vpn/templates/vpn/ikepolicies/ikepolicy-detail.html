@@ -1,0 +1,48 @@
+{% load context_selection %}
+
+<div class="detail-page">
+<div class="fl detail-left-icon" ng-click="action.cancel()"></div>
+<div class="detail-page-con">
+
+  <tabset id="ikepolicies-tab" justified="true" class="def-tabs">
+    <tab id="tab-images-detail" heading="{$ ::label.detail_overview $}">
+      <div class="tab-pane-content">
+
+      <table id="ikepolicy-list" class="table table-bordered table-hover table-unique">
+        <thead>
+          <tr>
+            <th colspan="100"><span class="detail-title">{$ ::label.properties $}</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.id $}</td>
+            <td id="ikepolicy-id" class="color449ed2" eagle-eye="data_col">{$ ikepolicy.id $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.description $}</td>
+            <td id="ikepolicy-description" class="color3399cc" eagle-eye="data_col">{$ ikepolicy.description $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.ike_version $}</td>
+            <td id="ikepolicy-ike_version" class="color66cc66" eagle-eye="data_col">{$ ikepolicy.ike_version $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.lifetime_units $}</td>
+            <td id="ikepolicy-lifetime_units" eagle-eye="data_col">{$ ikepolicy.lifetime.units $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.lifetime_value $}</td>
+            <td id="ikepolicy-lifetime_value" eagle-eye="data_col">{$ ikepolicy.lifetime.value $}</td>
+          </tr>
+          <tr>
+            <td eagle-eye="data_col">{$ ::label.phase1_negotiation_mode $}</td>
+            <td id="ikepolicy-phase1_negotiation_mode" eagle-eye="data_col">{$ ikepolicy.phase1_negotiation_mode $}</td>
+          </tr>
+        </tbody>
+      </table>
+     </div>
+    </tab>
+  </tabset>
+</div>
+</div>

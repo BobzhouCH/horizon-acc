@@ -1,0 +1,107 @@
+{% load context_selection %}
+<style>
+    #tasks-list tr td {
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .chartTitle {
+        position: absolute;
+        margin: 30px;
+    }
+
+    .hostListText {
+        text-align: center;
+        margin: -50px 0 20px 0;
+    }
+</style>
+<div class="detail-page">
+    <div class="fl detail-left-icon" ng-click="action.cancel()"></div>
+    <div class="detail-page-con">
+
+        <tabset justified="true" class="def-tabs">
+            <tab heading="{$ ::context.tabUtilization $}">
+                <div class="chartTitle">{$ logChartTitle $}</div>
+                <div class="tab-pane-content" id="optimize-detail-cpuUsage" style="width: 550px;height: 450px"></div>
+                <div class="hostListText">{$ ::context.hostList $}</div>
+                <div class="col-xs-12">
+                    <div class="col-xs-10">
+                        {$ taksSummary $}
+                    </div>
+                </div>
+            </tab>
+            <tab heading="{$ ::context.tabRecordList $}">
+                <div class="tab-pane-content tasksBox">
+
+                    <hz-magic-search-context filter-facets="filterFacets">
+                        <table id="tasks-list" hz-table ng-cloak hopes-table-drag
+                               st-table="itaskList"
+                               st-safe-src="taskList"
+                               st-magic-search
+                               class="table table-bordered table-hover">
+
+                            <!--
+                              Table-head:
+                              This is where we add things like filtering and batch actions.
+                              This is where we add column headers.
+                            -->
+                            <thead>
+
+                            <!--
+                              Table-batch-actions:
+                              This is where batch actions like searching, creating, and deleting.
+                            -->
+                            <tr>
+                                <th colspan="100" class="bare">
+                                    <div class="table_actions clearfix">
+                                        <action-list>
+                                            <action
+                                                    action-classes="'btn btn-primary btn-action'"
+                                                    callback="actions.refresh">
+                                                <i class="icon icon-refresh"></i>
+                                                <span id="refresh"></span>
+                                            </action>
+                                        </action-list>
+                                        <div class="fr search-bar">
+                                            <hz-magic-search-bar id="taskList-search"></hz-magic-search-bar>
+                                        </div>
+                                    </div>
+                                </th>
+                            </tr>
+
+                            <tr>
+                                <th><span eagle-eye="data_col" st-sort="id" st-sort-default="id">{$ ::context.tabRecordList $}</span>
+                                </th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr ng-repeat="task in itaskList">
+                                <!-- Table-row-info-column -->
+                                <td>
+                                    from {$ task.from_host $} to {$task.to_host$} VM name {$ task.vm_name $} status {$
+                                    task.status $}
+                                </td>
+                            </tr>
+
+                            </tbody>
+
+                            <!--
+                              Table-footer:
+                              This is where we display number of items and pagination controls.
+                              Ensure colspan is greater or equal to number of column-headers.
+                            -->
+                            <tfoot ng-if="taskList.length > 10">
+                            <tr>
+                                <td colspan="100">
+                                    <div st-pagination="" st-items-by-page="10" st-displayed-pages="10"></div>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </hz-magic-search-context>
+                </div>
+            </tab>
+        </tabset>
+    </div>
+</div>

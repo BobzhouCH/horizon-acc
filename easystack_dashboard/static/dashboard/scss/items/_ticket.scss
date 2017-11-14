@@ -1,0 +1,179 @@
+/**
+ ** Author :chenglongfei
+ ** Module : ticket module css
+ ** Data   : 2016-07-01
+**/
+
+.display-group {
+  .default {
+    float: left;
+    color: $gray-dark;
+    background-color: #fff;
+    border:1px #ccc solid;
+    border-right: none;
+    border-radius: 0;
+    &:first-child {
+      border-top-left-radius: $border-radius-base;
+      border-bottom-left-radius: $border-radius-base;
+    }
+    &:last-of-type {
+      border-right:1px #ccc solid;
+      border-top-right-radius: $border-radius-base;
+      border-bottom-right-radius: $border-radius-base;
+    }
+  }
+
+  .btn.default:hover {
+    color: $brand-primary;
+    background-color: none;
+  }
+  .btn[disabled]{
+    cursor: pointer;
+  }
+  .btn.default.active {
+    color: #fff;
+    background-color: $btn-primary-bg;
+    opacity: 1;
+    border-color: $btn-primary-bg;
+    &:hover {
+      color: #fff;
+      background-color: $btn-primary-bg;
+    }
+    & + .default {
+      border-left-color: $btn-primary-bg;
+    }
+  }
+  .form-group {
+    label {
+      width: auto;
+      margin-left: 20px;
+    }
+    margin-top: 0px;
+    .form-group-right {
+      width:100px;
+      margin-right: 20px;
+    }
+  }
+}
+
+.ticket-reply-tab {
+  margin-left: 5px;
+  padding-right: 10px;
+  .reply-row {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .loading-bar {
+    text-align: center;
+  }
+
+  .tips {
+    text-align: center;
+    margin: 10px;
+  }
+
+  .clear:after {
+    content: " ";
+    display: table;
+    clear: both;
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px solid #eee;
+  }
+
+  .heading {
+    font-size: 14px;
+    & > span {
+      display: inline-block;
+      line-height: 20px;
+      margin-right: 15px;
+      margin-bottom: 10px;
+    }
+  }
+  .content,.content > p {
+    text-align: justify;
+    word-break: break-all;
+    white-space: pre-wrap;
+  }
+
+  .reply-title {
+    padding-right:10px;
+    h1 {
+      display: inline-block;
+      line-height: 32px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      width: 100%;
+    }
+
+    .ticket-title {
+      padding-left: 0px;
+    }
+    .title-btn {
+      text-align: right;
+      padding-right: 0px;
+    }
+  }
+
+  .reply-desc {
+    .content {
+      padding: 8px;
+      height: 80px;
+      overflow-y: auto;
+      background: $gray-lighter;
+      border-radius: $border-radius-base;
+      margin-top: 25px;
+    }
+  }
+
+  .reply-list {
+    height: 300px;
+    overflow-y: auto;
+    .reply-item {
+      border: 1px solid #eee;
+      padding: 5px 10px;
+      margin: 10px 5px;
+      border-radius: 14px;
+    }
+    .reply-item.left{
+      margin-right: 50px;
+      //border-color:#F0E68C;
+      background-color: #fdf3d9;
+      display: inline-block;
+      float: left;
+      .replies-title, .replies-time {
+        color:#cc6600
+      }
+    }
+    .reply-item.right{
+      margin-left: 50px;
+      //border-color: #B2DFEE;
+      background-color: #d8f1fd;
+      display: inline-block;
+      float: right;
+      .replies-title, .replies-time {
+        color:#3c6e9f
+      }
+    }
+  }
+
+  .replay-form {
+    text-align: right;
+    .reply-btn{
+      margin-top:10px;
+      margin-right:20px;
+    }
+
+    textarea {
+      height: 120px;
+      background-color: #fff;
+    }
+  }
+  .replies-box {
+    overflow: hidden;
+  }
+}

@@ -1,0 +1,251 @@
+{% load i18n %}
+{% load context_selection %}
+
+<div class="detail-page">
+  <div class="fl detail-left-icon" ng-click="action.cancel()"></div>
+  <div class="detail-page-con">
+
+    <tabset id="instance-detail" justified="true" class="def-tabs">
+
+      <tab id="tab-instance-detail" heading="{$ ::title.Details_List $}">
+        <div class="tab-pane-content">
+          <table id="info" class="table table-bordered table-hove table-unique">
+            <thead>
+              <tr eagle-eye="table_actions">
+                <th colspan="100" class="table-th-unline" eagle-eye="table_heads" class="table-th-unline"><span class="detail-title">{$ ::title.Info $}</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% inRegionShowNode 'project-instances-tab-instance-id' %}
+              <tr>
+                <td eagle-eye="data_col">{$ ::label.Info.ID $}</td>
+                <td id="instance-id" class="color449ed2" eagle-eye="data_col">{$ instance.id $}</td>
+              </tr>
+              {%  endinRegionShowNode %}
+              <tr>
+                <td eagle-eye="data_col">{$ ::label.Info.Name $}</td>
+                <td id="instance-name" class="color3399cc" eagle-eye="data_col" title="{$ instance.name $}">{$ instance.name $}</td>
+              </tr>
+              <tr>
+                <td eagle-eye="data_col">{$ ::label.Info.Status $}</td>
+                <td id="instance-status" class="color66cc66" eagle-eye="data_col">{$ instance.status | decode:(label.instancedetaili18n) $}</td>
+              </tr>
+              <tr>
+                <td eagle-eye="data_col">{$ ::label.Info.Created $}</td>
+                <td id="instance-created" eagle-eye="data_col">{$ instance.created $}</td>
+              </tr>
+              {% inRegionShowNode 'project-instances-tab-instance-uptime' %}
+              <tr>
+                <td eagle-eye="data_col">{$ ::label.Info.Uptime $}</td>
+                <td id="instance-uptime" eagle-eye="data_col">{$ instance.uptime $}</td>
+              </tr>
+              {%  endinRegionShowNode %}
+              {% inRegionShowNode 'project-instances-tab-instance-availability-zone' %}
+              <tr>
+                <td eagle-eye="data_col">{$ ::label.Info.AvailabilityZone $}</td>
+                <td id="instance-availability-zone" eagle-eye="data_col">{$ instance['OS-EXT-AZ:availability_zone'] $}</td>
+              </tr>
+              {%  endinRegionShowNode %}
+            </tbody>
+          </table>
+
+          {% inRegionShowNode 'project-instances-tab-resources' %}
+          <table id="resources" class="table table-bordered table-hove table-unique">
+            <thead>
+              <tr eagle-eye="table_actions">
+                <th colspan="100" eagle-eye="table_heads" class="table-th-unline"><span class="detail-title">{$ ::title.Resources $}</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td eagle-eye="data_col">{$ ::label.Resources.Volume $}</td>
+                <td eagle-eye="data_col">
+                  <div id="volume-{$ $index $}" ng-repeat="volume in instance.volumes_details">
+                    {$ volume.name $}  {% trans "attached on" %}  {$ volume.attachments[0].device $}
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td eagle-eye="data_col">{$ ::label.Resources.Keypair_name $}</td>
+                <td id="instance-key-name" class="color3399cc" eagle-eye="data_col">{$ instance.key_name $}</td>
+              </tr>
+              <tr>
+                <td eagle-eye="data_col">{$ ::label.Resources.Image_name $}</td>
+                <td id="instance-image_display_name" class="color3399cc" eagle-eye="data_col" title="{$ instance.image_display_name $}">{$ instance.image_display_name $}</td>
+              </tr>
+              <tr>
+                <td eagle-eye="data_col">{$ ::label.Resources.SecurityGroup $}</td>
+                <td eagle-eye="data_col"><div id="group-name-{$ $index $}" ng-repeat="group in instance.security_groups" style="overflow:hidden; text-overflow:ellipsis;">{$ group.name $}</div></td>
+              </tr>
+            </tbody>
+          </table>
+          {%  endinRegionShowNode %}
+
+          <table id="specs" class="table table-bordered table-hove table-unique">
+            <thead>
+              <tr eagle-eye="table_actions">
+                <th colspan="100" eagle-eye="table_heads" class="table-th-unline"><span class="detail-title">{$ ::title.Specs $}</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td eagle-eye="data_col">{$ ::label.Specs.RAM $}</td>
+                <td id="instance-flavor-ram" eagle-eye="data_col">{$ instance.flavor.ram | mb2gb $}</td>
+              </tr>
+              <tr>
+                <td eagle-eye="data_col">{$ ::label.Specs.VCPUs $}</td>
+                <td id="instance-flavor-vcpus" eagle-eye="data_col">{$ instance.flavor.vcpus $}</td>
+              </tr>
+              {% inRegionShowNode 'project-instances-tab-specs-disk' %}
+              <tr>
+                <td eagle-eye="data_col">{$ ::label.Specs.Disk $}</td>
+                <td id="instance-flavor-disk" eagle-eye="data_col">{$ instance.flavor.disk $}{% trans "GB" %}</td>
+              </tr>
+              {%  endinRegionShowNode %}
+            </tbody>
+          </table>
+
+          <table id="extras" class="table table-bordered table-hove table-unique">
+            <thead>
+              <tr eagle-eye="table_actions">
+                <th colspan="100" eagle-eye="table_heads" class="table-th-unline"><span class="detail-title">{$ ::title.ExtraSpecs $}</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-if="!extraSpecs.length">
+                <td eagle-eye="data_col">{% trans 'No Data' %}</td>
+              </tr>
+              <tr ng-repeat="extra in extraSpecs">
+                <td eagle-eye="data_col">{$ extra.key $}</td>
+                <td id="instance-flavor-extra" eagle-eye="data_col">{$ extra.value $}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table table-bordered table-hove table-unique" ng-repeat="(name, group) in instance.ip_groups">
+            <thead>
+              <tr eagle-eye="table_actions">
+                  <th colspan="100" eagle-eye="{$ name $}" class="table-th-unline"><span class="detail-title">{$ ::label.Networks.Network $}: {$ name $}</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{$ ::label.Networks.NetworkName$}</td>
+                <td eagle-eye="network">{$ name $}</td>
+              </tr>
+              {% inRegionShowNode 'project-instances-tab-instance-console' %}
+              <tr>
+                <td>{$ ::label.Networks.SubNetworkName $}</td>
+                <td eagle-eye="subnet">
+                    <span ng-repeat="subnetwork in group.non_floating">{$ subnetwork.subnet $}<span ng-show="group.non_floating.length>1 && group.non_floating.length-1 !== $index">, </span></span>
+                </td>
+              </tr>
+              <tr>
+                <td>{$ ::label.Networks.Segment $}</td>
+                <td eagle-eye="CIDR">
+                    <span ng-repeat="subnetwork in group.non_floating">{$ subnetwork.cidr $}<span ng-show="group.non_floating.length>1 && group.non_floating.length-1 !== $index">, </span></span>
+                </td>
+              </tr>
+              {%  endinRegionShowNode %}
+              <tr>
+                <td>{$ ::label.Networks.InternalIP $}</td>
+                <td eagle-eye="ip">
+                    <span ng-repeat="subnetwork in group.non_floating">
+                        {$ subnetwork.addr $}
+						<span ng-show="group.non_floating.length>1 && group.non_floating.length-1 !== $index" class="ng-hide">, </span>
+                    </span>
+                </td>
+              </tr>
+              <tr>
+                <td>{$ ::label.Networks.FloatingIP $}</td>
+                <td eagle-eye="floating_ip">
+                    <span ng-repeat="subnetwork in group.floating">{$ subnetwork.addr $}<span ng-show="group.floating.length>1 && group.non_floating.length-1 !== $index">, </span></span>
+                </td>
+              </tr>
+              {% inRegionShowNode 'project-instances-tab-instance-console' %}
+              <tr>
+                <td>{$ ::label.Networks.MACAddress $}</td>
+                <td eagle-eye="MAC">
+                    <span ng-repeat="subnetwork in group.non_floating">{$ subnetwork['OS-EXT-IPS-MAC:mac_addr'] $}<span ng-show="group.non_floating.length>1 && group.non_floating.length-1 !== $index">, </span></span>
+                </td>
+              </tr>
+              {%  endinRegionShowNode %}
+            </tbody>
+          </table>
+
+          <table id="fault" class="table table-bordered table-hove table-unique" ng-if="instance.fault">
+            <thead>
+              <tr eagle-eye="table_actions">
+                  <th colspan="100" eagle-eye="table_heads" class="table-th-unline"><span class="detail-title">{$ ::title.Fault $}</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{$ ::label.Fault.Message $}</td>
+                <td eagle-eye="message">{$ instance.fault.message $}</td>
+              </tr>
+              <tr>
+                <td>{$ ::label.Fault.Code $}</td>
+                <td eagle-eye="code">{$ instance.fault.code $}</td>
+              </tr>
+              <tr>
+                <td>{$ ::label.Fault.Details $}</td>
+                <td eagle-eye="details" class="fault-detail"><p>{$ instance.fault.details $}</p></td>
+              </tr>
+              <tr>
+                <td>{$ ::label.Fault.Created $}</td>
+                <td eagle-eye="created">{$ instance.fault.created | utcToLocal $}</td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </tab>
+
+      {% inRegionShowNode 'project-instances-tab-instance-console' %}
+      <tab id="tab-instance-console" heading="{$ ::title.Console $}" ng-if="console_url != null">
+        <div class="tab-pane-content">
+          {% include 'project/instances/_detail_console.html' %}
+        </div>
+      </tab>
+      {%  endinRegionShowNode %}
+
+      {% inRegionShowNode 'project-instances-tab-instance-consolelog' %}
+      <tab id="tab-instance-consolelog" heading="{$ ::title.ConsoleLog $}" ng-if="instance.consoleLog">
+        <div class="tab-pane-content">
+          <form novalidate name="form" ng-submit="submit(form.$valid)">
+            <fieldset>
+              <div class="clearfix log-top">
+                <h3 class="fl">{% trans 'Instance Console Log' %}</h3>
+                <div class="fr">
+                  <p class="fl" for="lines">
+                    {% trans 'Display Lines' %}(1~100):
+                  </p>
+                  <input required
+                    id="lines"
+                    name="lines"
+                    type="number"
+                    min="1"
+                    max="100"
+                    class="log-num"
+                    ng-model="instance.consoleLines">
+                  <button id="console-log-button" class="btn btn-primary ml10" type="button"
+                    ng-disabled="form.$invalid"
+                    ng-click="action.submit()">
+                    {% trans 'Query' %}
+                  </button>
+                  <a class="ml10" href="{$ instance.id $}/consolelog.html" target="_blank">{% trans 'Display All' %}</a>
+                </div>
+              </div>
+              <div class="">
+                <!--TODO: xinwei,please fix the hide title caused by v-scrollbar-->
+                <div id="console-log"><pre>{$ instance.consoleLog $}</pre></div>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </tab>
+      {%  endinRegionShowNode %}
+    </tabset>
+  </div>
+</div>

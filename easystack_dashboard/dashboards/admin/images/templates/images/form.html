@@ -1,0 +1,308 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<iframe name='uploadFrame' id="uploadFrame" style="display:none" mce_style="display:none"></iframe>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate
+  name="form"
+  ng-submit="submit(form.$valid)"
+  action="{{ WEBROOT }}api/glance/images/"
+  target="uploadFrame"
+  method="POST"
+  enctype="multipart/form-data">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+      <fieldset>
+        <!--
+          Image name input (required):
+            Create-mode: show
+            Edit-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="name">
+            *{% trans "Image Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              type="text"
+              ng-model="image.name"
+              ng-maxlength="255"
+              ng-disabled=""
+              placeholder="{% trans 'Enter a image name' %}"/>
+            <p class="help-block alert alert-danger"
+               ng-show="form.name.$error.maxlength">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+            <p class="help-block alert alert-danger"
+               ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "A image name is required." %}
+            </p>
+         </div>
+        </div>
+
+        <!--
+          Description input (optional):
+            Create-mode: show
+            Edit-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode == 'create'"
+          ng-class="{'has-error':form.description.$invalid && form.description.$dirty}">
+          <label for="description">
+            {% trans "Description" %}
+          </label>
+          <div class="form-group-right">
+            <textarea
+              id="description"
+              name="description"
+              class="form-control"
+              type="description"
+              ng-maxlength="1024"
+              ng-model="image.description"
+              placeholder="{% trans 'Enter description' %}"/>
+            </textarea>
+            <p class="help-block alert alert-danger"
+              ng-show="form.description.$error.maxlength">
+              {% trans "Description length should be less than 1024 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+          Image Source Type selection (required):
+            Create-mode: show
+            Edit-mode: hide
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create'"
+          ng-class="{'has-error':form.source_type.$invalid && form.source_type.$dirty}">
+          <label for="srcType">
+            {% trans "Image Source Type" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="source_type"
+              name="source_type"
+              class="form-control"
+              ng-model="image.source_type"
+              ng-init="image.source_type='url'"
+              ng-change="imageSourceType(image.source_type)">
+              <option
+                ng-selected="true"
+                value="url">
+                {% trans "From URL" %}
+              </option>
+              <option
+                value="file">
+                {% trans "From File" %}
+              </option>
+            </select>
+          </div>
+        </div>
+        <!--
+          Image Source input (required):
+            Create-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' && !srcTypesChange"
+          ng-class="{'has-error':form.copy_from.$invalid && form.copy_from.$dirty}">
+          <label for="source_type">
+            *{% trans "Image URL" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="copy_from"
+              name="copy_from"
+              class="form-control verify-input"
+              type="text"
+              ng-model="image.copy_from"
+              placeholder="{% trans 'Image Source' %}"/>
+            <p class="" style="color: rgb(0, 157, 217);"
+              ng-show="true">
+              {% trans "A too big image might cause timeout, so you might want to upload a big image via CLI" %}
+
+              <!-- RELEASE_4.1_MERGE_CONFLICT -->
+              {# {% trans "Too big image may cause timeout, you can upload it on cmd" %} #}
+            </p>
+            <p class="help-block alert alert-danger"
+              ng-show="form.copy_from.$invalid && form.copy_from.$dirty">
+              {% trans "URL is required." %}
+            </p>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' && srcTypesChange"
+          ng-class="{'has-error':form.image_file.$invalid && form.image_file.$dirty}">
+          <label for="source_type">
+            *{% trans "Image File" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="image_file"
+              name="image_file"
+              style="padding:0"
+              class="form-control verify-input"
+              type="file"
+              placeholder="{% trans 'Image File' %}"/>
+            <p class="" style="color: rgb(0, 157, 217);"
+              ng-show="true">
+              {% trans "A too big image might cause timeout, so you might want to upload a big image via CLI" %}
+            </p>
+            <p class="help-block alert alert-danger"
+              ng-show="form.image_file.$invalid && form.image_file.$dirty">
+              {% trans "File is required." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+          Image Format selection (required):
+            Create-mode: show
+            Edit-mode: hide
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create'"
+          ng-class="{'has-error':form.disk_format.$invalid && form.disk_format.$dirty}">
+          <label class="control-label fl required" for="disk_format">
+            {% trans "Format" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="disk_format"
+              name="disk_format"
+              class="form-control verify-input"
+              ng-class="{strikeLoading: !dropdown.formats}"
+              ng-init="image.disk_format=dropdown.formats[0].name"
+              ng-model="image.disk_format">
+              <option value="" disabled>
+                {% trans 'Select a format' %}
+              </option>
+              <option
+                ng-repeat="format in dropdown.formats"
+                ng-selected="format.name===image.disk_format"
+                value="{$ format.name $}">
+                {$ format.description $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!--
+          Minimum Disk (GB) Size input (required):
+            Create-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.min_disk.$invalid && form.min_disk.$dirty}">
+          <label for="minDiskSize">
+            {% trans "Minimum Disk (GB)" %}
+          </label>
+          <div class="form-group-right no-input-number">
+            <input
+              id="min_disk"
+              name="min_disk"
+              class="form-control verify-input"
+              type="number"
+              min="0"
+              max="1000"
+              ng-model="image.min_disk"
+              placeholder="0"/>
+            <p class="help-block alert alert-danger"
+              ng-show="form.min_disk.$invalid && form.min_disk.$dirty">
+              {% trans "Minimum Disk must be in 0~1000GB." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+         Minimum Ram (MB) Size input (required):
+            Create-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.min_ram.$invalid && form.min_ram.$dirty}">
+          <label for="min_ram">
+            {% trans "Minimum Ram (MB)" %}
+          </label>
+          <div class="form-group-right no-input-number">
+            <input
+              id="min_ram"
+              name="min_ram"
+              class="form-control verify-input"
+              type="number"
+              min="0"
+              max="2097152"
+              ng-model="image.min_ram"
+              placeholder="0"/>
+            <p class="help-block alert alert-danger"
+              ng-show="form.min_ram.$invalid && form.min_ram.$dirty">
+              {% trans "Minimum Ram must be in 0~2097152MB." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+          Public checkbox (required):
+            Create-mode: show
+        -->
+        <div class="form-group clearfix mt10">
+          <label for="is_public">
+            {% trans "Public" %}
+          </label>
+          <div class="form-group-right">
+            <input type="checkbox"
+              id="is_public"
+              name="is_public"
+              ng-model="image.is_public">
+          </div>
+        </div>
+
+        <!--
+          Protected checkbox (required):
+            Create-mode: show
+        -->
+        <div class="form-group clearfix mt0">
+          <label for="protected">
+            {% trans "Protected" %}
+          </label>
+          <div class="form-group-right">
+            <input type="checkbox"
+              id="protected"
+              name="protected"
+              type="boolean"
+              ng-model="image.protected">
+          </div>
+        </div>
+      </fieldset>
+    <!-- Modal-form-right: The description text. -->
+  </div>
+  <!-- Modal-footer: User can submit or cancel form here. -->
+  <div class="modal-footer">
+    <!--<input type="text" name="csrfmiddlewaretoken" value="TRupJbM0WCLy2YZ0yjcMoE5bmxKB3HzH"/>-->
+    {% csrf_token %}
+    <button id="submit-button" class="btn btn-primary" type="button"
+      ng-if="context.mode !== 'create'"
+      ng-disabled="form.$invalid"
+      ng-click="action.submit()">
+      {$ ::context.submit $}
+    </button>
+    <button id="submit-button" class="btn btn-primary" type="button"
+      ng-if="context.mode === 'create'"
+      ng-disabled="form.$invalid || image.status"
+      ng-click="action.upload()">
+      {$ ::context.submit $}
+    </button>
+  </div>
+
+</form>

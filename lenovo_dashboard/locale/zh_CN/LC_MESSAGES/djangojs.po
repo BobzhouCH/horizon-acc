@@ -1,0 +1,2080 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-12-16 07:54+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Alice Liu <liull31@lenovo.com>\n"
+"Language-Team: Lenovo ThinkCloud Team\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:969
+msgid "Unable to get ceph Hosts info."
+msgstr "无法获取主机"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:985
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1871
+msgid "Unable to get ceph cluster info"
+msgstr "无法获得Ceph集群信息"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1017
+#: dashboards/lenovo/static/lenovo/js/ha_management/form.js:45
+#: dashboards/lenovo/static/lenovo/js/ha_management/form.js:140
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:31
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:186
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail.js:29
+#: dashboards/lenovo/static/lenovo/js/network_switches/index.js:38
+#: dashboards/lenovo/static/lenovo/js/network_switches/index.js:169
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail/create.js:30
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:45
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:46
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:314
+#: dashboards/lenovo/static/lenovo/js/physical_servers/server/auth.js:39
+msgid "Host Name"
+msgstr "主机名"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1018
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1040
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1465
+msgid "Public IP"
+msgstr "公网IP"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1019
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1044
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1466
+msgid "Cluster IP"
+msgstr "集群内部IP"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1020
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1048
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1467
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:32
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:46
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:47
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:319
+msgid "Role"
+msgstr "角色"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1021
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1052
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1468
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1477
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1508
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1924
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:21
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:38
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:47
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:48
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:324
+msgid "Status"
+msgstr "状态"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1022
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1471
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1930
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2356
+msgid "No DATA"
+msgstr "无数据"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1030
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1942
+#: dashboards/lenovo/static/lenovo/js/network_switches/index.js:56
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:72
+msgid "Unable to retrieve imagess"
+msgstr "无法获得镜像"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1031
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1943
+#: dashboards/lenovo/static/lenovo/js/network_switches/index.js:57
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:73
+#: dashboards/lenovo/static/lenovo/js/upgrade/index.js:46
+msgid "Insufficient privilege level to view user information."
+msgstr "没有足够权限查看用户信息"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1036
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1464
+msgid "Server Name"
+msgstr "服务用户名"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1151
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2038
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:63
+msgid "Successfully add a new switch!"
+msgstr "成功添加一个交换机"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1153
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1159
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2040
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2046
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:65
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:72
+msgid "Add new switch failed."
+msgstr "添加交换机失败"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1163
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2050
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:76
+msgid "Processing... Please wait a moment"
+msgstr "处理中... 请稍候"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1188
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2075
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:101
+msgid "Successfully edit a new switch!"
+msgstr "成功编辑一个交换机"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1190
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1196
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2077
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2083
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:103
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:110
+msgid "Edit switch failed."
+msgstr "编辑交换机失败"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1243
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1257
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2130
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2144
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:156
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:171
+msgid "Delete switch failed."
+msgstr "删除交换机失败"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1249
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1262
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2136
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2149
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:162
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:176
+msgid "Successfully delete switches!"
+msgstr "成功删除交换机"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1301
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2188
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:214
+msgid "Successfully add a new port-mapping!"
+msgstr "成功添加一个端口映射"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1303
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1309
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2190
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2196
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:216
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:223
+msgid "Add port-mapping failed."
+msgstr "添加端口映射失败"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1348
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2235
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:261
+msgid "Successfully edit a new port-mapping!"
+msgstr "成功编辑一个端口映射"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1350
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1356
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2237
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2243
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:263
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:270
+msgid "Edit port-mapping failed."
+msgstr "编辑端口映射失败"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1398
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2285
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:307
+msgid "Successfully delete port-mapping!"
+msgstr "成功删除一个端口映射"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1400
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1406
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2287
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2293
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:309
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:316
+msgid "Delete port-mapping failed."
+msgstr "删除端口映射失败"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1463
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail.js:28
+msgid "General Information"
+msgstr "更新信息"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1469
+msgid "CPU Utilization"
+msgstr "CPU使用率"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1470
+msgid "Memory Utilization"
+msgstr "内存使用率"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1472
+msgid "OSDs"
+msgstr "OSD信息"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1473
+msgid "Disks"
+msgstr "硬盘信息"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1474
+msgid "Detail"
+msgstr "详细信息"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1476
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1504
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2351
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:41
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:19
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:18
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:36
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:69
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:56
+msgid "Name"
+msgstr "名"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1478
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1512
+msgid "Used Capacity"
+msgstr "已使用容量"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1479
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1516
+msgid "Available Capacity"
+msgstr "剩余容量"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1480
+msgid "Active Time"
+msgstr "有效时间"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1481
+msgid "Updated Time"
+msgstr "更新时间"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1483
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1529
+msgid "Device ID"
+msgstr "设备ID"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1484
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1533
+msgid "Disk Path"
+msgstr "磁盘路径"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1485
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1537
+msgid "Disk Capacity"
+msgstr "磁盘容量"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1486
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1541
+msgid "OSD Name"
+msgstr "OSD名"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1487
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1545
+msgid "Updatetime"
+msgstr "更新时间"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1489
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1932
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2358
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail.js:45
+#: dashboards/lenovo/static/lenovo/js/network_switches/index.js:46
+msgid "Adding..."
+msgstr "添加中"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1490
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1933
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2359
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail.js:46
+#: dashboards/lenovo/static/lenovo/js/network_switches/index.js:47
+msgid "Editting..."
+msgstr "编辑中"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1491
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1934
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2360
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail.js:47
+#: dashboards/lenovo/static/lenovo/js/network_switches/index.js:48
+msgid "Deleting..."
+msgstr "删除中"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1494
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2363
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail.js:50
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail/create.js:29
+msgid "Add Port Mapping"
+msgstr "添加端口映射"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1495
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2364
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail.js:51
+#: dashboards/lenovo/static/lenovo/js/network_switches/index.js:52
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:86
+msgid "Edit"
+msgstr "编辑"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1496
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2365
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail.js:52
+msgid "Delete Port Mapping"
+msgstr "删除端口映射"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1520
+msgid "Active Name"
+msgstr "有效名"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1524
+msgid "Modified Name"
+msgstr "修改名字"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1630
+msgid "Unable to get ceph Osds info"
+msgstr "无法获得OSD信息"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1656
+msgid "Unable to get ceph Disks info"
+msgstr "无法获得磁盘信息"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1867
+msgid "Unable to get ceph Pools info"
+msgstr "无法获得存储池信息"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1923
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1948
+msgid "Pool Name"
+msgstr "存储池名"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1925
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1952
+msgid "PG Number"
+msgstr "PG数目"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1926
+msgid "Replication Factor"
+msgstr "重复因子"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1927
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2354
+msgid "Create Time"
+msgstr "创建时间"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1928
+msgid "Update Time"
+msgstr "更新时间"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:1956
+msgid "Replica Size"
+msgstr "副本数"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2352
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2377
+msgid "Size"
+msgstr "大小"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2353
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2381
+msgid "Object Count"
+msgstr "对象数目"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2355
+msgid "ModifyTime"
+msgstr "修改时间"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2373
+msgid "ImageName"
+msgstr "镜像名"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:2474
+msgid "Unable to get ceph Rbds info"
+msgstr "无法获得Ceph RBD信息"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:3946
+#: dashboards/lenovo/static/lenovo/js/framework/widgets/toast/storage.toast.factory.js:54
+msgid "Danger"
+msgstr "危险"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:3947
+#: dashboards/lenovo/static/lenovo/js/framework/widgets/toast/storage.toast.factory.js:55
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:148
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:180
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:206
+msgid "Warning"
+msgstr "警告"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:3948
+#: dashboards/lenovo/static/lenovo/js/framework/widgets/toast/storage.toast.factory.js:56
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:15
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:32
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:146
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:178
+msgid "Info"
+msgstr "信息"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:3949
+#: dashboards/lenovo/static/lenovo/js/framework/widgets/toast/storage.toast.factory.js:57
+#: dashboards/lenovo/static/lenovo/js/upgrade/index.js:57
+msgid "Success"
+msgstr "成功"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:3950
+#: dashboards/lenovo/static/lenovo/js/framework/widgets/toast/storage.toast.factory.js:58
+msgid "Error"
+msgstr "错误"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4092
+msgid "Successful edit folder:  "
+msgstr "成功编辑文件夹："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4095
+msgid "Failed edit folder:  "
+msgstr "编辑文件夹失败"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4135
+msgid "Successful create folder:"
+msgstr "成功创建文件夹："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4139
+msgid "Failed create folder:"
+msgstr "创建文件夹失败："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4197
+msgid "Successful delete folder:"
+msgstr "删除文件夹成功："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4200
+msgid "Failed delete folder:"
+msgstr "删除文件夹失败："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4323
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:7155
+msgid "Successful create cluster:"
+msgstr "成功创建集群："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4326
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:7158
+msgid "Failed create cluster:"
+msgstr "创建集群失败："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4346
+msgid "Successful edit cluster:"
+msgstr "编辑集群成功："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4349
+msgid "Failed edit cluster:"
+msgstr "编辑集群失败："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4368
+msgid "Successful delete cluster:"
+msgstr "删除集群成功："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4371
+msgid "Failed delete cluster:"
+msgstr "删除集群失败："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4402
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4845
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6220
+msgid "Unable to retrieve Clusters."
+msgstr "无法检索集群。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4416
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:8634
+msgid "Current"
+msgstr "当前状态"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4419
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:8637
+msgid "Last week"
+msgstr "最近一周"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4468
+msgid "Unable to retrieve IO history."
+msgstr "无法检索I/O记录。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4629
+msgid "Unable to retrieve Cluster config."
+msgstr "无法检索集群配置。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4647
+msgid "Update Cluster config Success!"
+msgstr "成功更新集群配置！"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4650
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6440
+msgid "Update Cluster config Failed!"
+msgstr "更新集群配置失败！"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4710
+msgid "Successful remove server:"
+msgstr "成功移动服务器："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4712
+msgid "Failed remove server:"
+msgstr "移动服务器失败："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4733
+msgid "Success add mon."
+msgstr "成功添加MON结点。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4735
+msgid "Failed add mon."
+msgstr "添加MON结点失败。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4752
+msgid "Success delete mon."
+msgstr "成功删除MON结点"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4764
+msgid "Success start mon."
+msgstr "监视器已启动"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4776
+msgid "Success stop mon."
+msgstr "监视器已停止"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4789
+msgid "Success add mds."
+msgstr "成功添加Mds"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4800
+msgid "Success delete mds."
+msgstr "成功删除Mds"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4812
+msgid "Success start mds."
+msgstr "Mds已启动。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4824
+msgid "Success stop mds."
+msgstr "Mds已经停止。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4857
+msgid "Unable to retrieve mons."
+msgstr "无法检索监视器。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4865
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6712
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6743
+msgid "Unable to retrieve mdses."
+msgstr "无法检索Mds"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4889
+msgid "name"
+msgstr "名字"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4901
+msgid "Successful add osd."
+msgstr "成功添加osd"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:4904
+msgid "Failed add osd."
+msgstr "添加osd失败。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5061
+msgid "Successful edit group:  "
+msgstr "成功编辑组："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5064
+msgid "Failed edit group:  "
+msgstr "编辑组失败："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5104
+msgid "Successful create group:"
+msgstr "成功创建组："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5108
+msgid "Failed create group:"
+msgstr "创建组失败："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5166
+msgid "Successful delete group:"
+msgstr "成功删除组："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5169
+msgid "Failed delete group:"
+msgstr "删除组失败："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5233
+msgid "Successful create volume:"
+msgstr "成功创建卷："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5237
+msgid "Failed create volume:"
+msgstr "创建卷失败："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5328
+msgid "Successful delete volume:"
+msgstr "删除卷成功："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5331
+msgid "Failed delete volume:"
+msgstr "删除卷失败："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5404
+msgid "Successful edit iSCSI:"
+msgstr "成功编辑iSCSI："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5407
+msgid "Failed edit iSCSI:"
+msgstr "编辑iSCSCI失败："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5433
+msgid "Successful create iSCSI:"
+msgstr "成功创建iSCSI："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5437
+msgid "Failed create iSCSI:"
+msgstr "创建iSCSI失败："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5465
+msgid "Successful delete iSCSI:"
+msgstr "成功删除iSCSI："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5468
+msgid "Failed delete iSCSI:"
+msgstr "删除iSCSI失败："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5571
+msgid "Successful create rbd:"
+msgstr "成功创建rbd"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5575
+msgid "Failed create rbd:"
+msgstr "创建rbd失败："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5719
+msgid "Successful edit rbd:"
+msgstr "成功编辑rbd："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5723
+msgid "Failed edit rbd:"
+msgstr "编辑rbd失败："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5874
+msgid "Successful create Snapshot:"
+msgstr "成功创建快照："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5877
+msgid "Failed create Snapshot:"
+msgstr "创建快照失败："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5904
+msgid "Successful edit rbdSnapshots:"
+msgstr "成功编辑rbd快照："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5907
+msgid "Failed edit rbdSnapshots:"
+msgstr "编辑rbd快照失败："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5926
+msgid "Successful delete Snapshot:"
+msgstr "成功删除快照："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5929
+msgid "Failed delete Snapshot:"
+msgstr "删除快照失败："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5948
+msgid "Successful delete rbd:"
+msgstr "已删除rbd："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:5951
+msgid "Failed delete rbd:"
+msgstr "无法删除rbd："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6050
+msgid "Successful edit pool:  "
+msgstr "成功编辑存储池："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6053
+msgid "Failed edit pool:  "
+msgstr "存储池编辑失败："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6090
+msgid "Successful create pool:"
+msgstr "已创建存储池："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6094
+msgid "Failed create pool:"
+msgstr "创建存储池失败："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6160
+msgid "Successful delete pool:"
+msgstr "已删除存储池："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6163
+msgid "Failed delete pool:"
+msgstr "删除存储池失败："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6227
+msgid "Unable to retrieve Groups."
+msgstr "无法检索组"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6234
+msgid "Unable to retrieve pools."
+msgstr "无法检索到存储池。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6241
+msgid "Unable to retrieve rbdList."
+msgstr "无法获取rbd链表。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6248
+msgid "Unable to retrieve rbdSnapshot."
+msgstr "无法检索到rbd快照。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6255
+msgid "Unable to retrieve iSCSIs."
+msgstr "无法检索到iSCSI。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6262
+msgid "Unable to retrieve volumeList."
+msgstr "无法检索到卷链表。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6269
+msgid "Unable to retrieve Folders."
+msgstr "无法减速到文件夹。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6276
+msgid "Unable to retrieve IO History."
+msgstr "无法检索到I/O记录。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6308
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:7222
+msgid "Unable to retrieve networks."
+msgstr "无法检索到网络。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6314
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:7339
+msgid "Unable to retrieve network info."
+msgstr "无法检索到网络信息。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6397
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:7272
+msgid "Unable to retrieve io list."
+msgstr "无法检索到IO链表。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6406
+msgid "Osd start failed!"
+msgstr "OSD启动失败"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6412
+msgid "Osd stop failed!"
+msgstr "Osd无法停止！"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6418
+msgid "Osd add failed!"
+msgstr "添加OSD失败！"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6434
+msgid "Unable to retrieve cluster Config."
+msgstr "无法检索到集群配置。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6448
+msgid "Unable to stop cluster: "
+msgstr "无法停止集群："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6453
+msgid "Unable to start cluster: "
+msgstr "无法启动集群："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6459
+msgid "Unable to create cluster:"
+msgstr "无法创建集群："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6465
+msgid "Unable to edit cluster:"
+msgstr "无法编辑集群："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6471
+msgid "Unable to delete cluster:"
+msgstr "无法删除集群："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6478
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6683
+msgid "Deploy task failed!"
+msgstr "部署失败！"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6484
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6689
+msgid "Expand task failed!"
+msgstr "扩展失败！"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6491
+msgid "Unable to retrieve hosts status."
+msgstr "无法检索到主机状态。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6499
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6697
+msgid "Unable to restart server:"
+msgstr "无法重启服务："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6505
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6703
+msgid "Unable to remove server:"
+msgstr "无法移动服务："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6514
+msgid "Unable to create MDS."
+msgstr "无法创建MDS。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6520
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6724
+msgid "Success add Mon."
+msgstr "添加监视器成功。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6521
+msgid "Unable to delete MDS."
+msgstr "无法删除MDS。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6527
+msgid "Unable to create Mon."
+msgstr "无法创建监视器。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6533
+msgid "Unable to delete Mon."
+msgstr "无法删除监视器。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6543
+msgid "Unable to create group:"
+msgstr "无法创建组："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6549
+msgid "Unable to edit group:"
+msgstr "无法编辑组："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6555
+msgid "Unable to delete group:"
+msgstr "无法删除组："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6564
+msgid "Unable to create pool:"
+msgstr "无法创建存储池："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6570
+msgid "Unable to edit pool:"
+msgstr "无法编辑存储池："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6576
+msgid "Unable to delete pool:"
+msgstr "无法删除存储池："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6585
+msgid "Unable to create rbd:"
+msgstr "无法创建rbd："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6592
+msgid "Unable to edit rbd:"
+msgstr "无法编辑rbd："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6598
+msgid "Unable to delete rbd:"
+msgstr "无法删除rbd："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6607
+msgid "Unable to create rbdSnapshot:"
+msgstr "无法创建rbd快照："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6613
+msgid "Unable to delete rbdSnapshot:"
+msgstr "无法删除rbd快照："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6622
+msgid "Unable to create iSCSI:"
+msgstr "无法创建iSCSI："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6628
+msgid "Unable to edit iSCSI:"
+msgstr "无法编辑iSCSI："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6634
+msgid "Unable to delete iSCSI:"
+msgstr "无法删除iSCSI："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6643
+msgid "Unable to create volume:"
+msgstr "无法创建卷："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6649
+msgid "Unable to edit volume:"
+msgstr "无法编辑卷："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6655
+msgid "Unable to delete volume:"
+msgstr "无法删除卷："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6664
+msgid "Unable to create folder:"
+msgstr "无法创建文件夹："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6670
+msgid "Unable to edit folder:"
+msgstr "无法编辑文件夹："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6676
+msgid "Unable to delete folder:"
+msgstr "无法删除文件夹："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6718
+msgid "Unable to create mds."
+msgstr "无法创建mds。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6725
+msgid "Unable to delete mds."
+msgstr "无法删除mds。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6731
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6761
+msgid "Unable to start mon."
+msgstr "无法启动监视器。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6737
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6767
+msgid "Unable to stop mon."
+msgstr "无法停止监视器。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6749
+msgid "Unable to create mon."
+msgstr "无法创建监视器。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6755
+msgid "Unable to delete mon."
+msgstr "无法删除监视器。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6859
+msgid "Deploy task start!"
+msgstr "开始部署！"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6870
+msgid "Expand task start!"
+msgstr "开始扩展！"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6903
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6927
+msgid "Unable to depoly."
+msgstr "无法部署！"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6965
+msgid "Add server task start:"
+msgstr "开始添加服务："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6969
+msgid "Add server task failed:"
+msgstr "服务添加失败："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:6973
+msgid "Job created failed!"
+msgstr "重建失败1"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:7034
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:7037
+msgid "Operation failed!"
+msgstr "操作失败1"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:7068
+msgid "Unable to get the language."
+msgstr "无法获取语言。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:7082
+msgid "Unable to set the language."
+msgstr "无法设置语言。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:7286
+msgid "Successful restart server:"
+msgstr "成功重启服务："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:7460
+msgid "Success start osd."
+msgstr "启动osd成功："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:7471
+msgid "Success stop osd."
+msgstr "osd已停止。"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:7843
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:7847
+msgid "Get cluster info failed!"
+msgstr "获取集群信息失败！"
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:8031
+msgid "Success to remove following OSDs:"
+msgstr "成功移动以下OSD："
+
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:8042
+#: dashboards/lenovo/static/lenovo/js/ceph_mgmt/bundle.js:8054
+msgid "Unable to remove following OSDs:"
+msgstr "无法移动以下OSD："
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/form.js:38
+msgid "Compute HA Management"
+msgstr "计算节点高可用管理"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/form.js:39
+msgid "Submit"
+msgstr "提交"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/form.js:40
+msgid "Revert"
+msgstr "重置"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/form.js:42
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:39
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:54
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:54
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:354
+msgid "Action"
+msgstr "操作"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/form.js:43
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail/create.js:37
+#: dashboards/lenovo/static/lenovo/js/network_switches/switch/create.js:30
+msgid "Add"
+msgstr "添加"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/form.js:44
+msgid "Remove"
+msgstr "移除"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/form.js:46
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:35
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:196
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:50
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:334
+msgid "Ip Address"
+msgstr "IP 地址"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/form.js:47
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:46
+msgid "Compute HA Service:"
+msgstr "计算节点高可用服务:"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/form.js:48
+msgid "Unmanaged Hosts"
+msgstr "未管理主机"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/form.js:49
+msgid "Managed Hosts"
+msgstr "已管理主机"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/form.js:52
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:50
+msgid "Enable"
+msgstr "开启"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/form.js:53
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:51
+msgid "Disable"
+msgstr "关闭"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:33
+msgid "HA Managed"
+msgstr "高可用已管理"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:36
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:201
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:50
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:51
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:339
+msgid "Product"
+msgstr "产品名"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:37
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:206
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:51
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:52
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:344
+msgid "Machine Type"
+msgstr "机型"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:38
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:211
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail.js:32
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:52
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:53
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:349
+msgid "Serial Number"
+msgstr "序列号"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:42
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:72
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:56
+msgid "Type"
+msgstr "类型"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:43
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:74
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:58
+msgid "Public"
+msgstr "公用"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:44
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:75
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:59
+msgid "Format"
+msgstr "格式"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:45
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:76
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:60
+msgid "Image Size"
+msgstr "镜像大小"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:49
+msgid "Configure"
+msgstr "设置"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:56
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:361
+msgid "Yes"
+msgstr "是"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:57
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:362
+msgid "No"
+msgstr "否"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:58
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:82
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:196
+msgid "NA"
+msgstr "不可用"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:62
+msgid "Authed"
+msgstr "已认证"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:63
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:64
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:199
+msgid "UnAuth"
+msgstr "未认证"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:68
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:115
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:160
+msgid "Unknown"
+msgstr "未知"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:69
+msgid "Disabled"
+msgstr "已关闭"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:70
+msgid "Enabled"
+msgstr "已开启"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:105
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:90
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:40
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:150
+msgid "Controller"
+msgstr "控制器"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:106
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:92
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:41
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:151
+msgid "Compute"
+msgstr "计算"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:107
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:94
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:42
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:152
+msgid "Storage"
+msgstr "存储"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:108
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:96
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:153
+msgid "Cinder"
+msgstr ""
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:109
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:154
+msgid "ELK"
+msgstr ""
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:110
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:155
+msgid "Neutron L3"
+msgstr "Neutron L3"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:111
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:156
+msgid "MongoDB"
+msgstr ""
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:112
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:157
+msgid "Zabbix Server"
+msgstr "Zabbix服务器"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:113
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:158
+msgid "Ceph OSD"
+msgstr ""
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:114
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:159
+msgid "Swift Proxy"
+msgstr "Swift 存储"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:116
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:161
+msgid "Other"
+msgstr "其他"
+
+#: dashboards/lenovo/static/lenovo/js/ha_management/index.js:191
+msgid "HA Status"
+msgstr "高可用状态"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:13
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:13
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:30
+msgid "Overview"
+msgstr "概况"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:14
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:31
+msgid "Subnets"
+msgstr "子网"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:18
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:17
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:35
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:63
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:201
+#: dashboards/lenovo/static/lenovo/js/upgrade/index.js:160
+msgid "ID"
+msgstr "ID"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:20
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:37
+msgid "Project ID"
+msgstr "项目ID"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:22
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:39
+msgid "Shared"
+msgstr "共享"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:23
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:40
+msgid "External Network"
+msgstr "外部网络"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/action.js:24
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:41
+msgid "Provider Network"
+msgstr "供应商网络"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail.js:30
+#: dashboards/lenovo/static/lenovo/js/network_switches/switch/create.js:23
+msgid "Switch IP"
+msgstr "交换机 IP"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail.js:31
+msgid "MAC Address"
+msgstr "MAC 地址"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail.js:33
+msgid "OS Version"
+msgstr "OS 版本"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail.js:34
+#: dashboards/lenovo/static/lenovo/js/network_switches/switch/create.js:26
+msgid "Firmware Type"
+msgstr "固件类型"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail.js:35
+#: dashboards/lenovo/static/lenovo/js/network_switches/index.js:41
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:57
+msgid "CPU"
+msgstr ""
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail.js:36
+#: dashboards/lenovo/static/lenovo/js/network_switches/index.js:42
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:58
+msgid "Memory"
+msgstr "内存"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail.js:37
+#: dashboards/lenovo/static/lenovo/js/network_switches/switch/create.js:25
+#: dashboards/lenovo/static/lenovo/js/network_switches/switch/edit.js:27
+msgid "SSH Port"
+msgstr "SSH 端口"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail.js:38
+#: dashboards/lenovo/static/lenovo/js/network_switches/index.js:39
+msgid "Username"
+msgstr "用户名"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail.js:39
+#: dashboards/lenovo/static/lenovo/js/network_switches/switch/create.js:29
+msgid "REST Port"
+msgstr "REST 端口"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail.js:40
+#: dashboards/lenovo/static/lenovo/js/network_switches/index.js:44
+#: dashboards/lenovo/static/lenovo/js/network_switches/index.js:184
+#: dashboards/lenovo/static/lenovo/js/network_switches/switch/create.js:28
+msgid "Protocol"
+msgstr "协议"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail.js:42
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail.js:128
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail/edit.js:30
+msgid "Node Name"
+msgstr "节点名"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail.js:43
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail.js:133
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail/create.js:36
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail/edit.js:31
+msgid "Port"
+msgstr "端口"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/index.js:37
+#: dashboards/lenovo/static/lenovo/js/network_switches/index.js:164
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:49
+msgid "IP Address"
+msgstr "IP 地址"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/index.js:40
+#: dashboards/lenovo/static/lenovo/js/network_switches/index.js:174
+msgid "OS Type"
+msgstr "OS 类型"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/index.js:43
+#: dashboards/lenovo/static/lenovo/js/network_switches/index.js:179
+msgid "Hardware Type"
+msgstr "硬件类型"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/index.js:51
+#: dashboards/lenovo/static/lenovo/js/network_switches/switch/create.js:22
+msgid "Add Switch"
+msgstr "添加交换机"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/index.js:53
+#: dashboards/lenovo/static/lenovo/js/network_switches/switch/delete.js:25
+msgid "Delete Switches"
+msgstr "删除交换机"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail/create.js:31
+msgid "Port Type"
+msgstr "端口类型"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail/create.js:39
+msgid "Please inuut an unassigned port or portchannel "
+msgstr "请输入一个端口通道"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail/create.js:40
+msgid "Please input a portchannel"
+msgstr "请输入一个端口通道"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail/delete.js:24
+msgid "Confirm Delete Port Mapping"
+msgstr "确认删除端口映射"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail/delete.js:25
+#: dashboards/lenovo/static/lenovo/js/network_switches/switch/delete.js:22
+#: dashboards/lenovo/static/lenovo/js/physical_servers/server/delete.js:22
+msgid "You have selected "
+msgstr "你已经选择了"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail/delete.js:26
+#: dashboards/lenovo/static/lenovo/js/network_switches/switch/delete.js:23
+#: dashboards/lenovo/static/lenovo/js/physical_servers/server/delete.js:23
+msgid "Please confirm your selection. This action cannot be undone. "
+msgstr "请确认你的选项, 该操作不可逆"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail/delete.js:27
+#: dashboards/lenovo/static/lenovo/js/network_switches/switch/delete.js:24
+#: dashboards/lenovo/static/lenovo/js/physical_servers/server/delete.js:24
+msgid "Confirm"
+msgstr "确认"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail/delete.js:28
+msgid "Delete Nodes"
+msgstr "删除节点"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail/edit.js:29
+msgid "Update Node Information"
+msgstr "更新节点信息"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/detail/edit.js:32
+#: dashboards/lenovo/static/lenovo/js/network_switches/switch/edit.js:30
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:448
+msgid "Update"
+msgstr "更新"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/switch/create.js:24
+#: dashboards/lenovo/static/lenovo/js/network_switches/switch/edit.js:28
+msgid "User Name"
+msgstr "用户名"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/switch/create.js:27
+#: dashboards/lenovo/static/lenovo/js/network_switches/switch/edit.js:29
+#: dashboards/lenovo/static/lenovo/js/physical_servers/server/auth.js:37
+msgid "Password"
+msgstr "密码"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/switch/delete.js:21
+msgid "Confirm Delete Switches"
+msgstr "确认删除交换机"
+
+#: dashboards/lenovo/static/lenovo/js/network_switches/switch/edit.js:26
+msgid "Update Information"
+msgstr "更新信息"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:14
+msgid "Subnet"
+msgstr "子网"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:19
+msgid "Network"
+msgstr "网络"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:20
+msgid "IP version"
+msgstr "IP 版本"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:21
+msgid "CIDR"
+msgstr "CIDR"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:22
+msgid "Allocation Pool"
+msgstr "分配池"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:23
+msgid "DHCP Enable"
+msgstr "DHCP 可使用"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:24
+msgid "Gateway IP"
+msgstr "网关 IP"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:25
+msgid "Host_Routes"
+msgstr "主机路由"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:26
+msgid "DNS Servers"
+msgstr "DNS 服务器"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:44
+msgid "System Info"
+msgstr "系统信息"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:48
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:435
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:466
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:49
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:329
+msgid "Power"
+msgstr "电源"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:53
+msgid "UUID"
+msgstr ""
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:56
+msgid "System Component"
+msgstr "系统组建"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:58
+msgid "Identity"
+msgstr ""
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:59
+msgid "NIC"
+msgstr ""
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:59
+msgid "RAID Controller"
+msgstr "RAID 控制器"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:60
+msgid "Driver"
+msgstr "驱动"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:61
+msgid "Extend Card"
+msgstr "扩展卡"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:64
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:206
+msgid "Severity"
+msgstr "严重性"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:65
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:211
+msgid "Source"
+msgstr "源"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:66
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:216
+msgid "Date"
+msgstr "日期时间"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:67
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:221
+msgid "Message"
+msgstr "消息"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:79
+msgid "Saving"
+msgstr "储存中"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:80
+msgid "Queued"
+msgstr "排队中"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:81
+msgid "Pending Delete"
+msgstr "延迟删除"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:82
+msgid "Killed"
+msgstr "终止"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:83
+msgid "Deleted"
+msgstr "已删除"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:84
+msgid "Create Subnet"
+msgstr "创建子网"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:85
+msgid "Delete Subnet"
+msgstr "删除子网"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/action.detail.js:87
+msgid "More"
+msgstr "更多"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:98
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:43
+msgid "Others"
+msgstr "其他"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:102
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:216
+msgid "On"
+msgstr "开机"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:104
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:219
+msgid "Off"
+msgstr "关机"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:106
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:222
+msgid "Pending"
+msgstr "等待中"
+
+
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:150
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:182
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:209
+msgid "Critical"
+msgstr "紧急"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:356
+msgid "Unable to retrieve host power cap data."
+msgstr "无法获取功耗封顶数据"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:432
+msgid "Interval"
+msgstr "间隔:"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:433
+msgid "Duration"
+msgstr "时长: "
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:434
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:461
+msgid "Time"
+msgstr "时间"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:436
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:444
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:471
+msgid "Min"
+msgstr "最小值"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:437
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:445
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:476
+msgid "Max"
+msgstr "最大值"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:441
+msgid "Current Power Cap Info"
+msgstr "当前功耗封顶信息"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:442
+msgid "Power Cap Setting"
+msgstr "功耗封顶设置"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:443
+msgid "Cap"
+msgstr "封顶"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:446
+msgid "Is Capable"
+msgstr "是否封顶"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/detail.js:447
+msgid "Is Enable"
+msgstr "是否开启"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:62
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:72
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:478
+msgid "KSM"
+msgstr "KSM"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:63
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:73
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:483
+msgid "ZRAM"
+msgstr "ZRAM"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:64
+msgid "Power On"
+msgstr "开机"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:65
+msgid "Power Off"
+msgstr "关机"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:66
+msgid "Delete"
+msgstr "删除"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:67
+msgid "Restart"
+msgstr "重启"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:68
+#: dashboards/lenovo/static/lenovo/js/physical_servers/server/auth.js:38
+msgid "Authenticate"
+msgstr "认证"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:69
+msgid "Launch Management Module"
+msgstr "打开BMC页面"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:83
+msgctxt "KSM"
+msgid "On"
+msgstr "开"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:84
+msgctxt "KSM"
+msgid "Off"
+msgstr "关"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:227
+msgid "NotSup"
+msgstr "不支持"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:203
+msgid "Healthy"
+msgstr "正常"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/index.js:307
+msgid "Start to auth the server"
+msgstr "开始认证服务器"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/nova.service.js:19
+msgid "Unable to retrieve Ksm records."
+msgstr "无法获取KSM记录"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/nova.service.js:26
+msgid "Unable to set ksm status."
+msgstr "无法设置Ksm状态"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/nova.service.js:33
+msgid "Unable to retrieve zram records."
+msgstr "无法获取ZRAM记录"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/nova.service.js:40
+msgid "Unable to set zram status."
+msgstr "无法"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/server/auth.js:35
+msgid "Auth Information: "
+msgstr "认证信息: "
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/server/auth.js:36
+msgid "User ID"
+msgstr "用户ID"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/server/auth.js:40
+msgid "MM Type"
+msgstr "基板管理类型"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/server/delete.js:21
+msgid "Confirm Delete Servers"
+msgstr "确认删除服务器"
+
+#: dashboards/lenovo/static/lenovo/js/physical_servers/server/delete.js:25
+msgid "Delete Servers"
+msgstr "服务器已删除"
+
+#: dashboards/lenovo/static/lenovo/js/quickstart/controller.js:68
+msgid "Create Volume"
+msgstr "创建云硬盘"
+
+#: dashboards/lenovo/static/lenovo/js/quickstart/controller.js:69
+#: dashboards/lenovo/static/lenovo/js/quickstart/controller.js:130
+msgid "Create"
+msgstr "创建"
+
+#: dashboards/lenovo/static/lenovo/js/quickstart/controller.js:70
+#, c-format
+msgid "Volume %s was successfully created."
+msgstr "云硬盘 %s 成功创建"
+
+#: dashboards/lenovo/static/lenovo/js/quickstart/controller.js:129
+msgid "Create Volume Backup"
+msgstr "创建云硬盘备份"
+
+#: dashboards/lenovo/static/lenovo/js/quickstart/controller.js:131
+#, c-format
+msgid "Volume Backup %s was successfully created."
+msgstr "云硬盘备份 %s 成功创建"
+
+#: dashboards/lenovo/static/lenovo/js/upgrade/index.js:42
+msgid "Upgrade"
+msgstr "升级"
+
+#: dashboards/lenovo/static/lenovo/js/upgrade/index.js:45
+msgid "Unable to retrieve upgrade records"
+msgstr "无法获取升级操作记录"
+
+#: dashboards/lenovo/static/lenovo/js/upgrade/index.js:51
+msgid "Finished"
+msgstr "完成"
+
+#: dashboards/lenovo/static/lenovo/js/upgrade/index.js:52
+msgid "Rollingback"
+msgstr "回退中"
+
+#: dashboards/lenovo/static/lenovo/js/upgrade/index.js:53
+msgid "Updating"
+msgstr "更新中"
+
+#: dashboards/lenovo/static/lenovo/js/upgrade/index.js:58
+msgid "Failed"
+msgstr "失败"
+
+#: dashboards/lenovo/static/lenovo/js/upgrade/index.js:59
+msgid "null"
+msgstr "无"
+
+#: dashboards/lenovo/static/lenovo/js/upgrade/index.js:165
+msgid "Upgrade Version"
+msgstr "升级后版本"
+
+#: dashboards/lenovo/static/lenovo/js/upgrade/index.js:170
+msgid "Previous Version"
+msgstr "升级前版本"
+
+#: dashboards/lenovo/static/lenovo/js/upgrade/index.js:175
+msgid "Upgrade Status"
+msgstr "升级状态"
+
+#: dashboards/lenovo/static/lenovo/js/upgrade/index.js:185
+msgid "Upgrade Result"
+msgstr "升级结果"
+
+#: dashboards/lenovo/static/lenovo/js/upgrade/index.js:195
+msgid "Timestamp"
+msgstr "时间"
+
+#: dashboards/lenovo/static/lenovo/js/upgrade/upgrade/start.js:15
+msgid ""
+"The upgrade package was validated successfully! File Information as below:"
+msgstr "升级文件包验证成功！文件信息如下:"
+
+#: dashboards/lenovo/static/lenovo/js/upgrade/upgrade/start.js:35
+msgid "Upload A Patch: "
+msgstr "上传文件包"
+
+#: dashboards/lenovo/static/lenovo/js/upgrade/upgrade/start.js:36
+msgid "Upgrade Patch"
+msgstr "升级文件包"
+
+#: dashboards/lenovo/static/lenovo/js/upgrade/upgrade/start.js:37
+msgid "Description:"
+msgstr "描述："
+
+#: dashboards/lenovo/static/lenovo/js/upgrade/upgrade/start.js:38
+msgid "Upload patch file"
+msgstr "上传升级文件"
+
+#: dashboards/lenovo/static/lenovo/js/upgrade/upgrade/start.js:39
+msgid "Upload"
+msgstr "上传"
+
+#: dashboards/lenovo/static/lenovo/js/upgrade/upgrade/start.js:40
+msgid "Check"
+msgstr "验证"
+
+#: dashboards/lenovo/static/lenovo/js/upgrade/upgrade/start.js:41
+msgid "Please select the upgrade file"
+msgstr "请选择升级文件"
+
+#: dashboards/lenovo/static/lenovo/js/upgrade/upgrade/start.js:42
+msgid "Checking...Please wait a moment"
+msgstr "验证中... 请稍候"
+
+#: dashboards/lenovo/static/lenovo/js/upgrade/upgrade/start.js:43
+msgid "Uploading...Please wait a moment"
+msgstr "上传中... 请稍候"
+
+#: dashboards/lenovo/static/lenovo/restapi/overview.service.js:58
+#: dashboards/lenovo/static/lenovo/restapi/overview.service.js:68
+msgid "Unable to retrieve instance states."
+msgstr "无法获取实例状态"
+
+#: dashboards/lenovo/static/lenovo/restapi/switch.service.js:41
+msgid "Unable to retrieve switches."
+msgstr "无法获取交换机"
+
+#: dashboards/lenovo/static/lenovo/restapi/switch.service.js:48
+msgid "Unable to add the switch."
+msgstr "无法添加交换机"
+
+#: dashboards/lenovo/static/lenovo/restapi/switch.service.js:55
+msgid "Unable to retrieve switch."
+msgstr "无法获取交换机"
+
+#: dashboards/lenovo/static/lenovo/restapi/switch.service.js:62
+msgid "Unable to delete the switch."
+msgstr "无法删除交换机"
+
+#: dashboards/lenovo/static/lenovo/restapi/switch.service.js:70
+msgid "Unable to edit the switch."
+msgstr "无法编辑交换机"
+
+#: dashboards/lenovo/static/lenovo/restapi/switch.service.js:78
+msgid "Unable to retrieve the nodes."
+msgstr "无法获取节点"
+
+#: dashboards/lenovo/static/lenovo/restapi/switch.service.js:85
+msgid "Unable to add the node."
+msgstr "无法添加节点"
+
+#: dashboards/lenovo/static/lenovo/restapi/switch.service.js:93
+msgid "Unable to delete the node."
+msgstr "无法删除节点"
+
+#: dashboards/lenovo/static/lenovo/restapi/switch.service.js:101
+msgid "Unable to edit the node."
+msgstr "无法编辑节点"
+
+#: dashboards/lenovo/static/lenovo/restapi/switch.service.js:129
+#: dashboards/lenovo/static/lenovo/restapi/switch.service.js:139
+msgid "Unable to retrieve node hosts list."
+msgstr "无法获取节点列表"
+
+#: dashboards/lenovo/static/lenovo/restapi/upgrade.service.js:41
+msgid "Unable to retrieve upgrade records."
+msgstr "无法获取升级记录"
+
+#: dashboards/lenovo/static/lenovo/restapi/upgrade.service.js:48
+msgid "Failed to upgrade!"
+msgstr "升级失败！"
+
+#: dashboards/lenovo/static/lenovo/restapi/uus.service.js:43
+msgid "Unable to retrieve hosts."
+msgstr "无法获取主机"
+
+#: dashboards/lenovo/static/lenovo/restapi/uus.service.js:51
+msgid "Unable to retrieve host."
+msgstr "无法获取主机"
+
+#: dashboards/lenovo/static/lenovo/restapi/uus.service.js:60
+msgid "Unable to update host."
+msgstr "无法更新主机"
+
+#: dashboards/lenovo/static/lenovo/restapi/uus.service.js:68
+msgid "Successfully delete server!"
+msgstr "删除服务器成功"
+
+#: dashboards/lenovo/static/lenovo/restapi/uus.service.js:71
+msgid "delete server failed!"
+msgstr "删除服务器失败"
+
+#: dashboards/lenovo/static/lenovo/restapi/uus.service.js:84
+msgid "Auth server failed:"
+msgstr "认证服务器失败"
+
+#: dashboards/lenovo/static/lenovo/restapi/uus.service.js:88
+msgid "Unable to auth server."
+msgstr "无法认证服务器"
+
+#: dashboards/lenovo/static/lenovo/restapi/uus.service.js:114
+msgid "Successfully power on server!"
+msgstr "开启服务器成功"
+
+#: dashboards/lenovo/static/lenovo/restapi/uus.service.js:117
+msgid "power on server failed!"
+msgstr "开启服务器失败"
+
+#: dashboards/lenovo/static/lenovo/restapi/uus.service.js:126
+msgid "Successfully power off server!"
+msgstr "删除服务器成功"
+
+#: dashboards/lenovo/static/lenovo/restapi/uus.service.js:129
+msgid "power off server failed!"
+msgstr "删除服务器失败"
+
+#: dashboards/lenovo/static/lenovo/restapi/uus.service.js:138
+msgid "Successfully reboot server!"
+msgstr "重启服务器成功"
+
+#: dashboards/lenovo/static/lenovo/restapi/uus.service.js:141
+msgid "reboot server failed!"
+msgstr "重启服务器失败"
+
+#: dashboards/lenovo/static/lenovo/restapi/uus.service.js:149
+msgid "Unable to retrieve host event."
+msgstr "无法获取主机事件"
+
+#: dashboards/lenovo/static/lenovo/restapi/uus.service.js:157
+msgid "Unable to retrieve host history power cap data."
+msgstr "无法获取主机的历史封顶功耗数据"
+
+#: dashboards/lenovo/static/lenovo/restapi/uus.service.js:170
+msgid "Successfully updated power cap value."
+msgstr "设置功耗封顶数据成功."
+
+#: dashboards/lenovo/static/lenovo/restapi/uus.service.js:173
+msgid "Unable to update host power cap value."
+msgstr "无法设置主机功耗封顶."
+
+#: dashboards/lenovo/static/lenovo/restapi/uus.service.js:180
+msgid "Unable to retrieve compute HA status."
+msgstr "无法获取主机高可用信息."
+
+#: dashboards/lenovo/static/lenovo/restapi/uus.service.js:188
+msgid "Successfully submitted HA configuration."
+msgstr "设置高可用状态成功."
+
+#: dashboards/lenovo/static/lenovo/restapi/uus.service.js:191
+msgid "Unable to submit HA configuration."
+msgstr "设置高可用状态失败."
+
+#~ msgid "Authentication"
+#~ msgstr "认证"
+
+#~ msgid "Last month"
+#~ msgstr "最近一月"
+
+#~ msgid "Last year"
+#~ msgstr "最近一年"
+
+#~ msgid "Confirm Delete Nodes"
+#~ msgstr "确认删除节点"
+
+#~ msgid "Storage-node"
+#~ msgstr "存储节点"
+
+#~ msgid "Elk"
+#~ msgstr "Elk"
+
+#~ msgid "ceph-osd"
+#~ msgstr "Ceph OSD"
+
+#~ msgid "Manage Module Type"
+#~ msgstr "管理模块类型"
+
+#~ msgid "successfully Auth server:"
+#~ msgstr "认证服务器成功"
+
+#~ msgid "CPU Usage"
+#~ msgstr "CPU 使用情况"
+
+#~ msgid "Free / Total Memory (GB)"
+#~ msgstr "免费/总 存储(GB)"
+
+#~ msgid "Add Node"
+#~ msgstr "添加节点"
+
+#~ msgid "Port Number"
+#~ msgstr "端口号"
+
+#~ msgid "Successfully authenticate server!"
+#~ msgstr "认证服务器成功"
+
+#~ msgid "authenticate server failed!"
+#~ msgstr "认证服务器失败"
+
+#~ msgid "Successfully launchBMC server!"
+#~ msgstr "打开BMC页面成功"
+
+#~ msgid "launchBMC server failed!"
+#~ msgstr "打开BMC页面失败"
+
+#~ msgid "LaunchBMC"
+#~ msgstr "打开BMC页面"
+
+#~ msgid "Unable to delete host."
+#~ msgstr "无法删除主机"
+
+#~ msgid "Unable to poweron server."
+#~ msgstr "无法开启服务器"
+
+#~ msgid "Unable to poweroff server."
+#~ msgstr "无法关闭服务器"
+
+#~ msgid "Unable to reboot server."
+#~ msgstr "无法重启服务器"
+msgid "Admin status"
+msgstr "管理状态"
+
+msgid "Monitor"
+msgstr "监控"
+
+msgid "Failed to validated the upgrade package! Please check if the package is a valid Lenovo upgrade package!"
+msgstr "升级文件包验证失败！请检查该文件包是否是一个合法的升级包！"
+
+msgid "Failed to validated the upgrade package! Please check if the package contains a version.txt file!"
+msgstr "升级文件包验证失败！请检查该文件包是否包含version.txt！"
+
+msgid "Failed to validated the upgrade package! Please specific a version in the version.txt file!"
+msgstr "升级文件包验证失败！请检查version.txt中是否定义了version！"
+
+msgid "Failed to validated the upgrade package! Please quickly contact with our department of server."
+msgstr "升级文件包验证失败！请快速联系我们的服务部门！"
+
+msgid "File uploaded successfully."
+msgstr "上传成功"
+
+msgid "The package can NOT work."
+msgstr "升级包无法正常工作"
+
+msgid "Unable to upload patch file"
+msgstr "无法上传升级包"
+
+msgid "The package has already patched!"
+msgstr "升级文件包已经被使用过！"

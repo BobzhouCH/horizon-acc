@@ -1,0 +1,168 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Domains" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Domains") %}
+{% endblock page_header %}
+
+{% block main %}
+
+<hz-magic-search-context filter-facets="filterFacets">
+ <table id="domains-list" hz-table ng-cloak hopes-table-drag
+   st-table="idomains"
+   st-safe-src="domains"
+   default-sort="name"
+   default-sort-reverse="false"
+   ng-controller="identityDomainsCtrl"
+   disabled="disabled"
+   st-magic-search
+   class="table table-bordered table-hover">
+
+   <!--
+     Table-head:
+     This is where we add things like filtering and batch actions.
+     This is where we add column headers.
+   -->
+   <thead>
+
+     <!--
+       Table-batch-actions:
+       This is where batch actions like searching, creating, and deleting.
+     -->
+     <tr>
+       <th colspan="100" class="bare">
+           <div class="table_actions clearfix">
+            <action-list>
+             <action
+               action-classes="'btn btn-primary btn-action'"
+               callback="actions.refresh">
+               <i class="icon icon-refresh"></i>
+               <span id="refresh"></span>
+             </action>
+           </action-list>
+           <action-list>
+              <action
+                 action-classes="'btn btn-primary btn-action'"
+                 callback="actions.create.open">
+                 <i class="icon icon-add"></i>
+                 <span id="create-domain">{% trans 'Create Domain' %}</span>
+               </action>
+           </action-list>
+           <action-list>
+              <action
+                 action-classes="'btn btn-primary btn-action'"
+                 disabled="disabled"
+                 callback="actions.edit.open" item="selectedData.aData">
+                 <i class="icon icon-edit"></i>
+                 <span id="edit">{% trans 'Edit' %}</span>
+               </action>
+           </action-list>
+            <action-list>
+                 <action
+                   action-classes="'btn btn-action btn-danger'"
+                   disabled="numSelected !== 1 || canNotDeleted(selectedData.aData)"
+                   callback="actions.delete.batchDelete">
+                   <i class="icon icon-delete"></i>
+                   <span id="delete-domains">{% trans 'Delete Domain' %}</span>
+                 </action>
+           </action-list>
+          <action-list dropdown>
+             <button id="more" type="button" class="btn btn-primary btn-action" dropdown-toggle>
+               <i class="icon icon-more"></i>
+               <span>{% trans 'More' %}</span>
+             </button>
+             <menu>
+               <action
+                 ng-if="domain_quota_enabled"
+                 button-type="menu-item"
+                 disabled="disabled"
+                 callback="actions.editquota.open" item="selectedData.aData">
+                 <span id="edit-quotas">{% trans 'Edit Quotas' %}</span>
+               </action>
+               <action
+                 button-type="menu-item"
+                 disabled="disabled"
+                 callback="actions.editUsers.open" item="selectedData.aData">
+                 <span id="edit-users">{% trans 'Edit Users' %}</span>
+               </action>
+               <action
+                 button-type="menu-item"
+                 disabled="disabled  ||
+                   !selectedData.aData[0].enabled"
+                 callback="actions.enable.toggle" item="selectedData.aData">
+                 <span id="disable">{% trans "Disable" %}</span>
+               </action>
+               <action
+                 button-type="menu-item"
+                 disabled="disabled || selectedData.aData[0].enabled"
+                 callback="actions.enable.toggle" item="selectedData.aData">
+                 <span id="enable">{% trans "Enable" %}</span>
+               </action>
+             </menu>
+          </action-list>
+          <div class="fr search-bar">
+             <hz-magic-search-bar id="search"></hz-magic-search-bar>
+          </div>
+           </div>
+       </th>
+     </tr>
+
+     <!--
+       Table-column-headers:
+       This is where we declaratively define the table column headers.
+       Include the select all checkbox if you want to enable select all
+       for performing batch actions.
+     -->
+     <tr eagle-eye="table_heads">
+       <th class="select-col">
+         <input type="checkbox"
+           hz-select-page="domains"/>
+       </th>
+       <th>
+         <span eagle-eye="data_col" st-sort="name" st-sort-default="name">{$ ::context.header.name $}</span>
+       </th>
+       <th><span eagle-eye="data_col" st-sort="description">{$ ::context.header.description $}</span></th>
+       <th><span eagle-eye="data_col" st-sort="domain_id">{$ ::context.header.domain_id $}</span></th>
+       <th text-center><span eagle-eye="data_col" st-sort="enabled">{$ ::context.header.enabled $}</span></th>
+     </tr>
+   </thead>
+
+   <tbody>
+     <tr ng-repeat="domain in idomains">
+
+       <!-- Table-row-info-column -->
+       <td class="select-col" eagle-eye="select_col">
+         <input type="checkbox"
+           hz-select="domain"
+           ng-model="selected[domain.id].checked"
+           hz-checkbox-group="domains"
+           ng-if="domain.name!=='Default'"/>
+       </td>
+       <td eagle-eye="data_col">{$ domain.name $}</td>
+       <td eagle-eye="data_col">{$ domain.description $}</td>
+       <td eagle-eye="data_col">{$ domain.id $}</td>
+       <td text-center user-state eagle-eye="data_col">
+         <i ng-if="domain.enabled" class="state-icon icon-true" eagle-eye="green"></i>
+         <i ng-if="!domain.enabled" class="state-icon icon-false" eagle-eye="red"></i>
+       </td>
+
+     </tr>
+
+   </tbody>
+
+   <!--
+     Table-footer:
+     This is where we display number of items and pagination controls.
+     Ensure colspan is greater or equal to number of column-headers.
+   -->
+   <tfoot ng-if="domains.length > 10">
+     <tr>
+       <td colspan="100" eagle-eye="data_page">
+         <table-footer></table-footer>
+       </td>
+     </tr>
+   </tfoot>
+ </table>
+</hz-magic-search-context>
+{% endblock %}

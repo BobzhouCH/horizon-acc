@@ -1,0 +1,121 @@
+{% load i18n %}
+
+<style>
+    .radio input[type="radio"], .radio-inline input[type="radio"],
+    .checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"] {
+        position: absolute;
+        margin-left: -20px;
+        margin-top: 8px;
+    }
+
+    input[type="radio"]:checked {
+        background-color: rebeccapurple;
+    }
+</style>
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+    <h3 class="modal-title">{$ label.title $}</h3>
+    <p class="modal-colsed" ng-click="action.cancel()">
+        <i class="modal-colsed-icon"></i>
+    </p>
+</div>
+<!-- Modal-form: The body of this pane. -->
+<form id="createForm" novalidate name="form" ng-submit="submit(form.$valid)">
+    <!--<pre style="max-height:400px;overflow-y:scroll;">{$ form|json $}</pre>-->
+    <div class="modal-body clearfix">
+        <!-- Modal-form-left: Contains the form controls -->
+        <div class="left form-wrap">
+            <fieldset>
+                <div class="form-group clearfix"
+                     ng-class="{'has-error':form.nodename.$invalid && form.nodename.$dirty}">
+                    <label for="nodename">{$ label.nodename $}</label>
+                    <div class="form-group-right">
+                        <input required
+                               id="nodename"
+                               name="nodename"
+                               class="form-control verify-input"
+                               ng-maxlength="255"
+                               ng-model="node.nodename"
+                               style="border:0;height:26px;margin:2px;max-width:300px;position:absolute;padding-left:8px;"
+                               ng-disabled="false">
+                        <select class="form-control"
+                                id="nodename"
+                                name="nodename"
+                                ng-required ng-model="node.nodenameOption"
+                                ng-change="changeHostNameList()"
+                                ng-options="nodename for nodename in nodenames"></select>
+                        <p class="help-block alert-fixed alert-danger"
+                           ng-show="form.nodename.$error.required && form.nodename.$dirty">
+                            {% trans "Please input nodename" %}
+                        </p>
+                        <p class="help-block alert-fixed alert-danger"
+                           ng-show="form.nodename.$error.maxlength && form.nodename.$dirty">
+                            {% trans "Nodename should be less than 255 characters" %}
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group clearfix" ng-show="false"
+                     ng-class="{'has-error':form.portType.$invalid && form.portType.$dirty}">
+                    <label for="portType">{$ label.portType $}</label>
+                    <div class="form-group-right">
+                        <select class="form-control"
+                                id="portType"
+                                name="portType"
+                                ng-required ng-model="node.portType"
+                                ng-change="changePortType()"
+                                ng-options="portType for portType in portTypes"></select>
+                    </div>
+                </div>
+                <div class="form-group clearfix"
+                     ng-class="{'has-error':form.port.$invalid && form.port.$dirty}">
+                    <label for="port">{$ label.port $}</label>
+                    <div class="form-group-right">
+                        <input required
+                               id="port"
+                               name="port"
+                               class="form-control verify-input"
+                               ng-maxlength="255"
+                               ng-model="node.port"
+                               placeholder="{$ label.portChannelPlaceholder $}"
+                               style="padding-left:8px;"
+                               ng-if="showPortChannel">
+                        <input required
+                               id="port"
+                               name="port"
+                               class="form-control verify-input"
+                               ng-maxlength="255"
+                               ng-model="node.port"
+                               placeholder="{$ label.portPlaceholder $}"
+                               style="border:0;height:26px;margin:2px;max-width:300px;position:absolute;padding-left:8px;"
+                               ng-if="showPort">
+                        <select class="form-control"
+                                id="portType"
+                                name="portType"
+                                ng-model="node.portNumber"
+                                ng-change="changePortList()"
+                                ng-options="portNumber for portNumber in portNumbers"
+                                ng-if="showPort"></select>
+                        <p class="help-block alert-fixed alert-danger"
+                           ng-show="form.port.$error.required && form.port.$dirty">
+                            {% trans "Please input port" %}
+                        </p>
+                        <p class="help-block alert-fixed alert-danger"
+                           ng-show="form.port.$error.maxlength && form.port.$dirty">
+                            {% trans "Port should be less than 255 characters" %}
+                        </p>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <!-- Modal-form-right: The description text. -->
+    </div>
+</form>
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+    <button id="submit-button" class="btn btn-primary" type="button"
+            ng-disabled="form.$invalid"
+            ng-click="action.submit()">
+        {$ label.add $}
+    </button>
+</div>

@@ -1,0 +1,32 @@
+{% load i18n %}
+<!--
+<div>
+
+  <h1>{% trans "If you have already purchase business volume,we supply some params which may be helpful for your input:" %}</h1>
+
+  <h4>HP 3par</h4>
+  <p>hp3par:cpg</p>
+  <p>hp3par:snap_cpg</p>
+  <p>hp3par:provisioning</p>
+  <p>hp3par:persona</p>
+  <p>hp3par:vvs</p>
+  <p>qos:maxIOPS</p>
+  <p>qos:maxBWS</p>
+
+  <h4>Dell Storage Center</h4>
+  <p>storagetype:storageprofile</p>
+
+  <h4>NetApp DATA ONTAP</h4>
+  <p>netapp_raid_type</p>
+  <p>netapp_disk_type</p>
+  <p>netapp:qos_policy_group</p>
+  <p>netapp_thin_provisioned</p>
+  <p>netapp_compression</p>
+
+</div>
+-->
+<div ng-controller="LaunchStacksWizardHelpCtrl as helpCtrl">
+  <h1>{$ ::helpCtrl.title $}</h1>
+  <p ng-repeat="paragraph in ::helpCtrl.paragraphs"
+    ng-bind-html="::paragraph"></p>
+</div>

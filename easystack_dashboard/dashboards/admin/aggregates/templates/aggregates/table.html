@@ -1,0 +1,25 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Aggregates" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Aggregates") %}
+{% endblock page_header %}
+
+{% block content_main %}"contentMain tab-main"{% endblock %}
+
+{% block main %}
+<tabset id="aggregates-tabset" justified="true" class="def-tabs">
+  <tab id="aggregates-tab" heading="{% trans 'Aggregates' %}">
+    <div class="tab-pane-content">
+    {% include "admin/aggregates/_table_aggregates.html" %}
+    </div>
+  </tab>
+  <tab id="zones-tab" heading="{% trans 'Availability Zones' %}">
+    <div class="tab-pane-content">
+    {% include "admin/aggregates/_table_zones.html" %}
+    </div>
+  </tab>
+</tabset>
+
+{% endblock %}

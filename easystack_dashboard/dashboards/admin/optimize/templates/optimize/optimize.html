@@ -1,0 +1,387 @@
+{% load i18n %}
+
+<style>
+    #optimizeContainer, .optimizeContainer {
+        width: 100%;
+        /*background: #ddd;*/
+        min-height: 500px;
+        height: 100%;
+        float: none;
+    }
+
+    #optimize-view, #optimize-chart {
+        width: 680px;
+        height: 400px;
+        margin-left: 10px;
+        clear: both;
+    }
+
+    #optimize-view .loding-bar {
+        text-align: center;
+    }
+
+    .topologyNavi {
+        margin-bottom: 20px;
+    }
+
+    #optimizeContainer .topologyBalloon:before {
+        border-right: 9px solid #fff;
+    }
+
+    .host {
+        min-height: 120px;
+        /*border: solid 4px #b5c3c0;
+        border-radius: 4px;*/
+        border-radius: 4px;
+        border: dashed 2px #8e8e8e;
+        background: -webkit-gradient(linear, left top, left bottom, from(#fff), color-stop(1, #f1f1f1), to(#fff));
+        background: -moz-linear-gradient(top, #fff, #fcfcfc, #f1f1f1 70%);
+        margin-top: 100px;
+    }
+
+    .hostWrap {
+        margin: 20px 0 20px 0;
+        float: none;
+        display: inline-block;
+    }
+
+    .boxShadow {
+        position: relative;
+        animation: mymove 2s infinite;
+        -moz-animation: mymove 2s infinite; /* Firefox */
+        -webkit-animation: mymove 2s infinite; /* Safari and Chrome */
+        -o-animation: mymove 2s infinite; /* Opera */
+    }
+
+    @keyframes mymove {
+        0% {
+            -webkit-box-shadow: 0 0 1px rgba(255, 0, 0, 0.2);
+            -moz-box-shadow: 0 0 1px rgba(255, 0, 0, 0.2);
+            box-shadow: 0 0 1px rgba(255, 0, 0, 0.2);
+        }
+        1% {
+            -webkit-box-shadow: 0 0 10px red;
+            -moz-box-shadow: 0 0 10px red;
+            box-shadow: 0 0 10px red;
+        }
+    }
+
+    @-moz-keyframes mymove /* Firefox */
+    {
+        0% {
+            -webkit-box-shadow: 0 0 1px rgba(255, 0, 0, 0.2);
+            -moz-box-shadow: 0 0 1px rgba(255, 0, 0, 0.2);
+            box-shadow: 0 0 1px rgba(255, 0, 0, 0.2);
+        }
+        1% {
+            -webkit-box-shadow: 0 0 10px red;
+            -moz-box-shadow: 0 0 10px red;
+            box-shadow: 0 0 10px red;
+        }
+    }
+
+    @-webkit-keyframes mymove /* Safari and Chrome */
+    {
+        0% {
+            -webkit-box-shadow: 0 0 1px rgba(255, 0, 0, 0.2);
+            -moz-box-shadow: 0 0 1px rgba(255, 0, 0, 0.2);
+            box-shadow: 0 0 1px rgba(255, 0, 0, 0.2);
+        }
+        1% {
+            -webkit-box-shadow: 0 0 10px red;
+            -moz-box-shadow: 0 0 10px red;
+            box-shadow: 0 0 10px red;
+        }
+    }
+
+    .vmMoving {
+        position: relative;
+        animation: vmmymove 1s infinite;
+        -moz-animation: vmmymove 1s infinite; /* Firefox */
+        -webkit-animation: vmmymove 1s infinite; /* Safari and Chrome */
+        -o-animation: vmmymove 1s infinite; /* Opera */
+    }
+
+    @keyframes vmmymove {
+        0% {
+            font-size: 20px;
+        }
+        1% {
+            font-size: 24px;
+        }
+    }
+
+    @-moz-keyframes vmmymove /* Firefox */
+    {
+        0% {
+            font-size: 20px;
+        }
+        1% {
+            cfont-size: 24px;
+        }
+    }
+
+    @-webkit-keyframes vmmymove /* Safari and Chrome */
+    {
+        0% {
+            font-size: 20px;
+        }
+        1% {
+            font-size: 24px;
+        }
+    }
+
+    /*.host:hover {
+      border-color: #f8f864;
+    }*/
+    .host-vm {
+        /* height: 20%; */
+        margin: 20px 0 0 5px;
+        height: 115px;
+        overflow-y: auto;
+    }
+
+    .host-text {
+        height: 130px;
+        line-height: 30px;
+        text-align: center;
+        color: #6e6e6e;
+        width: 100%;
+        margin-top: -142px;
+    }
+
+    .host-text span:first-child {
+        height: 30px;
+        overflow: hidden;
+        display: block;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .host-text-line {
+        border-left: dashed 2px #8e8e8e;
+        height: 30px;
+        text-align: center;
+    }
+
+    div.vmWrap {
+        margin: 10px 5px 5px 10px;
+        float: left;
+        cursor: pointer;
+        color: #949494;
+        font-size: 20px;
+    }
+
+    .modal-content {
+        width: 700px;
+    }
+
+    .logDetailContent {
+        left: initial;
+    }
+
+    .tasksBox {
+        width: 550px;
+        height: 450px;
+    }
+
+    .cluster-box {
+        height: 400px;
+        background: whitesmoke;
+        border: solid 1px #ddd;
+        border-radius: 5px;
+        padding: 30px 0;
+        margin: 40px 30px 20px 30px;
+        cursor: pointer;
+    }
+
+    .cluster-box div.form-group-right {
+       width: 200px;
+        display: inline-block;
+    }
+
+    .cluster-box:hover {
+        border: solid 2px #03a9f4;
+         -webkit-box-shadow:0 0 10px rgba(173, 173, 173, .5);
+          -moz-box-shadow:0 0 10px rgba(173, 173, 173, .5);
+          box-shadow:0 0 10px rgba(173, 173, 173, .5);
+    }
+
+    .cluster-box > h3 {
+        font-size: 24px;
+        margin: 0 0 30px 70px;
+    }
+
+    .cluster-box .clusterIcon{
+        font-size: 28px;
+        position: absolute;
+        margin-left: 30px;;
+    }
+
+    .cluster-box > p {
+        line-height: 33px;
+        clear: both;
+    }
+
+    .cluster-box > p > label {
+        text-align: right;
+        padding-left: 0;
+    }
+
+    .cluster-box .dropdown {
+        padding-right: 0;
+    }
+
+    .cluster-box .dropdown-toggle {
+        background-color: #F4F3F3;
+        border: solid 1px #ccc;
+        padding: 5px;
+        float: left;
+        height: 30px;
+    }
+
+    .cluster-box .dropdown-toggle .strategy-name {
+        width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        float: left;
+        display: block;
+    }
+
+    .cluster-box .dropdown .dropdown-menu {
+        margin-left: 15px;
+    }
+
+    .cluster-box .clusterStrategyDown > p {
+        margin: 5px 0 10px 15px;
+        clear: both;
+    }
+    .cluster-box .clusterStrategyDown > li span {
+        margin: 5px;
+    }
+
+    .cluster-box .clusterStrategyDown > li span.glyphicon-ok {
+        color: #398439;
+    }
+
+    .optimizeContainer .noClusterTip {
+        text-align: center;
+        margin-top: 20%;
+    }
+
+</style>
+
+{% include "admin/optimize/client_side/_balloon_container.html" %}
+{% include "admin/optimize/client_side/_balloon_device.html" %}
+<div ng-controller="adminOptimizeCtrl">
+    <div class="col-xs-12 row optimizeContainer" ng-show="!clusterClicked">
+        <div class="col-xs-4" ng-repeat="cluster in clustersList track by $index">
+            <div class="cluster-box" ng-click="changeTopology(cluster.id,cluster.selectedStrategyId)">
+                <span class="fa fa-sitemap clusterIcon"></span>
+                <h3>{$ cluster.name $}</h3>
+                <p>
+                    <label class="col-xs-6">{% trans "ID" %}:</label>
+                    <span class="col-xs-6">{$ cluster.id $}</span>
+                </p>
+                <p>
+                    <label class="col-xs-6">{% trans "Host Count" %}:</label>
+                    <span class="col-xs-6">{$ cluster.host_num $}</span>
+                </p>
+                <p>
+                    <label class="col-xs-6">{% trans "VM Count" %}:</label>
+                    <span class="col-xs-6">{$ cluster.vm_num $}</span>
+                </p>
+                <p>
+                    <label class="col-xs-6">{% trans "CPU " %}:</label>
+                    <span class="col-xs-6">{$ cluster.core_num $}</span>
+                </p>
+                <p>
+                    <label class="col-xs-6">{% trans "Used CPU" %}:</label>
+                    <span class="col-xs-6">{$ cluster.vcpu_num $}</span>
+                </p>
+                <p>
+                    <label class="col-xs-6">{% trans "RAM" %}:</label>
+                    <span class="col-xs-6">{$ cluster.mem_mb $}</span>
+                </p>
+                <p>
+                    <label class="col-xs-6">{% trans "Used RAM" %}:</label>
+                    <span class="col-xs-6">{$ cluster.vmem_mb $}</span>
+                </p>
+                <p>
+                    <label class="col-xs-6">{% trans "Optimization Scheme" %}:</label>
+                    <div class="col-xs-6 dropdown" ng-click="strategyFn.changeStrategy($event)">
+                        <a href="#" class="dropdown-toggle" aria-haspopup="true">
+                          <span class="strategy-name" title="{$ cluster.selectedStrategy | textFilter $}">{$ cluster.selectedStrategy || "Please select" | textFilter $}</span>
+                          <span class="fa fa-caret-down"></span>
+                        </a>
+                        <ul class="dropdown-menu clusterStrategyDown">
+                            <li ng-repeat="strategy in clusterStrategies track by $index" id="{$ strategy.id $}" ng-click="strategyFn.selectedStategy(strategy.id, strategy.name)"><a>{$ strategy.name | textFilter $}<span ng-class="{true:'glyphicon glyphicon-ok',false:''}[cluster.selectedStrategy==strategy.name]"></span></a></li>
+                            <p><button class="btn btn-primary" ng-click="strategyFn.changeStrategyAction(cluster, cluster.selectedStrategyId)">{% trans "OK" %}</button></p>
+                        </ul>
+                    </div>
+                </p>
+            </div>
+        </div>
+        <p class="noClusterTip" ng-show="clustersList.length==0">
+            {% trans "There is no cluster exist, create clusters from host agreegate page." %}
+        </p>
+    </div>
+
+    <div class="col-xs-12" ng-show="clusterClicked" id="optimizeContainer">
+        <div class="topologyNavi table_actions clearfix">
+            <button class="btn" ng-click="backToClusters()">
+                <i class="glyphicon glyphicon-circle-arrow-left"></i>
+                <span id="create-strategy">{% trans "Back" %}</span>
+            </button>
+            <action-list>
+                <action action-classes="'btn btn-primary btn-action'"
+                        disabled="disableMigration || hasMigrate"
+                        callback="actions.create.open">
+                    <i class="icon icon-add"></i>
+                    <span id="create-strategy">{$ context.conductText $}</span>
+                </action>
+            </action-list>
+        </div>
+        <div ng-if="!ihostlistState">
+            <div class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif" alt=""/></div>
+        </div>
+        <div class="hostWrap col-xs-4" ng-repeat="host in hostLists track by $index">
+            <div class="host">
+                <div class="host-text">
+                    <span>{$ host.hostName $}</span>
+
+                    <div ng-if="host.status == 'up'">
+                        <img ng-if="host.hostUsage.cpuUtil <=50" src="/dashboard/static/dashboard/img/optimize-host.png"
+                             width="80" height="80" ng-mouseenter="showBalloon(host,$event)"/>
+                        <img ng-if="host.hostUsage.cpuUtil > 50"
+                             src="/dashboard/static/dashboard/img/optimize-host_red.png"
+                             width="80" height="80" ng-mouseenter="showBalloon(host,$event)"/>
+                    </div>
+                    <div ng-if="host.status != 'up'">
+                        <img src="/dashboard/static/dashboard/img/optimize-host_gray.png" width="80" height="80"
+                             ng-mouseenter="showBalloon(host,$event)"/>
+                    </div>
+
+                    <span class="host-text-line"></span>
+                </div>
+                <div class="host-vm">
+                    <div ng-repeat="vm in host.vms" class="vmWrap fa fa-desktop" id="{$ vm.id $}"
+                         ng-mouseenter="showBalloon(vm,$event)"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="topology_template" style="display: none">
+        <div class="host">
+            <div class="host-text"></div>
+            <div class="host-vm">
+            </div>
+        </div>
+        <div class="vm">
+        </div>
+    </div>
+    <span data-optimizetopology="" id="optimizetopology"></span>
+
+    <div id="topologyMessages"></div>
+</div>
+

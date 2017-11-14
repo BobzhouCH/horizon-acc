@@ -1,0 +1,22 @@
+{%load i18n%}
+<script type="text/ng-template" id="clusterPutVal.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="close()">&times;</button>
+        <h4>{% trans "CLUSTER INFORMATION" %}</h4>
+    </div>
+    <div class="modal-body managementPublicBody">
+      <div class="list-group">
+          <label for="server_name">{% trans"clusterName" %}</label>
+          <input type="text" class="form-control" id="server_name" name="server_name" ng-model="cluster.name" placeholder="{$ clusterName $}"  required="" />
+      </div>
+      <div class="list-group">
+          <label for="public_ip">{% trans "Address" %}</label>
+          <input type="text" class="form-control" id="public_ip" name="public_ip" ng-model="cluster.addr" placeholder="{$ clusterAddr $}" required="" />
+
+      </div>
+    </div>
+    <div class="modal-footer">
+        <button class="cancel" ng-click="close()">{% trans "Cancel" %}</button>
+        <button class="btn-ok" ng-click="editOk(clusterName,clusterAddr)">{% trans "Ok" %}</button>
+    </div>
+</script>

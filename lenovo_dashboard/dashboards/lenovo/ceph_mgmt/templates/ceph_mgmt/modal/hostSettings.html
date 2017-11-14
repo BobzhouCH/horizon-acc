@@ -1,0 +1,91 @@
+{%load i18n%}
+<script type="text/ng-template" id="hostSettings.html">
+    <div ng-controller="MonMdsSettingCtrl">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="close()">&times;</button>
+            <h4>{% trans "Host Settings" %}</h4>
+        </div>
+        <div class="modal-body public-body">
+            <div class="body-left public-body-left">
+                <ul class="body-left-nav public-config-nav">
+                    <li class="li-border">Mon</li>
+                    <li>MDS</li>
+                </ul>
+            </div>
+            <div class="body-right">
+                <div class="body-content">
+                    <div class="content-box mon-mds-setting" style="display: block">
+                        <div class="list-group mdsText">
+                            <p>
+                                <button class="pull-right btn deploy" ng-class="{true:'',false:'disabled'}[monsList.length < maxMons]" ng-click="monAction.add(server.id)">Deploy
+                                </button>
+                            </p>
+                            <p class="removeFirst" ng-if="maxMons <= monsList.length">
+                                {% trans "To deploy new monitors,you need to remove some monitors in the cluster first." %}
+                            </p>
+                            <p class="maxTips">{% trans "Max monitors allowed in this cluster" %} : <b>{$ maxMons $}</b></p>
+                        </div>
+                        <div class="list-group mdsList hostSettingList">
+                            <div class="list-group-item"  ng-repeat="mon in monsList">
+                                <div class="pull-left">
+                                    <span>{$ mon.name $}</span>
+                                    <span title="{$ mon.host $}">{$ mon.host $}</span>
+                                    <span><em class="mdsActiveStatus"></em>  {$ mon.state $}</span>
+                                    <span>{$ mon.role $}</span>
+
+                                </div>
+                                <div class="pull-right">
+                                    <button ng-click="monAction.delete(server.id, mon.id)">
+                                        <b class="glyphicon glyphicon-trash"></b>
+                                    </button>
+                                    <button ng-if="mon.running == 'no'" ng-click="monAction.start(server.id, mon.id)">
+                                        <b class="glyphicon glyphicon-play-circle"></b>
+                                    </button>
+                                    <button ng-if="mon.running == 'yes'" ng-click="monAction.stop(server.id, mon.id)">
+                                        <b class="glyphicon glyphicon-pause"></b>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-box mon-mds-setting">
+                        <div class="list-group mdsText">
+                            <p>
+                                <button class="pull-right btn deploy" ng-class="{true:'',false:'disabled'}[mdsesList.length < maxMdses]" ng-click="mdsAction.add($event, server.id, maxMdses, mdsesList.length)">{% trans "Deploy" %}
+                                </button>
+                            </p>
+                            <p ng-if="maxMdses <= mdsesList.length">{% trans "To deploy new monitors, you need to remove some monitors in the cluster first." %}</p>
+                            <p>{% trans "Max MDS allowed in this cluster" %}  : <span class="max-num">{$ maxMdses $}</span></p>
+                        </div>
+                        <div class="list-group mdsList hostSettingList">
+                            <div class="list-group-item"  ng-repeat="mds in mdsesList">
+                                <div class="pull-left">
+                                    <span>{$ mds.name $}</span>
+                                    <span title="{$ mds.host $}">{$ mds.host $}</span>
+                                    <span><em class="mdsActiveStatus"></em>  {$ mds.state $}</span>
+                                    <span>{$ mds.role $}</span>
+                                </div>
+                                <div class="pull-right">
+                                    <button ng-click="mdsAction.delete(server.id, mds.id)">
+                                        <b class="glyphicon glyphicon-trash"></b>
+                                    </button>
+                                    <button ng-if="mds.running == 'no'" ng-click="mdsAction.start(server.id, mon.id)">
+                                        <b class="glyphicon glyphicon-play-circle"></b>
+                                    </button>
+                                    <button ng-if="mds.running == 'yes'" ng-click="mdsAction.start(server.id, mon.id)">
+                                        <b class="glyphicon glyphicon-pause"></b>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-list">
+                    <button class="cancel" ng-click="close()">{% trans "Cancel" %}</button>
+                    <button class="btn-ok" ng-click="clusterSettingsOk()">{% trans "OK" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+

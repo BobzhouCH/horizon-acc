@@ -1,0 +1,129 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+    <div class="left form-wrap">
+      <fieldset>
+        <!--
+            Associate-mode: show,disabled
+            Disassociate-mode: show,disabled
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="name">
+            {% trans "Instance Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              type="text"
+              disabled="true"
+              ng-model="instance.name"
+              ng-maxlength="255">
+          </div>
+        </div>
+        <!--
+          Associate network input (required):
+            Associate-mode: show
+            Disassociate-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.image_id.$invalid && form.image_id.$dirty}">
+          <label class="control-label fl required" for="network">
+            {% trans "Image" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="image_id"
+              name="image_id"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.images}"
+              ng-model="instance.image_id">
+              <option value="" disabled>
+                {% trans 'Select a Image' %}
+              </option>
+              <option
+                ng-repeat="image in dropdown.images"
+                ng-selected="image.id === instance.image_id"
+                value="{$ image.id $}">
+                {$ image.name $}
+              </option>
+            </select>
+          </div>
+        </div>
+        <!--
+            Set new password
+        -->
+        <div class="form-group clearfix">
+          <label class="control-label fl required" for="password">
+            *{% trans 'Password' %}
+          </label>
+          <div class="form-group-right" ng-class="{'has-error':form.password.$invalid && form.password.$dirty}">
+            <input required
+              id="password"
+              name="password"
+              class="form-control verify-input"
+              type="password"
+              ng-model="instance.password"
+              ng-maxlength="255">
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.password.$error.required && form.password.$dirty">
+              {% trans "A password is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.password.$error.maxlength">
+              {% trans "Password length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+        <!--
+            repeat password
+        -->
+        <div class="form-group clearfix">
+          <label class="control-label fl required" for="verify">
+            <p>*{% trans "Confirm Password" %}</p>
+          </label>
+          <div class="form-group-right"
+               ng-class="{'has-error':(form.verify.$invalid || instance.verifyPassword !== instance.password) && form.verify.$dirty}">
+            <input required
+              id="verify"
+              name="verify"
+              class="form-control verify-input"
+              type="password"
+              ng-model="instance.verifyPassword"
+              ng-maxlength="255">
+            <p class="help-block alert alert-danger"
+               ng-show="form.verify.$dirty && instance.verifyPassword !== instance.password">
+              {% trans "Passwords do not match." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.verify.$error.maxlength">
+              {% trans "Password length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+      <fieldset>
+    </div>
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid || instance.verifyPassword !== instance.password"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

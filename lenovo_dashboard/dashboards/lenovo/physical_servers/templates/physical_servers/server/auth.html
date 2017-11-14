@@ -1,0 +1,108 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+    <h3 class="modal-title">{$ label.title $}</h3>
+    <p class="modal-colsed" ng-click="action.cancel()"><!-- is it necessary to modify SPELLING ERROR -->
+        <i class="modal-colsed-icon"></i><!-- is it necessary to modify SPELLING ERROR -->
+    </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form id="createForm" novalidate name="form" ng-submit="submit(form.$valid)">
+    <!--<pre style="max-height:400px;overflow-y:scroll;">{$ form|json $}</pre>-->
+    <div class="modal-body clearfix">
+        <!-- Modal-form-left: Contains the form controls -->
+        <div class="left form-wrap">
+            <fieldset>
+                <div class="form-group clearfix"
+                     ng-class="{'has-error':form.username.$invalid && form.username.$dirty}">
+                    <label for="username">{$ label.hostname $}</label>
+                    <div class="form-group-right">
+                        <input id="username"
+                               name="username"
+                               class="form-control verify-input"
+                               readonly="readonly"
+                               ng-maxlength="255"
+                               ng-model="serverNames"
+                               ng-disabled="false">
+                    </div>
+                </div>
+                <div class="form-group clearfix"
+                     ng-class="{'has-error':form.username.$invalid && form.username.$dirty}">
+                    <label for="username">{$ label.managemoduletype $}</label>
+                    <div class="form-group-right">
+                        <input id="username"
+                               name="username"
+                               readonly="readonly"
+                               class="form-control verify-input"
+                               ng-maxlength="255"
+                               ng-model="manage_module"
+                               ng-disabled="false">
+                    </div>
+                </div>
+                <!-- LINER -->
+                <div class="form-group clearfix"
+                     ng-class="{'has-error':form.username.$invalid && form.username.$dirty}">
+                    <label for="username">{$ label.userid $}</label>
+                    <div class="form-group-right">
+                        <input required
+                               id="username"
+                               name="username"
+                               class="form-control verify-input"
+                               placeholder="USERID"
+                               ng-maxlength="255"
+                               ng-model="server.userid"
+                               ng-disabled="false">
+
+                        <p class="help-block alert-fixed alert-danger"
+                           ng-show="form.username.$error.required && form.username.$dirty">
+                            {% trans "Please input username" %}
+                        </p>
+
+                        <p class="help-block alert-fixed alert-danger"
+                           ng-show="form.username.$error.maxlength && form.username.$dirty">
+                            {% trans "Username should be less than 255 characters" %}
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group clearfix"
+                     ng-class="{'has-error':form.password.$invalid && form.password.$dirty}">
+                    <label for="password">{$ label.password $}</label>
+                    <div class="form-group-right">
+                        <input required
+                               id="password"
+                               name="password"
+                               type="password"
+                               class="form-control verify-input"
+                               ng-maxlength="255"
+                               ng-model="server.password"
+                               ng-disabled="false">
+
+                        <p class="help-block alert-fixed alert-danger"
+                           ng-show="form.password.$error.required && form.password.$dirty">
+                            {% trans "Please input password" %}
+                        </p>
+
+                        <p class="help-block alert-fixed alert-danger"
+                           ng-show="form.password.$error.maxlength && form.password.$dirty">
+                            {% trans "Password should be less than 255 characters" %}
+                        </p>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <!-- Modal-form-right: The description text. -->
+
+    </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+    <button id="submit-button" class="btn btn-primary" type="button"
+            ng-disabled="form.$invalid"
+            ng-click="action.submit()">
+        {$ label.Authenticate $}
+    </button>
+</div>

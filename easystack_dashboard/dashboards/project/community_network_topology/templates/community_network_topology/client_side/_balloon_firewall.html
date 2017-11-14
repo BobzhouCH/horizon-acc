@@ -1,0 +1,24 @@
+{% extends "easystack_dashboard/client_side/es_template.html" %}
+{% load horizon %}
+
+{% block id %}balloon_firewall{% endblock %}
+
+{% block template %}
+{% jstemplate %}
+<div class="portTableHeader">
+  <div class="title">Title</div>
+</div>
+<table class="detailInfoTable">
+  <tbody>
+    <tr>
+      <th>
+        <span>Rules</span>
+      </th>
+      <td>
+        [[#rules]]<p> [[id]] </p>[[/rules]]
+      </td>
+    </tr>
+  </tbody>
+</table>
+{% endjstemplate %}
+{% endblock %}

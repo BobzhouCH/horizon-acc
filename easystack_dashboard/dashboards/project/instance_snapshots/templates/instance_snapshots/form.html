@@ -1,0 +1,86 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+    <h3 class="modal-title">{$ ::context.title $}</h3>
+    <p class="modal-colsed" ng-click="action.cancel()">
+        <i class="modal-colsed-icon"></i>
+    </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+    <div class="left form-wrap">
+      <fieldset>
+        <!--
+          Instance Snapshot name input (required):
+            Create-mode: show
+            Edit-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label class="fl required" for="name">
+            *{% trans "Snapshot Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              type="text"
+              ng-maxlength="255"
+              ng-model="instance_snapshot.name"
+              ng-disabled=""
+              placeholder="{% trans 'Enter a snapshot name' %}">
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$dirty && form.name.$error.required">
+              {% trans "A snapshot name is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$dirty && form.name.$error.maxlength">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+       <div class="form-group clearfix"
+          ng-class="{'has-error':form.description.$invalid && form.description.$dirty}">
+          <label class="fl required" for="description">
+            {% trans "Description" %}
+          </label>
+          <div class="form-group-right">
+              <textarea
+                id="description"
+                name="description"
+                class="form-control"
+                rows="4"
+                type="text"
+                ng-maxlength="255"
+                ng-model="instance_snapshot.properties.description"
+                placeholder="{% trans 'Enter a description' %}">
+               </textarea>
+              <p class="help-block alert-fixed alert-danger"
+                ng-show="form.description.$dirty && form.description.$error.maxlength">
+                {% trans "Description length should be less than 255 chars." %}
+              </p>
+           </div>
+        </div>
+
+
+      </fieldset>
+    </div>
+
+    <!-- Modal-form-right: The description text. -->
+
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

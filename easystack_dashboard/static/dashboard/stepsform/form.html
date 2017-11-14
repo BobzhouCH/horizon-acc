@@ -1,0 +1,53 @@
+  <div class="modal-header clearfix">
+    <h3 class="modal-title">{$ ::context.title $}</h3>
+    <p class="modal-colsed" ng-click="action.cancel()">
+      <i class="modal-colsed-icon"></i>
+    </p>
+  </div>
+
+  <div class="content-wrap clearfix">
+    <div class="content-left">
+      <div class="content-left-step">
+        <!--<ul class="clearfix js-step-list">
+          <li class="active">
+            <span class="step-number">1</span>
+            <span class="step-name">配置计算资源</span>
+            <span class="step-line"></span>
+          </li>
+          <li>
+            <span class="step-number">2</span>
+            <span class="step-name">配置存储资源</span>
+            <span class="step-line"></span>
+          </li>
+          <li>
+            <span class="step-number">3</span>
+            <span class="step-name">配置网络资源</span>
+          </li>
+        </ul>-->
+        <ul class="clearfix js-step-list">
+          <li ng-repeat="step in steps" ng-class="{ 'active': $index == 0 }">
+            <span class="step-number">{$ $index + 1 $}</span>
+            <span class="step-name">{$ step.title $}</span>
+            <span class="step-line" ng-if="!$last"></span>
+          </li>
+        </ul>
+      </div>
+      <div class="content-left-box clearfix">
+        <div class="js-steps-content" style="width:3000px;position: absolute;top: 0;left: 0;">
+          <div class="step fl mr10" ng-repeat="step in steps">
+            <ng-include ng-form="{$ step.formName $}" src="step.templateUrl"></ng-include>
+          </div>
+        </div>
+      </div>
+      <div class="content-left-button_box modal-footer">
+        <div class="txt-r mt10">
+          <button class="btn-mana" ng-show="upShow" ng-click="slide.init(-1)">Prev</button>
+          <button class="btn-mana" ng-show="dwShow" ng-disabled="disable" ng-click="slide.init(1)">Next</button>
+          <button class="btn-mana" ng-show="submitShow" ng-disabled="submitDisable" ng-click="action.submit()">Submit</button>
+        </div>
+      </div>
+    </div>
+    <div class="content-right">
+      <ng-include src="rightTemplate"></ng-include>
+    </div>
+  </div>

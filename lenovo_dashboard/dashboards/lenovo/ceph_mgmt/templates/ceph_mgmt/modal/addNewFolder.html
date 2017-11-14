@@ -1,0 +1,65 @@
+{%load i18n%}
+<script type="text/ng-template" id="addNewFolder.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="close()">&times;</button>
+        <h4>{% trans "Add New Folder" %}</h4>
+    </div>
+    <div class="modal-body public-body">
+        <div class="body-left">
+            <ul class="body-left-nav">
+                <li class="li-click">
+                    <span class="li-click li-circle"></span>{% trans "Folder" %}
+                    <p class="li-inline"></p>
+                </li>
+                <li>
+                    <span class="li-circle"></span>{% trans "Sharing" %}
+                </li>
+            </ul>
+        </div>
+        <div class="body-right">
+            <div class="body-content">
+                <div class="content-box" style="display: block">
+                    <form role="form" name="myForm" class="form-horizontal" novalidate="">
+                        <div class="list-group form-group has-feedback">
+                            <label for="folderName">{% trans "Folder Name" %}</label>
+                            <input type="text" class="form-control" id="folderName" name="folderName" ng-model='newFolder.name' placeholder="Please enter a name"  required="" />
+                            <span class="glyphicon glyphicon-ok form-control-feedback" ng-show="myForm.folderName.$dirty && myForm.folderName.$valid"></span>
+                        </div>
+                        <div class="list-group form-group has-feedback">
+                            <label for="poolName">{% trans "Pool Name" %}</label>
+                            <input type="text" class="form-control" id="poolName" name="poolName" ng-model='newPool.name' placeholder="Please enter a name"  required="" />
+                            <span class="glyphicon glyphicon-ok form-control-feedback" ng-show="myForm.poolName.$dirty && myForm.poolName.$valid"></span>
+                        </div>
+                    </form>
+                </div>
+                <div class="content-box">
+                    <div class="list-group">
+                        <div class="pull-left usrPublicBox">
+                            <button ng-click="newUsr('sm')">{% trans "New Usr" %}</button>
+                        </div>
+                        <div class="pull-right usrPublicBox">
+                            <button ng-click="addUsr('sm')">{% trans "Add Usr" %}</button>
+                        </div>
+                    </div>
+                    <div class="list-group usrList">
+                        <div class="list-group-item disabled">
+                            <div class="pull-left">
+                                <span class="usrListName">{% trans "Admin1" %}</span>
+                            </div>
+                            <div class="pull-right">
+                                <span class="usrList-status">W</span>
+                                <span class="usrList-status">R</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-list">
+                <button class="prev" ng-show="!is_show" ng-click="prev()">{% trans "Prev" %}</button>
+                <button class="next" ng-show="is_show" ng-click="next()">{% trans "Next" %}</button>
+                <button class="cancel" ng-click="cancel()">{% trans "Cancel" %}</button>
+                <button class="btn-ok" ng-show="!is_show" ng-click="addFolderOk()">{% trans "Ok" %}</button>
+            </div>
+        </div>
+    </div>
+</script>

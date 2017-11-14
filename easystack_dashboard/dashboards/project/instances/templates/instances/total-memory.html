@@ -1,0 +1,84 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+    <h3 class="modal-title">{$ context.title $}</h3>
+    <p class="modal-colsed" ng-click="cancel()">
+        <i class="modal-colsed-icon"></i>
+    </p>
+</div>
+
+<form class="ml10 mr10" novalidate name="form" ng-submit="submit(form.$valid)">
+    <div class="modal-body resize-wrap clearfix">
+
+        <div class="modal-description mt10">
+            <p>
+                {% trans 'Set "Actual Total Memory" is known as memory balloon. It is to specify how much memory this instance can actually use. It does not change the flavor. The value is smaller than or equal the memory size in origial flavor.' %}
+            </p>
+        </div>
+
+        <!-- Modal-form: The body of this pane. -->
+        <form novalidate name="form" ng-submit="submit(form.$valid)">
+            <div class="modal-body clearfix">
+                <fieldset>
+                    <!--
+                      Volume name input (required):
+                        Create-mode: show
+                        Edit-mode: show
+                        Extend-mode: show,disabled
+                        Attach-mode: show,disabled
+                        Detach-mode: show,disabled
+                    -->
+                    <div class="form-group clearfix"
+                         ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+                        <div class="">
+                            <input required
+                                   id="name"
+                                   name="name"
+                                   class="form-control verify-input"
+                                   type="text"
+                                   ng-model="memory.size"
+                                   ng-disabled="context.mode === 'extend' ||
+                           context.mode === 'attach' ||
+                           context.mode === 'detach'"
+                                   ng-keyup="inputCheck()"
+                                   ng-blur="inputCheck()"
+                                   autocomplete="off"
+                                   placeholder="{% trans 'enter a memory size' %}" style="display: inline;width:50%;"/>
+                            <label for="name" style="float: none;margin-left: 10px;text-align: left;display: inline;">
+                                MB *
+                            </label>
+                            <p class="help-block alert-fixed alert-danger"
+                               ng-show="form.name.$error.required && form.name.$dirty">
+                                {% trans "Memory size is required." %}
+                            </p>
+
+                            <p class="help-block alert-fixed alert-danger"
+                               ng-show="!form.name.$error.required && inputError && form.name.$dirty">
+                                {% trans "Input Memory can't be more than Flavor ram." %}
+                            </p>
+                        </div>
+                    </div>
+
+                </fieldset>
+            </div>
+        </form>
+
+
+    </div>
+</form>
+
+
+<!-- Modal-footer: Flavor can submit or cancel form here. -->
+<div class="modal-footer">
+    <button id="submit-button" class="btn btn-primary" type="button"
+            ng-disabled="form.$invalid || inputError"
+            ng-click="submit()">
+        {$ context.submit $}
+    </button>
+
+    <button id="" class="btn btn-primary" type="button"
+            ng-click="cancel()">
+        {$ context.cancel $}
+    </button>
+</div>

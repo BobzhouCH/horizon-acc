@@ -1,0 +1,42 @@
+{
+  "return_data": {
+    "status": [
+      {
+        "status": "Critical",
+        "uuid": "66E16C8DA6A80E7C9D10996B54CFFF30",
+        "status": "Critical",
+        "events": {
+          "Critical": [
+            {
+              "id": 1,
+              "time": 1450319997,
+              "source": "Power",
+              "msg": "Sensor PDB_SHORT_CIR has transitioned to non-recoverable."
+            },
+            {
+              "id": 2,
+              "time": 1450320454,
+              "source": "System",
+              "msg": "A software NMI has occurred on system IBM Towers x3500 M4."
+            },
+            {
+              "id": 3,
+              "time": 1450320504,
+              "source": "System",
+              "msg": "An Uncorrectable Bus Error has occurred on bus PICs."
+            }
+          ],
+          "Warning": [
+            {
+              "id": 4,
+              "time": 1450320270,
+              "source": "System",
+              "msg": "Sensor GPT Status has transitioned from normal to non-critical state."
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "return_code": 0
+}

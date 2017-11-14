@@ -1,0 +1,88 @@
+.infui-server-overview {
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.infui-server-overview > div {
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.infui-server-overview > [element-position="1"] {
+    left: -50px;
+}
+
+.infui-server-overview > [element-position="2"] {
+    left: -16.6px;
+}
+
+.infui-server-overview > [element-position="3"] {
+    right: -16.6px;
+}
+
+.infui-server-overview > [element-position="4"] {
+    right: -50px;
+}
+
+.infui-server-ov-title {
+    font-family: anivers;
+    font-size: 1.5em;
+    border-bottom: 2px solid rgb(75, 121, 168);
+}
+
+.infui-server-ov-count {
+    font-family: 'PTSansRegular', Arial, Helvetica, sans-serif;
+    font-size: 2.5em;
+    height: 48px;
+    line-height: 48px;
+}
+
+.infui-server-status-info > img {
+    margin-left: 12px;
+    margin-right: 4px;
+    vertical-align: text-bottom;
+}
+
+.infui-server-status-footer {
+    margin-top: 10px;
+}
+
+.infui-server-status-footer:after {
+    content: ' ';
+    clear: both;
+}
+
+.infui-server-status-footer > a {
+    float: right;
+}
+
+.infra-summary-components, .infra-system-info {
+    width: 50%;
+    min-width: 650px;
+    margin-top: 10px;
+}
+
+.infra-system-info > dt {
+    border-bottom: 1px solid rgb(204, 204, 204);
+    height: 25px;
+    line-height: 25px;
+    padding-left: 5px;
+    background-color: rgb(244, 245, 246);
+}
+
+.infra-system-info > dd {
+    border-bottom: 1px solid rgb(204, 204, 204);
+    height: 25px;
+    line-height: 25px;
+    padding-left: 5px;
+    margin-left: 160px;
+}
+
+.infra-system-info > dt:nth-child(1), .infra-system-info > dd:nth-child(2) {
+    border-top: 1px solid rgb(204, 204, 204);
+}
+
+.table-bordered[hopes-table-drag=""] tr td {
+    max-width: 100px!important;
+}

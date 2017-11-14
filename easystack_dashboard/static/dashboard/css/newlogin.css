@@ -1,0 +1,234 @@
+
+.clearfix:after{
+  content:"";
+  display:block;
+  height:0;
+  clear:both;
+  visibility:hidden;
+}
+.clearfix{
+  zoom:1;
+}
+.fl {
+  float:left;
+  display:inline;
+}
+.fr {
+  float:right;
+  display:inline;
+}
+html,body{
+  width: 100%;
+  height: 100%;
+}
+fieldset {
+  border:0;
+}
+input::-webkit-input-placeholder {
+  font-weight: normal;
+  color: #ccc;
+}
+::-moz-placeholder {
+  font-weight: normal;
+  color: #ccc;
+}
+.es-login-wrap{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: rgb(255, 255, 255); /* Lenovo Style */
+  background-size: cover;
+}
+.es-small-wrap{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 362px;
+  height: 488px; /* Lenovo Style */
+  margin-top: -234px;
+  margin-left: -181px;
+    /* Lenovo Style */
+    box-shadow: rgba(0, 0, 0, 0.298039) 0px 3px 7px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(221, 221, 221);
+    border-image: initial;
+    border-radius: 6px;
+    /* End of Lenovo Style*/
+}
+.es-small-wrap h2{
+  width: 100%;
+  height: 108px;
+  line-height: 108px;
+  font-size: 25px;
+  text-align: center;
+  color: #fff;
+}
+.es-small-wrap .login-modal-header {
+    /* Lenovo Style */
+    padding-top: 55px;
+    padding-bottom: 42px;
+    border-bottom: 1px solid rgb(229, 229, 229);
+    /* End of Lenovo Style*/
+}
+.es-small-wrap .es-content{
+  width: 278px;
+  margin: 0 auto;
+  padding: 5px 0;
+}
+.es-content .es-login-head{
+  height: 38px;
+  line-height: 38px;
+  font-size: 14px;
+}
+.es-content .es-login-head span{
+  color: #fff;
+}
+.es-content .es-login-head em{
+  font-style: normal;
+  color: #d44b26;
+}
+
+.es-content .es-ip-use{
+  position: relative;
+  width: 278px;
+  height: 30px;
+  margin-bottom: 20px;
+}
+.es-content .es-ip-use input{
+  width: inherit;
+  padding: 5px 0 5px 50px;
+  height: 30px;
+  border-radius: 4px;
+    /* Lenovo Style */
+    border: 1px solid rgb(204, 204, 204);
+    box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px inset;
+    border-image: initial;
+    background: white;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    /* End of Lenovo Style */
+}
+.es-content .es-ip-use strong {
+  position: absolute;
+  left: 0;
+  top: 5px;
+  width: 36px;
+  height: 20px;
+  border-right: 1px solid rgb(204, 204, 204); /* Lenovo Style */
+}
+.es-content
+.es-input-wrap
+strong{
+  background: url(/static/dashboard/img/signin-user-icon.png) no-repeat center;
+}
+.es-content
+.es-pass-wrap
+strong{
+  background: url(/static/dashboard/img/signin-pass-icon.png) no-repeat center;
+}
+
+
+.es-small-wrap
+.es-content
+input.es-hover-bor-succ{
+  width: 276px;
+  height: 30px;
+  border: 1px solid rgb(204, 204, 204); /* Lenovo Style */
+}
+.es-small-wrap
+.es-content
+input.es-hover-bor-succ + strong{
+  border-color: rgb(204, 204, 204); /* Lenovo Style */
+}
+.es-small-wrap
+.es-content
+.es-hover-bor-err{
+  width: 276px;
+  height: 30px;
+  border: 1px solid #fc202f;
+}
+.es-small-wrap
+.es-content
+.es-hover-bor-err + strong {
+  border-color: #fc202f;
+}
+.login-modal-body {
+    height: 200px;
+  padding-top: 36px;
+}
+.login-modal-register {
+  padding: 0 2px;
+}
+.login-modal-footer {
+    padding: 24px 30px 10px 30px;
+    text-align: center;
+    border-top: 1px solid rgb(229, 229, 229);
+}
+.login-modal-footer .es-button{
+  display:block;
+  position:relative;
+  top:0;
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 8px;
+  text-align: center;
+  border:0;
+  border-radius: 4px;
+  cursor: pointer;
+  background: rgb(0, 157, 217); /* Lenovo Style */
+}
+.es-content
+.es-button:hover{
+  background: #4d998c;
+}
+
+.es-content
+.es-button.es-button-no {
+  background: #9ad8cd;
+  cursor: default;
+}
+
+.es-login-foter{
+  height: 20px;
+  margin-bottom: 30px;
+}
+.es-login-foter span{
+  width: 16px;
+  height: 18px;
+  margin-right: 8px;
+  cursor: pointer;
+  background: url(/static/dashboard/img/signin-checkbox-icon.png) no-repeat left -24px;
+}
+.es-login-foter span.active{
+  background: url(/static/dashboard/img/signin-checkbox-icon.png) no-repeat left 1px;
+}
+.es-login-foter a{
+  color: #fff;
+}
+.es-login-foter a:hover{
+  color: #fff;
+  text-decoration: none;
+}
+
+.es-errorWrap{
+  width: 278px;
+  height:auto;
+  margin: 10px auto 0 auto;
+  padding-top: 5px;
+}
+.es-errorWrap .es-con{ color: #bd421d; line-height:22px; font-size: 14px; margin:0; }
+.es-errorWrap .es-con .es-con-tips { float: left; width: 250px; }
+.es-errorWrap .es-con span{ float: left; display:inline-block; width:17px; height:20px; margin-right:10px; background: url(/static/dashboard/img/signin-err-icon.png) no-repeat left center; vertical-align: middle;}
+
+/*notice*/
+.notice_wrap { width:400px; position:fixed; right:10px; bottom:10px; }
+.notice_wrap .notice_wrap-title { width:100%; position:relative; background:#294ff5; }
+.notice_wrap .notice_wrap-title h5 { height:48px; line-height:48px; margin:0; text-indent:20px; color:#fff; font-size:20px; }
+.notice_wrap .notice_wrap-title-closed { display:block; width:24px; height:22px; position:absolute; top:15px; right:15px; background: url(/static/dashboard/img/login-closed-icon.png) no-repeat; }
+.notice_wrap .notice_wrap-title:hover { background:#032ace; }
+.notice_wrap .notice_wrap-title:hover .notice_wrap-title-closed { background-position:0 -22px; }
+.notice_wrap .notice_wrap-title-closed:focus { background-position:0 -44px; }
+.notice_wrap .notice_wrap-content { padding:10px 20px; width:100%; line-height: 22px; color:#000; background:#cecece; }

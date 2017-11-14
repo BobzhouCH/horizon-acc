@@ -1,0 +1,11 @@
+<div ng-controller="LaunchInstanceConfigurationController as config">
+    <div class="content">
+        <div>
+            {$ ::config.label.subtitle $}
+        </div>
+        <load-edit config="config"
+                   user-input="model.newInstanceSpec"
+                   key="user_data">
+        </load-edit>
+    </div>
+</div>

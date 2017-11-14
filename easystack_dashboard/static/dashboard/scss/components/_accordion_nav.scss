@@ -1,0 +1,265 @@
+@mixin sidebar_toggle_icon {
+  & > span {
+    transition: all .3s ease 0s;
+    @extend .fa-angle-down;
+    &:before {
+      font-size: 1em;
+      line-height: 18px;
+      vertical-align: middle;
+    }
+  }
+  &.active > span {
+    -ms-transform: rotate(180deg); /* IE 9 */
+    -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
+    transform: rotate(180deg);
+  }
+}
+
+.logo {
+  width: inherit;
+  height: $sidebar-logo-height;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  img {
+    max-height: 50px;
+  }
+}
+
+.list_img, .smallT, .active .smallT{
+  display:inline-block;
+  width:16px;
+  height:16px;
+  background:url(/static/bootstrap/img/navIcon.png) no-repeat;
+}
+
+.listImg_warp {
+  position:relative;
+  top:3px;
+  right:0;
+}
+
+.list_img_easystack_overview,
+i.easystack_overview,
+i.magnum_overview {
+  margin-left:16px;
+  background-position: 0 -131px;
+}
+
+.list_img_instances,
+i.COMPUTE {
+  background-position:0 0;
+}
+
+.list_img_volumes,
+i.VOLUME {
+  background-position:0 -28px;
+}
+i.Management {
+  margin-left:-1px;
+  background-position:0 -53px;
+}
+i.admin {
+  background-position:0 -77px;
+}
+i.identity {
+  background-position:0 -105px;
+}
+i.NETWORK {
+  background-position:0 -161px;
+}
+i.Orchestration {
+  background-position:0 -191px;
+}
+i.CONTAINER {
+  background-position:0 -219px;
+}
+/*
+i.MAGNUMAPPLICATIONSERVICE {
+  width:19px;
+  height:19px;
+  margin-left:-1px;
+  background-position:0 -412px;
+}
+i.mana_overview {
+  width:19px;
+  height:22px;
+  background-position:0 -77px;
+  position:relative;
+  top: 6px;
+  margin-left: 16px;
+}
+
+i.public_clound {
+  height:16px;
+  background-position:-175px -28px;
+  position:relative;
+  left:1px;
+}
+i.dedicated_clound {
+  width:25px;
+  height:16px;
+  background-position:-175px -51px;
+  position:relative;
+  left:1px;
+}*/
+
+.active {
+  i.easystack_overview {
+    margin-left:16px;
+    background-position: -113px -131px;
+  }
+
+  i.COMPUTE {
+    background-position: -113px 0;
+  }
+
+  i.VOLUME {
+    background-position: -113px -28px;
+  }
+
+  i.Management {
+    margin-left:-1px;
+    background-position: -113px -53px;
+  }
+
+  i.admin {
+    background-position: -113px -77px;
+  }
+
+  i.identity {
+    background-position: -113px -105px;
+  }
+
+  i.NETWORK {
+    background-position: -113px -161px;
+  }
+
+  i.Orchestration {
+    background-position: -113px -191px;
+  }
+
+  i.CONTAINER {
+    background-position:-113px -219px;
+  }
+}
+
+.sidebar dd li a.active,
+.sidebar dt li a.active {
+  color: $siderbar-active-color;
+  font-weight: bold;
+  border: medium none;
+  box-shadow: none;
+  .smallC {
+    background: $siderbar-active-color;
+  }
+}
+
+.sidebar dd li a:hover,
+.sidebar dt li a:hover{
+  color: $siderbar-active-color;
+  .smallC {
+    background: $siderbar-active-color;
+  }
+}
+
+.sidebar dd .smallC,
+.sidebar dt .smallC {
+  width: 4px;
+  height: 4px;
+  border-radius: 0;
+  background: $sidebar-inpoint-bg;
+  margin: -2px 16px 0 3px;
+}
+
+.smallT {
+  width: 8px;
+  height: 8px;
+  background-position:-174px 0;
+}
+.active .smallT {
+  width: 8px;
+  height: 8px;
+  background-position:-192px 0;
+}
+
+.sidebar dd h4 .smallT, .sidebar dt h4 .smallT {
+  border-top-color: #fff;
+  margin-right: 2px;
+  margin-top: 14px;
+}
+
+.nav_accordion {
+  color: $accordionBaseFontColor;
+  font-size: $font-size-small;
+  margin: 0px 0px;
+  dt, dd {
+    h4 {
+      width: 100%;
+      padding: 0 12px 0 15px;
+      font-size: $font-size-h4;
+      line-height: 35px;
+      color: $siderbar-color;
+      cursor: pointer;
+      &.active {
+        background: $siderbar-active-color;
+      }
+      a:focus{
+        border:0 !important;
+        text-decoration: none;
+        outline: 0!important;
+      }
+      a:hover{
+        text-decoration: none;
+      }
+    }
+    .overview-nav-name {
+      padding:0;
+      & + ul {
+        display: none;
+      }
+      a {
+         line-height: 35px;
+         display: inline-block;
+         width: 100%;
+         color: $siderbar-color;
+      }
+      .active {
+        background: $siderbar-active-color;
+      }
+    }
+    ul {
+      list-style: none outside none;
+      margin: 0;
+      padding: 0;
+      background: $sidebar-second-level-menu-background-color;
+    }
+    li {
+      &:not(:first-child) a {
+        margin-top: 1px;
+      }
+      &:not(:last-child) a {
+        margin-bottom: 1px;
+      }
+      a {
+        color: $siderbar-link-color;
+        padding: .5em 1.2em;
+        outline: none;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+      }
+    }
+  }
+  dd:nth-child(2){
+    padding: 0;
+    border-bottom:0;
+  }
+  dt {
+    max-width: 231px;
+    cursor: pointer;
+    &.active {
+      background: $siderbar-active-color;
+    }
+  }
+}

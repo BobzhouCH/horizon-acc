@@ -1,0 +1,118 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Invitation Code" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Invitation Code") %}
+{% endblock page_header %}
+
+{% block main %}
+
+<hz-magic-search-context filter-facets="hypervisorsFilterFacets" >
+<table id="invcodes-list" hz-table ng-cloak hopes-table-drag
+  st-table="iinvcodes"
+  st-safe-src="invcodes"
+  default-sort="create_at"
+  default-sort-reverse="true"
+  ng-controller="adminInvcodeController"
+  disabled="disabled"
+  st-magic-search
+  class="table table-bordered table-hover">
+  <thead>
+    <tr>
+        <th colspan="100" class="bare">
+           <div class="table_actions clearfix">
+
+              <action-list>
+              <action
+                action-classes="'btn btn-primary btn-action'"
+                callback="actions.refresh">
+                <i class="icon icon-refresh"></i>
+                <span id="refresh"></span>
+              </action>
+            </action-list>
+
+          <action-list>
+              <action
+                action-classes="'btn btn-primary btn-action'"
+                callback="actions.create.open">
+                <i class="icon icon-add"></i>
+                <span id="create-invcodes">{% trans 'Create Invitation Codes' %}</span>
+              </action>
+            </action-list>
+
+            <action-list>
+              <action
+                action-classes="'btn btn-action btn-danger'"
+                disabled="numSelected === 0"
+                callback="actions.deleted.batchDelete">
+                <i class="icon icon-delete"></i>
+                <span id="delete-invcodes">{% trans 'Delete Invitation Codes' %}</span>
+              </action>
+            </action-list>
+            <div class="fr search-bar">
+              <hz-magic-search-bar id="search"></hz-magic-search-bar>
+            </div>
+        </div>
+        </th>
+      </tr>
+
+    <tr eagle-eye="table_heads">
+      <th class="select-col" eagle-eye="select_col">
+      <input type="checkbox"
+        hz-select-page="invcodes"/>
+      </th>
+      <th><span st-sort="invcode" eagle-eye="data_col">{$ ::context.header.invcode $}</span></th>
+      <th><span st-sort="status" eagle-eye="data_col">{$ ::context.header.status $}</span></th>
+      <th ng-if="enable_billing"><span st-sort="worth" eagle-eye="data_col">{$ ::context.header.worth $}</span></th>
+      <th><span st-sort="use_by" eagle-eye="data_col">{$ ::context.header.use_by $}</span></th>
+      <th><span st-sort="use_at" eagle-eye="data_col">{$ ::context.header.use_at $}</span></th>
+      <th><span st-sort="expired" eagle-eye="data_col">{$ ::context.header.expired $}</span></th>
+      <th><span st-sort="create_at" eagle-eye="data_col">{$ ::context.header.create_at $}</span></th>
+    </tr>
+
+  </thead>
+
+  <tbody>
+
+    <tr ng-if="!iinvcodesState">
+      <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+    </tr>
+
+    <tr ng-if="!iinvcodes.length && iinvcodesState">
+      <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+    </tr>
+    <tr ng-repeat="invcode in iinvcodes" ng-class="{'st-selected': checked[invcode.id]}">
+      <td class="select-col" eagle-eye="select_col">
+        <input type="checkbox"
+          hz-select="invcode"
+          ng-model="selected[invcode.id].checked"
+          hz-checkbox-group="invcodes"/>
+      </td>
+      <!--
+        Table-row-expander:
+        User can toggle visbility of the Detail-row by clicking on this icon.
+        Duration attribute determines the animation time.
+      -->
+      <td eagle-eye="data_col">{$ invcode.invcode $}</td>
+      <td eagle-eye="data_col">{$ invcode.status | decode: activationcodei18n $}</td>
+      <td eagle-eye="data_col" ng-if="enable_billing">{$ invcode.worth $}</td>
+      <td eagle-eye="data_col">{$ invcode.use_by $}</td>
+      <td eagle-eye="data_col">{$ invcode.use_at $}</td>
+      <!--<td class="rsp-p1">{$ invcode.codetype $}</td>-->
+      <td eagle-eye="data_col" ng-class="{'red': invcode.status == 'overtime'}">{$ invcode.expired $}</td>
+      <td eagle-eye="data_col">{$ invcode.create_at $}</td>
+    </tr>
+  </tbody>
+
+  <tfoot ng-if="invcodes.length > 10">
+    <tr>
+      <td colspan="100" eagle-eye="data_page">
+        <table-footer></table-footer>
+      </td>
+    </tr>
+  </tfoot>
+
+</table>
+</hz-magic-search-context>
+{% endblock %}

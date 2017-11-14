@@ -1,0 +1,66 @@
+{%load i18n%}
+<script type="text/ng-template" id="addVolume.html">
+    <div class="public-content">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="close()">&times;</button>
+            <h4>{% trans "New Volume" %}</h4>
+        </div>
+        <div class="modal-body public-body">
+            <div class="body-left">
+                <ul class="body-left-nav">
+                    <li class="li-click">
+                        <span class="li-click li-circle"></span>{% trans "General" %}
+                        <p class="li-inline"></p>
+                    </li>
+                    <li><span class="li-circle"></span>{% trans "Others" %}</li>
+                </ul>
+            </div>
+            <div class="body-right">
+                <div class="body-content">
+                    <div class="content-box" style="display: block">
+                        <div class="list-group">
+                            <label>{% trans "Volume Name" %}</label>
+                            <input type="text" ng-model="addVolume.name" value="new rbd" />
+                        </div>
+                        <div class="list-group capacity">
+                            <label>{% trans "Capacity" %}</label>
+                            <span>
+                                <input type="text" ng-model="addVolume.capacity" oninput="if(value.length>0) value=value.slice(0,3)" />
+                                <select  ng-model="selected.Size" value="selected.id" ng-options="x for (x,y) in selectObj" ></select>
+                            </span>
+                        </div>
+                        <div class="list-group">
+                            <label>{% trans "iSCSI Name" %}</label>
+                            <input type="text" class="disabled btn" value="{$ iSCSIName $}" />
+                        </div>
+                    </div>
+                    <div class="content-box">
+                        <div class="list-group">
+                            <div class="QoS-show-notes">
+                                <label for="QoS-show-notes">{% trans "Volume Status" %}</label>
+                                <div class="slidebox">
+                                    <input id="QoS-show-notes" type="checkbox" name="QoS-show-notes" checked="checked">
+                                    <label for="QoS-show-notes"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group">
+                            <label>{% trans "LUN ID" %}</label>
+                            <input type="text" ng-model="addVolume.id" />
+                        </div>
+                        <div class="list-group">
+                            <label>{% trans "Source" %}</label>
+                            <input type="text" ng-model="addVolume.Source" />
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-list">
+                    <button class="prev" ng-show="!is_show" ng-click="prev()">{% trans "Prev" %}</button>
+                    <button class="next" ng-show="is_show" ng-click="next()">{% trans "Next" %}</button>
+                    <button class="cancel" ng-click="cancel()">{% trans "Cancel" %}</button>
+                    <button class="btn-ok" ng-show="!is_show" ng-click="addVolumeOk()">{% trans "OK" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

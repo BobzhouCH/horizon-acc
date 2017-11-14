@@ -1,0 +1,142 @@
+<div class="instances-flavor-wrap clearfix mt30">
+    <div class="instances-flavo-name">CPU</div>
+      <div class="instances-flavo-rect-wrap instances-flavo-cpu js-instances-flavo-rect">
+          <div class="instances-flavo-rect_bg"></div>
+          <div class="instances-flavo-rect js-instances-flavo-rect js-instances-flavo-rect-bg" index="0"></div>
+          <span class="instances-flavo-btn js-instances-flavo-btn" index="0"></span>
+          <ul>
+              <li>
+                  <span class="instances-flavo-line js-cpu-line"></span>
+                  <p>1</p>
+              </li>
+              <li>
+                  <span class="instances-flavo-line js-cpu-line"></span>
+                  <p>2</p>
+              </li>
+              <li>
+                  <span class="instances-flavo-line js-cpu-line"></span>
+                  <p>4</p>
+              </li>
+              <li>
+                  <span class="instances-flavo-line js-cpu-line"></span>
+                  <p>8</p>
+              </li>
+              <li>
+                  <span class="instances-flavo-line js-cpu-line"></span>
+                  <p>16</p>
+              </li>
+              <li>
+                  <span class="instances-flavo-line js-cpu-line"></span>
+                  <p>32</p>
+              </li>
+          </ul>
+      </div>
+</div>
+
+<div class="instances-flavor-wrap clearfix mt30">
+    <div class="instances-flavo-name">{$ 'Memory' | trans $}</div>
+    <div class="instances-flavo-rect-wrap instances-flavo-memory">
+        <div class="instances-flavo-rect_bg"></div>
+        <div class="instances-flavo-rect js-instances-flavo-rect-bg" index="1"></div>
+
+        <span class="instances-flavo-btn js-instances-flavo-btn" index="1"></span>
+        <ul>
+            <li>
+                <span class="instances-flavo-line js-ram-line"></span>
+                <p>512MB</p>
+            </li>
+            <li>
+                <span class="instances-flavo-line js-ram-line"></span>
+                <p>1G</p>
+            </li>
+            <li>
+                <span class="instances-flavo-line js-ram-line"></span>
+                <p>2G</p>
+            </li>
+            <li>
+                <span class="instances-flavo-line js-ram-line"></span>
+                <p>4G</p>
+            </li>
+            <li>
+                <span class="instances-flavo-line js-ram-line"></span>
+                <p>8G</p>
+            </li>
+            <li>
+                <span class="instances-flavo-line js-ram-line"></span>
+                <p>16G</p>
+            </li>
+            <li>
+                <span class="instances-flavo-line js-ram-line"></span>
+                <p>32G</p>
+            </li>
+            <li>
+                <span class="instances-flavo-line js-ram-line"></span>
+                <p>64G</p>
+            </li>
+            <li>
+                <span class="instances-flavo-line js-ram-line"></span>
+                <p>96G</p>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="instances-flavor-wrap clearfix mt30">
+  <div class="instances-flavo-name">{$ 'Disk' | trans $}</div>
+    <div class="instances-flavo-rect-wrap instances-flavo-disk">
+        <div class="instances-flavo-rect_bg"></div>
+        <div class="instances-flavo-rect js-instances-flavo-rect-bg" index="2"></div>
+
+        <span class="instances-flavo-btn js-instances-flavo-btn" index="2"></span>
+        <ul ng-if="diskRangeMode!=='linux' && diskRangeMode!=='windows'">
+            <li>
+                <span class="instances-flavo-line js-disk-line"></span>
+                <p>20G</p>
+            </li>
+            <li>
+                <span class="instances-flavo-line js-disk-line"></span>
+                <p>40G</p>
+            </li>
+            <li>
+                <span class="instances-flavo-line js-disk-line"></span>
+                <p>60G</p>
+            </li>
+            <li>
+                <span class="instances-flavo-line js-disk-line"></span>
+                <p>80G</p>
+            </li>
+            <li>
+                <span class="instances-flavo-line js-disk-line"></span>
+                <p>100G</p>
+            </li>
+            <li>
+                <span class="instances-flavo-line js-disk-line"></span>
+                <p>200G</p>
+            </li>
+            <li>
+                <span class="instances-flavo-line js-disk-line"></span>
+                <p>500G</p>
+            </li>
+        </ul>
+        <ul ng-if="diskRangeMode==='linux'">
+            <li>
+                <span class="instances-flavo-line js-disk-line"></span>
+                <p>20G</p>
+            </li>
+            <li>
+                <span class="instances-flavo-line js-disk-line"></span>
+                <p>30G</p>
+            </li>
+            <li>
+                <span class="instances-flavo-line js-disk-line"></span>
+                <p>40G</p>
+            </li>
+        </ul>
+        <ul ng-if="diskRangeMode==='windows'">
+            <li>
+                <span class="instances-flavo-line js-disk-line"></span>
+                <p>100G</p>
+            </li>
+        </ul>
+    </div>
+</div>

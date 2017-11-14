@@ -1,0 +1,12 @@
+{% load i18n branding %}
+{% block page_header %}
+  <div class='logo js-logo'>
+    <a href='{% logo_url %}' target="_blank"><img src="/static/dashboard/img/logo.png"></a>
+  </div>
+      {% if actions %}
+      <form class='actions_column pull-right' action='{{ url }}' method="POST">
+        {% csrf_token %}
+        {{ actions }}
+      </form>
+    {% endif %}
+{% endblock %}

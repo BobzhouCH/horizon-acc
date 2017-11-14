@@ -1,0 +1,107 @@
+/**
+ ** Author :chenglongfei
+ ** Module : application module css
+ ** Data   : 2016-05-26
+**/
+
+/*
+ Create app
+*/
+.marathon-form {
+  .marathon-edge-sm {
+    margin-top: 5px;
+  }
+  .marathon-edge-md {
+    margin-top: 10px;
+  }
+}
+
+/* log management */
+.log-mgt {
+  .form-group {
+    margin-top: 0px;
+    label {
+      text-align: left;
+    }
+    .item-wrapper {
+      width:100%;
+      display:inline-block
+    }
+  }
+  .alert-danger {
+    background: 0;
+    border: 0;
+    position:absolute
+
+  }
+  .log-screen{
+    padding: 9px;
+    background-color: #000;
+    color: #FFF;
+    min-height: 350px;
+    max-height: 600px;
+    overflow-y: scroll;
+    overflow-x: scroll;
+
+    li {
+      a {
+        white-space: nowrap;
+        word-break: keep-all;
+        display:block;
+        font-size:14px;
+        cursor: pointer;
+        text-decoration: none;
+        color: white;
+      }
+      a:hover {
+        background-color: #203c6d;
+      }
+      span {
+        white-space: nowrap;
+        word-break: keep-all;
+        display:block;
+        font-size:14px;
+      }
+      span.active{
+          background-color: #122b38;
+      }
+    }
+
+    .log-tips {
+      margin: 5px 5px 5px 50px;
+      font-size: 13px;
+      display:block;
+    }
+    a.log-load-button {
+      display: block;
+      text-align: center;
+      padding: 10px 10px;
+      margin: 12px 3px 5px 3px;
+      font-size: 16px;
+      cursor: pointer;
+      text-decoration: none;
+      background-color: #122b38;
+      color: #FFF;
+    }
+    a.log-load-button:hover{
+      background-color: #203c6d;
+    }
+    a.log-return-button{
+      position: absolute;
+      padding: 0 8px;
+    }
+    .context-log-list {
+      margin-left: 40px;
+    }
+  }
+}
+
+.project-build-log {
+  overflow: scroll;
+  height: 400px;
+  white-space: pre-line;
+  border: 1px solid #ccc;
+  padding: 0 10px;
+  background-color: #f5f5f5;
+  overflow: scroll;
+}

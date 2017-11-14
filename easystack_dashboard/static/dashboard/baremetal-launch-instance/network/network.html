@@ -1,0 +1,144 @@
+<div ng-controller="LaunchBareInstanceNetworkController as ctrl">
+  <div class="content">
+
+  <div class="form-group" ng-if="model.arePortProfilesSupported">
+    <label class="control-label required" for="profile">{$ ::ctrl.label.profile $}</label>
+    <select class="form-control" id="profile" ng-model="model.newInstanceSpec.profile" ng-options="profile.name for profile in model.profiles">
+      <option value="">{$ ::ctrl.label.none_option $}</option>
+    </select>
+  </div>
+
+  <transfer-table tr-model="ctrl.tableDataMulti" help-text="ctrl.tableHelpText" limits="ctrl.tableLimits">
+    <allocated validate-number-min="{$ ctrl.tableDataMulti.minItems $}" ng-model="ctrl.tableDataMulti.allocated.length">
+      <table id="selected-networks" st-table="ctrl.tableDataMulti.displayedAllocated" st-safe-src="ctrl.tableDataMulti.allocated" hz-table hopes-table-drag
+        class="table table-bordered table-hover table-th">
+        <thead>
+          <tr>
+            <th eagle-eye="data_col" class="reorder"></th>
+            <!--<th class="expander"></th>-->
+            <th eagle-eye="data_col">{$ ::ctrl.label.network $}</th>
+            <th eagle-eye="data_col">{$ ::ctrl.label.subnet_associated $}</th>
+            <th eagle-eye="data_col" ng-if="enableSetNicIP">{$ ::ctrl.label.ip $}</th>
+            <th eagle-eye="data_col">{$ ::ctrl.label.used_ips $}</th>
+            <th eagle-eye="data_col">{$ ::ctrl.label.total_ips $}</th>
+            <th eagle-eye="data_col">{$ ::ctrl.label.shared $}</th>
+            <!--<th class="rsp-p1">{$ ::ctrl.label.status $}</th>-->
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-if="ctrl.tableDataMulti.allocated.length === 0">
+            <td colspan="8">
+              <div class="no-rows-help">
+                {$ ::trCtrl.helpText.noneAllocText $}
+              </div>
+            </td>
+          </tr>
+          <tr ng-repeat="row in ctrl.tableDataMulti.displayedAllocated track by row.id">
+            <td eagle-eye="data_col" class="reorder">
+              <span class="fa fa-sort" title="{$ ::trCtrl.helpText.orderText $}"></span>
+              {$ $index + 1 $}
+            </td>
+            <!--<td class="expander">
+              <span class="fa fa-chevron-right" hz-expand-detail
+                title="{$ ::trCtrl.helpText.expandDetailsText $}"></span>
+            </td>-->
+            <td eagle-eye="data_col">{$ row.network $}</td>
+            <td eagle-eye="data_col">{$ row.name $}:[{$ row.cidr $}]</td>
+            <td eagle-eye="data_col" ng-if="enableSetNicIP"
+              ng-init="scope.autoIP=true"
+              style="width:160px">
+              <div ng-if="scope.autoIP">
+                <span>({$ 'Auto'|trans $})</span>
+                <a ng-click="scope.autoIP=false; row.ipv4=row.cidr.split('/')[0]" href="#">{$ 'Set'|trans $}</a>
+              </div>
+              <div ng-if="!scope.autoIP">
+                <input type="text" required
+                  name="ip"
+                  ng-required="true"
+                  class="verify-input"
+                  style="width:120px"
+                  ng-minlength="7"
+                  ng-maxlength="15"
+                  ng-pattern="/^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])($|(?!\.$)\.)){4}$/"
+                  ng-model="row.ipv4">
+                <a ng-click="scope.autoIP=true; row.ipv4=''" href="#">{$ 'Cancel'|trans $}</a>
+              </div>
+            </td>
+            <td eagle-eye="data_col">{$ row.used_ips $}</td>
+            <td eagle-eye="data_col">{$ row.total_ips $}</td>
+            <td eagle-eye="data_col">
+                <i ng-show="row.shared" class="fa fa-check text-success"></i>
+                <i ng-hide="row.shared" class="fa fa-times text-danger"></i>
+            </td>
+            <!--<td class="rsp-p1">{$ row.status | decode:ctrl.networkStatuses $}</td>-->
+            <td eagle-eye="button_action" class="action-col">
+              <action-list class="instance-btn">
+                <action
+                  callback="trCtrl.deallocate" item="row">
+                  <span class="icon remove_to"></span>
+                </action>
+              </action-list>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div ng-if="enableSetNicIP">
+        {$ 'You can set each NIC\'s ip, if the IP you set is not belong to the subnet, instance creation will fail.'|trans $}
+      </div>
+    </allocated>
+
+    <available>
+      <hz-magic-search-context filter-facets="ctrl.networkFacets">
+        <hz-magic-search-bar></hz-magic-search-bar>
+      <table  st-magic-search id="network-list" st-table="ctrl.tableDataMulti.displayedAvailable" st-safe-src="ctrl.tableDataMulti.available"
+        hz-table hopes-table-drag class="table table-bordered table-hover table-th">
+        <thead>
+          <tr>
+            <th eagle-eye="data_col" st-sort="network" st-sort-default class="rsp-p1">{$ ::ctrl.label.network $}</th>
+            <th eagle-eye="data_col">{$ ::ctrl.label.subnet_associated $}</th>
+            <th eagle-eye="data_col">{$ ::ctrl.label.used_ips $}</th>
+            <th eagle-eye="data_col">{$ ::ctrl.label.total_ips $}</th>
+            <th eagle-eye="data_col" st-sort="shared">{$ ::ctrl.label.shared $}</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-if="trCtrl.numDisplayedAvailable() === 0">
+            <td colspan="8">
+              <div class="no-rows-help">
+                {$ ::trCtrl.helpText.noneAvailText $}
+              </div>
+            </td>
+          </tr>
+          <tr ng-repeat="row in ctrl.tableDataMulti.displayedAvailable track by row.id" ng-if="!trCtrl.allocatedIds[row.id]">
+            <td eagle-eye="data_col">{$ row.network $}</td>
+            <td eagle-eye="data_col">{$ row.name $}:[{$ row.cidr $}]</td>
+            <td eagle-eye="data_col">{$ row.used_ips $}</td>
+            <td eagle-eye="data_col">{$ row.total_ips $}</td>
+            <td eagle-eye="data_col">
+                <i ng-show="row.shared" class="fa fa-check text-success"></i>
+                <i ng-hide="row.shared" class="fa fa-times text-danger"></i>
+            </td>
+            <td eagle-eye="button_action" class="action-col">
+              <action-list class="instance-btn" button-tooltip="ctrl.label.warningMessage"
+                bt-model="trCtrl.tooltipModel" bt-disabled="!row.disabled && row.used_ips < row.total_ips"
+                warning-classes="'invalid'">
+                <notifications>
+                  <span class="fa fa-exclamation-circle invalid" ng-show="row.disabled || row.used_ips >= row.total_ips"></span>
+                </notifications>
+                <action
+                  callback="trCtrl.allocate" item="row" disabled="row.disabled || row.used_ips >= row.total_ips">
+                  <span class="icon add_to"></span>
+                </action>
+              </action-list>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </hz-magic-search-context>
+    </available>
+  </transfer-table>
+
+  </div>
+</div>

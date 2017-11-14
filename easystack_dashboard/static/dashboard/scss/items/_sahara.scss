@@ -1,0 +1,31 @@
+/**
+ ** Author :zhouqi
+ ** Module : sahara module css
+ ** Data   : 2016-09-27
+**/
+/** sahara **/
+.saharaListContent {
+  .modal-dialog { width: 640px; }
+  .form-group .form-group-right { width: 260px; }
+  .form-group label, .form-group .form-group-left { width: 150px; }
+  .sahara-form-left { float: left; }
+  .sahara-left-text label {
+    margin-top: 20px;
+    margin-left: 18px;
+    width: 170px;
+    text-align: left;
+    line-height: 30px;
+    color: #333;
+    font-size: 14px;
+    font-weight: normal;
+  }
+
+  .sahara-left-text .service {
+    margin-top: 0px;
+    margin-left: 20px;
+    display: inline-block;
+    div: {
+      font-size: 11px;
+    }
+  }
+}

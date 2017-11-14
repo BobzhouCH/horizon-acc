@@ -1,0 +1,334 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Loadbalancers" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Loadbalancers") %}
+{% endblock page_header %}
+
+{% block content_main %}"contentMain tab-main"{% endblock %}
+
+{% block main %}
+<tabset id="network-tab" class="def-tabs" id="factoryEmit" justified="true">
+ <tab id="tab-loadbalancer-button" heading="{% trans 'Load Balancers' %}">
+   <div class="tab-pane-content">
+      <hz-magic-search-context filter-facets="filterFacets">
+      <table id="loadbalancer-table" hz-table ng-cloak hopes-table-drag
+        st-table="iloadbalancers"
+        st-safe-src="loadbalancers"
+        default-sort="created_at"
+        default-sort-reverse="true"
+        st-magic-search
+        ng-controller="LoadBalancersTableController"
+        ng-init="userID = '{{ request.user.id }}'"
+        disabled="disabled"
+        class="table table-bordered table-hover">
+
+        <!--
+          Table-head:
+          This is where we add things like filtering and batch actions.
+          This is where we add column headers.
+        -->
+        <thead>
+
+          <!--
+            Table-batch-actions:
+            This is where batch actions like searching, creating, and deleting.
+          -->
+          <tr>
+            <th colspan="100" class="bare">
+              <div class="table_actions clearfix">
+
+                <action-list>
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    callback="actions.refresh">
+                    <i class="icon icon-refresh"></i>
+                    <span id="refresh"></span>
+                  </action>
+                </action-list>
+
+                <action-list>
+                  <action
+                    action-classes="'btn btn-primary btn-action'"
+                    callback="actions.create.open" disabled= "iloadbalancers.length >= quota">
+                    <i class="icon icon-add"></i>
+                    <span id="create-loadbalancer">{% trans 'Create Load Balancer' %}
+                      <i ng-show="loadbalancers.length >= quota">{% trans '(quota exceeded)' %}</i>
+                    </span>
+                  </action>
+                </action-list>
+
+                <action-list dropdown>
+                  <button id="more" type="button" class="btn btn-primary btn-action" dropdown-toggle>
+                    <i class="icon icon-more"></i>
+                    <span>{% trans 'More' %}</span>
+                  </button>
+                  <menu>
+                    <action
+                      button-type="menu-item"
+                      disabled="disabled || disableAssociateFloatingIp"
+                      callback="actions.associatefloatingip.open"
+                      item="selectedData.aData">
+                      <span id="associatefloatingip">{% trans 'Associate Floating IP' %}</span>
+                    </action>
+                    <action
+                      button-type="menu-item"
+                      disabled="disabled || disableDisAssociateFloatingIp"
+                      callback="actions.disableAssociateFloatingIp.open" item="selectedData.aData">
+                      <span id="disassociatefloatingip">{% trans 'Disassociate Floating IP' %}</span>
+                    </action>
+                    <action
+                      button-type="menu-item"
+                      disabled="disabled || disableEditSecurityGroup"
+                      callback="actions.editSecurityGroup.open"
+                      item="selectedData.aData">
+                      <span id="editsecuritygroup">{% trans 'Edit Security Group' %}</span>
+                    </action>
+                    <action
+                      button-type="menu-item"
+                      disabled="numSelected === 0  || disableDelete"
+                      callback="actions.deleteLoadBalancerAction.batchDelete"
+                      item="selectedData.aData">
+                      <span id="delete">{% trans 'Delete' %}</span>
+                    </action>
+
+                  </menu>
+                </action-list>
+                <div class="fr search-bar">
+                  <hz-magic-search-bar id="balancer-search"></hz-magic-search-bar>
+                </div>
+              </div>
+            </th>
+          </tr>
+          <!--
+            Table-column-headers:
+            This is where we declaratively define the table column headers.
+            Include the select all checkbox if you want to enable select all
+            for performing batch actions.
+          -->
+          <tr eagle-eye="table_heads">
+            <th class="select-col" eagle-eye="select_col">
+              <input type="checkbox"
+                hz-select-page="loadbalancers"/>
+            </th>
+            <th eagle-eye="data_col"><span st-sort="name">{$ ::context.header.name $}</span></th>
+            <th eagle-eye="data_col"><span st-sort="description">{$ ::context.header.description $}</span></th>
+            <th eagle-eye="data_col"><span st-sort="vip_address">{$ ::context.header.vip $}</span></th>
+            <th eagle-eye="data_col"><span st-sort="subnet">{$ ::context.header.subnet $}</span></th>
+            <th eagle-eye="data_col"><span st-sort="floating_ip.ip">{$ ::context.header.floating_ip $}</span></th>
+            <th eagle-eye="data_col"><span st-sort="security_groups_name">{$ ::context.header.security_group $}</span></th>
+            <th eagle-eye="data_col"><span st-sort="status">{$ ::context.header.status $}</span></th>
+            <th eagle-eye="data_col"><span st-sort="create_time">{$ ::context.header.created_at $}</span></th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr ng-if="!iloadbalancersState">
+            <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+          </tr>
+
+          <tr ng-if="!iloadbalancers.length && iloadbalancersState">
+            <td colspan="100" eagle-eye="empty_table">{% trans "No data" %}</td>
+          </tr>
+
+          <tr ng-repeat="loadbalancer in iloadbalancers" ng-class="{'st-selected': checked[loadbalancer.id]}">
+
+            <!--
+              Table-row-checkbox:
+              User can select and unselect this row by clicking on this checkbox.
+              Batch actions can then be perform on selected rows.
+            -->
+            <td class="select-col" eagle-eye="select_col">
+              <input type="checkbox"
+                hz-select="loadbalancer"
+                ng-model="selected[loadbalancer.id].checked"
+                hz-checkbox-group="loadbalancers"/>
+            </td>
+
+            <!-- Table-row-info-column -->
+            <td class="rsp-p1" eagle-eye="data_col">
+              <a ng-click="actions.loadbalancerDetail.open(loadbalancer)" href="javascript:;"
+                data-url="/project/loadbalancers/detail/{$ loadbalancer.id $}" title="{$ loadbalancer.name $}">
+                {$ loadbalancer.name $}
+              </a>
+            </td>
+            <td eagle-eye="data_col" title="{$ loadbalancer.description $}">{$ loadbalancer.description $}</td>
+            <td eagle-eye="data_col">{$ loadbalancer.vip_address $}</td>
+            <td eagle-eye="data_col">{$ loadbalancer.subnet $}</td>
+            <td eagle-eye="data_col">{$ loadbalancer.floating_ip.ip$}</td>
+            <td eagle-eye="data_col">{$ loadbalancer.security_groups_name $}</td>
+            <td eagle-eye="data_col">{$ loadbalancer.provisioning_status | decode:provisioningStatus $}</td>
+            <td eagle-eye="data_col">{$ loadbalancer.create_time $}</td>
+          </tr>
+        </tbody>
+
+        <!--
+          Table-footer:
+          This is where we display number of items and pagination controls.
+          Ensure colspan is greater or equal to number of column-headers.
+        -->
+
+        <tfoot ng-if="loadbalancers.length > 10">
+          <tr>
+            <td colspan="100" eagle-eye="data_page">
+              <table-footer></table-footer>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+      </hz-magic-search-context>
+    </div>
+   </tab>
+
+    <tab id="tab-loadbalancer-pool" heading="{% trans 'Pools' %}">
+      <div class="tab-pane-content">
+        <hz-magic-search-context filter-facets="filterFacets">
+        <table id="loadbalancer-pool-table" hz-table ng-cloak hopes-table-drag
+          st-table="ipools"
+          st-safe-src="pools"
+          default-sort="created_at"
+          default-sort-reverse="true"
+          st-magic-search
+          ng-controller="projectPoolsController"
+          ng-init="userID = '{{ request.user.id }}'"
+          disabled="disabled"
+          class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th colspan="100" class="bare">
+                <div class="table_actions clearfix">
+                  <action-list>
+                    <action
+                      action-classes="'btn btn-primary btn-action'"
+                      callback="actions.refresh">
+                      <i class="icon icon-refresh"></i>
+                      <span id="pool-refresh"></span>
+                    </action>
+                  </action-list>
+                  <action-list>
+                    <action
+                      action-classes="'btn btn-primary btn-action'"
+                      callback="actions.create.open" disabled= "ipools.length >= quota">
+                      <i class="icon icon-add"></i>
+                      <span id="create-pool">{% trans 'Create Pool' %}
+                      <i ng-show= "ipools.length >= quota">{% trans '(quota exceeded)' %}</i>
+                      </span>
+                    </action>
+                  </action-list>
+
+                <!--Dropdown "More"-->
+                  <action-list dropdown>
+                    <button id="pool-more" type="button" class="btn btn-primary btn-action" dropdown-toggle>
+                      <i class="icon icon-more"></i>
+                      <span>{% trans 'More' %}</span>
+                    </button>
+                    <menu>
+                      <action button-type="menu-item"
+                        disabled="numSelected === 0 || disableEnable"
+                        callback="actions.enable.batchEnable"
+                        item="selectedData.aData">
+                        <span id="enable">{% trans 'Enable' %}</span>
+                      </action>
+                      <action button-type="menu-item"
+                        disabled="numSelected === 0 || disableDisable"
+                        callback="actions.disable.batchDisable"
+                        item="selectedData.aData">
+                        <span id="disable">{% trans 'Disable' %}</span>
+                      </action>
+                      <action button-type="menu-item"
+                        disabled="disabled || disableEdit"
+                        callback="actions.edit.open"
+                        item="selectedData.aData">
+                        <span id="edit">{% trans 'Edit' %}</span>
+                      </action>
+                      <action button-type="menu-item"
+                        disabled="numSelected === 0 || disableDelete"
+                        callback="actions.deleted.batchDelete"
+                        item="selectedData.aData">
+                        <span id="delete">{% trans 'Delete' %}</span>
+                      </action>
+                    </menu>
+                  </action-list>
+                <!-- -End- Dropdown "More"-->
+
+                  <div class="fr search-bar">
+                    <hz-magic-search-bar id="pool-search"></hz-magic-search-bar>
+                  </div>
+                </div>
+              </th>
+            </tr>
+            <tr eagle-eye="table_heads">
+              <th class="select-col" eagle-eye="select_col">
+                <input type="checkbox"
+                  hz-select-page="pools"/>
+              </th>
+              <th eagle-eye="data_col"><span st-sort="name">{$ ::context.header.name $}</span></th>
+              <th eagle-eye="data_col"><span st-sort="description">{$ ::context.header.description $}</span></th>
+              <th eagle-eye="data_col"><span st-sort="subnet_cidr">{$ ::context.header.subnet $}</span></th>
+              <th eagle-eye="data_col"><span st-sort="protocol">{$ ::context.header.protocol $}</span></th>
+              <th eagle-eye="data_col"><span st-sort="lb_algorithm">{$ ::context.header.lb_method $}</span></th>
+              <th eagle-eye="data_col"><span st-sort="admin_state_up">{$ ::context.header.state $}</span></th>
+              <th eagle-eye="data_col"><span st-sort="operating_status">{$ ::context.header.operating_status $}</span></th>
+              <th eagle-eye="data_col"><span st-sort="create_time">{$ ::context.header.create_at $}</span></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr ng-if="!ipoolsState">
+              <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+            </tr>
+            <tr ng-if="!ipools.length && ipoolsState">
+              <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+            </tr>
+            <tr ng-repeat="pool in ipools" ng-class="{'st-selected': checked[pool.id]}">
+
+              <!--
+                Table-row-checkbox:
+                User can select and unselect this row by clicking on this checkbox.
+                Batch actions can then be perform on selected rows.
+              -->
+              <td class="select-col" eagle-eye="select_col">
+                <input type="checkbox"
+                  hz-select="pool"
+                  ng-model="selected[pool.id].checked"
+                  hz-checkbox-group="pools"/>
+              </td>
+
+              <!-- Table-row-info-column -->
+              <td eagle-eye="data_col">
+                <a ng-click="actions.poolDetail.open(pool)" href="javascript:;"
+                  data-url="/project/loadbalancersv2/pool-detail/{$ pool.id $}" title="{$ pool.name $}">
+                  {$ pool.name $}
+                </a>
+              </td>
+              <td eagle-eye="data_col">{$ pool.description $}</td>
+              <td eagle-eye="data_col">{$ pool.subnet_cidr $}</td>
+              <td eagle-eye="data_col">{$ pool.protocol $}</td>
+              <td eagle-eye="data_col">{$ pool.lb_algorithm | decode:loadbalancerMethod $}</td>
+              <td eagle-eye="data_col">{$ pool.admin_state_up | decode:enableStatus $}</td>
+              <td eagle-eye="data_col">{$ pool.operating_status | decode:operationStatus $}</td>
+              <td eagle-eye="data_col">{$ pool.create_time $}</td>
+            </tr>
+          </tbody>
+
+          <!--
+            Table-footer:
+            This is where we display number of items and pagination controls.
+            Ensure colspan is greater or equal to number of column-headers.
+          -->
+          <tfoot ng-if="pools.length > 10">
+            <tr>
+              <td colspan="100" eagle-eye="data_page">
+                <table-footer></table-footer>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+        </hz-magic-search-context>
+      </div>
+    </tab>
+</tabset>
+
+{% endblock %}

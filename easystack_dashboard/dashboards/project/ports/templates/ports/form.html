@@ -1,0 +1,311 @@
+{% load i18n %}
+{% load context_selection %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <div class="modal-description mt10" ng-if="context.mode === 'create' || context.mode === 'edit'">
+      <p>
+        {% trans "The IP address should belong to subnet, or the operation will fail." %}
+      </p>
+    </div>
+    <!-- Modal-form-left: Contains the form controls -->
+      <fieldset>
+        <!--
+          port name input (required):
+            Create-mode: show
+            Edit-mode: show
+            Extend-mode: show,disabled
+            Attach-mode: show,disabled
+            Detach-mode: show,disabled
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="name">
+            <p>*{% trans "Interface Name" %}</p>
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              type="text"
+              ng-model="port.name"
+              ng-maxlength="255"
+              ng-disabled="context.mode === 'extend' ||
+                           context.mode === 'attach' ||
+                           context.mode === 'detach'"
+              placeholder="{% trans 'enter a interface name' %}"/>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "A interface name is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength && form.name.$dirty">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+          subnet input (required):
+            Create-mode: show
+            Edit-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' || context.mode === 'edit'">
+          <label for="subnet_id">
+            *{% trans "Subnet" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="subnet_id"
+              name="subnet_id"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.subnets}"
+              ng-model="port.subnet_id"
+              ng-disabled="context.mode === 'edit'"
+              ng-change="changeSubnetValue()">
+              <option value="" disabled>
+                {% trans 'Select a Subnet' %}
+              </option>
+              <option
+                ng-repeat="s in dropdown.subnets"
+                value="{$ s.id $}"
+                ng-selected="s.id === port.fixed_ips[0].subnet_id">
+                {$ s.network_name $} : {$ s.cidr $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!--
+          subnet input (required):
+            attach-mode: show
+            detach-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'attach' ||
+                 context.mode === 'detach'">
+          <label for="instance" >
+            *{% trans "instance" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="instance"
+              name="instance"
+              class="form-control"
+              ng-class="{strikeLoading: !dropdown.instances }"
+              ng-model="port.instance_id"
+              ng-disabled="context.mode === 'detach'">
+              <option value="" disabled>
+                {% trans 'Select a Instance' %}
+              </option>
+              <option
+                ng-repeat="s in dropdown.instances"
+                ng-selected="s.id === port.device_id"
+                value="{$ s.id $}">
+                {$ s.name $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!--
+            ip_address edit (required):
+            create-mode: show
+            edit-mode: show
+        -->
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}"
+          ng-if="context.mode === 'create' || context.mode === 'edit'">
+          <label for="ip_address">
+            {% trans "IP Address" %}
+          </label>
+          <div class="form-group-right">
+            <input
+              id="ip_address"
+              name="ip_address"
+              class="form-control verify-input"
+              type="text"
+              ng-model="port.ip_address"
+              ng-disabled="context.mode === 'attach' ||
+                           context.mode === 'detach'"
+              ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+              placeholder="{% trans 'System will auto assign if blank' %}"/>
+              <p class="help-block alert-fixed alert-danger"
+                  ng-show="form.ip_address.$invalid && form.ip_address.$dirty">
+                  {% trans "invalid input for ip address." %}
+              </p>
+          </div>
+        </div>
+
+        <!--
+            security_group edit (required):
+            create-mode: show
+            edit-mode: show
+        -->
+
+        <div class="form-group clearfix" ng-if="context.mode === 'create'">
+          <label><p>{% trans 'Security Groups' %}</p></label>
+          <div class="form-group-right write-label"
+              isteven-multi-select
+              input-model="canSelectSecurityGroups"
+              output-model="port.selectedSecurityGroups"
+              output-properties="id"
+              button-label="name"
+              item-label="label"
+              helper-elements="all none filter"
+              search-property="name"
+              translation="context.localLang"
+              tick-property="ticked">
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create'||
+                 context.mode === 'edit'"
+          ng-class="{'has-error':form.type.$invalid && form.type.$dirty}">
+          <label for="policy_enable">
+            QoS
+          </label>
+          <div class="form-group-right">
+              <input
+                id="policy_enable"
+                name="policy_radio"
+                class="form-control radio-select-input"
+                type="radio"
+                checked
+                ng-init="port.qos_policy_id? port.policy_enable='1':port.policy_enable='0'"
+                ng-model="port.policy_enable"
+                value="0"/>
+                <span>{% trans "Disable" %}</span>
+              <input
+                id="policy_disable"
+                name="policy_radio"
+                class="form-control radio-select-input"
+                style="margin-left:10px;"
+                type="radio"
+                ng-model="port.policy_enable"
+                value="1"/>
+                <span>{% trans "Enable" %}</span>
+          </div>
+        </div>
+
+        <div class="form-group clearfix mt0"
+          ng-if="context.mode === 'create'||
+                 context.mode === 'edit'"
+          ng-class="{'has-error':form.size.$invalid && form.size.$dirty}">
+          <label for="drag-bandwidth">
+            {% trans "Bandwidth" %}
+          </label>
+          <div class="form-group-right no-input-number" style="width: 300px;margin-left:4px;">
+            <div ng-if="port.policy_enable === '1'">
+              <dragbar id="drag-bandwidth"
+                name="size"
+                min="bandwidthDef.min"
+                max="bandwidthDef.max"
+                start="bandwidthDef.min"
+                end="bandwidthDef.max"
+                unit="Mbps"
+                pattern="^[0-9]*[1-9][0-9]*$"
+                forbidden="port.policy_enable == 0"
+                ng-init="port.max_mbps"
+                ng-model="port.max_mbps">
+              </dragbar>
+              <div class="help-block alert-fixed alert-danger" ng-show="form.size.$invalid && form.size.$dirty">
+                <p ng-show="form.size.$error.min || form.size.$error.max || form.size.$error.number">{% trans "Bandwidth must be in 1~10000 Mbps." %}</p>
+                <p ng-show="!form.size.$error.min && form.size.$error.pattern">{% trans "Number must be an integer" %}</p>
+              </div>
+            </div>
+
+            <div class="stripWarp clearfix ports-stripWarp" ng-if="port.policy_enable === '0'">
+              <div class="strip_element">
+                <div class="slider-horiz" style="width:200px;">
+                  <div class="slider-track">
+                    <div class="slider-selection" style="width: 0px;"></div>
+                    <div class="slider-handle" style="left: 0px;"></div>
+                  </div>
+               </div>
+               <span class="preview">
+                 <input class="form-control" type="text" disabled="disabled" value="1">
+                 <span>Mbps</span>
+               </span>
+               <p class="help ng-binding">
+                 1 Mbps ~ 10000 Mbps
+               </p>
+             </div>
+           </div>
+
+          </div>
+        </div>
+
+          <div class="form-group clearfix"
+               ng-if="context.mode === 'create'||
+                 context.mode === 'edit'">
+              <label for="policy_enable">
+	      {% trans "Binding vNIC type" %}
+              </label>
+              <div class="form-group-right">
+                  <select class="form-control"
+                          id="protocol"
+                          name="protocol"
+                          ng-model="port.binding_vnic_type"
+                          ng-options="binding_vnic_type for binding_vnic_type in binding_vnic_types"
+                          ng-change="changevNICValue()">
+                  </select>
+                  <div style="margin-top: 10px" ng-show="port.binding_vnic_type == 'direct'">
+                    <p style="margin-bottom: 0">{% trans 'VFs Configured:' %} {$ PFVFNumConfigured.VFNumConfigured $}</p>
+                    <p>{% trans 'VFs Used:' %} {$ PFVFNumUsed.VFNumUsed $}</p>
+                  </div>
+                  <div style="margin-top: 10px" ng-show="port.binding_vnic_type == 'direct-physical'">
+                    <p style="margin-bottom: 0">{% trans 'PFs Configured:' %} {$ PFVFNumConfigured.PFNumConfigured $}</p>
+                    <p>{% trans 'PFs Used:' %} {$ PFVFNumUsed.PFNumUsed $}</p>
+                  </div>
+                  <p class="help-block alert-fixed alert-danger" ng-show="selectSubnet">{% trans "Please select Subnet first" %} </p>
+              </div>
+          </div>
+      </fieldset>
+
+    <!-- Modal-form-right: The description text. -->
+
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-if="context.mode == 'create'"
+    ng-disabled="form.name.$invalid || form.subnet_id.$invalid || form.ip_address.$invalid ||
+                 (form.size.$invalid && port.policy_enable ==1) || canCreate"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-if="context.mode == 'edit'"
+    ng-disabled="form.name.$invalid || form.ip_address.$invalid || (form.size.$invalid && port.policy_enable == 1)"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-if="context.mode == 'attach'"
+    ng-disabled="form.instance.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-if="context.mode == 'detach'"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+
+</div>
+

@@ -1,0 +1,77 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+    <h3 class="modal-title">{$ label.title $}</h3>
+    <p class="modal-colsed" ng-click="action.cancel()">
+        <!-- is it necessary to modify SPELLING ERROR -->
+        <i class="modal-colsed-icon"></i><!-- is it necessary to modify SPELLING ERROR -->
+    </p>
+</div>
+
+<style>
+    #createForm .col-sm-6 div.form-group {
+        margin-top: 0px;
+    }
+
+    #createForm div.col-sm-6 > h3, #createForm div.col-sm-6 > p {
+        margin-top: 8px;
+    }
+</style>
+<iframe name='uploadFrame' id="uploadFrame" style="display:none" mce_style="display:none"></iframe>
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" id="upgradestartform" ng-submit="submit(form.$valid)" target="uploadFrame" action="{{ WEBROOT }}api/uus/upgrades/"
+      method="POST" enctype="multipart/form-data">
+    <div class="modal-body clearfix">
+        <div class="left form-wrap">
+            <div class="row">
+                <div class="col-sm-6">
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="control-label" for="id_image_file">{$ label.form_title $}</label>
+                            <span class="help-icon" data-toggle="tooltip" data-placement="top" title="{% trans 'A local package to upload.' %}">
+                                <span class="fa fa-question-circle"></span>
+                            </span>
+                            <div class="">
+                                <input required class="form-control verify-input"
+                                       id="image_file"
+                                       ng-disabled="isChecking || isUploading"
+                                       onchange="angular.element(this).scope().fileChanged(this)"
+                                       name="image_file"
+                                       type="file">
+                                <p class="help-block alert alert-danger"
+                                   ng-show="form.image_file.$invalid && form.image_file.$dirty">
+                                    {% trans "File is required." %}
+                                </p>
+                            </div>
+                        </div>
+                        <input type="hidden" id="fileAction" name="fileAction" value="{$ fileAction $}" />
+                    </fieldset>
+                </div>
+                <div class="col-sm-6">
+                    <h3>{$ label.description $}</h3>
+                    <p>{$ label.des_para $}</p>
+                    <br />
+                    <p ng-if="!fileSelected">{$ label.select_file $}</p>
+                    <p ng-if="isChecking">{$ label.checking $}</p>
+                    <p ng-if="isUploading">{$ label.uploading $}</p>
+                    <p ng-if="fileChecked && fileCheckedResult && !isUploading">{$ fileCheckedSuccessMsg $}<br>{$ fileCheckedVersion $}</p>
+                    <p ng-if="fileChecked && !fileCheckedResult">{$ fileCheckedErrMsg $}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        {% csrf_token %}
+        <button id="submit-button" class="btn btn-primary" type="button"
+                ng-disabled="form.$invalid || fileChecked || !fileSelected || isChecking"
+                ng-click="action.check()">
+            {$ label.check $}
+        </button>
+        <button id="submit-button" class="btn btn-primary" type="button"
+                ng-disabled="form.$invalid || !fileChecked || !fileSelected || !fileCheckedResult || isUploading"
+                ng-click="action.submit()">
+            {$ label.upgrade $}
+        </button>
+    </div>
+</form>

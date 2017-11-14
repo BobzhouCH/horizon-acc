@@ -1,0 +1,49 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+      <div class="modal-description mt10">
+          <p>
+            {% trans "QoS Specs can be associated with volume types.It is used to map to a set of quality of service capabilities requested by the volume owner. This is equivalent to the 'cinder qos-create' command. Once the QoS Spec gets created,click the 'Add Extra Specs' button to manage the key-value specs for the QoS Spec.Each QoS Specs entity will have a 'Consumer' value which indicates where the administrator would like the QoS policy to be enforced. This value can be 'front-end' (Nova Compute), 'back-end' (Cinder back-end), or 'both'." %}
+          </p>
+      </div>
+      <fieldset>
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.qosspec.$invalid && form.qosspec.$dirty}">
+          <label for="qosspec">
+            {% trans "QoS Specs" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="qosspec"
+              name="qosspec"
+              class="form-control"
+              ng-change="changeQosSpec(assctQosSepc)"
+              ng-model="assctQosSepc"
+              ng-options="qosspecselect as qosspecselect.name for qosspecselect in qosspecs">
+            </select>
+          </div>
+        </div>
+    </fieldset>
+    <!-- Modal-form-right: The description text. -->
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

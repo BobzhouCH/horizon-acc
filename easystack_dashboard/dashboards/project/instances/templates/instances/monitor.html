@@ -1,0 +1,99 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form>
+  <div class="modal-body clearfix">
+
+    <!-- dropdown select -->
+    <div class="fl form-group clearfix" ng-if="context.mode === 'monitor'"
+    ng-class="{'has-error':form.type.$invalid && form.type.$dirty}">
+  <label for="type">
+    {% trans "Metrics" %}
+  </label>
+  <div class="form-group-right">
+    <select id="type" name="type" class="form-control" ng-class="{strikeLoading: !monitors.types}"
+      ng-model="monitor_type" ng-change="changeMonitorName(monitor_type)"
+    >
+      <option value="" disabled>
+        {$ (monitors.types && monitors.types.length)? "{% trans 'select a type' %}": "{% trans 'waiting to load the monitoring type' %}" $}
+      </option>
+      <option ng-repeat="monitor in monitors.types" value="{$ monitor.name $}" ng-selected="monitor.meter===monitors.types[0].meter">
+        {$ monitor.meter $}
+      </option>
+    </select>
+  </div>
+</div>
+
+    <div class="detailNav clearfix">
+
+        <div class="fr timeList">
+            <ul id="js-time">
+                <li class="btn btn-primary" ng-class="{ active: tags.oneDay }" ng-click="monitors.eventAction('day')" sign="1" url="">{% trans "One Day" %}</li>
+                <li class="btn btn-primary" ng-class="{ active: tags.oneWeek }" ng-click="monitors.eventAction('week')" sign="7" url="">{% trans "One Week" %}</li>
+                <li class="btn btn-primary" ng-class="{ active: tags.oneMonth }" ng-click="monitors.eventAction('month')" sign="30" url="">{% trans "One Month" %}</li>
+                <li class="btn btn-primary" ng-class="{ active: tags.halfYear }" ng-click="monitors.eventAction('year')" sign="180" url="">{% trans "Half Year" %}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="modal-body-content" style=" height: 270px;" >
+      <div ng-if="!iMonitorState" >
+          <p class="Loading-bar" style="text-align: center"><img class="load-detail" src="/static/bootstrap/img/loading.gif" alt="" /></p>
+      </div>
+      <div ng-if="!monitors.monitorItems.length && iMonitorState">
+          <p style="text-align: center">{% trans 'No Data' %}</p>
+      </div>
+      <div ng-repeat="mon in monitors.monitorItems">
+        <div class="detailNav" ng-if="false"><p>{% trans "Compute Resource Monitor" %}</p></div>
+          <div class="chartWrap clearfix" ng-show="monitor_type===mon.name">
+
+              <div class="chartWrapList fl">
+                <div class="chartTable">
+                  <div class="chartTableMsg clearfix">
+                    <div class="fl unitTxt">
+
+                       <span class="fw mr10 col333">{$ mon.name $}</span>
+                       <span>{$ mon.unit $}</span>
+
+                        <span class="ml20 js-interval">
+                            <span ng-class="{ none: !tags.oneDay }">{% trans "Interval: 15 minutes" %}</span>
+                            <span ng-class="{ none: !tags.oneWeek }">{% trans "Interval: 2 hours" %}</span>
+                            <span ng-class="{ none: !tags.oneMonth }">{% trans "Interval: 1 day" %}</span>
+                            <span ng-class="{ none: !tags.halfYear }">{% trans "Interval: 1 day" %}</span>
+                        </span>
+                        <span class="ml20 none js-instant">
+                          <span>{% trans "Interval: 2 seconds" %}</span>
+                        </span>
+                        <span class="blue chart_dit">●</span>
+                        <span class="col30b0f0">{% trans "Usage"%}</span>
+                    </div>
+                    <!--<div class="fr unitBtn" action-instants='{$ $index $}'></div>-->
+                    <div class="fr btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Export
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li title="Right click to Save as..."><a href="{{WEBROOT}}project/instances/{$ mon.rid $}/detail?date_options={$ tags.option $}&meter={$ mon.meter $}&rid={$ mon.rid $}&export=csv">CSV</a></li>
+                        </ul>
+                    </div>
+                  </div>
+                  <div id="{$ mon.id $}" class="chartTableContent" style="width: 963px;height:180px">
+                      <p ng-if="!eDataState" class="Loading-bar" style="text-align: center"><img class="load-detail" src="/static/bootstrap/img/loading.gif" alt="" /></p>
+                  </div>
+               </div>
+            </div>
+
+         </div>
+      </div>
+
+  </div>
+
+  </div>
+</form>

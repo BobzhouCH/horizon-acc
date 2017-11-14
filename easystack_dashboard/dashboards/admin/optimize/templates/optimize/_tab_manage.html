@@ -1,0 +1,113 @@
+{% load i18n %}
+<style>
+  #optimize_scheme tr td {
+    white-space: normal;
+    word-break: break-word;
+  }
+</style>
+<hz-magic-search-context filter-facets="filterFacets">
+<table id="optimize_scheme" hz-table ng-cloak hopes-table-drag
+  st-table="imanagement"
+  st-safe-src="management"
+  default-sort="name"
+  default-sort-reverse="true"
+  ng-controller="hz.dashboard.admin.optimize.manageCtrl"
+  st-magic-search
+  class="table table-bordered table-hover">
+
+  <!--
+    Table-head:
+    This is where we add things like filtering and batch actions.
+    This is where we add column headers.
+  -->
+  <thead>
+
+    <!--
+      Table-batch-actions:
+      This is where batch actions like searching, creating, and deleting.
+    -->
+    <tr>
+      <th colspan="100" class="bare">
+        <div class="table_actions clearfix">
+          <action-list>
+            <action
+              action-classes="'btn btn-primary btn-action'"
+              callback="actions.refresh">
+              <i class="icon icon-refresh"></i>
+              <span id="refresh"></span>
+            </action>
+          </action-list>
+          <!--<action-list>
+            <action action-classes="'btn btn-primary btn-action'"
+               callback="actions.create.open">
+              <i class="icon icon-add"></i>
+              <span id="create-strategy">{% trans 'Add Stategy' %}</span>
+            </action>
+          </action-list>-->
+          <div class="fr search-bar">
+            <hz-magic-search-bar id="management-search"></hz-magic-search-bar>
+          </div>
+        </div>
+      </th>
+    </tr>
+
+    <tr>
+      <th eagle-eye="select_col" class="select-col">
+        <input type="checkbox"
+          hz-select-page="management-group"
+          ng-model="selectedAllManagement"/>
+      </th>
+      <th><span eagle-eye="data_col" st-sort="id" st-sort-default="id">{$ ::context.header.id $}</span></th>
+      <th><span eagle-eye="data_col" st-sort="name">{$ ::context.header.name $}</span></th>
+      <th><span eagle-eye="data_col" st-sort="aggregates">{$ ::context.header.aggregates $}</span></th>
+      <th><span eagle-eye="data_col" st-sort="desc">{$ ::context.header.desc $}</span></th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <tr ng-if="!imanagement">
+      <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+    </tr>
+
+    <tr ng-if="!imanagement.length && imanagementState">
+      <td colspan="100">{% trans "No Data" %}</td>
+    </tr>
+
+    <tr ng-repeat="manage in imanagement" ng-class="{'st-selected': checked[manage.id]}">
+
+      <!--
+        Table-row-checkbox:
+        User can select and unselect this row by clicking on this checkbox.
+        Batch actions can then be perform on selected rows.
+      -->
+      <td eagle-eye="select_col" class="select-col">
+        <input type="checkbox"
+          hz-select="manage"
+          ng-model="selected[manage.id].checked"
+          hz-checkbox-group="management-group"/>
+      </td>
+
+      <!-- Table-row-info-column -->
+      <td eagle-eye="data_col">{$ manage.id $}</td>
+      <td eagle-eye="data_col">{$ manage.name | textFilter $}</td>
+      <td eagle-eye="data_col">{$ manage.aggregates | concatIds $}</td>
+      <td eagle-eye="data_col">{$manage.desc | textFilter $}</td>
+    </tr>
+
+  </tbody>
+
+  <!--
+    Table-footer:
+    This is where we display number of items and pagination controls.
+    Ensure colspan is greater or equal to number of column-headers.
+  -->
+  <tfoot ng-if="management.length > 10">
+    <tr>
+      <td colspan="100">
+        <div st-pagination="" st-items-by-page="10" st-displayed-pages="10"></div>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+</hz-magic-search-context>

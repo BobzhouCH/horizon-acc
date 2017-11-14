@@ -1,0 +1,55 @@
+{% load i18n %}
+
+<div class="modal-header clearfix">
+    <h3 class="modal-title">{% trans "This is your new key pair. Copy this information and keep it secure." %}</h3>
+    <p class="modal-colsed" ng-click="action.cancel()">
+        <i class="modal-colsed-icon"></i>
+    </p>
+</div>
+
+<div class="modal-body clearfix">
+
+    <div class="form-group  clearfix">
+      <label  for="name">
+         {% trans "KeyPair Name" %}
+      </label>
+      <div class="form-group-right" ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <pre><code><p id="key-pair-name">{$ test.name $}</p></code></pre>
+       </div>
+    </div>
+
+    <div class="form-group  clearfix">
+      <label  for="name">
+         {% trans "Fingerprint" %}
+      </label>
+      <div class="form-group-right" ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <pre><code><p id="fingerprint">{$ test.fingerprint $}</p></code></pre>
+       </div>
+    </div>
+
+    <div class="form-group  clearfix">
+      <label  for="name">
+         {% trans "Public Key" %}
+      </label>
+      <div class="form-group-right created-keypair" ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <pre><code><p id="public-key">{$ test.public_key $}</p></code></pre>
+       </div>
+    </div>
+
+    <div class="form-group  clearfix">
+      <label  for="name">
+         {% trans "Private Key" %}
+      </label>
+      <div class="form-group-right created-keypair" ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <pre><code><p id="private-key">{$ test.private_key $}</p></code></pre>
+       </div>
+    </div>
+
+</div>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-click="action.submit()">{% trans "OK" %}
+  </button>
+</div>

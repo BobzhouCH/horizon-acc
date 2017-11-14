@@ -1,0 +1,31 @@
+{%load i18n%}
+<script type="text/ng-template" id="AddProfile.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="close()">&times;</button>
+        <h4 class="font-Add-sz">{% trans "Add Crush Rule Profile" %}</h4>
+    </div>
+
+        <div class="body_right">
+            <div class="body_content">
+                <div class="content_box" style="display: block">
+                    <div class="list-group">
+                        <span  id="labfont-profiles">Profiles Name</span>
+                        <input  id="labinput-text" type="text" />
+                    </div>
+                        <div class="input-txt" type="text" ></div>
+                </div>
+
+
+            </div>
+            <div class="modal-body public_body">
+            <div class="btn-list btn-list-btn">
+                <button class="cancel" ng-click="cancel()">{% trans "Cancel" %}</button>
+                <button class="btn-ok" ng-show="!is_show" ng-click="poolModify(poolId,poolName,poolPgnum,poolDup)">{% trans "OK" %}</button>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+
+

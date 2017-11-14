@@ -1,0 +1,376 @@
+{% load i18n %}
+
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<form class="ml10 mr10" novalidate name="form" ng-submit="submit(form.$valid)">
+  <fieldset>
+    <tabset id="network-form-tab" class="def-tabs mt10" justified="true">
+      <tab id="network-tab-base-button" heading={% trans "Basic Settings"%}>
+        <div class="tab-pane-content">
+        <div class="modal-body clearfix">
+          <div class="form-group clearfix mt10"
+            ng-class="{'has-error':form.networkName.$invalid && form.networkName.$dirty,'mb20': context.mode == 'edit'}">
+            <label for="name">
+              <p>*{% trans "Network Name" %}</p>
+            </label>
+            <div class="form-group-right">
+              <input required
+              id="name"
+              name="networkName"
+              ng-change="enterName(network.name)"
+              class="form-control"
+              type="text"
+              ng-model="network.name"
+              ng-maxlength="255"
+              placeholder="{% trans 'Enter a Network name' %}">
+              <p class="help-block alert-fixed alert-danger"
+                ng-show="form.networkName.$error.required && form.networkName.$dirty">
+              {% trans "A network name is required." %}
+              </p>
+              <p class="help-block alert-fixed alert-danger"
+                ng-show="form.networkName.$error.maxlength && form.networkName.$dirty">
+              {% trans "Name length should be less than 255 chars." %}
+              </p>
+            </div>
+          </div>
+
+        <div class="form-group clearfix"
+        ng-if="context.mode !== 'edit'">
+        <label for="with_subnet"></label>
+        <div class="form-group-right">
+          <div class="clearfix subnet-rcol-check">
+            <input
+            id="with_subnet"
+            name="with_subnet"
+            class="slide-ty"
+            type="checkbox"
+            ng-model="network.with_subnet"
+            advanced-options-dis="js-createSubnet-box">
+            <span>{% trans "Edit Subnet" %}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="js-createSubnet-box" ng-if="context.mode !== 'edit'" style="display: none;">
+
+        <div class="form-group clearfix mt0"
+        ng-class="{'has-error':form.defaultSubnetName.$invalid && form.defaultSubnetName.$dirty}">
+        <label for="defaultSubnetName">
+          *{% trans "Subnet Name" %}
+        </label>
+        <div class="form-group-right">
+          <input required
+          id="defaultSubnetName"
+          name="defaultSubnetName"
+          class="form-control"
+          type="text"
+          ng-model="network.defaultSubnetName"
+          ng-maxlength="255"
+          placeholder="{% trans 'Enter a subnet name' %}">
+          <p class="help-block alert-fixed alert-danger"
+            ng-show="form.defaultSubnetName.$error.required && form.defaultSubnetName.$dirty">
+            {% trans "A subnet name is required." %}
+          </p>
+          <p class="help-block alert-fixed alert-danger"
+            ng-show="form.defaultSubnetName.$error.maxlength && form.defaultSubnetName.$dirty">
+            {% trans "Name length should be less than 255 chars." %}
+          </p>
+      </div>
+    </div>
+
+    <div class="form-group clearfix"
+    ng-if="context.mode !== 'edit'"
+    ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+    <label for="name">
+      <p>{% trans "Network Address" %}</p>
+    </label>
+    <div class="form-group-right">
+      <div class="network-label-box" ng-init="netset='0'">
+        <input
+          id="netset"
+          name="netset"
+          type="radio"
+          ng-model="netset"
+          ng-click="netsetRadio(0)"
+          value="0"/>
+        <span>{% trans "Quick Settings" %}</span>
+        <input
+          id="netset"
+          name="netset"
+          type="radio"
+          ng-model="netset"
+          ng-click="netsetRadio(1)"
+          value="1"/>
+         <span>{% trans "Custom" %}</span>
+      </div>
+      <div id="networt-address-box" class="networt-address-box clearfix" ng-show="netset==='0'">
+        <div class="network-address">
+          <div class="network-option-row">
+            <input type="radio" ng-checked="true" ng-click="subnetRadio(0)" value="0" name="cidr" class="address-w-selec js-address-w-check" />
+            <input
+            disabled="disabled"
+            class="address-w"
+            type="text"
+            ng-model="subnetAddress.val0"> .
+            <input
+            disabled="disabled"
+            class="address-w"
+            type="text"
+            ng-model="subnetAddress.val1"> .
+            <input
+            class="address-w verify-input"
+            type="text"
+            ng-model="subnetAddress.val2"
+            ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"> .
+            <input
+            disabled="disabled"
+            class="address-w"
+            type="text"
+            ng-model="subnetAddress.val3"> /
+            <input
+            disabled="disabled"
+            class="address-w"
+            type="text"
+            ng-model="subnetAddress.val4">
+          </div>
+          <div class="network-option-box" style="display: none;">
+            <div class="network-option-row mt10">
+              <input type="radio"  ng-click="subnetRadio(1)" name="cidr" value="1" class="address-w-selec js-address-w-check" />
+              <input
+              disabled="disabled"
+              class="address-w"
+              type="text"
+              ng-model="subnetAddress1.val0"> .
+              <input
+              class="address-w verify-input"
+              type="text"
+              ng-model="subnetAddress1.val1"
+              ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"> .
+              <input
+              class="address-w verify-input"
+              type="text"
+              ng-model="subnetAddress1.val2"
+              ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"> .
+              <input
+              class="address-w verify-input"
+              type="text"
+              ng-model="subnetAddress1.val3"
+              ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"> /
+              <input
+              class="address-w verify-input"
+              type="text"
+              ng-model="subnetAddress1.val4"
+              ng-pattern="/^([8-9]|1\d|2[0-9]|30)$/"
+              >
+            </div>
+            <div class="network-option-row mt10">
+              <input type="radio" ng-click="subnetRadio(2)" name="cidr" value="2" class="address-w-selec js-address-w-check" />
+              <input
+              disabled="disabled"
+              class="address-w"
+              type="text"
+              ng-model="subnetAddress2.val0"> .
+              <input
+              disabled="disabled"
+              class="address-w verify-input"
+              type="text"
+              ng-model="subnetAddress2.val1"> .
+              <input
+              class="address-w verify-input"
+              type="text"
+              ng-model="subnetAddress2.val2"
+              ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"> .
+              <input
+              class="address-w verify-input"
+              type="text"
+              ng-model="subnetAddress2.val3"
+              ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"> /
+              <input
+              class="address-w verify-input"
+              type="text"
+              ng-model="subnetAddress2.val4"
+              ng-pattern="/^(1[6-9]|2[0-9]|30)$/">
+            </div>
+          </div>
+        </div>
+        <span class="more-options subnet-rcol-color slide-ty" advanced-options-dis="network-option-box">{% trans "More Options" %}</span>
+      </div>
+      <div id="networt-address-box" class="networt-address-box clearfix" ng-show="netset==='1'">
+        <div class="network-address">
+          <div class="network-option-row">
+            <input
+            class="address-w verify-input"
+            type="text"
+            ng-model="subnetAddress3.val0"
+            ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"> .
+            <input
+            class="address-w verify-input"
+            type="text"
+            ng-model="subnetAddress3.val1"
+            ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"> .
+            <input
+            class="address-w verify-input"
+            type="text"
+            ng-model="subnetAddress3.val2"
+            ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"> .
+            <input
+            class="address-w verify-input"
+            type="text"
+            ng-model="subnetAddress3.val3"
+            ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"> /
+            <input
+            class="address-w verify-input"
+            type="text"
+            ng-model="subnetAddress3.val4"
+            ng-pattern="/^(\d|[1-2]\d|(3[0-2]))$/">
+          </div>
+        </div>
+      </div>
+      <p class="help-block alert-fixed alert-danger"
+      ng-show="form.cidr.$invalid && form.cidr.$dirty">
+      {% trans "Network Address" %}
+    </p>
+    </div>
+    </div>
+
+      <div class="form-group clearfix mt20 js-gateway-address"
+      ng-if="context.mode !== 'edit'">
+      <label for="name">
+        <p>{% trans "Gateway Address" %}</p>
+      </label>
+      <div class="form-group-right">
+        <input
+        id="gateway_ip"
+        name="gateway_ip"
+        class="form-control verify-input"
+        type="text"
+        ng-model="network.gateway_ip"
+        ng-pattern="/^((25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.){3}(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)$/"
+        ng-disabled="!network.enable_gateway"
+        placeholder="{$ getAddressFromCidr(network.cidr, 1) $}">
+        <div class="clearfix subnet-rcol-check fr gatewayInfo">
+          <input
+          id="enable_gateway"
+          name="enable_gateway"
+          class="fl"
+          type="checkbox"
+          ng-change="checkGatewayIp()"
+          ng-model="network.enable_gateway">
+          <span>{% trans "Open Gateway" %}</span>
+        </div>
+        <p class="help-block alert-fixed alert-danger"
+           ng-show="form.gateway_ip.$invalid">
+            {% trans "The gateway IP address format is not correct." %}
+        </p>
+        <p class="help-block alert-fixed alert-danger"
+               ng-show="!form.gateway_ip.$invalid && !subnetGatewayMatch">
+                {% trans "Please set the correct Network Address and Gateway IP." %}
+        </p>
+        <p class="help-text">
+          &nbsp;<span ng-show="!form.gateway_ip.$invalid && subnetGatewayMatch">
+            {% trans "This address can be used as default gateway of other host in this private net, if not fill, system will generate." %}
+          <span>
+        </p>
+    </div>
+    </div>
+
+    <div class="form-group clearfix mt0"
+      ng-if="context.mode !== 'edit'"
+      ng-class="{'has-error':form.enable_dhcp.$invalid && form.enable_dhcp.$dirty}">
+      <label for="name"></label>
+      <div class="form-group-right">
+        <div class="clearfix subnet-rcol-check">
+          <input
+          id="enable_dhcp"
+          name="enable_dhcp"
+          class="fl"
+          type="checkbox"
+          ng-model="network.enable_dhcp">
+          <span>{% trans "Start DHCP" %}</span>
+        </div>
+        <p class="help-block alert-fixed alert-danger"
+          ng-show="form.enable_dhcp.$invalid && form.enable_dhcp.$dirty">
+          {% trans "A user name is required." %}
+        </p>
+      </div>
+    </div>
+    </div>
+    </div>
+   </div>
+   </tab>
+
+   <tab id="network-tab-advance-button" heading={% trans "Advance Settings"%}
+        ng-if="context.mode !== 'edit'">
+      <div class="tab-pane-content">
+      <div class="form-group clearfix mt20"
+        ng-class="{'has-error':form.dns.$invalid && form.dns.$dirty}">
+
+        <label for="dns">
+          {% trans "DNS Server" %}
+        </label>
+
+        <div class="form-group-right">
+          <ul class="network-set-list" select-list="network.dns_nameservers">
+            <li ng-repeat="iDns in network.dns_nameservers" tag="true" data-index="{$ $index $}">{$ iDns $}</li>
+            <li class="network-tips"><span class="gray_3 f12">{% trans "Click on the lower left corner" %} “＋”“－” {% trans "add deletion" %}</span></li>
+            <li>
+              <span class="network-btn" ng-click="action.dnsCreate.open()"><i class="icon network_add_to"></i></span><span class="network-btn js-remove"><i class="icon network_remove_to"></i></span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="form-group clearfix">
+        <label for="host_routes">
+          {% trans "Host Route" %}
+        </label>
+        <div class="form-group-right">
+          <ul class="network-set-list" select-list="network.host_routes">
+            <li ng-repeat="hostRoute in network.host_routes" tag="true" data-index="{$ $index $}">
+              <span class="mr10">{% trans 'Network Segment' %}</span>
+              <span class="segment">{$ hostRoute.destination $}</span>
+              <span class="mr10">{% trans 'NextHop' %}</span>
+              <span>{$ hostRoute.nexthop $}</span>
+            </li>
+            <li><span class="gray_3 f12">{% trans "Click on the lower left corner" %} “＋”“－” {% trans "add deletion" %}</span></li>
+            <li>
+              <span class="network-btn" ng-click="action.hostRouteCreate.open()"><i class="icon network_add_to"></i></span><span class="network-btn js-remove"><i class="icon network_remove_to"></i></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="form-group clearfix">
+        <label for="name">
+          {% trans "Address Pool" %}
+        </label>
+        <div class="form-group-right">
+          <ul class="network-set-list" select-list="network.allocation_pools">
+            <li ng-repeat="pool in network.allocation_pools" tag="true" data-index="{$ $index $}">{$ pool.start $}<span> - </span>{$ pool.end $}</li>
+            <li><span class="gray_3 f12">{% trans "Click on the lower left corner" %} “＋”“－” {% trans "add deletion" %}</span></li>
+            <li>
+              <span class="network-btn" ng-click="action.addressPoolCreate.open()"><i class="icon network_add_to"></i></span><span class="network-btn js-remove"><i class="icon network_remove_to"></i></span>
+            </li>
+          </ul>
+        </div>
+        </div>
+        </div>
+        </tab>
+    </tabset>
+  </fieldset>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid || networkInvalidTag || !subnetGatewayMatch"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

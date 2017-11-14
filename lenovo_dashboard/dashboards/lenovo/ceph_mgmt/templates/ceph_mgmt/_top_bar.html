@@ -1,0 +1,93 @@
+{% load branding i18n %}
+{% load url from future %}
+{% load context_selection %}
+
+<div class="top-menu" ng-controller="StTopBarCtrl">
+    <div class="cluster-list">
+        <div  class="dropdown cluster-select" tabindex='1'>
+            <span class="cluster-state" ng-class="{true: 'health ', false: 'error'}[selectedCluster.status != 2]" title=" Status: {$ selectedCluster.status != 2?'Health':'error' $}"></span>
+            <div class="dropdown-toggle  cluster-selected" href="#" style="width:400px">
+              <span style="font-size: 20px">{$ selectedCluster.name || clusterList[0].name $}</span>
+                <span class="fa fa-cog" ng-if="!zabbixState.zabbixLoading" ng-click="zabbixSetting()" style="cursor: pointer;padding: 5px 5px;color: #9c9c9f;"></span>
+{#              <span class="caret"></span>#}
+            </div>
+{#            <ul class="dropdown-menu">#}
+{#                <li ng-repeat="cluster in clusterList" ng-click="changeCluster(cluster.version,cluster.id, cluster)">#}
+{#                  <label ng-bind="cluster.name">#}
+{#                  </label>#}
+{#                  <p class="cluster-position" ng-bind="cluster.addr"></p>#}
+{#                </li>#}
+{#                <li class="divider"></li>#}
+{#                <li  class="btn-managemeng" ng-click="ClustersManage()">#}
+{#                    <label >#}
+{#                      {% trans "Management" %}#}
+{#                    </label>#}
+{#                </li>#}
+{#            </ul>#}
+        </div>
+        <div id="ceph-version" >{% trans "Version" %}
+        <span  ng-bind="version"></span>
+        </div>
+    </div>
+    <div class="angle-right"></div>
+{#    <div class="pull-right">#}
+{#        <div  class="dropdown btn-group" tabindex='2' ng-controller="languageCtrl">#}
+{#            <button class="dropdown-toggle btn btn-default btn-sm " href="#">#}
+{#                {$ state.select_lang $}#}
+{#              <span class="caret"></span>#}
+{#            </button>#}
+{#            <ul class="dropdown-menu pull-right">#}
+{#                <li ng-class="{active: state.zh_active }" ng-click="setLanguage('zh-cn')">#}
+{#                    <a href="">{$ state.zh_text $}</a>#}
+{#                </li>#}
+{#                <li ng-class="{ active: state.en_active }" ng-click="setLanguage('en')">#}
+{#                    <a href="">{$ state.en_text $}</a>#}
+{#                </li>#}
+{#            </ul>#}
+{#        </div>#}
+{#        <div  class="dropdown btn-group" tabindex='3'>#}
+{#            <button class="dropdown-toggle btn btn-default btn-sm " href="#">#}
+{#                {% trans 'Menu' %}#}
+{#              <span class="caret"></span>#}
+{#            </button>#}
+{#            <ul class="dropdown-menu pull-right">#}
+{#                <li>#}
+{#                    <p ng-click="menuList('addhost')">#}
+{#                      {% trans 'Add Host' %}#}
+{#                    </p>#}
+{#                </li>#}
+{#                <li>#}
+{#                    <p ng-click="menuList('config')">#}
+{#                      {% trans 'Config' %}#}
+{#                    </p>#}
+{#                </li>#}
+{#                <li ng-if="selectedCluster.state == 0">#}
+{#                    <p ng-click="menuList('deploy')">#}
+{#                      {% trans 'Deploy' %}#}
+{#                    </p>#}
+{#                </li>#}
+{#                <li ng-if="selectedCluster.state != 0">#}
+{#                    <p ng-click="menuList('expand')">#}
+{#                      {% trans 'Expand' %}#}
+{#                    </p>#}
+{#                </li>#}
+{#                <li ng-if="selectedCluster.status == 2">#}
+{#                    <p ng-click="menuList('start')">#}
+{#                      {% trans 'Start' %}#}
+{#                    </p>#}
+{#                </li>#}
+{#                <li ng-if="selectedCluster.status != 2">#}
+{#                    <p ng-click="menuList('shutdown')">#}
+{#                      {% trans 'Shutdown' %}#}
+{#                    </p>#}
+{#                </li>#}
+{#            </ul>#}
+{#        </div>#}
+{#    </div>#}
+
+
+</div>
+{% include "lenovo/ceph_mgmt/modal/clusterManage.html"  %}
+
+{% include "lenovo/ceph_mgmt/modal/addHost.html"  %}
+{% include "lenovo/ceph_mgmt/modal/zabbixSetting.html"  %}

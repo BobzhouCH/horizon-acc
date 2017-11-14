@@ -1,0 +1,261 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Networks" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Networks") %}
+{% endblock page_header %}
+
+{% block content_main %}"contentMain tab-main"{% endblock %}
+
+{% block main %}
+<tabset id="volume-type-tab" class="def-tabs" id="factoryEmit" justified="true">
+    <tab id="tab-volume-type-button" heading="{% trans 'Volume Types' %}">
+      <div class="tab-pane-content">
+        <hz-magic-search-context filter-facets="filterFacets">
+        <table id="volumetype-list" hz-table ng-cloak hopes-table-drag
+            st-table="ivolumetypes"
+            st-safe-src="volumetypes"
+            default-sort="name"
+            default-sort-reverse="false"
+            st-magic-search
+            ng-controller="adminVolumeTypesController"
+            class="table table-bordered table-hover">
+
+            <thead>
+                <tr>
+                  <th colspan="100" class="bare">
+                      <div class="table_actions clearfix table_search_client">
+                         <action-list>
+                            <action
+                              action-classes="'btn btn-primary btn-action'"
+                              callback="actions.refresh">
+                              <i class="icon icon-refresh"></i>
+                              <span id="volumetype-refresh"></span>
+                            </action>
+                          </action-list>
+                        <action-list>
+                            <action
+                              action-classes="'btn btn-primary btn-action'"
+                              callback="actions.create.open">
+                              <i class="icon icon-add"></i>
+                              <span id="create-volumetype">{% trans 'Create Volume Type' %}
+                              </span>
+                            </action>
+                        </action-list>
+                        <action-list>
+                            <action
+                              action-classes="'btn btn-action btn-primary'"
+                              disabled="numSelected !== 1"
+                              callback="actions.associate.open" item="$table">
+                              <i class="icon icon-edit"></i>
+                              <span id="associate-qos-spec">{% trans 'Manage QoS Spec Association' %}</span>
+                            </action>
+                        </action-list>
+                          <action-list>
+                            <action
+                              action-classes="'btn btn-action btn-primary'"
+                              disabled="numSelected !== 1"
+                              callback="actions.edit.open" item="$table">
+                              <i class="icon icon-edit"></i>
+                              <span id="edit-volumetype">{% trans 'Edit' %}</span>
+                            </action>
+                        </action-list>
+                        <action-list>
+                            <action
+                              action-classes="'btn btn-action btn-danger'"
+                              disabled="numSelected === 0"
+                              callback="actions.deleted.batchDelete"
+                              item="$table">
+                              <i class="icon icon-delete"></i>
+                              <span id="delete-volumetype">{% trans 'Delete Volume Type' %}</span>
+                            </action>
+                        </action-list>
+                        <div class="fr search-bar">
+                          <hz-magic-search-bar></hz-magic-search-bar>
+                        </div>
+                      </div>
+                  </th>
+                </tr>
+                <tr eagle-eye="table_heads">
+                    <th class="select-col" eagle-eye="select_col">
+                    <input type="checkbox"
+                      hz-select-page="volumetypes"/>
+                    </th>
+                    <th>
+                      <span st-sort="name" st-sort-default="name" eagle-eye="data_col">{$ ::context.header.name $}</span>
+                    </th>
+                    <th><span eagle-eye="data_col">{$ ::context.header.description $}</span></th>
+                    <th><span st-sort="shared" eagle-eye="data_col">{$ ::context.header.associatedQoSSpec $}</span></th>
+                    <th><span st-sort="shared" eagle-eye="data_col">{$ ::context.header.encryption $}</span></th>
+                </tr>
+
+            </thead>
+
+          <tbody>
+
+            <tr ng-if="!ivolumetypesState">
+                <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+            </tr>
+
+            <tr ng-if="!ivolumetypes.length && ivolumetypesState">
+                <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+            </tr>
+
+            <tr ng-repeat-start="volumetype in ivolumetypes" ng-class="{'st-selected': checked[volumetype.id]}">
+                <td class="select-col" eagle-eye="select_col">
+                    <input type="checkbox"
+                        hz-select="volumetype"
+                        ng-model="selected[volumetype.id].checked"
+                        hz-checkbox-group="volumetypes"/>
+                </td>
+                <td eagle-eye="data_col">
+                  <span class="row-name">{$ volumetype.name $}</span>
+                  <i class="chevron-right chevron-fixed fr" hz-expand-detail="chevron-right chevron-down" duration="200"></i>
+                </td>
+                <td eagle-eye="data_col">
+                {$ volumetype.description $}
+                </td>
+                <td eagle-eye="data_col">
+                {$ volumetype.associated_qos_spec $}
+                </td>
+                <td eagle-eye="data_col">
+                {$ volumetype.encryption $}
+                </td>
+            </tr>
+            <tr eagle-eye= "detail_row" ng-repeat-end class="detail-row js-detail-box" data-instanceId="{$ volumetype.id $}" data-index="{$ ivolumetypeIndex $}">
+            <td class="detail" colspan="100">
+                <p class="detail-row-name fl">{% trans "Extra Specs" context "volume type" %}</p>
+                <div class="detail-expanded fl">
+                  <detail-table detail-data-src="volumetype.extraspecs" detail-context="detailContext" detail-row="volumetype">
+
+
+                  </detail-table>
+                </div>
+            </td>
+          </tr>
+          </tbody>
+          <tfoot ng-if="volumetypes.length > 10">
+            <tr>
+              <td colspan="100" eagle-eye="data_page">
+                <div st-pagination="" st-items-by-page="10" st-displayed-pages="10"></div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+        </hz-magic-search-context>
+      </div>
+    </tab>
+
+    <tab id="tab-volume-type-qos-button" heading='{% trans "QoS Specs" %}'>
+      <div class="tab-pane-content">
+        <hz-magic-search-context filter-facets="filterFacets">
+        <table id="subnet-list" hz-table ng-cloak hopes-table-drag
+              st-table="iqosspecs"
+              st-safe-src="qosspecs"
+              default-sort="name"
+              default-sort-reverse="false"
+              st-magic-search
+              ng-controller="adminVolumeTypeQosSpecController"
+              class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                  <th colspan="100" class="bare">
+                      <div class="table_actions clearfix">
+                            <action-list>
+                                <action
+                                  action-classes="'btn btn-primary btn-action'"
+                                  callback="actions.refresh">
+                                  <i class="icon icon-refresh"></i>
+                                  <span id="qos-spec-refresh"></span>
+                                </action>
+                              </action-list>
+                            <action-list>
+                                <action
+                                  action-classes="'btn btn-primary btn-action'"
+                                  callback="actions.create.open" disabled= "qosspecs.length >= quota">
+                                  <i class="icon icon-add"></i>
+                                  <span id="create-qos-spec">{% trans 'Create QoS Spec' %}
+                                  </span>
+                                </action>
+                            </action-list>
+                            <action-list>
+                                <action
+                                  action-classes="'btn btn-action btn-danger'"
+                                  disabled="numSelected === 0"
+                                  callback="actions.deleted.batchDelete">
+                                  <i class="icon icon-delete"></i>
+                                  <span id="delete-qos-spec">{% trans 'Delete QoS Spec' %}</span>
+                                </action>
+                            </action-list>
+                            <div class="fr search-bar">
+                              <hz-magic-search-bar></hz-magic-search-bar>
+                            </div>
+                      </div>
+                  </th>
+              </tr>
+              <tr eagle-eye="table_heads">
+                  <th class="select-col" eagle-eye="select_col">
+                    <input type="checkbox"
+                      hz-select-page="qosspecs"/>
+                    </th>
+                    <th>
+                      <span st-sort="name" st-sort-default="name" eagle-eye="data_col">{$ ::context.header.name $}</span>
+                    </th>
+                    <th>
+                      <span st-sort="cidr" eagle-eye="data_col">{$ ::context.header.consume $}</span>
+                    </th>
+                    <!--<th st-sort="gateway_ip" eagle-eye="data_col">
+                    {$ ::context.header.gateway_ip $}
+                    </th>
+                    <th st-sort="volumetype" eagle-eye="data_col">
+                    {$ ::context.header.volumetype $}
+                    </th>-->
+              </tr>
+            </thead>
+            <tbody>
+                <tr ng-if="!iqosspecsState">
+                    <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+                </tr>
+                <tr ng-if="!iqosspecs.length && iqosspecsState">
+                    <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+                </tr>
+                <tr ng-repeat-start="qosspec in iqosspecs" ng-class="{'st-selected': checked[qosspec.id]}">
+                    <td class="select-col" eagle-eye="select_col">
+                        <input type="checkbox"
+                            hz-select="qosspec"
+                            ng-model="selected[qosspec.id].checked"
+                            hz-checkbox-group="qosspecs"/>
+                    </td>
+                    <td eagle-eye="data_col">
+                      <span class="row-name">{$ qosspec.name $}</span>
+                      <i class="chevron-right chevron-fixed fr" hz-expand-detail="chevron-right chevron-down" duration="200"></i>
+                    </td>
+                    <td eagle-eye="data_col">{$ qosspec.consumer $}</td>
+                    <!--<td eagle-eye="data_col">{$ qosspec.gateway_ip $}</td>
+                    <td eagle-eye="data_col">{$ qosspec.volumetype $}</td>-->
+                </tr>
+           <tr eagle-eye= "detail_row" ng-repeat-end class="detail-row js-detail-box" data-instanceId="{$ qosspec.id $}" data-index="{$ iqosspecIndex $}">
+            <td class="detail" colspan="100">
+                <p class="detail-row-name fl">{% trans "Extra Specs" context "volume type" %}</p>
+                <div class="detail-expanded fl">
+                 <detail-table-qos detail-data-src="qosspec.extraspecs" detail-context="detailContext" detail-row="qosspec">
+                  </detail-table-qos>
+                </div>
+            </td>
+          </tr>
+            </tbody>
+           <tfoot ng-if="qosspecs.length > 10">
+            <tr>
+              <td colspan="100" eagle-eye="data_page">
+                <div st-pagination="" st-items-by-page="10" st-displayed-pages="10"></div>
+              </td>
+            </tr>
+           </tfoot>
+        </table>
+        </hz-magic-search-context>
+      </div>
+    </tab>
+</tabset>
+
+{% endblock %}

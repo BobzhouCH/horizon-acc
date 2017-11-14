@@ -1,0 +1,38 @@
+{%load i18n%}
+<script type="text/ng-template" id="iSCSIManagement.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="close()">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">{% trans "Close" %}</span>
+        </button>
+        <h4>{% trans "iSCSI Management" %}</h4>
+    </div>
+    <div class="modal-body pool-list">
+        <table class="table table-striped table-responsive text-center">
+            <tr>
+                <th>{% trans "iSCSIName" %}</th>
+                <th>{% trans "Refresh" %}</th>
+                <th>{% trans "Delete" %}</th>
+            </tr>
+            <tr ng-repeat="iSCSI in iSCSIList">
+                <td>{$ iSCSI.name $}</td>
+                <td>
+                    <button ng-click="repeatiSCSI()">
+                        <b class="glyphicon glyphicon-repeat"></b>
+                    </button>
+                </td>
+                <td>
+                    <button ng-click="iSCSIDelete(iSCSI.id,iSCSI.name)">
+                        <b class="glyphicon glyphicon-trash"></b>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <div class="pull-right">
+            <button class="cancel" ng-click="cancel()">{% trans "Cancel" %}</button>
+            <button class="btn-ok" ng-click="deleteAllOk()">{% trans "Ok" %}</button>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,31 @@
+<div class="modal-header clearfix">
+  <h3 class="modal-title"><span ng-bind="::modalCtrl.context.title"></span></h3>
+  <p class="modal-colsed" ng-click="modalCtrl.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<div class="modal-body delete-body" ng-class="modalCtrl.context.img_path === 'cssChange' ? 'delete-form' : ' '">
+  <p id="tips-text" class="txt-c" ng-bind="::modalCtrl.context.body"></p>
+  <p class="txt-c" ng-bind="::modalCtrl.context.tips"></p>
+</div>
+<div ng-if="modalCtrl.context.img_path !== 'cssChange' && modalCtrl.context.names.length !== 1" class="delete-ins-one clearfix">
+  <ul class="col-md-12" ng-class="modalCtrl.context.names.length % 2 == 0 ? 'border-bottom-even' : 'border-bottom-odd'">
+  <li ng-repeat="item in modalCtrl.context.names" class="col-md-6"><span class="img col-md-2"><img ng-if ="modalCtrl.context.img_show" ng-src="{$ modalCtrl.context.img_path $}" alt="" /></span><span class="text col-md-10">{$ item.name $}</span></li>
+  </ul>
+</div>
+<div ng-if="modalCtrl.context.img_path !== 'cssChange' && modalCtrl.context.names.length == 1" class="delete-ins-more clearfix">
+  <ul class="col-md-12">
+  <li ng-repeat="item in modalCtrl.context.names" class="col-md-12"><span class="img col-md-1"><img ng-if ="modalCtrl.context.img_show" ng-src="{$ modalCtrl.context.img_path $}" alt="" /></span><span class="text col-md-11">{$ item.name $}</span></li>
+  </ul>
+</div>
+<div class="modal-footer modal-footer-wrap">
+  <button id="cancel-button" class="btn btn-primary"
+    type="button" ng-click="modalCtrl.cancel()">
+    <span ng-bind="::modalCtrl.context.cancel"></span>
+  </button>
+  <button id="submit-button" class="btn btn-action btn-danger"
+    type="button" ng-click="modalCtrl.submit()" ng-disabled="modalCtrl.context.disable">
+    <span ng-bind="::modalCtrl.context.submit"></span>
+  </button>
+</div>

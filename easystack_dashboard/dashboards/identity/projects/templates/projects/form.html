@@ -1,0 +1,40 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form class="ml20 mr20" novalidate name="form" ng-submit="submit(form.$valid)">
+<fieldset>
+{% if DOMAIN_QUOTA_ENABLED %}
+<tabset id="project-form-tab" class="def-tabs mt10" justified="true">
+<tab id="project-tab-base-button" heading="{% trans "Create Project" %}">
+  <div class="tab-pane-content">
+    {% include 'identity/projects/_project.html' %}
+  </div>
+</tab>
+<tab id="project-tab-quota-button" heading="{% trans "Project Quota" %}">
+  <div class="tab-pane-content">
+    {% include 'identity/projects/_project_quota.html' %}
+  </div>
+</tab>
+{% else %}
+  {% include 'identity/projects/_project.html' %}
+{% endif %}
+</tabset>
+</fieldset>
+</form>
+
+<!-- Modal-footer: Project can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid || hasName || forbid_name || isQuotaLoading"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

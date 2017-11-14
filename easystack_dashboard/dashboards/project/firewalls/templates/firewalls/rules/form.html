@@ -1,0 +1,264 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <fieldset>
+      <div class="form-group clearfix"
+        ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+        <label>
+          *{% trans "Name" %}
+        </label>
+        <div class="form-group-right">
+          <input required
+            id="name"
+            name="name"
+            class="form-control verify-input"
+            type="text"
+            ng-model="rule.name"
+            ng-maxlength="255"
+            placeholder="{% trans 'Enter a rule name' %}"/>
+          <p class="help-block alert-fixed alert-danger"
+            ng-show="form.name.$error.required && form.name.$dirty">
+            {% trans "A rule name is required." %}
+          </p>
+          <p class="help-block alert-fixed alert-danger"
+            ng-show="form.name.$error.maxlength && form.name.$dirty">
+            {% trans "Name length should be less than 255 chars." %}
+          </p>
+        </div>
+      </div>
+
+      <div class="form-group clearfix">
+        <label>
+          {% trans "Description" %}
+        </label>
+        <div class="form-group-right">
+          <textarea
+            id="description"
+            name="description"
+            class="form-control"
+            rows="4"
+            ng-maxlength="255"
+            ng-model="rule.description"
+            placeholder="{% trans 'Enter a rule description' %}">
+          </textarea>
+          <p class="help-block alert-fixed alert-danger"
+             ng-show="form.description.$error.maxlength">
+            {% trans "Description length should be less than 255 chars." %}
+          </p>
+        </div>
+      </div>
+
+      <div class="form-group clearfix"
+        ng-class="{'has-error':form.protocol.$invalid && form.protocol.$dirty}">
+        <label>
+          *{% trans "Protocol" %}
+        </label>
+        <div class="form-group-right">
+          <select required
+            id="protocol"
+            class="form-control"
+            name="protocol"
+            ng-model="rule.protocol">
+            <option value="" disabled>{% trans "Select a Protocol" %}</option>
+            <option value="tcp" selected>TCP</option>
+            <option value="udp">UDP</option>
+            <option value="icmp">ICMP</option>
+          </select>
+          <p class="help-block alert-fixed alert-danger"
+            ng-show="form.protocol.$error.required && form.description.$dirty">
+            {% trans "A rule protocol is required." %}
+          </p>
+        </div>
+      </div>
+
+      <div class="form-group clearfix"
+        ng-class="{'has-error':form.action.$invalid && form.action.$dirty}">
+        <label>
+          *{% trans "Action" %}
+        </label>
+        <div class="form-group-right">
+          <select required
+            id="action"
+            class="form-control"
+            name="action"
+            ng-model="rule.action">
+            <option value="" disabled>{% trans "Select a action" %}</option>
+            <option value="allow" selected>{% trans 'Allow' %}</option>
+            <option value="deny">{% trans 'Deny' %}</option>
+          </select>
+          <p class="help-block alert-fixed alert-danger"
+            ng-show="form.action.$invalid && form.action.$dirty">
+            {% trans "A rule action is required." %}
+          </p>
+        </div>
+      </div>
+
+      <div class="form-group clearfix fl firewallrule-ip"
+        ng-class="{'has-error':form.src_ip.$invalid && form.src_ip.$dirty}">
+        <label>
+          *{% trans "Source IP or subnet" %}
+        </label>
+        <div id="sourceip-wrap" class="form-group-right network-num-list" enter-check="rule">
+          <input type="text"
+            class="verify-input"
+            name="name_0"
+            ng-model="rule.sourceip_0"
+            ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+            ng-required="true"> <em>.</em>
+
+          <input type="text"
+            class="verify-input"
+            name="name_1"
+            ng-model="rule.sourceip_1"
+            ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+            ng-required="true"> <em>.</em>
+
+          <input type="text"
+            class="verify-input"
+            ng-model="rule.sourceip_2"
+            ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+            ng-required="true"> <em>.</em>
+
+          <input type="text"
+            class="verify-input"
+            ng-model="rule.sourceip_3"
+            ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+            ng-required="true"> /
+          <input type="text"
+            class="verify-input"
+            ng-model="rule.sourceip_4"
+            ng-pattern="/^(\d|[1-2]\d|(3[0-2]))$/">
+        </div>
+      </div>
+
+      <div class="form-group clearfix  firewallrule-sort"
+        ng-class="{'has-error':form.source_port.$invalid && form.source_port.$dirty}">
+        <label>
+          {% trans "Source Port" %}
+        </label>
+        <div class="form-group-right">
+          <input
+            id="source_port"
+            name="source_port"
+            class="form-control verify-input text-center"
+            min="1"
+            max="65535"
+            ng-model="rule.source_port"
+            ng-pattern="/^([1-9]\d{0,3}$)|(^[1-5]\d{4}$)|(^6[0-4]\d{3}$)|(^65[0-4]\d{2}$)|(^655[0-2]\d$)|(^6553[0-5])$/"
+            ng-maxlength="255"/>
+        </div>
+      </div>
+
+      <div class="form-group clearfix fl firewallrule-ip">
+        <label class="control-label fl required" for="dst_ip">
+          *{% trans "Destination IP or subnet" %}
+        </label>
+        <div id="destinationip-wrap" class="form-group-right network-num-list" enter-check="rule">
+          <input type="text"
+            class="verify-input"
+            name="name_0"
+            ng-model="rule.destinationip_0"
+            ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+            ng-required="true"> <em>.</em>
+
+          <input type="text"
+            class="verify-input"
+            name="name_1"
+            ng-model="rule.destinationip_1"
+            ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+            ng-required="true"> <em>.</em>
+
+          <input type="text"
+            class="verify-input"
+            ng-model="rule.destinationip_2"
+            ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+            ng-required="true"> <em>.</em>
+
+          <input type="text"
+            class="verify-input"
+            ng-model="rule.destinationip_3"
+            ng-pattern="/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/"
+            ng-required="true"> /
+          <input type="text"
+            class="verify-input"
+            ng-model="rule.destinationip_4"
+            ng-pattern="/^(\d|[1-2]\d|(3[0-2]))$/">
+        </div>
+      </div>
+
+      <div class="form-group clearfix  firewallrule-sort"
+        ng-if="rule.protocol === 'icmp'"
+        ng-class="{'has-error':form.dst_port.$invalid && form.dst_port.$dirty}">
+        <label for="dst_ip">
+          {% trans "Destination Port" %}
+        </label>
+        <div class="form-group-right">
+          <input
+            id="dst_port"
+            name="dst_port"
+            class="form-control verify-input text-center"
+            min="1"
+            max="65535"
+            ng-model="rule.destination_port"
+            ng-pattern="/^([1-9]\d{0,3}$)|(^[1-5]\d{4}$)|(^6[0-4]\d{3}$)|(^65[0-4]\d{2}$)|(^655[0-2]\d$)|(^6553[0-5])$/"
+            ng-maxlength="255"/>
+        </div>
+      </div>
+
+      <div class="form-group clearfix  firewallrule-sort"
+        ng-if="rule.protocol !== 'icmp'"
+        ng-class="{'has-error':form.dst_port.$invalid && form.dst_port.$dirty}">
+        <label for="dst_ip">
+          *{% trans "Destination Port" %}
+        </label>
+        <div class="form-group-right">
+          <input required
+            id="dst_port"
+            name="dst_port"
+            class="form-control verify-input text-center"
+            min="1"
+            max="65535"
+            ng-model="rule.destination_port"
+            ng-pattern="/^([1-9]\d{0,3}$)|(^[1-5]\d{4}$)|(^6[0-4]\d{3}$)|(^65[0-4]\d{2}$)|(^655[0-2]\d$)|(^6553[0-5])$/"
+            ng-maxlength="255"/>
+        </div>
+      </div>
+
+      <div class="form-group clearfix mt10 fl">
+        <label for="description">
+          {% trans "Share" %}
+        </label>
+        <div class="form-group-right">
+          <input
+            id="shared"
+            name="shared"
+            type="checkbox"
+            ng-model="rule.shared"/>
+        </div>
+      </div>
+
+    </fieldset>
+
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>
+

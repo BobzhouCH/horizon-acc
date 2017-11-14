@@ -1,0 +1,258 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The canSelectUsers pane. -->
+<div class="modal-body clearfix">
+  <!-- Modal-form-left: Contains the form controls -->
+  <div class="users-left">
+    <table id="select-users-list"
+      hz-table
+      ng-cloak
+      st-table="icanSelectUsers"
+      st-safe-src="canSelectUsers"
+      default-sort="name"
+      default-sort-reverse="false"
+      disabled="disabled"
+      class="table table-bordered table-hover">
+
+      <thead>
+        <!--
+          Table-batch-actions:
+          This is where batch actions like searching, creating, and deleting.
+        -->
+        <tr>
+          <th colspan="100">
+            <div class="table_actions clearfix">
+              <action-list class="btn-addon">
+                <action
+                  action-classes="'btn btn-primary'"
+                  disabled="numSelected === 0"
+                  callback="action.addUsers"
+                  item="selectedData.aData">
+                  <span id="add-user">{% trans 'Add' %}</span>
+                </action>
+              </action-list>
+              <div class="fr search-bar">
+                <search-bar id="search-users-add" group-classes="" icon-classes="fa-search" placeholder={% trans "Filter" %}> </search-bar>
+              </div>
+            </div>
+          </th>
+        </tr>
+
+        <!--
+          Table-column-headers:
+          This is where we declaratively define the table column headers.
+          Include the select all checkbox if you want to enable select all
+          for performing batch actions.
+        -->
+        <tr eagle-eye="table_heads">
+          <th class="select-col" eagle-eye="select_col">
+            <input type="checkbox"
+              ng-init="tables.canSelectUsers = $table"
+              hz-select-page="canSelectUsers"/>
+            <!--{$ numSelected $}-->
+          </th>
+          <th st-sort="name" width="240" st-sort-default="name" eagle-eye="data_col">
+            {$ ::context.header.usersForSelection $}
+          </th>
+          <th class="txt-c" eagle-eye="data_col">{$ ::context.header.action $}</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr ng-if="loadingCanSelectUsers">
+          <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif" alt="" /></td>
+        </tr>
+
+        <tr ng-if="!canSelectUsers.length && !loadingCanSelectUsers">
+          <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+        </tr>
+
+        <tr ng-repeat="user in icanSelectUsers"
+          ng-class="{'st-selected': checked[user.id]}">
+          <!--
+            Table-row-checkbox:
+            Project can select and unselect this row by clicking on this checkbox.
+            Batch actions can then be perform on selected rows.
+          -->
+          <td class="select-col" eagle-eye="select_col">
+            <input type="checkbox"
+              hz-select="user"
+              ng-model="selected[user.id].checked"
+              hz-checkbox-group="canSelectUsers"/>
+          </td>
+          <td eagle-eye="data_col"><span class="user-name cut" title="{$ user.name $}">{$ user.name $}</span></td>
+          <td class="text-center" eagle-eye="data_col">
+            <div
+              ng-click="action.addUser(user)">
+              <span class="icon add_to"></span>
+            </div>
+            <!--
+            <action-list class="btn-addon" style="width: 10px;">
+              <action
+                action-classes="'btn btn-default btn-sm'"
+                callback="action.addUser"
+                item="user">
+                <i class="fa fa-user-plus"></i>
+              </action>
+            </action-list>
+            -->
+          </td>
+        </tr>
+      </tbody>
+
+      <!--
+        Table-footer:
+        This is where we display number of items and pagination controls.
+        Ensure colspan is greater or equal to number of column-headers.
+      -->
+      <tfoot>
+        <tr>
+          <td colspan="100" eagle-eye="data_page">
+            <div st-pagination="" st-items-by-page="5" st-displayed-pages="8"></div>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <!-- Modal-form-right: The selectedUsers. -->
+  <div class="users-right">
+    <!-- Project form users fieldset -->
+    <div class="clearfix required">
+      <table id="selected-users"
+        hz-table
+        ng-cloak
+        st-table="iselectedUsers"
+        st-safe-src="selectedUsers"
+        default-sort="name"
+        default-sort-reverse="false"
+        disabled="disabled"
+        class="table table-bordered table-hover">
+
+        <thead>
+          <!--
+            Table-batch-actions:
+            This is where batch actions like searching, creating, and deleting.
+          -->
+          <tr>
+            <th colspan="100">
+              <div class="table_actions clearfix">
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-primary'"
+                    disabled="numSelected === 0"
+                    callback="action.removeUsers"
+                    item="selectedData.aData">
+                    <span id="remove-users">{% trans 'Remove' %}</span>
+                  </action>
+                </action-list>
+                <div class="fr search-bar">
+                  <search-bar id="search-users-add" group-classes="" icon-classes="fa-search" placeholder={% trans "Filter" %}> </search-bar>
+                </div>
+              </div>
+            </th>
+          </tr>
+
+          <!--
+            Table-column-headers:
+            This is where we declaratively define the table column headers.
+            Include the select all checkbox if you want to enable select all
+            for performing batch actions.
+          -->
+          <tr eagle-eye="table_heads">
+            <th class="select-col" eagle-eye="select_col">
+              <input type="checkbox"
+                ng-init="tables.selectedUsers = $table"
+                hz-select-page="selectedUsers"/>
+              <!--{$ numSelected $}-->
+            </th>
+            <th width="180" st-sort="name" st-sort-default="name" eagle-eye="data_col">
+              {$ ::context.header.selectedUsers $}
+            </th>
+            <th eagle-eye="data_col">
+              {$ ::context.header.roles $}
+            </th>
+            <th class="txt-c" eagle-eye="data_col">{$ ::context.header.action $}</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr ng-if="loadingSelectedUser">
+            <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif" alt="" /></td>
+          </tr>
+
+          <tr ng-if="!selectedUsers.length && !loadingSelectedUser">
+            <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+          </tr>
+
+          <tr ng-repeat="user in iselectedUsers"
+            ng-class="{'st-selected': checked[user.id]}">
+            <!--
+              Table-row-checkbox:
+              Project can select and unselect this row by clicking on this checkbox.
+              Batch actions can then be perform on selected rows.
+            -->
+            <td class="select-col" eagle-eye="select_col">
+              <input type="checkbox"
+                hz-select="user"
+                ng-model="selected[user.id].checked"
+                hz-checkbox-group="selectedUsers"/>
+            </td>
+            <td eagle-eye="data_col"><span class="user-name cut" title="{$ user.name $}">{$ user.name $}</span></td>
+            <td eagle-eye="data_col">
+              <div ng-repeat="role in dropdown.roles">
+                <input type="checkbox"
+                  class="mr10"
+                  ng-model="selectedRoles[user.id][role.id].checked"
+                  eagle-eye="role_{$ role.name | lowercase $}"
+                  ng-change=""/>
+                <label class="user-role">
+                  {$ role.name | decode:rolesMap $}
+                </label>
+              </div>
+            </td>
+            <td class="text-center" eagle-eye="data_col">
+              <div
+                ng-click="action.removeUser(user)">
+                <span class="icon remove_to"></span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+
+        <!--
+          Table-footer:
+          This is where we display number of items and pagination controls.
+          Ensure colspan is greater or equal to number of column-headers.
+        -->
+        <tfoot>
+          <tr>
+            <td colspan="100">
+              <div st-pagination="" st-items-by-page="3" st-displayed-pages="8"></div>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal-footer: Project can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submitUsers(selectedRoles)">
+    {$ ::context.submit $}
+  </button>
+</div>

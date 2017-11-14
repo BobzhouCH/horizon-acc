@@ -1,0 +1,174 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Flavors" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Flavors") %}
+{% endblock page_header %}
+
+{% block main %}
+
+<hz-magic-search-context filter-facets="filterFacets">
+  <table id="flavors-list" hz-table ng-cloak hopes-table-drag
+    st-table="iflavors"
+    st-safe-src="flavors"
+    default-sort="id"
+    default-sort-reverse="false"
+    ng-init="userID = '{{ request.user.id }}'"
+    st-magic-search
+    ng-controller="adminFlavorsCtrl"
+    class="table table-bordered table-hover">
+
+    <!--
+      Table-head:
+      This is where we add things like filtering and batch actions.
+      This is where we add column headers.
+    -->
+    <thead>
+
+      <!--
+        Table-batch-actions:
+        This is where batch actions like searching, creating, and deleting.
+      -->
+      <tr>
+        <th colspan="100" class="bare">
+          <div class="table_actions clearfix">
+            <action-list>
+              <action
+                action-classes="'btn btn-primary btn-action'"
+                callback="actions.refresh">
+                <i class="icon icon-refresh"></i>
+                <span id="refresh"></span>
+              </action>
+            </action-list>
+            <action-list>
+              <action
+                action-classes="'btn btn-primary btn-action'"
+                callback="actions.create.open"
+                item="selectedData.aData"
+                disabled="">
+                <i class="icon icon-add"></i>
+                <span id="updateStatus">{% trans 'Create Flavor' %}</span>
+              </action>
+            </action-list>
+            <action-list>
+              <action
+                action-classes="'btn btn-primary btn-action'"
+                disabled="numSelected !== 1"
+                callback="actions.edit.open"
+                item="selectedData.aData">
+                <i class="icon icon-edit"></i>
+                <span id="edit">{% trans 'Edit Flavor' %}</span>
+              </action>
+            </action-list>
+            <!--<action-list>-->
+              <!--<action-->
+                <!--action-classes="'btn btn-primary btn-action'"-->
+                <!--disabled="numSelected !== 1"-->
+                <!--callback="actions.update.open"-->
+                <!--item="selectedData.aData">-->
+                <!--<i class="icon icon-add"></i>-->
+                <!--<span id="updateMetadata">{% trans 'Update Metadata' %}</span>-->
+              <!--</action>-->
+            <!--</action-list>-->
+            <action-list>
+              <action
+                action-classes="'btn btn-action btn-danger'"
+                disabled="numSelected === 0"
+                callback="actions.deleted.batchDelete"
+                item="selectedData.aData">
+                <i class="icon icon-delete"></i>
+                <span id="delete">{% trans 'Delete Flavor' %}</span>
+              </action>
+            </action-list>
+
+            <div class="fr search-bar">
+              <hz-magic-search-bar></hz-magic-search-bar>
+            </div>
+          </div>
+        </th>
+      </tr>
+
+      <!--
+        Table-column-headers:
+        This is where we declaratively define the table column headers.
+        Include the select all checkbox if you want to enable select all
+        for performing batch actions.
+      -->
+      <tr>
+        <th class="select-col" eagle-eye="select_col">
+          <input type="checkbox" hz-select-page="flavors"/>
+        </th>
+        <th>
+          <span st-sort="name" st-sort-default="name">{$ ::context.header.name $}</span>
+        </th>
+        <th><span st-sort="id" eagle-eye="data_col" eagle-eye="id">{$ ::context.header.id $}</span></th>
+        <th><span st-sort="vcpus" eagle-eye="data_col">CPU</span></th>
+        <th><span st-sort="ram" eagle-eye="data_col">{$ ::context.header.ram $}</span></th>
+        <th><span st-sort="disk" eagle-eye="data_col">{$ ::context.header.root_disk $}</span></th>
+        <th><span st-sort="ephemeral" eagle-eye="data_col">{$ ::context.header.ephemeral_disk $}</span></th>
+        <th><span st-sort="swap" eagle-eye="data_col">{$ ::context.header.swap_disk $}</span></th>
+        <th><span st-sort="is_public" eagle-eye="data_col">{$ ::context.header.public $}</span></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr ng-if="!iflavorsState">
+        <td colspan="100"  class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+      </tr>
+
+      <tr ng-if="!iflavors.length && iflavorsState">
+        <td colspan="100">{% trans "No Data" %}</td>
+      </tr>
+      <tr ng-repeat="flavor in iflavors" ng-class="{'st-selected': checked[flavor.id]}">
+
+        <!--
+          Table-row-checkbox:
+          User can select and unselect this row by clicking on this checkbox.
+          Batch actions can then be perform on selected rows.
+        -->
+        <td class="select-col" eagle-eye="select_col">
+          <input type="checkbox"
+            hz-select="flavor"
+            ng-model="selected[flavor.id].checked"
+            hz-checkbox-group="flavors"/>
+        </td>
+
+        <!-- Table-row-info-column -->
+        <td eagle-eye="data_col">
+	     <!-- Modify for NFVI,2016-12-27-->
+	     <a ng-click="actions.loadFlavorDetail.open(flavor)" href="javascript:;"
+                data-url="/project/flavor/detail/{$ flavor.id $}" title="{$ flavor.name $}">
+                {$ flavor.name $}
+             </a>
+	</td>
+        <td eagle-eye="data_col">{$ flavor.id $}</td>
+        <td eagle-eye="data_col">{$ flavor.vcpus $}</td>
+        <td eagle-eye="data_col">{$ flavor.ram | mb $}</td>
+        <td eagle-eye="data_col">{$ flavor.disk | gb $}</td>
+        <td eagle-eye="data_col">{$ flavor['OS-FLV-EXT-DATA:ephemeral'] | gb $}</td>
+        <td eagle-eye="data_col">{$ flavor.swap |mb $}</td>
+        <td eagle-eye="data_col">
+          {$ flavor.is_public | yesno $}
+        </td>
+
+      </tr>
+
+    </tbody>
+
+    <!--
+      Table-footer:
+      This is where we display number of items and pagination controls.
+      Ensure colspan is greater or equal to number of column-headers.
+    -->
+    <tfoot ng-if="flavors.length > 10">
+      <tr>
+        <td colspan="100">
+          <div st-pagination="" st-items-by-page="10" st-displayed-pages="10"></div>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</hz-magic-search-context>
+
+{% endblock %}

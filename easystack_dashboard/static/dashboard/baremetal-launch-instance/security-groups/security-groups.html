@@ -1,0 +1,121 @@
+<div ng-controller="LaunchBareInstanceSecurityGroupsCtrl as ctrl">
+
+    <div class="content">
+
+        <transfer-table tr-model="ctrl.tableData"
+                        help-text="ctrl.tableHelp"
+                        limits="ctrl.tableLimits">
+
+            <!-- Security Groups Allocated -->
+            <allocated validate-number-min="1" ng-model="ctrl.tableData.allocated.length">
+                <table id="selected-security-groups" st-table="ctrl.tableData.displayedAllocated"
+                       st-safe-src="ctrl.tableData.allocated" hz-table
+                       class="table table-bordered table-hover table-th">
+                    <thead>
+                    <tr>
+                        <th eagle-eye="data_col" st-sort="name" st-sort-default>{$ ::ctrl.label.name $}</th>
+                        <th eagle-eye="data_col" st-sort="description">{$ ::ctrl.label.description $}</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-if="ctrl.tableData.allocated.length === 0">
+                        <td colspan="8">
+                            <div class="no-rows-help">
+                                {$ ::trCtrl.helpText.noneAllocText $}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr ng-repeat-start="row in ctrl.tableData.displayedAllocated track by row.id">
+                        <td eagle-eye="data_col" class="expander" width="22%">
+                            <span class="row-name"> {$ row.name $} </span>
+                            <span class="chevron-right chevron-fixed fr" hz-expand-detail="chevron-right chevron-down"
+                                  title="{$ ::trCtrl.helpText.expandDetailsText $}">
+                </span>
+                        </td>
+                        <td eagle-eye="data_col">{$ row.description $}</td>
+                        <td eagle-eye="data_col" class="action-col">
+                            <action-list class="instance-btn">
+                                <action callback="trCtrl.deallocate" item="row">
+                                    <span class="icon remove_to"></span>
+                                </action>
+                            </action-list>
+                        </td>
+                    </tr>
+                    <tr ng-repeat-end class="detail-row">
+                        <td class="detail" colspan="3" ng-include="ctrl.tableDetails">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </allocated>
+
+            <!-- Security Groups Available -->
+            <available>
+                <hz-magic-search-context filter-facets="ctrl.filterFacets">
+                    <hz-magic-search-bar id="search"></hz-magic-search-bar>
+                    <table id="security-groups-list" st-table="ctrl.tableData.displayedAvailable"
+                           st-magic-search
+                           st-safe-src="ctrl.tableData.available"
+                           hz-table class="table table-bordered table-hover table-th">
+                        <thead>
+                        <!--            <tr>
+                                      <th class="search-header" colspan="7">
+                                        <div class="fr search-bar">
+                                          <search-bar id="security-groups-search" group-classes="input-group-sm fr" icon-classes="fa-search"></search-bar>
+                                        </div>
+                                      </th>
+                                    </tr>-->
+                        <tr>
+                            <th st-sort="name" st-sort-default class="rsp-p1">{$ ::ctrl.label.name $}</th>
+                            <th st-sort="description" class="rsp-p1">{$ ::ctrl.label.description $}</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-if="trCtrl.numDisplayedAvailable() === 0">
+                            <td colspan="8">
+                                <div class="no-rows-help">
+                                    {$ ::trCtrl.helpText.noneAvailText $}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr ng-repeat-start="row in ctrl.tableData.displayedAvailable track by row.id"
+                            ng-if="!trCtrl.allocatedIds[row.id]">
+                            <td eagle-eye="data_col" class="expander" width="22%">
+                                <span class="row-name"> {$ row.name $} </span>
+                                <span class="chevron-right chevron-fixed fr"
+                                      hz-expand-detail="chevron-right chevron-down"
+                                      title="{$ ::trCtrl.helpText.expandDetailsText $}">
+                                </span>
+                            </td>
+                            <td>{$ row.description $}</td>
+                            <td eagle-eye="data_col" class="action-col">
+                                <action-list class="instance-btn">
+                                    <action callback="trCtrl.allocate" item="row">
+                                        <span class="icon add_to"></span>
+                                    </action>
+                                </action-list>
+                            </td>
+                        </tr>
+                        <tr ng-repeat-end class="detail-row" ng-if="!trCtrl.allocatedIds[row.id]">
+                            <td eagle-eye="data_col" class="detail" colspan="3" ng-include="ctrl.tableDetails">
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot  ng-if="ctrl.tableData.available.length > 5">
+                        <tr>
+                            <td eagle-eye="data_page" colspan="100">
+                                <div st-pagination="" st-items-by-page="5" st-displayed-pages="100"></div>
+
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </hz-magic-search-context>
+            </available>
+
+        </transfer-table> <!-- End Security Groups Transfer Table -->
+
+    </div> <!-- End Content -->
+</div> <!-- End Controller -->

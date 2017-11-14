@@ -1,0 +1,13 @@
+<div class="stripWarp clearfix">
+    <div class="strip_element">
+        <div class="slider-horiz" style="width:200px;">
+            <div class="slider-track js-drag-wrap">
+                <div class="slider-selection js-seleced-bg"></div>
+                <div class="slider-handle js-drag-btn"></div>
+            </div>
+       </div>
+       <span class="preview"><input class="form-control js-drag-input" type="text" ng-model="selectedVal"/> {$ getValue.unit $}</span>
+       <p class="help" ng-if="!getValue.prompt && getValue.min !== getValue.max">{$ getValue.defVal > getValue.min ? getValue.defVal : getValue.min $}{$ getValue.unit $} - {$ getValue.max $}{$ getValue.unit $}</p>
+       <p class="help" ng-if="!getValue.prompt && getValue.min === getValue.max">{$ getValue.max $}{$ getValue.unit $}</p>
+   </div>
+</div>

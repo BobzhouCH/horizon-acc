@@ -1,0 +1,130 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+      <fieldset>
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="name">
+            *{% trans "Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              class="form-control verify-input"
+              type="text"
+              ng-model="natPool.name"
+              ng-maxlength="255"/>
+
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "A NAT pool name is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength && form.name.$dirty">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <div class="form-group clearfix">
+          <label for="description">
+            {% trans "Description" %}
+          </label>
+          <div class="form-group-right">
+            <textarea
+              id="description"
+              name="description"
+              class="form-control"
+              rows="4"
+              ng-model="natPool.description">
+            </textarea>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.policies.$invalid && form.policies.$dirty}">
+          <label>
+            *{% trans "IP Version" %}
+          </label>
+          <div class="form-group-right policie-wrap" ng-if="ip_version_seleted">
+            <select id="ip-version" class="form-control" ng-init="natPool.ip_version = ip_version_seleted" 
+              ng-model="natPool.ip_version"
+              ng-options="ip.name for ip in ip_versions track by ip.value">
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.cidr.$invalid && form.cidr.$dirty}">
+          <label>
+            *{% trans "CIDR" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="ip_pool"
+              name="ip_pool"
+              class="form-control verify-input"
+              type="text"
+              ng-model="natPool.ip_pool"
+              ng-maxlength="255"/>
+
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.ip_pool.$error.required && form.ip_pool.$dirty">
+              {% trans "A CIDR pool name is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.ip_pool.$error.maxlength && form.ip_pool.$dirty">
+              {% trans "CIDR length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <div class="form-group clearfix">
+          <label>
+            <p>*{% trans "External Segment" %}</p>
+          </label>
+          <div class="form-group-right" ng-if="listExternalSwitch">
+            <select
+              required
+              id="external-segment"
+              class="form-control"
+              name="external_segment"
+              ng-init="natPool.external_segment_id = listExternalSeleted" 
+              ng-model="natPool.external_segment_id"
+              ng-options="list.name for list in listExternals track by list.id">
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group clearfix" style="margin-top:5px;">
+          <label></label>
+          <div class="form-group-right">
+            <input name="shared" ng-model="natPool.shared" ng-disabled="listExternals.length>0 && !natPool.external_segment_id.shared" type="checkbox"/> Shared
+          </div>
+        </div>
+      </fieldset>
+    </div>
+
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>
+

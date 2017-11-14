@@ -1,0 +1,67 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+    <h3 class="modal-title">{$ ::context.title $}</h3>
+
+    <p class="modal-colsed" ng-click="action.cancel()">
+        <i class="modal-colsed-icon"></i>
+    </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form">
+    <div class="modal-body clearfix">
+        <!-- Modal-form-left: Contains the form controls -->
+        <div class="form-group col-xs-6">
+            <fieldset>
+                <h3 for="name">
+                    * {$ ::context.fieldset.name $}
+                </h3>
+                <div class="form-field form-group">
+                    <select id="boot-source-type" name="boot-source-type" class="form-control"
+                            ng-change="updateStrategySelection(selectedStrategy)"
+                            ng-init="selectedStrategy.id"
+                            ng-model="selectedStrategy.id">
+                      <option value="" disabled>
+                      {$ (strategyList && strategyList.length)? selectText.hasStrategy : selectText.noStrategy $}
+                      </option>
+                      <option
+                        ng-repeat="src in strategyList track by $index"
+                        value="{$ src.id $}">
+                        {$ src.name | textFilter $}
+                      </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    {$ strategyDesc | textFilter $}
+                </div>
+            </fieldset>
+        </div>
+        <!-- Modal-form-right: The description text. -->
+        <div class="form-group  col-xs-6">
+            {% block modal-body-right %}
+            <h3>{% trans "Description" %}:</h3>
+
+            <p class="form-group">{$ context.desc | textFilter $}</p>
+            {% endblock %}
+        </div>
+    </div>
+    <!-- Modal-footer: User can submit or cancel form here. -->
+
+    <div class="form-group col-sm-12" id="optimize-view">
+        <div class="form-group col-sm-12 loding-bar"  ng-if="!strategyChartState">
+        <div class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></div>
+        </div>
+        <div id="optimize-chart"></div>
+    </div>
+    <div class="modal-footer">
+        <!--<input type="text" name="csrfmiddlewaretoken" value="TRupJbM0WCLy2YZ0yjcMoE5bmxKB3HzH"/>-->
+        {% csrf_token %}
+        {$ conductDisabled $}
+        <button id="conduct-button" class="btn btn-primary" ng-disabled="disableMigration || disableConduct" type="button" ng-click="action.submit()">
+            {$ ::context.submit $}
+        </button>
+    </div>
+
+</form>

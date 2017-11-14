@@ -1,0 +1,11 @@
+<div ng-repeat="toast in toast.get()">
+  <div class="alert alert-{$ ::toast.type $}">
+    <a class="close" ng-click="toast.cancel($index)"><span class="fa fa-times"></span></a>
+    <div  class="toast-icon glyphicon glyphicon-ok" ng-if="toast.type == 'success'"></div>
+    <div class="toast-icon glyphicon glyphicon-exclamation-sign" ng-if="toast.type != 'success'"></div>
+    <div class="toast-msg">
+      <div>{$ toast.msg $}</div>
+      <div class="reason-detail" ng-repeat="msg in toast.msgArray">{$ msg $}</div>
+    </div>
+  </div>
+</div>

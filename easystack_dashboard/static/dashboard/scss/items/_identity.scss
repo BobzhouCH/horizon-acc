@@ -1,0 +1,108 @@
+/**
+ ** Author : zhaoyongsheng
+ ** Module : the style for edit users form
+ ** Data   : 2015-12-17
+**/
+
+/* the following is for edit users start */
+.editUsersContent .modal-dialog { width: 850px; }
+.form-control-feedback { width: 28px; height: 28px; line-height: 28px; }
+.users-left, .users-right {
+  padding: 10px;
+  padding-bottom: 0;
+  .search-bar { min-width: 200px; }
+  .table-bordered {
+    border: 0;
+    margin-bottom: 0;
+    thead tr:first-child {
+      th { border: 0; padding: 0; }
+    }
+    .table_actions { padding: 10px 0px; }
+  }
+}
+.users-left {
+  float: left;
+  width: 45%;
+  .user-name { width: 200px; margin-top: 8px; }
+}
+.users-right {
+  float: right;
+  width: 55%;
+  .user-role { font-weight:normal; position: relative; top: -4px; }
+  .user-name { width: 160px; margin-top: 8px; }
+}
+/* the following is for edit users end */
+
+// Author : xinwei
+// Module : the style for project form
+// Data   : 2015-12-17
+
+/* quota form start */
+.projectsQuotaContent {
+  .modal-dialog { width: 850px; }
+  .form-group {
+    float: left;
+    label { width: 160px; }
+    .check {
+      width:48%;
+    }
+    .form-group-right {
+      width: 230px;
+      .check-form-control{
+        height:30px;
+      }
+      .help-block {
+        white-space: nowrap;
+      }
+      input[type='number'],input[type='text']{
+        width:160px;
+      }
+    }
+    .form-group-check {
+        vertical-align: middle;
+        display: inline-block;
+        margin:0 0 0 ;
+    }
+  }
+}
+/* quota form end */
+
+.projectCreateContent {
+  .modal-dialog { width: 530px; }
+  form {
+    //max-height: 400px;
+    .project-quota{
+      padding-bottom: 10px;
+      max-height: 400px;
+      overflow-y: auto;
+      .form-group>label{
+        width: 160px;
+        height: 36.5px;
+        vertical-align: middle;
+        line-height: 36.5px;
+      }
+
+    .form-group-right {
+      width: 250px;
+      height:36.5px;
+      vertical-align: middle;
+      line-height: 36.5px;
+      .check-form-control{
+        height:30px;
+      }
+      .help-block {
+        line-height: 17px;
+        white-space: nowrap;
+      }
+      input[type='number'],input[type='text']{
+        width:160px;
+      }
+    }
+    .form-group-check {
+        vertical-align: middle;
+        display: inline-block;
+        margin:0 0 0 ;
+    }
+    }
+  }
+}

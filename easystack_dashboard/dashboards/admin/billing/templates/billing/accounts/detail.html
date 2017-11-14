@@ -1,0 +1,14 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Account Detail"%}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Account Detail") %}
+{% endblock page_header %}
+
+{% block main %}
+  <div class="span12">
+    {{ tab_group.render }}
+  </div>
+
+{% endblock %}

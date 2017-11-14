@@ -1,0 +1,80 @@
+{% load i18n %}
+
+<div class="modal-header clearfix">
+    <h3 class="modal-title">{$ ::context.title $}</h3>
+    <p class="modal-colsed" ng-click="action.cancel()">
+        <i class="modal-colsed-icon"></i>
+    </p>
+</div>
+
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-description mt10">
+      <p>
+        {% trans "By live migration, you can migrate an instance from a node to another node in the case of non-stop, the attached volume and cloud data will remain unchanged." %}
+      </p>
+   </div>
+  <fieldset>
+    <div class="form-group clearfix"
+      ng-class="{'has-error':form.host.$invalid && form.host.$dirty}">
+      <label for="hostname">
+        {% trans "Current Node" %}
+      </label>
+      <div class="form-group-right">
+        <input type="input"
+          id="hostname"
+          name="hostname"
+          class="form-control"
+          disabled="true"
+          ng-model="instance.hostname">
+      </div>
+    </div>
+
+    <div class="form-group clearfix">
+      <label for="host">
+        {% trans "Destination Node" %}
+      </label>
+      <div class="form-group-right">
+        <select required
+          id="host"
+          name="host"
+          class="form-control verify-input"
+          ng-class="{strikeLoading: !dropdown.hosts}"
+          ng-init="instance.host = dropdown.hosts[0].id"
+          ng-model="instance.host">
+          <option value="" disabled>
+            {$ (dropdown.hosts && dropdown.hosts.length) ? "{% trans 'Select a Host' %}"
+               : "{% trans 'No Host to select' %}" $}
+          </option>
+          <option
+            ng-repeat="host in dropdown.hosts"
+            ng-selected="host.id === instance.host"
+            value="{$ host.id $}">
+            {$ host.name $}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group clearfix mt10"
+      ng-class="{'has-error':form.sharedStorage.$invalid && form.sharedStorage.$dirty}">
+      <label for="sharedStorage">
+        {% trans "Shared Storage" %}
+      </label>
+      <div class="form-group-right">
+        <input type="checkbox"
+          id="sharedStorage"
+          name="sharedStorage"
+          ng-init="instance.sharedStorage=true"
+          ng-model="instance.sharedStorage">
+      </div>
+    </div>
+  </fieldset>
+</form>
+
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

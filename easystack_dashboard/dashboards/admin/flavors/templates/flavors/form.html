@@ -1,0 +1,593 @@
+{% load i18n %}
+
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+  <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<form class="ml10 mr10" novalidate name="form" ng-submit="submit(form.$valid)">
+    <fieldset>
+
+      <tabset id="flavor-form-tab" class="def-tabs mt10" justified="true">
+        <tab id="flavor-tab-base-button" heading={% trans "Basic Settings"%}>
+          <div class="tab-pane-content flavor-pane-base">
+            <div class="modal-body clearfix">
+
+              <div class="form-group clearfix mt10"
+                ng-class="{'has-error':form.name.$invalid && form.name.$dirty || hasName}">
+                <label for="name">
+                  <p>*{% trans "Name" %}</p>
+                </label>
+                <div class="form-group-right">
+                  <input required
+                    id="name"
+                    name="name"
+                    class="form-control"
+                    type="text"
+                    ng-model="flavor.name"
+                    ng-maxlength="255"
+                    ng-change="checkName()"
+                    placeholder="{% trans 'Enter a Flavor name' %}">
+                  <p class="help-block alert-fixed alert-danger"
+                      ng-show="form.name.$error.required && form.name.$dirty">
+                      {% trans "A flavor name is required." %}
+                  </p>
+                  <p class="help-block alert-fixed alert-danger"
+                    ng-show="form.name.$error.maxlength && form.name.$dirty">
+                    {% trans "Name length should be less than 255 chars." %}
+                  </p>
+                  <p class="help-block alert alert-danger user-alert"
+                    ng-show="hasName">
+                    {% trans "Flavor name is used." %}
+                  </p>
+                </div>
+              </div>
+
+              <!--
+                 Flavor ID Selection:
+                 Create-mode: show; Edit-mode: hide
+              -->
+              <div class="form-group clearfix mt10"
+                ng-if="context.mode === 'create'"
+                ng-class="{'has-error':form.flavor_id.$invalid && form.flavor_id.$dirty  || !valid_flavor_id || hasId}">
+                <label for="flavor_id">
+                  *{% trans "ID" %}
+                </label>
+                <div class="form-group-right">
+                  <div>
+                    <input
+                      id="id_auto"
+                      name="id_auto"
+                      type="radio"
+                      ng-init="flavor.id_auto='auto'"
+                      ng-model="flavor.id_auto"
+                      value="auto"/>
+                      <span class="ml5 mt5">{% trans "Auto" %}</span>
+                    <input
+                      id="id_manual"
+                      name="id_manual"
+                      type="radio"
+                      ng-model="flavor.id_auto"
+                      value="manual"/>
+                      <span class="ml5 mt5">{% trans "Manual" %}</span>
+                  </div>
+                  <input ng-required="flavor.id_auto ==='manual'"
+                    id="flavor_id"
+                    name="flavor_id"
+                    class="form-control verify-input"
+                    type="text"
+                    min="0"
+                    ng-disabled="flavor.id_auto === 'auto'"
+                    ng-model="flavor.id"
+                    ng-pattern=""
+                    ng-change="checkId()"
+                    placeholder="{% trans 'enter a id number' %}"/>
+                  <p class="help-block alert-fixed alert-danger"
+                    ng-show="form.flavor_id.$invalid && !form.flavor_id.$error.required && !hasId || !valid_flavor_id && !form.flavor_id.$error.required && !hasId">
+                    {% trans "Flavor ID should be UUID4 or integer." %}
+                  </p>
+                  <p class="help-block alert alert-danger user-alert"
+                    ng-show="hasId && !form.flavor_id.$error.required">
+                    {% trans "Flavor id is used." %}
+                  </p>
+                  <p class="help-block alert-fixed alert-danger"
+                      ng-show="form.flavor_id.$error.required && form.flavor_id.$dirty">
+                      {% trans "A Flavor id is required." %}
+                  </p>
+                </div>
+              </div>
+
+              <!--
+                 Flavor VCPUs Selection:
+                 Create-mode: show; Edit-mode: show
+              -->
+              <div class="form-group clearfix"
+                ng-if="context.mode === 'create' || context.mode === 'edit'"
+                ng-class="{'has-error':form.vcpus.$invalid && form.vcpus.$dirty}">
+                <label for="vcpus">
+                  *{% trans "VCPUs" %}
+                </label>
+                <div class="form-group-right">
+                  <input required
+                    id="vcpus"
+                    name="vcpus"
+                    class="form-control verify-input"
+                    type="number"
+                    min="1"
+                    ng-init=""
+                    pattern="[0-9]+"
+                    ng-disabled=""
+                    ng-model="flavor.vcpus"
+                    placeholder="{% trans 'enter a vcpus number' %}"/>
+                  <p class="help-block alert-fixed alert-danger"
+                    ng-show="form.vcpus.$invalid && form.vcpus.$dirty && !form.vcpus.$error.required">
+                    {% trans "The range must be integer and be greater than or equal to one." %}
+                  </p>
+                  <p class="help-block alert-fixed alert-danger"
+                    ng-show="form.vcpus.$error.required && form.vcpus.$dirty">
+                    {% trans "A vcpus number is required." %}
+                  </p>
+                </div>
+              </div>
+
+              <!--
+                 Flavor RAM Selection:
+                 Create-mode: show; Edit-mode: show
+              -->
+              <div class="form-group clearfix"
+                ng-if="context.mode === 'create' || context.mode === 'edit'"
+                ng-class="{'has-error':form.type.$invalid && form.type.$dirty}">
+                <label for="ram">
+                  *{% trans "RAM(MB)" %}
+                </label>
+                <div class="form-group-right">
+                  <input required
+                    id="ram"
+                    name="ram"
+                    class="form-control verify-input"
+                    type="number"
+                    min="1"
+                    ng-init=""
+                    pattern="[0-9]+"
+                    ng-disabled=""
+                    ng-model="flavor.ram"
+                    ng-change="checkRAM()"
+                    placeholder="{% trans 'enter a RAM number' %}"/>
+                  <p class="help-block alert-fixed alert-danger"
+                    ng-show="form.ram.$invalid && form.ram.$dirty && !form.ram.$error.required">
+                    {% trans "The range must be integer and be greater than or equal to one." %}
+                  </p>
+                  <p class="help-block alert-fixed alert-danger"
+                    ng-show="form.ram.$error.required && form.ram.$dirty">
+                    {% trans "A RAM number is required." %}
+                  </p>
+                  <p class="help-block alert-fixed alert-danger"
+                    ng-show="!form.ram.$error.required && !form.ram.$invalid && !valid_ram">
+                    {% trans "A RAM number has to be a multiple of 2." %}
+                  </p>
+                </div>
+              </div>
+
+              <!--
+                 Flavor RootDisk Selection:
+                 Create-mode: show; Edit-mode: show
+              -->
+              <div class="form-group clearfix"
+                ng-if="context.mode === 'create' || context.mode === 'edit'"
+                ng-class="{'has-error':form.type.$invalid && form.type.$dirty}">
+                <label for="disk">
+                  <p>*{% trans "Root Disk(GB)" %}</p>
+                </label>
+                <div class="form-group-right">
+                  <input required
+                    id="disk"
+                    name="disk"
+                    class="form-control verify-input"
+                    type="number"
+                    min="0"
+                    ng-init=""
+                    pattern="[0-9]+"
+                    ng-disabled=""
+                    ng-model="flavor.disk"
+                    placeholder="{% trans 'enter a disk number' %}"/>
+                  <p class="help-block alert-fixed alert-danger"
+                    ng-show="form.disk.$invalid && form.disk.$dirty && !form.disk.$error.required">
+                    {% trans "The range must be integer and be greater than or equal to zero." %}
+                  </p>
+                  <p class="help-block alert-fixed alert-danger"
+                    ng-show="form.disk.$error.required && form.disk.$dirty">
+                    {% trans "A disk number is required." %}
+                  </p>
+                </div>
+              </div>
+
+              <!--
+                 Flavor Ephemeral Disk Selection (option):
+                 Create-mode: show; Edit-mode: show
+              -->
+              <div class="form-group clearfix"
+                ng-if="context.mode === 'create' || context.mode === 'edit'"
+                ng-class="{'has-error':form.ephemeral_disk.$invalid && form.ephemeral_disk.$dirty}">
+                <label for="ephemeral_disk">
+                  <p>{% trans "Ephemeral Disk(GB)" %}</p>
+                </label>
+                <div class="form-group-right">
+                  <input
+                    id="ephemeral_disk"
+                    name="ephemeral_disk"
+                    class="form-control verify-input"
+                    type="number"
+                    min="0"
+                    ng-init=""
+                    pattern="[0-9]*"
+                    ng-disabled=""
+                    ng-model="flavor['OS-FLV-EXT-DATA:ephemeral']"
+                    placeholder="{% trans 'enter a ephemeral disk number' %}"/>
+                  <p class="help-block alert-fixed alert-danger"
+                    ng-show="form.ephemeral_disk.$invalid && form.ephemeral_disk.$dirty">
+                    {% trans "The range must be integer and be greater than or equal to zero." %}
+                  </p>
+                </div>
+              </div>
+
+              <!--
+                 Flavor Swap(MB) Selection (option):
+                 Create-mode: show; Edit-mode: show
+              -->
+              <div class="form-group clearfix"
+                ng-if="context.mode === 'create' || context.mode === 'edit'"
+                ng-class="{'has-error':form.swap.$invalid && form.swap.$dirty}">
+                <label for="swap">
+                  {% trans "Swap(MB)" %}
+                </label>
+                <div class="form-group-right">
+                  <input
+                    id="swap"
+                    name="swap"
+                    class="form-control verify-input"
+                    type="number"
+                    min="0"
+                    ng-init=""
+                    pattern="[0-9]*"
+                    ng-disabled=""
+                    ng-model="flavor.swap"
+                    placeholder="{% trans 'enter a swap number' %}"/>
+                  <p class="help-block alert-fixed alert-danger"
+                    ng-show="form.swap.$invalid && form.swap.$dirty">
+                    {% trans "The range must be integer and be greater than or equal to zero." %}
+                  </p>
+                </div>
+              </div>
+
+              <!--
+                 Flavor Unit Price by Year Selection:
+                 Create-mode: show; Edit-mode: show, disabled
+              -->
+              <div class="form-group clearfix"
+                ng-if="context.mode === 'create'"
+                ng-show="preBilling && showBilling "
+                ng-class="{'has-error':form.fee_year.$invalid && form.fee_year.$dirty || !valid_FeeYear}">
+                <label for="fee_year">
+                  <p>*{% trans "Year Unit Price" %}({% trans "Yuan" %})</p>
+                </label>
+                <div class="form-group-right">
+                  <input ng-required="preBilling && showBilling"
+                    id="fee_year"
+                    name="fee_year"
+                    class="form-control verify-input"
+                    type="number"
+                    ng-change="checkFeeYear()"
+                    ng-disabled="context.mode === 'edit'"
+                    ng-model="flavor.fee_year"
+                    placeholder="{% trans 'enter an unit price by year' %}"/>
+                  <p class="help-block alert-fixed alert-danger"
+                    ng-show="form.fee_year.$invalid && !form.fee_year.$error.required || !valid_FeeYear && !form.fee_year.$error.required">
+                    {% trans "The worth must be greater than or equal to zero, up to two decimal places." %}
+                  </p>
+                  <p class="help-block alert-fixed alert-danger"
+                      ng-show="form.fee_year.$error.required && form.fee_year.$dirty">
+                      {% trans "An unit price is required." %}
+                  </p>
+                </div>
+              </div>
+
+              <!--
+                 Flavor Unit Price by Month Selection:
+                 Create-mode: show; Edit-mode: show, disabled
+              -->
+              <div class="form-group clearfix"
+                ng-if="context.mode === 'create'"
+                ng-show="preBilling && showBilling"
+                ng-class="{'has-error':form.fee_month.$invalid && form.fee_month.$dirty || !valid_FeeMonth}">
+                <label for="fee_month">
+                  <p>*{% trans "Month Unit Price" %}({% trans "Yuan" %})</p>
+                </label>
+                <div class="form-group-right">
+                  <input ng-required="preBilling && showBilling"
+                    id="fee_month"
+                    name="fee_month"
+                    class="form-control verify-input"
+                    type="number"
+                    ng-change="checkFeeMonth()"
+                    ng-disabled="context.mode === 'edit'"
+                    ng-model="flavor.fee_month"
+                    placeholder="{% trans 'enter an unit price by month' %}"/>
+                  <p class="help-block alert-fixed alert-danger"
+                    ng-show="form.fee_month.$invalid && !form.fee_month.$error.required || !valid_FeeMonth && !form.fee_month.$error.required">
+                    {% trans "The worth must be greater than or equal to zero, up to two decimal places." %}
+                  </p>
+                  <p class="help-block alert-fixed alert-danger"
+                      ng-show="form.fee_month.$error.required && form.fee_month.$dirty">
+                      {% trans "An unit price is required." %}
+                  </p>
+                </div>
+              </div>
+
+              <!--
+                 Flavor Unit Price by Hour Selection:
+                 Create-mode: show; Edit-mode: show, disabled
+              -->
+              <div class="form-group clearfix"
+                ng-if="context.mode === 'create'"
+                ng-show="showBilling"
+                style="padding-bottom: 10px"
+                ng-class="{'has-error':form.fee_hour.$invalid && form.fee_hour.$dirty || !valid_FeeHour}">
+                <label for="fee_hour">
+                  <p>*{% trans "Hour Unit Price" %}({% trans "Yuan" %})</p>
+                </label>
+                <div class="form-group-right">
+                  <input ng-required="showBilling"
+                    id="fee_hour"
+                    name="fee_hour"
+                    class="form-control verify-input"
+                    type="number"
+                    ng-change="checkFeeHour()"
+                    ng-disabled="context.mode === 'edit'"
+                    ng-model="flavor.fee_hour"
+                    placeholder="{% trans 'enter an unit price by hour' %}"/>
+                  <p class="help-block alert-fixed alert-danger"
+                    ng-show="form.fee_hour.$invalid && !form.fee_hour.$error.required || !valid_FeeHour && !form.fee_hour.$error.required">
+                    {% trans "The worth must be greater than or equal to zero, up to two decimal places." %}
+                  </p>
+                  <p class="help-block alert-fixed alert-danger"
+                      ng-show="form.fee_hour.$error.required && form.fee_hour.$dirty">
+                      {% trans "An unit price is required." %}
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </tab>
+
+        <tab id="flavor-tab-access-button" heading={% trans "Flavor Access"%}>
+          <div class="flavors-pane-content">
+            <div class="modal-body clearfix">
+              <!-- Modal-form-left: Contains the form controls -->
+              <div class="security-group-left">
+                <table hz-table ng-cloak
+                  st-table="icanSelectProjects"
+                  st-safe-src="canSelectProjects"
+                  default-sort="name"
+                  default-sort-reverse="false"
+                  disabled="disabled"
+                  class="table table-bordered table-hover">
+
+                  <thead>
+                    <!--
+                      Table-batch-actions:
+                      This is where batch actions like searching, creating, and deleting.
+                    -->
+                    <tr>
+                      <th colspan="100">
+                        <div class="table_actions clearfix flavors-input-wrap">
+                          <action-list class="btn-addon">
+                            <action
+                              action-classes="'btn btn-primary'"
+                              disabled="numSelected === 0"
+                              callback="action.addProjects"
+                              item="$table">
+                              {% trans 'Add' %}
+                            </action>
+                          </action-list>
+                          <div class="fr search-bar">
+                            <search-bar icon-classes="fa-search" placeholder="{% trans "Filter" %}"></search-bar>
+                          </div>
+                        </div>
+                      </th>
+                    </tr>
+
+                    <!--
+                      Table-column-headers:
+                      This is where we declaratively define the table column headers.
+                      Include the select all checkbox if you want to enable select all
+                      for performing batch actions.
+                    -->
+                    <tr eagle-eye="table_heads" eagle-eye="select_col">
+                      <th class="select-col">
+                        <input type="checkbox"
+                          ng-init="selected = checkedCanSelectProjects"
+                          hz-select-page="canSelectProjects"/>
+                      </th>
+                      <th st-sort="name" st-sort-default="name" eagle-eye="data_col" class="flavor-projects-th">
+                        {$ ::context.header.projectsForSelection $}
+                      </th>
+                      <th class="txt-c" eagle-eye="data_col">{$ ::context.header.action $}</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+
+                    <tr ng-if="loadingCanSelect">
+                      <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif" alt="" /></td>
+                    </tr>
+
+                    <tr ng-if="!canSelectProjects.length && !loadingCanSelect" eagle-eye="empty_table">
+                      <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+                    </tr>
+
+                    <tr ng-repeat="pro in icanSelectProjects"
+                      ng-class="{'st-selected': checked[pro.id]}">
+                      <!--
+                        Table-row-checkbox:
+                        Project can select and unselect this row by clicking on this checkbox.
+                        Batch actions can then be perform on selected rows.
+                      -->
+                      <td class="select-col" eagle-eye="select_col">
+
+                          <input type="checkbox"
+                            hz-select="pro"
+                            ng-model="selected[pro.id].checked"
+                            hz-checkbox-group="canSelectProjects"/>
+
+                      </td>
+                      <td width="300" eagle-eye="data_col"><span class="security-group-name cut" title="{$ pro.name $}">{$ pro.name $}</span></td>
+                      <td class="text-center" eagle-eye="data_col">
+                        <div
+                          ng-click="action.addProject(pro)">
+                          <span class="icon add_to"></span>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+
+                  <!--
+                    Table-footer:
+                    This is where we display number of items and pagination controls.
+                    Ensure colspan is greater or equal to number of column-headers.
+                  -->
+                  <tfoot ng-if="canSelectProjects.length > 5">
+                    <tr>
+                      <td colspan="100" eagle-eye="data_page">
+                        <div st-pagination="" st-items-by-page="5" st-displayed-pages="5"></div>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+
+              <!-- Modal-form-right: The selected. -->
+              <div class="security-group-right flavor-projects-selected">
+                  <table hz-table ng-cloak
+                    st-table="iselectedProjects"
+                    st-safe-src="selectedProjects"
+                    default-sort="name"
+                    default-sort-reverse="false"
+                    disabled="disabled"
+                    class="table table-bordered table-hover">
+
+                    <thead>
+                      <!--
+                        Table-batch-actions:
+                        This is where batch actions like searching, creating, and deleting.
+                      -->
+                      <tr>
+                        <th colspan="100">
+                          <div class="table_actions clearfix flavors-input-wrap">
+                            <action-list class="btn-addon">
+                              <action
+                                action-classes="'btn btn-primary'"
+                                disabled="numSelected === 0"
+                                callback="action.removeProjects"
+                                item="$table">
+                                {% trans 'Remove' %}
+                              </action>
+                            </action-list>
+                            <div class="fr search-bar">
+                              <search-bar icon-classes="fa-search" placeholder="{% trans "Filter" %}"></search-bar>
+                            </div>
+                          </div>
+                        </th>
+                      </tr>
+
+                      <!--
+                        Table-column-headers:
+                        This is where we declaratively define the table column headers.
+                        Include the select all checkbox if you want to enable select all
+                        for performing batch actions.
+                      -->
+                      <tr eagle-eye="table_heads">
+                        <th class="select-col" eagle-eye="select_col">
+                          <input type="checkbox"
+                            ng-init="selected = checkedSelectedProjects"
+                            hz-select-page="selectedProjects"/>
+                        </th>
+                        <th st-sort="name" st-sort-default="name" eagle-eye="data_col" class="flavor-projects-th">
+                          {$ ::context.header.selectedProjects $}
+                        </th>
+                        <th class="txt-c" eagle-eye="data_col">{$ ::context.header.action $}</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+
+                      <tr ng-if="loadingSelected">
+                        <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif" alt="" /></td>
+                      </tr>
+
+                      <tr ng-if="!selectedProjects.length && !loadingSelected">
+                        <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+                      </tr>
+
+                      <tr ng-repeat="pro in iselectedProjects"
+                        ng-class="{'st-selected': checked[pro.id]}">
+                        <!--
+                          Table-row-checkbox:
+                          Project can select and unselect this row by clicking on this checkbox.
+                          Batch actions can then be perform on selected rows.
+                        -->
+                        <td class="select-col" eagle-eye="select_col">
+                          <input type="checkbox"
+                            hz-select="pro"
+                            ng-model="selected[pro.id].checked"
+                            hz-checkbox-group="selectedProjects"/>
+                        </td>
+                        <td eagle-eye="data_col">
+                          <span title="{$ pro.name $}">{$ pro.name $}</span>
+                        </td>
+                        <td class="text-center" eagle-eye="data_col">
+                          <div ng-click="action.removeProject(pro)">
+                            <span class="icon remove_to"></span>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+
+                    <!--
+                      Table-footer:
+                      This is where we display number of items and pagination controls.
+                      Ensure colspan is greater or equal to number of column-headers.
+                    -->
+                    <tfoot ng-if="selectedProjects.length > 5">
+                      <tr>
+                        <td colspan="100" eagle-eye="data_page">
+                          <div st-pagination="" st-items-by-page="5" st-displayed-pages="5"></div>
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+
+              </div>
+
+            </div>
+          </div>
+        </tab>
+      </tabset>
+
+    </fieldset>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button"
+          class="btn btn-primary"
+          type="button"
+          style="float:right;"
+          ng-disabled="form.$invalid || flavorInvalidTag || !canEdit || !valid_ram"
+          ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+    <p ng-if="!canEdit" style="float:right;" class="text-right alert-danger">{% trans "This flavor is being used, can not be updated" %}</p>
+</div>

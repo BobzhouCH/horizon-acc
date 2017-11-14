@@ -1,0 +1,77 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+      <div class="modal-description mt10">
+          <p>
+            {% trans "The status of a volume snapshot is normally managed automatically. In some circumstances an administrator may need to explicitly update the status value. This is equivalent to the cinder snapshot-reset-state command." %}
+          </p>
+      </div>
+      <fieldset>
+        <div class="form-group clearfix"
+          ng-class="{'has-error':form.type.$invalid && form.type.$dirty}">
+          <label for="name">
+            {% trans "Snapshot Name" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="name"
+              name="name"
+              type="text"
+              class="form-control verify-input"
+              disabled="true"
+              ng-maxlength="255"
+              ng-model="snapshot.name"
+              placeholder="{% trans 'Enter a snapshot name' %}">
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$invalid && form.name.$dirty">
+              {% trans "A snapshot name is required." %}
+          </div>
+        </div>
+
+        <div class="form-group clearfix">
+          <label for="description">
+            {% trans "State" %}
+          </label>
+          <div class="form-group-right">
+            <select
+              id="state"
+              name="state"
+              class="form-control"
+              ng-model="snapshot.status">
+              <option value="" disabled>
+                {% trans 'Select a state' %}
+              </option>
+              <option
+                ng-repeat="status in snapshotStatus"
+                ng-selected="status === snapshot.status"
+                value="{$ status $}">
+                  {$ status | decode:volumeSnapshotStatus $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+    </fieldset>
+    <!-- Modal-form-right: The description text. -->
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid || snapshot.status === initStatus"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

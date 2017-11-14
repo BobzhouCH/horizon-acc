@@ -1,0 +1,248 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Networks" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Networks") %}
+{% endblock page_header %}
+
+{% block content_main %}"contentMain tab-main"{% endblock %}
+
+{% block main %}
+<tabset id="network-tab" class="def-tabs" id="factoryEmit" justified="true">
+    <tab id="tab-network-button" heading={% trans "Networks"%}>
+      <div class="tab-pane-content">
+        <hz-magic-search-context filter-facets="filterFacets">
+        <table id="network-list" hz-table ng-cloak hopes-table-drag
+            st-table="inetworks"
+            st-safe-src="networks"
+            default-sort="name"
+            default-sort-reverse="false"
+            st-magic-search
+            ng-controller="projectNetworksController"
+            ng-init="userID = '{{ request.user.id }}'"
+            class="table table-bordered table-hover">
+
+            <thead>
+                <tr>
+                  <th colspan="100" class="bare">
+                      <div class="table_actions clearfix table_search_client">
+                         <action-list>
+                            <action
+                              action-classes="'btn btn-primary btn-action'"
+                              callback="actions.refresh">
+                              <i class="icon icon-refresh"></i>
+                              <span id="network-refresh"></span>
+                            </action>
+                          </action-list>
+                        <action-list>
+                            <action
+                              action-classes="'btn btn-primary btn-action'"
+                              callback="actions.create.open" disabled= "networks.length >= networkQuota || subnetNum>=subnetQuota">
+                              <i class="icon icon-add"></i>
+                              <span id="create-network">{% trans 'Create Network' %}
+                                <i ng-show= "networks.length >= networkQuota">{% trans '(network quota exceeded)' %}</i>
+                                <i ng-show= "subnetNum>=subnetQuota">{% trans '(subnet quota exceeded)' %}</i>
+                              </span>
+                            </action>
+                        </action-list>
+                          <action-list>
+                            <action
+                              action-classes="'btn btn-action btn-primary'"
+                              disabled="numSelected !== 1"
+                              callback="actions.edit.open" item="selectedData.aData">
+                              <i class="icon icon-edit"></i>
+                              <span id="edit-network">{% trans 'Edit' %}</span>
+                            </action>
+                        </action-list>
+                        <action-list>
+                            <action
+                              action-classes="'btn btn-action btn-danger'"
+                              disabled="numSelected == 0"
+                              callback="actions.deleted.batchDelete">
+                              <i class="icon icon-delete"></i>
+                              <span id="delete-network">{% trans 'Delete Network' %}</span>
+                            </action>
+                        </action-list>
+                        <div class="fr search-bar">
+                          <hz-magic-search-bar id="network-search"></hz-magic-search-bar>
+                        </div>
+                      </div>
+                  </th>
+                </tr>
+                <tr eagle-eye="table_heads">
+                    <th class="select-col" eagle-eye="select_col">
+                    <input type="checkbox"
+                      hz-select-page="networks"/>
+                    </th>
+                    <th st-sort-default="name" eagle-eye="data_col">
+                    <span st-sort="name">{$ ::context.header.name $}</span>
+                    </th>
+                    <th eagle-eye="data_col">
+                    <span st-sort="subnetSummary">{$ ::context.header.subnets $}</span>
+                    </th>
+                    <th eagle-eye="data_col">
+                    <span st-sort="shared">{$ ::context.header.shared $}</span>
+                    </th>
+                    <th eagle-eye="data_col">
+                    <span st-sort="network['router:external']">{$ ::context.header.external_network $}</span>
+                    </th>
+                </tr>
+
+            </thead>
+
+          <tbody>
+
+            <tr ng-if="!inetworksState">
+                <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+            </tr>
+
+            <tr ng-if="!inetworks.length && inetworksState">
+                <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+            </tr>
+              <!--<tr><td colspan="100"><pre>{$ inetworks|json $}</pre></td></tr>-->
+            <tr ng-repeat="network in inetworks" ng-class="{'st-selected': checked[network.id]}">
+                <td class="select-col" eagle-eye="select_col">
+                    <input type="checkbox"
+                        hz-select="network"
+                        ng-model="selected[network.id].checked"
+                        hz-checkbox-group="networks"/>
+                </td>
+                <td eagle-eye="data_col"><a ng-click="actions.createDetail.open(network.id)" href="javascript:;" data-url="/project/networks/detail/{$ network.id $}">{$ network.name $}</a></td>
+                <td eagle-eye="data_col">
+                {$ network.subnetSummary $}
+                </td>
+                <td eagle-eye="data_col">
+                  <i ng-show="network.shared" class="state-icon icon-true"></i>
+                  <i ng-hide="network.shared" class="state-icon icon-false"></i>
+                </td>
+                <td eagle-eye="data_col">
+                  <i ng-show="network['router:external']" class="state-icon icon-true"></i>
+                  <i ng-hide="network['router:external']" class="state-icon icon-false"></i>
+                </td>
+            </tr>
+          </tbody>
+          <tfoot ng-if="networks.length > 10">
+            <tr>
+              <td colspan="100" eagle-eye="data_page">
+                <table-footer></table-footer>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+        </hz-magic-search-context>
+      </div>
+    </tab>
+
+    <tab id="tab-network-subnet" heading={% trans "Subnets"%}>
+      <div class="tab-pane-content">
+        <hz-magic-search-context filter-facets="filterFacets">
+        <table id="subnet-list" hz-table ng-cloak hopes-table-drag
+              st-table="subnets"
+              st-safe-src="safeSubnets"
+              default-sort="name"
+              default-sort-reverse="false"
+              st-magic-search
+              ng-controller="projectSubnetsController"
+              ng-init="userID = '{{ request.user.id }}'"
+              disabled="disabled"
+              class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                  <th colspan="100" class="bare">
+                      <div class="table_actions clearfix">
+                            <action-list>
+                                <action
+                                  action-classes="'btn btn-primary btn-action'"
+                                  callback="actions.refresh">
+                                  <i class="icon icon-refresh"></i>
+                                  <span id="subnet-refresh"></span>
+                                </action>
+                              </action-list>
+                            <action-list>
+                                <action
+                                  action-classes="'btn btn-primary btn-action'"
+                                  callback="actions.create.open" disabled= "subnets.length >= quota">
+                                  <i class="icon icon-add"></i>
+                                  <span id="create-subnet">{% trans 'Create Subnet' %}
+                                    <i ng-show= "subnets.length >= quota">{% trans '(quota exceeded)' %}</i>
+                                  </span>
+                                </action>
+                            </action-list>
+                          <action-list>
+                                <action
+                                  action-classes="'btn btn-primary btn-action'"
+                                  disabled="disabled"
+                                  callback="actions.edit.open" item="selectedData.aData">
+                                  <i class="icon icon-edit"></i>
+                                  <span id="edit-subnet">{% trans 'Edit' %}</span>
+                                </action>
+                            </action-list>
+                            <action-list>
+                                <action
+                                  action-classes="'btn btn-action btn-danger'"
+                                  disabled="numSelected == 0"
+                                  callback="actions.deleted.batchDelete">
+                                  <i class="icon icon-delete"></i>
+                                  <span id="delete-subnet">{% trans 'Delete Subnet' %}</span>
+                                </action>
+                            </action-list>
+                            <div class="fr search-bar">
+                              <hz-magic-search-bar id="subnet-search"></hz-magic-search-bar>
+                            </div>
+                      </div>
+                  </th>
+              </tr>
+              <tr eagle-eye="table_heads">
+                  <th class="select-col" eagle-eye="select_col">
+                    <input type="checkbox"
+                      hz-select-page="safeSubnets"/>
+                    </th>
+                    <th eagle-eye="data_col">
+                    <span st-sort="name">{$ ::context.header.name $}</span>
+                    </th>
+                    <th eagle-eye="data_col">
+                    <span st-sort="cidr">{$ ::context.header.cidr $}</span>
+                    </th>
+                    <th eagle-eye="data_col">
+                    <span st-sort="gateway_ip">{$ ::context.header.gateway_ip $}</span>
+                    </th>
+                    <th eagle-eye="data_col">
+                    <span st-sort="network">{$ ::context.header.network $}</span>
+                    </th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr ng-if="!subnetsState">
+                    <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+                </tr>
+                <tr ng-if="!subnets.length && subnetsState">
+                    <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+                </tr>
+                <tr ng-repeat="subnet in subnets" ng-class="{'st-selected': checked[subnet.id]}">
+                    <td class="select-col" eagle-eye="select_col">
+                        <input type="checkbox"
+                            hz-select="subnet"
+                            ng-model="selected[subnet.id].checked"
+                            hz-checkbox-group="safeSubnets"/>
+                    </td>
+                    <td eagle-eye="data_col"><a ng-click="actions.createDetail.openSub(subnet.id)" href="javascript:;" data-url="/project/networks/detail/{$ subnet.id $}">{$ subnet.name $}</a></td>
+                    <td eagle-eye="data_col">{$ subnet.cidr $}</td>
+                    <td eagle-eye="data_col">{$ subnet.gateway_ip $}</td>
+                    <td eagle-eye="data_col">{$ subnet.network $}</td>
+                </tr>
+            </tbody>
+           <tfoot ng-if="safeSubnets.length > 10">
+            <tr>
+              <td colspan="100" eagle-eye="data_page">
+                <table-footer></table-footer>
+              </td>
+            </tr>
+           </tfoot>
+        </table>
+        </hz-magic-search-context>
+      </div>
+    </tab>
+</tabset>
+
+{% endblock %}

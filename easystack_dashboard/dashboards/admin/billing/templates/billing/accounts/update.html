@@ -1,0 +1,12 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Update Account" %}{% endblock %}
+
+{% block page_header %}
+  {# to make searchable false, just remove it from the include statement #}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Update Account") %}
+{% endblock page_header %}
+
+{% block main %}
+    {% include 'admin/billing/accounts/_update.html' %}
+{% endblock %}

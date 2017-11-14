@@ -1,0 +1,145 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Instance Snapshot" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Instance Snapshot") %}
+{% endblock page_header %}
+
+{% block main %}
+  <hz-magic-search-context filter-facets="filterFacets">
+    <table id="instance-snapshot" hz-table ng-cloak hopes-table-drag
+       st-table="iInstances"
+       st-safe-src="instances"
+       default-sort="created"
+       default-sort-reverse="true"
+       ng-controller="snapshotsInstanceCtrl"
+       disabled="disabled"
+       st-magic-search
+       class="table table-bordered table-hover">
+       <thead>
+       <tr>
+         <th colspan="100" class="bare">
+           <div class="table_actions clearfix">
+            <action-list>
+              <action
+                action-classes="'btn btn-primary btn-action'"
+                callback="actions.refresh">
+                <i class="icon icon-refresh"></i>
+                <span id="refresh"></span>
+              </action>
+            </action-list>
+
+            <button
+              class="btn btn-primary btn-action btn-group"
+              ng-disabled="numSelected === 0 || (!rootblock.active_fixing && rootblock.billing_need)"
+              ng-click="openLaunchInstanceWizard({successUrl: '/project/instances/', snapshot: selectedData.aData})"
+              ng-controller="LaunchInstanceModalCtrl">
+              <i class="icon icon-add"></i>
+              <span id="create-instance">{% trans 'Create Instance' %}</span>
+            </button>
+
+               <!--<div class="fl" style="margin:1px 5px 0 0">-->
+                   <!--<a id="create-instance" class="btn btn-default btn-sm" ng-disabled="numSelected === 0"-->
+                       <!--ng-click="openLaunchInstanceWizard({successUrl: '/project/instances/', snapshot: selectedData.aData})"-->
+                       <!--ng-controller="LaunchInstanceModalCtrl">-->
+                       <!--<i class="fa fa-user-plus"></i>-->
+                       <!--{% trans 'Create Instance' %}-->
+                   <!--</a>-->
+               <!--</div>-->
+
+             <action-list>
+              <action
+                action-classes="'btn btn-primary btn-action'"
+                disabled="numSelected !== 1"
+                callback="actions.edit.open" item="selectedData.aData">
+                <i class="icon icon-edit"></i>
+                <span id="instance-snapshot-edit">{% trans 'Edit' %}</span>
+              </action>
+            </action-list>
+
+             <action-list>
+               <action
+               action-classes="'btn btn-action btn-danger'"
+               disabled="numSelected === 0 || deleteTag "
+               callback="actions.deleted.batchDelete">
+               <i class="icon icon-delete"></i>
+               <span id="delete-instance-snapshot">{% trans 'Delete Instance Snapshot' %}</span>
+               </action>
+             </action-list>
+             <action-list dropdown>
+              <button id="network-more" type="button" class="btn btn-primary btn-action" dropdown-toggle>
+                  <i class="icon icon-more"></i>
+                  <span>{% trans 'More' %}</span>
+              </button>
+              <menu>
+                  <action
+                      button-type="menu-item"
+                      disabled="numSelected != 1 || (!rootblock.active_fixing && rootblock.billing_need)"
+                      callback="actions.createVolume.open" item="selectedData.aData">
+                      <span id="instance-snapshot-edit">{% trans 'Create Volume' %}</span>
+                  </action>
+              </menu>
+            </action-list>
+
+            <div class="fr search-bar">
+              <hz-magic-search-bar id="search"></hz-magic-search-bar>
+            </div>
+          </div>
+
+     </th>
+   </tr>
+
+   <tr eagle-eye="table_heads">
+     <th class="select-col" eagle-eye="select_col">
+     <input type="checkbox"
+       hz-select-page="instances"/>
+     </th>
+     <th>
+       <span st-sort="name" st-sort-default="name" eagle-eye="data_col">{$ ::context.header.name $}</span>
+     </th>
+     <th><span st-sort="describes" eagle-eye="data_col">{$ ::context.header.describes $}</span></th>
+     <th><span st-sort="instance_name" eagle-eye="data_col">{$ ::context.header.instance_name $}</span></th>
+     <th><span st-sort="status" eagle-eye="data_col">{$ ::context.header.state $}</span></th>
+     <th><span st-sort="disk_format" eagle-eye="data_col">{$ ::context.header.format $}</span></th>
+     <th><span st-sort="created_at" eagle-eye="data_col">{$ ::context.header.created $}</span></th>
+   </tr>
+ </thead>
+<tbody>
+
+   <tr ng-if="!iInstancesState">
+     <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+   </tr>
+
+   <tr ng-if="!iInstances.length && iInstancesState">
+     <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+   </tr>
+
+   <tr ng-repeat="instance in iInstances" ng-class="{'st-selected': checked[user.id]}">
+     <td class="select-col" eagle-eye="select_col">
+     <input type="checkbox"
+       hz-select="instance"
+       ng-model="selected[instance.id].checked"
+       hz-checkbox-group="instances"/>
+     </td>
+
+     <!-- Table-row-info-column -->
+     <td eagle-eye="data_col"><span title="{$ instance.name $}">{$ instance.name $}</span></td>
+     <td eagle-eye="data_col"><span title="{$ instance.properties.description $}">{$ instance.properties.description $}</span></td>
+     <td eagle-eye="data_col"><span title="{$ instance.instance_name $}">{$ instance.instance_name $}</span></td>
+     <td eagle-eye="data_col">{$ instance.status | decode:imageStatus $}</td>
+     <td eagle-eye="data_col">{$ instance.disk_format $}</td>
+     <td eagle-eye="data_col">{$ instance.created_at $}</td>
+   </tr>
+ </tbody>
+
+<tfoot ng-if="instances.length > 10">
+    <tr>
+      <td colspan="100" eagle-eye="data_page">
+        <table-footer></table-footer>
+     </td>
+    </tr>
+</tfoot>
+  </table>
+</hz-magic-search-context>
+{% endblock %}

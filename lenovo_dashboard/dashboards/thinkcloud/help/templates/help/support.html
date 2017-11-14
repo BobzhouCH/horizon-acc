@@ -1,0 +1,55 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Support Services" %}{% endblock %}
+
+{% block page_header %}
+    {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Support Services") %}
+{% endblock page_header %}
+
+{% block main %}
+    <div class="help-header">
+        <h1>{% trans "Support Service" %}</h1>
+    </div>
+    <hr/>
+    <div class="support">
+        <div class="content">
+            <h2>{% trans "Product Introduction" %}</h2>
+            <ul>
+                <li>
+                    {% blocktrans with specificationLink="thinkcloud/docs/Lenovo%20OpenStack%20Specification.pdf" %}
+                        Please refer to <a href="{{ STATIC_URL }}{{ specificationLink }}"
+                                           target="_blank">Lenovo OpenStack Specification</a>
+                        for more details of product features.
+                    {% endblocktrans %}
+                </li>
+            </ul>
+            <h2>{% trans "Documentation" %}</h2>
+            <ul>
+                <li>
+                    {% blocktrans with userGuideLink="thinkcloud/docs/Lenovo%20OpenStack%20UserGuide.pdf" %}
+                        <a href="{{ STATIC_URL }}{{ userGuideLink }}"
+                           target="_blank">Lenovo OpenStack User Guide</a>
+                        for administrators and cloud users.
+                    {% endblocktrans %}
+                </li>
+            </ul>
+            <h2>{% trans "Contact with Us" %}</h2>
+            <ul>
+                <li>
+                    {% blocktrans with support_email="PSChina@lenovo.com" support_call="4006100909" %}
+                        If you still have more questions or need to report a
+                        problem/suggestion, please call {{ support_call }}, or email to
+                        <a href="mailto:{{ support_email }}">{{ support_email }}</a>.
+                    {% endblocktrans %}
+                </li>
+                <li>
+                    {% blocktrans %}
+                        We will get back to you as soon as possible.
+                    {% endblocktrans %}
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+

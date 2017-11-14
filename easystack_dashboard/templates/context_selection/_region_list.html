@@ -1,0 +1,44 @@
+{% load i18n %}
+{% load url from future %}
+
+{% if multi_region %}
+
+  <div id="region-dropdown" class="dropdown-box">
+  <button class="btn dropdown-box-toggle js-dropdown">
+    <span class="region-icon"></span>
+    <span class="dropdown-box-toggle-overview cut js-togle-overview">{{ region_name }}</span>
+    <span class="caret"></span>
+    <p class="dropdown-box-toggle-tips js-toggle-tips"></p>
+  </button>
+  <div class="dropdown-content js-drop">
+      <div class="dropdown-input">
+        <input class="js-filter" type="text" placeholder="Search"/><span class="fa fa-search search-icon drop-search"></span>
+      </div>
+      <div id="item-list" class="dropdown-list js-drop-list">
+        {% with panel_url=request.horizon.panel.get_absolute_url %}
+          <ul class="js-content">
+            {% for region, item in regions.items %}
+              <li class="ele">
+              {% if item.display_name == region_name %}
+                <a class="active" href="{% url 'switch_services_region' region %}?next={{ item.url }}">
+                  <div class="fa smallC mr5"></div>
+                  <span class="cut">{{ item.display_name }}</span>
+                </a>
+              {% else %}
+                <a href="{% url 'switch_services_region' region %}?next={{ item.url }}">
+                  <div class="fa smallC mr5"></div>
+                  <span class="cut">{{ item.display_name }}</span>
+                </a>
+              {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% endwith %}
+          <div class="drag-wrap js-drag-wrap">
+              <div class="drag-btn js-drag-btn"></div>
+          </div>
+      </div>
+      <div class="drop-tips js-drop-tips"></div>
+  </div><!-- end of dropdown-menu -->
+</div><!-- end of context-selection -->
+{% endif %}

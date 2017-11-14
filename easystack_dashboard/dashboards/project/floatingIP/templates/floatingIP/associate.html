@@ -1,0 +1,97 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+    <h3 class="modal-title">{$ ::context.title $}</h3>
+    <p class="modal-colsed" ng-click="action.cancel()">
+        <i class="modal-colsed-icon"></i>
+    </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+    <fieldset>
+      <div class="form-group clearfix"
+        ng-class="{'has-error':form.instance.$invalid && form.instance.$dirty}">
+        <label for="floatingip">
+          {% trans "FloatingIP" %}
+        </label>
+        <div class="form-group-right">
+          <input disabled
+            id="floatingip"
+            class="form-control"
+            ng-model="floatingip.floating_ip_address">
+        </div>
+      </div>
+
+      <div class="form-group clearfix"
+        ng-if="context.mode == 'associate-instance'">
+        <label for="instance">
+          {% trans "Instance" %}
+        </label>
+        <div class="form-group-right">
+          <select
+           required
+           id="instance"
+           name="instance"
+           class="form-control"
+           ng-class="{strikeLoading: !dropdown.ports}"
+           ng-model="floatingip.port">
+             <option value="" disabled>
+               {% trans 'Select a instance' %}
+             </option>
+             <option
+               ng-repeat="port in dropdown.ports"
+               value="{$ port.id $}_{$ port.fixed_ips[0].ip_address $}">
+               {$ port.device_name $} : {$ port.fixed_ips[0].ip_address $}
+             </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group clearfix"
+        ng-if="context.mode == 'associate-router'">
+        <label for="router">
+          {% trans "Router" %}
+        </label>
+        <div class="form-group-right">
+          <select
+           required
+           id="instance"
+           name="instance"
+           class="form-control"
+           ng-class="{strikeLoading: !dropdown.routers}"
+           ng-model="floatingip.router">
+             <option value="" disabled>
+               {% trans 'Select a router' %}
+             </option>
+             <option
+               ng-repeat="router in dropdown.routers"
+               value="{$ router.id $}">
+               {$ router.name $}
+             </option>
+          </select>
+        </div>
+      </div>
+      </fieldset>
+    <!-- Modal-form-right: The description text. -->
+  </div>
+</form>
+
+<div class="modal-footer" ng-if="context.mode == 'associate-instance'">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>
+
+<div class="modal-footer" ng-if="context.mode == 'associate-router'">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+</div>

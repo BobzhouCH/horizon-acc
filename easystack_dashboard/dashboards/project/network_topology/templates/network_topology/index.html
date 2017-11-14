@@ -1,0 +1,71 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% load url from future %}
+{% block title %}{% trans "Network Topology" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Network Topology") %}
+{% endblock page_header %}
+
+{% block main %}
+
+<noscript>
+{% trans "This pane needs javascript support." %}
+</noscript>
+
+<div class="topologyWrap">
+    <div class="topologyTop js-topo">
+    	<div class="topologyTab">
+            <span class="networkTab network_select js-network">{% trans "Internal Network"%}</span>
+            <span class="networkTab js-network">{% trans "Shared Network"%}</span>
+        </div>
+    </div>
+    <p class="js-nodata" style="display:none;background:#fff;text-align:center;margin-left:10px;">{% trans "No Data" %}</p>
+    <div class="topoContent js-topoWrap"></div>
+</div>
+
+
+<div class="topoTips">
+	<div id="js-serverTips" class="white none" style="position:relative; height:40px;">
+    	<p style="margin:8px 0 5px 20px;">{% trans "Instance Detail"%}</p>
+        <span style="position:absolute; left:130px;">{% trans "Instance IP"%}</span>
+        <span style="position:absolute; left:270px;">{% trans "Internal Subnet"%}</span>
+        <span style="position:absolute; left:430px;">{% trans "Gateway IP"%}</span>
+        <span style="position:absolute; left:586px;">{% trans "Router IP"%}</span>
+        <span style="position:absolute; left:704px;">{% trans "External Subnet"%}</span>
+    </div>
+    
+    <div id="js-networkTips" class="white none" style="position:relative; height:40px;">
+    	<p style="margin:8px 0 5px 20px;">{% trans "Network Detail"%}</p>
+        <span style="position:absolute; left:150px;">{% trans "Internal Subnet"%}</span>
+        <span style="position:absolute; left:300px;">{% trans "Gateway IP"%}</span>
+        <span style="position:absolute; left:406px;">{% trans "Instance"%}</span>
+    </div>
+    
+    <div id="js-routerTips" class="white none" style="position:relative; height:40px;">
+    	<p style="margin:8px 0 5px 20px;">{% trans "Router Detail"%}</p>
+        <span style="position:absolute; left:20px;">{% trans "Internal Subnet"%}</span>
+        <span style="position:absolute; left:164px;">{% trans "Gateway IP"%}</span>
+        <span style="position:absolute; left:390px;">{% trans "Router IP"%}</span>
+        <span style="position:absolute; left:495px;">{% trans "External Subnet"%}</span>
+    </div>
+	<div class="topoTipsContent"></div>
+</div>
+
+<span class="network-name none">{% trans "External Network"%}</span>
+<span class="network-name none">{% trans "Internal Network"%}</span>
+<span class="network-name none">{% trans "Shared Network"%}</span>
+
+<span class="tips-msg none">{% trans "Instance has no networks"%}</span>
+<span class="tips-msg none">{% trans "There is no instances in network"%}</span>
+<span class="tips-msg none">{% trans "There is no network connected to router"%}</span>
+<script>
+$(document).ready(function(){
+	//拓扑
+	var p = new topo("js-topoWrap");
+	p.init();
+});
+</script>
+<span data-networktopology="{% url 'horizon:project:network_topology:json' %}" id="networktopology"></span>
+<div id="topologyMessages"></div>
+{% endblock %}

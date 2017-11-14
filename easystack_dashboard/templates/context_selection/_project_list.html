@@ -1,0 +1,48 @@
+{% load i18n %}
+{% load url from future %}
+
+{% if projects %}
+
+<div id="project-dropdown" class="dropdown-box">
+  <button class="btn dropdown-box-toggle js-dropdown">
+{% comment %} modify by lenovo {% endcomment %}
+{#    <span class="edit-icon"></span>#}
+    <span class="fa fa-list-alt nav-icon"></span>
+    <span class="dropdown-box-toggle-overview cut js-togle-overview">{{ project_name }}</span>
+    <span class="fa fa-caret-down"></span>
+{% comment %} modify by lenovo {% endcomment %}
+{#    <span class="caret"></span>#}
+{#    <p class="dropdown-box-toggle-tips js-toggle-tips"></p>#}
+  </button>
+  <div class="dropdown-content js-drop">
+      <div class="dropdown-input">
+        <input class="js-filter" type="text" placeholder="Search"/><span class="fa fa-search search-icon drop-search"></span>
+      </div>
+      <div id="item-list" class="dropdown-list js-drop-list" style="overflow: auto">
+        {% with panel_url=request.horizon.panel.get_absolute_url %}
+          <ul class="js-content">
+            {% for project in projects %}
+              <li class="ele">
+              {% if project.name == project_name %}
+                <a class="active" href="{% url 'switch_tenants' project.id %}?next={{ panel_url }}">
+                  <div class="fa smallC mr5"></div>
+                  <span class="cut">{{ project.name }}</span>
+                </a>
+              {% else %}
+                <a href="{% url 'switch_tenants' project.id %}?next={{ panel_url }}">
+                  <div class="fa smallC mr5"></div>
+                  <span class="cut">{{ project.name }}</span>
+                </a>
+              {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% endwith %}
+          <div class="drag-wrap js-drag-wrap">
+              <div class="drag-btn js-drag-btn"></div>
+          </div>
+      </div>
+      <div class="drop-tips js-drop-tips"></div>
+  </div>
+</div>
+{% endif %}

@@ -1,0 +1,8 @@
+{% extends "easystack_dashboard/client_side/es_template.html" %}
+{% load horizon %}
+
+{% block id %}empty_row_template{% endblock %}
+
+{% block template %}{% spaceless %}{% jstemplate %}
+<tr class="odd empty"><td colspan="[[colspan]]">No items to display.</td></tr>
+{% endjstemplate %}{% endspaceless %}{% endblock %}

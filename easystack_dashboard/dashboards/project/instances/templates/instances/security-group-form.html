@@ -1,0 +1,228 @@
+{% load i18n %}
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The canSelect pane. -->
+<div class="modal-body clearfix">
+  <!-- Modal-form-left: Contains the form controls -->
+  <div class="security-group-left">
+    <table hz-table ng-cloak
+      st-table="icanSelectSecurityGroups"
+      st-safe-src="canSelectSecurityGroups"
+      default-sort="name"
+      default-sort-reverse="false"
+      disabled="disabled"
+      class="table table-bordered table-hover">
+
+      <thead>
+        <!--
+          Table-batch-actions:
+          This is where batch actions like searching, creating, and deleting.
+        -->
+        <tr>
+          <th colspan="100">
+            <div class="table_actions clearfix">
+              <action-list class="btn-addon">
+                <action
+                  action-classes="'btn btn-primary'"
+                  disabled="numSelected === 0"
+                  callback="action.addSecurityGroups"
+                  item="$table">
+                  {% trans 'Add' %}
+                </action>
+              </action-list>
+              <div class="fr search-bar">
+                <search-bar icon-classes="fa-search" placeholder="{% trans "Filter" %}"></search-bar>
+              </div>
+            </div>
+          </th>
+        </tr>
+
+        <!--
+          Table-column-headers:
+          This is where we declaratively define the table column headers.
+          Include the select all checkbox if you want to enable select all
+          for performing batch actions.
+        -->
+        <tr eagle-eye="table_heads" eagle-eye="select_col">
+          <th class="select-col">
+            <input type="checkbox"
+              ng-init="selected = checkedCanSelectSecurityGroups"
+              hz-select-page="canSelectSecurityGroups"/>
+          </th>
+          <th st-sort="name" st-sort-default="name" eagle-eye="data_col">
+            {$ ::context.header.securityGroupsForSelection $}
+          </th>
+          <th class="txt-c" eagle-eye="data_col">{$ ::context.header.action $}</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr ng-if="loadingCanSelect">
+          <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif" alt="" /></td>
+        </tr>
+
+        <tr ng-if="!canSelectSecurityGroups.length && !loadingCanSelect" eagle-eye="empty_table">
+          <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+        </tr>
+
+        <tr ng-repeat="sec in icanSelectSecurityGroups"
+          ng-class="{'st-selected': checked[sec.id]}">
+          <!--
+            Table-row-checkbox:
+            Project can select and unselect this row by clicking on this checkbox.
+            Batch actions can then be perform on selected rows.
+          -->
+          <td class="select-col" eagle-eye="select_col">
+
+              <input type="checkbox"
+                hz-select="sec"
+                ng-model="selected[sec.id].checked"
+                hz-checkbox-group="canSelectSecurityGroups"/>
+
+          </td>
+          <td width="300" eagle-eye="data_col"><span class="security-group-name cut" title="{$ sec.name $}">{$ sec.name $}</span></td>
+          <td class="text-center" eagle-eye="data_col">
+            <div
+              ng-click="action.addSecurityGroup(sec)">
+              <span class="icon add_to"></span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+
+      <!--
+        Table-footer:
+        This is where we display number of items and pagination controls.
+        Ensure colspan is greater or equal to number of column-headers.
+      -->
+      <tfoot>
+        <tr>
+          <td colspan="100" eagle-eye="data_page">
+            <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <!-- Modal-form-right: The selected. -->
+  <div class="security-group-right">
+      <table hz-table ng-cloak
+        st-table="iselectedSecurityGroups"
+        st-safe-src="selectedSecurityGroups"
+        default-sort="name"
+        default-sort-reverse="false"
+        disabled="disabled"
+        class="table table-bordered table-hover">
+
+        <thead>
+          <!--
+            Table-batch-actions:
+            This is where batch actions like searching, creating, and deleting.
+          -->
+          <tr>
+            <th colspan="100">
+              <div class="table_actions clearfix">
+                <action-list class="btn-addon">
+                  <action
+                    action-classes="'btn btn-primary'"
+                    disabled="numSelected === 0"
+                    callback="action.removeSecurityGroups"
+                    item="$table">
+                    {% trans 'Remove' %}
+                  </action>
+                </action-list>
+                <div class="fr search-bar">
+                  <search-bar icon-classes="fa-search" placeholder="{% trans "Filter" %}"></search-bar>
+                </div>
+              </div>
+            </th>
+          </tr>
+
+          <!--
+            Table-column-headers:
+            This is where we declaratively define the table column headers.
+            Include the select all checkbox if you want to enable select all
+            for performing batch actions.
+          -->
+          <tr eagle-eye="table_heads">
+            <th class="select-col" eagle-eye="select_col">
+              <input type="checkbox"
+                ng-init="selected = checkedSelectedSecurityGroups"
+                hz-select-page="selectedSecurityGroups"/>
+            </th>
+            <th st-sort="name" st-sort-default="name" eagle-eye="data_col">
+              {$ ::context.header.selectedSecurityGroups $}
+            </th>
+            <th class="txt-c" eagle-eye="data_col">{$ ::context.header.action $}</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr ng-if="loadingSelected">
+            <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif" alt="" /></td>
+          </tr>
+
+          <tr ng-if="!selectedSecurityGroups.length && !loadingSelected">
+            <td colspan="100" eagle-eye="empty_table">{% trans "No Data" %}</td>
+          </tr>
+
+          <tr ng-repeat="sec in iselectedSecurityGroups"
+            ng-class="{'st-selected': checked[sec.id]}">
+            <!--
+              Table-row-checkbox:
+              Project can select and unselect this row by clicking on this checkbox.
+              Batch actions can then be perform on selected rows.
+            -->
+            <td class="select-col" eagle-eye="select_col">
+              <input type="checkbox"
+                hz-select="sec"
+                ng-model="selected[sec.id].checked"
+                hz-checkbox-group="selectedSecurityGroups"/>
+            </td>
+            <td width="300" eagle-eye="data_col"><span class="security-group-name cut" title="{$ sec.name $}">{$ sec.name $}</span></td>
+
+            <td class="text-center" eagle-eye="data_col">
+              <div ng-click="action.removeSecurityGroup(sec)">
+                <span class="icon remove_to"></span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+
+        <!--
+          Table-footer:
+          This is where we display number of items and pagination controls.
+          Ensure colspan is greater or equal to number of column-headers.
+        -->
+        <tfoot>
+          <tr>
+            <td colspan="100" eagle-eye="data_page">
+              <div st-pagination="" st-items-by-page="5" st-displayed-pages="10"></div>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+
+  </div>
+
+</div>
+
+<!-- Modal-footer: Project can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button" class="btn btn-primary" type="button"
+    ng-disabled="form.$invalid"
+    ng-click="action.submitSecurityGroups(selectedSecs)">
+    {$ ::context.submit $}
+  </button>
+</div>
+

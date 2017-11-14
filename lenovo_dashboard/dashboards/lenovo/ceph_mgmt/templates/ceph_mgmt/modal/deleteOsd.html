@@ -1,0 +1,90 @@
+{%load i18n%}
+<script type="text/ng-template" id="deleteOsd.html">
+<div id="delete_osd_box">
+    <div class="modal-header">
+        <div class="sing-log">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="list-group">
+            <p>{% trans "Are you sure you want to permanently delete these OSDs from" %} <b>{$ data.server $}</b>?</p>
+        </div>
+        <div class="list-group">
+            <p class="delete-osd-selected">{$ data.osds_delete $}</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="cancel" ng-click="modalClose()">{% trans "Cancel" %}</button>
+        <button class="btn-ok" ng-click="deleteOsd()">{% trans "Ok" %}</button>
+    </div>
+</div>
+</script>
+
+<script type="text/ng-template" id="serverRemove.html">
+    <div class="modal-header">
+        <div class="sing-log">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="list-group">
+            <p>{% trans "Are you sure you want to permanently delete server" %} <b>{$ removeServerData.name $}</b> ?</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="cancel" ng-click="close()">{% trans "Cancel" %}</button>
+        <button class="btn-ok" ng-click="removeServerAction(removeServerData)">{% trans "Ok" %}</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="addOsd.html">
+<div>
+    <a href="#" class="close" ng-click="close()">×</a>
+    <h3>{% trans "Add New OSD" %}</h3>
+    <h4>{% trans "Select one or more disks to create a OSD." %}</h4>
+    <div id="disks_list">
+        <h5>Disks</h5>
+        <div class="sort-filter">
+               <div class="disk-drop-list dropdown">
+                   <span>Sort by</span>
+                   <a class="dropdown-toggle" href="#">
+                        {$ sortSelect $}
+                      <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <p ng-click="sortDisks('name')">{% trans "name" %}</p
+                        </li>
+                    </ul>
+                </div>
+        </div>
+        <div class="avail-disks-box">
+            <div ng-repeat="disk in availDisks | orderBy:sort:desc">
+                <p class="row col-xs-12"><span class="col-xs-1 glyphicon glyphicon-ok-sign" id="{$ disk.uuid $}" ng-click="changeAvailDisks($event, disk.type)"></span><span class="col-xs-5">{$ disk.name $}</span><span class="col-xs-4">{$ disk.capability | formatUnit $}</span><span class="col-xs-2">{$ disk.type | filterDiskType $}</span></p>
+            </div>
+        </div>
+
+    </div>
+    <div class="footer-right-btn">
+        <input type="submit" class="btn btn-primary yes" value="OK" ng-click="osdAdd(serverId, disksIdArray)" />
+    </div>
+</div>
+</script>
+
+<script type="text/ng-template" id="hostDownConfirm.html">
+    <div class="modal-header">
+        <a href="#" class="close" ng-click="close()">×</a>
+        <div class="sing-log">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="list-group">
+            <p>{% trans "Are you sure you want to {$ actionType $} the cluster ?" %}</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn-ok" ng-click="action()">{% trans "Ok" %}</button>
+    </div>
+</script>

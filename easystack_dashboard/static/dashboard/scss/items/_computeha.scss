@@ -1,0 +1,48 @@
+/**
+ ** Author : hejing
+ ** Module : the style for computeHA users form
+ ** Data   : 2017-04-12
+**/
+
+/* the following is for compute HA start */
+.editComputeHAContent .modal-dialog { width: 950px; }
+.form-control-feedback { width: 28px; height: 28px; line-height: 28px; }
+.nodes-left, .nodes-right {
+  padding: 10px;
+  padding-bottom: 0;
+  .search-bar { min-width: 200px; }
+  .table-bordered {
+    border: 0;
+    margin-bottom: 0;
+    thead tr:first-child {
+      th { border: 0; padding: 0; }
+    }
+    .table_actions { padding: 10px 0px; }
+  }
+  .node-modal-header {
+    background: none; color: #000; border-bottom: 1px solid #e5e5e5; padding:0 0 0 0px
+  }
+  .node-modal-title {
+    line-height:25px
+  }
+}
+.nodes-left {
+  float: left;
+  width: 50%;
+}
+.nodes-right {
+  float: right;
+  width: 50%;
+}
+.computeha-input {
+  float:left; margin-top:0px;
+  .computeha-input-label {
+    width:180px
+  }
+  .computeha-input-radio {
+    text-align:left; margin-top:2px;
+    input {margin-left:10px; vertical-align: text-bottom;}
+  }
+}
+
+/* the following is for compute HA end */

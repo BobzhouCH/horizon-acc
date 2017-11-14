@@ -1,0 +1,29 @@
+{%load i18n%}
+<script type="text/ng-template"  id="add_host_cluster.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="close()">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">{% trans "Close" %}</span>
+        </button>
+        <h4 class="modal-title">{% trans "ADD NEW CLUSTER" %}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="list-group">
+            <input type="text" name="server_name" ng-model="addCluster.name" placeholder="Cluster Name" />
+        </div>
+        <div class="list-group">
+            <input type="text" name="user_name" ng-model="addCluster.addr" placeholder="Cluster Addr" />
+        </div>
+         <!--<div class="list-group">-->
+            <!--<input type="text" name="server_name" ng-model="addCluster.name" placeholder="Cluster Name" />-->
+        <!--</div>-->
+        <!--<div class="list-group">-->
+            <!--<input type="text" name="user_name" ng-model="addCluster.addr" placeholder="Cluster Addr" />-->
+        <!--</div>-->
+    </div>
+    <div class="modal-footer">
+        <button class="cancel" ng-click="close()">{% trans "Cancel" %}</button>
+        <button class="btn-ok" ng-click="AddClusterAction($event)">{% trans "OK" %}</button>
+    </div>
+
+</script>

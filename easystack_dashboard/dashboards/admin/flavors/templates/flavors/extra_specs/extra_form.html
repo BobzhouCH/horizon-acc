@@ -1,0 +1,379 @@
+{% load i18n %}
+
+<!--
+ Author : liufeng24@lenovo.com
+ Module : extra_specs
+ Data   : 2016-12-26
+-->
+
+<!-- Modal-header: Simple title describing purpose of this pane. -->
+<div class="modal-header clearfix">
+  <h3 class="modal-title">{$ ::context.title $}</h3>
+  <p class="modal-colsed" ng-click="action.cancel()">
+    <i class="modal-colsed-icon"></i>
+  </p>
+</div>
+
+<!-- Modal-form: The body of this pane. -->
+<form novalidate name="form" ng-submit="submit(form.$valid)">
+  <div class="modal-body clearfix">
+    <!-- Modal-form-left: Contains the form controls -->
+      <div class="modal-description"
+        ng-if="context.mode === 'create'">
+          <p>
+            {% trans "Create a new extra spec key-value pair for a flavor" %}
+          </p>
+      </div>
+
+      <fieldset>
+        <!--
+            Extra KeyType Selectiong (required):
+            Create-mode: create
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create'">
+          <label for="extra_keytype">
+            *{% trans "Extra Spec" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="extra_keytype"
+              name="extra_keytype"
+              class="form-control"
+              ng-model="extra.keytype"
+              ng-change="updateInputValue()">
+              <option value="" disabled>
+                {% trans 'select extra spec' %}
+              </option>
+              <option
+                ng-repeat="s in dropdown.key_type"
+                value="{$ s.value $}">
+                {$ s.key $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!--
+          extra key input (required):
+          Create-mode: create
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' && extra.keytype === 'CustomExtraSpec'"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="key">
+            *{% trans "Key" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="key"
+              name="key"
+              class="form-control verify-input"
+              type="text"
+              ng-model="extra.key"
+              ng-maxlength="255"
+              placeholder="{% trans 'Enter an extra spec key' %}"/>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "A extra spec key is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength && form.name.$dirty">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+
+        <!--
+          extra value input (required):
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' && extra.keytype === 'CustomExtraSpec'"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="value">
+            *{% trans "Value" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="value"
+              name="value"
+              class="form-control verify-input"
+              type="text"
+              ng-model="extra.value"
+              ng-maxlength="255"
+              placeholder="{% trans 'Enter an extra spec value' %}"/>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "A extra spec value is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength && form.name.$dirty">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+
+        <!--
+            CPU Policy Selectiong (required):
+            Create-mode: create
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' && extra.keytype === 'hw:cpu_policy'">
+          <label for="cpu_policy">
+            *{% trans "CPU Policy" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="cpu_policy"
+              name="cpu_policy"
+              class="form-control"
+              ng-model="extra.value">
+              <option value="" disabled>
+                {% trans 'Select CPU policy' %}
+              </option>
+              <option
+                ng-repeat="s in dropdown.cpu_policy"
+                value="{$ s.value $}">
+                {$ s.key $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+
+
+        <!--
+            CPU Theads Policy Selectiong (required):
+            Create-mode: create
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' && extra.keytype === 'hw:cpu_thread_policy'">
+          <label for="cpu_thread_policy">
+            *{% trans "CPU Threads Policy" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="cpu_thread_policy"
+              name="cpu_thread_policy"
+              class="form-control"
+              ng-model="extra.value">
+              <option value="" disabled>
+                {% trans 'select cpu threads policy' %}
+              </option>
+              <option
+                ng-repeat="s in dropdown.cpu_thread_policy"
+                value="{$ s.value $}">
+                {$ s.key $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!--
+          Number of vNUMA Node input (required):
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' && extra.keytype === 'hw:numa_nodes'"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="value">
+            *{% trans "Number of vNUMA nodes" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="value"
+              name="value"
+              class="form-control verify-input"
+              type="text"
+              ng-model="extra.value1"
+              ng-pattern="/^[0-9]+$/"
+              ng-maxlength="255"
+              placeholder="{% trans 'enter number of virtual NUMA (vNUMA) nodes' %}"/>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "A numa nodes number value is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength && form.name.$dirty">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+          G2H Guest NUMA Node input (required):
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' && extra.keytype === 'hw:numa_node'"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="guest_numa_node">
+            *{% trans "Guest NUMA Node" %}
+          </label>
+          <div class="form-group-right">
+            <!--validate-value-->
+            <input required validate-value
+              id="guest_numa_node"
+              name="guest_numa_node"
+              class="form-control verify-input"
+              type="text"
+              ng-model="extra.key1"
+              ng-maxlength="255"
+              placeholder="{% trans 'enter a guest numa node number' %}"
+              ng-disabled="!extra.value1 || extra.value1 === '1' || extra.value1 === '0'"/>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.required && form.guest_numa_node.$dirty">
+              {% trans "A guest numa node number is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength && form.guest_numa_node.$dirty">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.guest_numa_node.$error.validateValue && form.guest_numa_node.$dirty">
+              {% trans "expecting 0 to" %} {$ extra.value1 - 1 $}
+            </p>
+          </div>
+        </div>
+
+
+        <!--
+          G2H Host NUMA Node input (required):
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' && extra.keytype === 'hw:numa_node'"
+          ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+          <label for="host_numa_node">
+            *{% trans "Host NUMA Node" %}
+          </label>
+          <div class="form-group-right">
+            <input required
+              id="host_numa_node"
+              name="host_numa_node"
+              class="form-control verify-input"
+              type="text"
+              ng-model="extra.value"
+              ng-maxlength="255"
+              placeholder="{% trans 'enter a host numa node value' %}"/>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.required && form.name.$dirty">
+              {% trans "A host numa node number is required." %}
+            </p>
+            <p class="help-block alert-fixed alert-danger"
+              ng-show="form.name.$error.maxlength && form.name.$dirty">
+              {% trans "Name length should be less than 255 chars." %}
+            </p>
+          </div>
+        </div>
+
+        <!--
+            PCI NUMA AFFINITY (required):
+            Create-mode: create
+        -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' && extra.keytype === 'hw:pci_numa_affinity'">
+          <label for="pci_numa_affinity">
+            *{% trans "PCI NUMA Affinity" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="pci_numa_affinity"
+              name="pci_numa_affinity"
+              class="form-control"
+              ng-model="extra.value">
+              <option value="" disabled>
+                {% trans 'select PCI NUMA affinity policy' %}
+              </option>
+              <option
+                ng-repeat="s in dropdown.pci_numa_affinity"
+                value="{$ s.value $}">
+                {$ s.key $}
+              </option>
+            </select>
+          </div>
+        </div>
+
+<!--  hugepages -->
+        <div class="form-group clearfix"
+          ng-if="context.mode === 'create' && extra.keytype === 'hw:mem_page_size'">
+          <label for="mem_page_size">
+            *{% trans "Memory Page Size" %}
+          </label>
+          <div class="form-group-right">
+            <select required
+              id="mem_page_size"
+              name="mem_page_size"
+              class="form-control"
+              ng-model="extra.value">
+              <option value="" disabled>
+                {% trans 'select memory page size' %}
+              </option>
+              <option
+                ng-repeat="s in dropdown.mem_page_size"
+                value="{$ s.value $}">
+                {$ s.key $}
+              </option>
+            </select>
+          </div>
+        </div>
+          <div class="form-group clearfix"
+               ng-if="context.mode === 'create' && extra.keytype === 'pci_passthrough:alias'">
+              <label for="mem_page_size">
+                  *{% trans "Type" %}
+              </label>
+              <div class="form-group-right">
+                  <select class="form-control"  required
+                          id="pci_alias_device"
+                          name="pci_alias_device"
+                          ng-model="extra.value">
+                      <option value="" disabled>
+		      {% trans "Select PCI alias device" %}
+                      </option>
+                      <option value="Alias_VF">
+                          Alias VF
+                      </option>
+                      <option value="Alias_PF">
+                          Alias PF
+                      </option>
+                      <!--<option ng-repeat="s in dropdown.pci_alias_device" value="{$ s $}">{$ s $}</option>-->
+                  </select>
+              </div>
+          </div>
+
+          <div class="form-group clearfix"
+               ng-if="context.mode === 'create' && extra.keytype === 'pci_passthrough:alias' && extra.value"
+               ng-class="{'has-error':form.name.$invalid && form.name.$dirty}">
+              <label for="value" ng-if="extra.value === 'Alias_VF'">
+	            *{% trans "Number" %}
+              </label>
+              <label for="value" ng-if="extra.value === 'Alias_PF'">
+	            *{% trans "Number" %}
+              </label>
+              <div class="form-group-right">
+                  <input required
+                         id="amount"
+                         name="amount"
+                         class="form-control verify-input"
+                         type="number"
+                         ng-model="extra.value_amount"
+                         ng-maxlength="255" />
+              </div>
+          </div>
+
+      </fieldset>
+
+    <!-- Modal-form-right: The description text. -->
+
+  </div>
+</form>
+
+<!-- Modal-footer: User can submit or cancel form here. -->
+<div class="modal-footer">
+  <button id="submit-button-create" class="btn btn-primary" type="button"
+    ng-if="context.mode == 'create'"
+    ng-disabled="form.$invalid || quota_exceeded || showBalance"
+    ng-click="action.submit()">
+    {$ ::context.submit $}
+  </button>
+
+</div>

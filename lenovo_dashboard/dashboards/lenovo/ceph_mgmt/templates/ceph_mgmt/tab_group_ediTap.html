@@ -1,0 +1,34 @@
+{% load branding i18n %}
+{% load url from future %}
+{% load context_selection %}
+<div class="add"  ng-show="editShow" style="margin-top: 10px">
+	<div class="panel-heading modify" id="groupModify" role="tab" style="display: none">
+		<input type="text" placeholder="Group Name" class="btn btn-primary modifyName" />
+		<div class="pull-right">
+			<button class="btn btn-primary editG" ng-click="groupAddCancel()"> {% trans "Cancel" %} </button>
+			<button class="btn btn-primary editG" ng-click="groupAddOk()">{% trans "OK" %}</button>
+		</div>
+		<p class="pull-right warn">
+			<span class="glyphicon glyphicon-exclamation-sign"></span>
+			{% trans "Please specify a name for this group./You heven't selected any OSDs yet" %}
+		</p>
+	</div>
+	<div class="panel-heading" id="groupAdd" role="tab">
+		<div class="pull-left">
+			<button class="btn btn-primary addcolor"> + {% trans "add Group" %}</button>
+			<button class="btn btn-primary"> {% trans "Group1" %}</button>
+			<button class="btn btn-primary"> {% trans "Group2" %}</button>
+		</div>
+		<div class="pull-right">
+			<button class="btn btn-primary editG" >{% trans "Modify Group" %}</button>
+			<button class="btn btn-primary editG"> {% trans "Remove Group" %}</button>
+		</div>
+	</div>
+
+	<div class="dragbox" style="min-height: 200px;">
+		<span>+</span>
+		<p>{% trans "Drag hosts here to create a new group." %}</p>
+	</div>
+</div>
+		
+			

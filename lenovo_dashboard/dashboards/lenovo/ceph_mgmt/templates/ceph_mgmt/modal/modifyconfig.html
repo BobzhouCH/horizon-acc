@@ -1,0 +1,29 @@
+{%load i18n%}
+<script type="text/ng-template"  id="modifyconfig.html">
+    <div class="Modify-Profiles">
+        <a href="#" class="close" ng-click="close()">×</a>
+        <form class="">
+            <span class="Profiles-text">{% trans "Modify Profiles Config" %}</span>
+
+            <div id="edit-cluster-box">
+                <p>
+                <div class="text-name">{% trans "Profiles Name" %}</div>
+                <input class="input-ip" type="text" placeholder="server_name" />
+                </p>
+                <br />
+                <p>
+                <div class="text-name">{% trans "Profiles Pass" %}</div>
+                <input class="input-ip" type="text" placeholder="public_pass"  />
+                </p>
+
+            </div>
+            <div class="footer-right-btn">
+                <input type="button" class="btn  btn-cancel" value="{% trans 'Cancel' %}" ng-click="close()" />
+                <input type="button" class="btn btn-primary" value="{% trans 'OK' %}" ng-click="editOk(clusterName,clusterAddr)" />
+            </div>
+        </form>
+
+    </div>
+</script>
+
+

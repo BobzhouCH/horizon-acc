@@ -1,0 +1,194 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Routers" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Routers") %}
+{% endblock page_header %}
+
+{% block main %}
+
+<hz-magic-search-context filter-facets="filterFacets">
+<table id="routers-list" hz-table ng-cloak hopes-table-drag
+  st-table="irouters"
+  st-safe-src="routers"
+  default-sort="name"
+  default-sort-reverse="false"
+  ng-controller="adminRoutersCtrl"
+  ng-init="userID = '{{ request.user.id }}'"
+  st-magic-search
+  class="table table-bordered table-hover">
+
+  <!--
+    Table-head:
+    This is where we add things like filtering and batch actions.
+    This is where we add column headers.
+  -->
+  <thead>
+
+    <!--
+      Table-batch-actions:
+      This is where batch actions like searching, creating, and deleting.
+    -->
+    <tr>
+      <th colspan="100" class="bare">
+         <div class="table_actions clearfix">
+           <action-list>
+              <action
+                action-classes="'btn btn-primary btn-action'"
+                callback="actions.refresh">
+                <i class="icon icon-refresh"></i>
+                <span id="refresh"></span>
+              </action>
+           </action-list>
+
+           <action-list>
+              <action
+                action-classes="'btn btn-action btn-danger'"
+                disabled="numSelected === 0"
+                callback="actions.deleted.batchDelete">
+                <i class="icon icon-delete"></i>
+                <span id="delete-router">{% trans 'Delete Router' %}</span>
+              </action>
+           </action-list>
+
+           <action-list dropdown>
+             <button id="more" type="button" class="btn btn-primary btn-action" dropdown-toggle>
+               <i class="icon icon-more"></i>
+               <span>{% trans 'More' %}</span>
+               <!--<div class="bnt-piece"><span class="caret"></span></div>-->
+             </button>
+             <menu>
+               <action
+                 button-type="menu-item"
+                 disabled="disabled"
+                 callback="actions.edit.open" item="selectedData.aData">
+                 <span id="edit">{% trans 'Edit' %}</span>
+               </action>
+             </menu>
+           </action-list>
+
+            <div class="fr search-bar">
+              <hz-magic-search-bar id="search"></hz-magic-search-bar>
+            </div>
+          </div>
+      </th>
+    </tr>
+
+    <!--
+      Table-column-headers:
+      This is where we declaratively define the table column headers.
+      Include the select all checkbox if you want to enable select all
+      for performing batch actions.
+    -->
+    <tr>
+      <th eagle-eye="select_col" class="select-col">
+        <input type="checkbox" hz-select-page="routers"/>
+      </th>
+      <th>
+        <span eagle-eye="data_col" st-sort="name">{$ ::context.header.name $}</span>
+      </th>
+      <th><span eagle-eye="data_col">{$ ::context.header.domain $}</span></th>
+      <th><span eagle-eye="data_col">{$ ::context.header.project $}</span></th>
+      <th><span eagle-eye="data_col">{$ ::context.header.ext_network $}</span></th>
+
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr ng-if="!iroutersState">
+      <td colspan="100" class="Loading-bar"><img class="load-detail" src="/static/bootstrap/img/loading.gif"  alt="" /></td>
+    </tr>
+
+    <tr ng-if="!irouters.length && iroutersState">
+      <td colspan="100">{% trans "No Data" %}</td>
+    </tr>
+    <tr ng-repeat="router in irouters" ng-class="{'st-selected': checked[router.id]}">
+
+      <!--
+        Table-row-checkbox:
+        User can select and unselect this row by clicking on this checkbox.
+        Batch actions can then be perform on selected rows.
+      -->
+      <td eagle-eye="select_col" class="select-col">
+        <input type="checkbox"
+          hz-select="router"
+          ng-model="selected[router.id].checked"
+          hz-checkbox-group="routers"/>
+      </td>
+
+      <!--
+        Table-row-expander:
+        User can toggle visbility of the Detail-row by clicking on this icon.
+        Duration attribute determines the animation time.
+      -->
+      <!--<td class="expander">
+        User can toggle visbility of the Detail-row by clicking on this icon.
+        Duration attribute determines the animation time.
+      -->
+      <!--<td class="expander">
+              User can toggle visbility of the Detail-row by clicking on this icon.
+        Duration attribute determines the animation time.
+      -->
+      <!--<td class="expander">
+        <i class="fa fa-chevron-right" hz-expand-detail duration="200"></i>
+      </td>-->
+
+      <!-- Table-row-info-column -->
+      <td eagle-eye="data_col">{$ router.name $}</td>
+      <td eagle-eye="data_col">{$ router.domain $}</td>
+      <td eagle-eye="data_col">{$ router.tenant_name $}</td>
+      <td eagle-eye="data_col" ng-if="router.external_gateway_info.network">{$ router.external_gateway_info.network $}</td>
+      <td eagle-eye="data_col" ng-if="!router.external_gateway_info.network">-</td>
+      <!--<td class="rsp-p2 text-center">
+        <i ng-show="user.enabled" class="fa fa-check text-success"></i>
+        <i ng-hide="user.enabled" class="fa fa-times text-danger"></i>
+      </td>-->
+
+      <!--
+        Table-row-action-column:
+        Actions taken here applies to a single item/row.
+        Refer to action-list directive for more examples of usage.
+        btn-default
+      -->
+    </tr>
+
+    <!--
+      Detail-row:
+      Contains detailed information on this item.
+      Can be toggled using the chevron button.
+      Ensure colspan is greater or equal to number of column-headers.
+    -->
+    <!--<tr ng-repeat-end class="detail-row">
+      <td class="detail" colspan="100">
+        <dl class="dl-horizontal">
+
+          <dt>{$ ::context.header.id $}</dt>
+          <dd>{$ instance.id $}</dd>
+
+          <dt>{$ ::context.header.name $}</dt>
+          <dd>{$ instance.name $}</dd>
+
+
+        </dl>
+      </td>
+    </tr>  -->
+
+  </tbody>
+
+  <!--
+    Table-footer:
+    This is where we display number of items and pagination controls.
+    Ensure colspan is greater or equal to number of column-headers.
+  -->
+  <tfoot ng-if="routers.length > 10">
+    <tr>
+      <td colspan="100">
+        <table-footer></table-footer>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+</hz-magic-search-context>
+
+{% endblock %}

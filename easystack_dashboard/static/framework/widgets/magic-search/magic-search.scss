@@ -1,0 +1,80 @@
+// Augments magic_search.scss with styles for bootstrap/Horizon.
+
+.search-bar {
+  min-width: $magic-search-min-width;
+  border-color: $magic-search-border-color;
+  margin-bottom: $magic-search-margin-bottom;
+  search-bar { width: 100%; }
+  .form-group { width: 100%; margin-top: $magic-search-margin-bottom; }
+  .input-group { width: 100%; }
+  .basic-search-bar, & {
+    input[type=text] {
+      border-radius: 18px;
+      padding-left: $magic-search-margin-padding-right;
+      height: $magic-search-height;
+      -webkit-box-shadow: none;
+      -webkit-transition: none;
+      box-shadow: none;
+    }
+  }
+  .form-control-feedback {
+    width: $magic-search-button-width;
+    height: $magic-search-button-height;
+    line-height: $magic-search-button-line-height;
+    border-radius: $magic-search-border-radius;
+    background: $magic-search-button-bg;
+    color: $text-default-color;
+    margin: 3px 3px 0 0;
+    left: 2px;
+  }
+}
+/*
+.search-bar {
+  min-width: $magic-search-min-width;
+  border-color: $magic-search-border-color;
+  border-radius: $magic-search-border-radius;
+  margin-bottom: $magic-search-margin-bottom;
+  padding: $magic-search-margin-padding;
+
+  .search-entry {
+    .search-input {
+      padding: 1px 0px;
+      font: normal normal normal 12.6px/normal;
+      outline: none;
+      height: 24px;
+    }
+    height: 24px;
+    position: relative;
+  }
+
+  .item-list {
+    .item {
+      background-color: $gray-light;
+      a {
+        color: $brand-danger;
+      }
+    }
+    .server-side-item {
+      background-color: $gray-lighter;
+    }
+  }
+
+  .fa-filter {
+    padding-left: 5px;
+    font-size: larger;
+  }
+
+  .fa-times {
+    font-size: larger;
+    cursor: pointer;
+  }
+
+  .label {
+    font-size: 100%;
+    font-weight: normal;
+  }
+}*/
+
+/*.search-main-area {
+  padding-left: 10px;
+}*/

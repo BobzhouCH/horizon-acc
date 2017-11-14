@@ -1,0 +1,39 @@
+{% extends 'es_base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Notice" %}{% endblock %}
+
+{% block page_header %}
+  {% include "easystack_dashboard/common/_es_page_header.html" with title=_("Notice") %}
+{% endblock page_header %}
+
+{% block main %}
+
+
+<div class="notice-content">
+    <table width="100%" ng-controller="adminNoticeController">
+    <tbody>
+        <tr>
+          <td width="10%">{% trans "Title" %}:</td>
+          <td><input id="notice_title" type="text" ng-model="title"></td>
+        </tr>
+        <tr><td colspan="2">&nbsp;</td></tr>
+        <tr>
+          <td class="notice-content-context">{% trans "Context" %}:</td>
+          <td><textarea id="notice_context" ng-model="context"></textarea></td>
+        </tr>
+        <tr><td colspan="2">&nbsp;</td></tr>
+        <tr>
+          <td>{% trans "Display" %}:</td>
+          <td><input type="checkbox" ng-model="display" id="notice_display"></td>
+        </tr>
+
+        <tr>
+          <td>&nbsp;</td>
+          <td class="txt-r">
+              <button ng-click="save()" type="button" class="btn btn-a mt20" id="submit-button">{% trans "Save" %}</button>
+          </td>
+        </tr>
+    </tbody>
+    </table>
+</div>
+{% endblock %}
